@@ -35,7 +35,7 @@
 		<!-- sinks in alphabatical order -->
 		<module>counter-sink</module>
 		<module>log-sink</module>
-
+		<module>redis-sink</module>
 	</modules>
 	<build>
 		<plugins>

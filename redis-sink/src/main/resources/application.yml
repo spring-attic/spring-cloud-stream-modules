@@ -1,0 +1,10 @@
+server:
+  port: 0
+name: ${spring.application.name:redis-sink}
+spring:
+  cloud:
+    stream:
+      bindings:
+        input: ${name}
+
+#queue: myQueue
