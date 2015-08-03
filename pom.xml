@@ -13,6 +13,7 @@
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-stream-parent</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
+		<relativePath />
 	</parent>
 	<modules>
 		<module>time-source</module>
