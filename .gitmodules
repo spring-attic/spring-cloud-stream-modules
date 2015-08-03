@@ -1,0 +1,3 @@
+[submodule "firehose-source/proto"]
+	path = firehose-source/proto
+	url = https://github.com/cloudfoundry/dropsonde-protocol
