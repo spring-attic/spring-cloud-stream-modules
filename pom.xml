@@ -17,6 +17,7 @@
 	<modules>
 		<module>time-source</module>
 		<module>log-sink</module>
+		<module>redis-sink</module>
 	</modules>
 	<build>
 		<plugins>
