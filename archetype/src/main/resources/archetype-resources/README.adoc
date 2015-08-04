@@ -1,0 +1,35 @@
+= Spring Cloud Stream ${capitalizedNameOfModuleWithoutType} ${typeAsInSourceProcessorOrSink}
+
+In this *Spring Cloud Stream* module, blah blah blah.
+
+== Requirements
+
+To run this sample, you will need to have installed:
+
+* Java 7 or Above
+
+This example requires Redis to be running on localhost.
+
+== Code Tour
+
+This project is a Spring Boot application that uses Spring Cloud Stream to
+blah blah blah.
+The ${typeAsInSourceProcessorOrSink} module has 2 primary components:
+
+* ${typeAsInSourceProcessorOrSink}Application - the Spring Boot Main Application
+* ${capitalizedNameOfModuleWithoutType}${typeAsInSourceProcessorOrSink} - the actual module code that interacts with message channels
+
+## Building with Maven
+
+Build the module by executing:
+
+```
+$> mvn package
+```
+
+## Running the Sample
+
+To start the module execute the following:
+```
+$> java -jar target/${artifactId}-${version}-exec.jar
+```

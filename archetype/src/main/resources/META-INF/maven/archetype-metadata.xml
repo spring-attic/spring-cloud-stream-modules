@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor
+		xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
+		name="spring-cloud-stream-module-archetype"
+		xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<requiredProperties>
+		<requiredProperty key="typeAsInSourceProcessorOrSink">
+		</requiredProperty>
+		<requiredProperty key="capitalizedNameOfModuleWithoutType">
+		</requiredProperty>
+	</requiredProperties>
+	<fileSets>
+		<fileSet filtered="true" packaged="true" encoding="UTF-8">
+			<directory>src/main/java</directory>
+			<includes>
+				<include>**/*.java</include>
+			</includes>
+			<excludes>
+				<exclude>demo/__typeAsInSourceProcessorOrSink__Application.java</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet filtered="true" encoding="UTF-8">
+			<directory>src/main/java</directory>
+			<includes>
+				<include>demo/__typeAsInSourceProcessorOrSink__Application.java</include>
+			</includes>
+		</fileSet>
+		<fileSet encoding="UTF-8">
+			<directory>src/main/resources</directory>
+			<includes>
+				<include>**/*.yml</include>
+			</includes>
+		</fileSet>
+		<fileSet filtered="true" encoding="UTF-8">
+			<directory>src/test/java</directory>
+			<includes>
+				<include>**/*.java</include>
+			</includes>
+		</fileSet>
+		<fileSet encoding="UTF-8" filtered="true">
+			<directory></directory>
+			<includes>
+				<include>README.adoc</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+</archetype-descriptor>

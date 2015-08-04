@@ -25,6 +25,7 @@
 	<modules>
 		<!-- common -->
 		<module>common</module>
+		<module>archetype</module>
 		<!-- sources in alphabetical order-->
 		<module>ftp-source</module>
 		<module>http-source</module>
