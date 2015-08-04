@@ -1,32 +1,26 @@
-Spring Cloud Stream Sink Sample
-=============================
+Spring Cloud Stream Log Sink
+============================
 
-In this *Spring Cloud Stream* sample, messages are received from a stream and the payload of each is logged to the console.
+This module logs each message it receives.
 
-## Requirements
-
-To run this sample, you will need to have installed:
+## Requirements:
 
 * Java 7 or Above
+* Redis running on localhost
 
-This example requires Redis to be running on localhost.
+## Classes:
 
-## Code Tour
+* LogSinkApplication - the Spring Boot Main Application
+* LogSink - the module that receives the data from the stream and logs it
 
-This sample is a Spring Boot application that uses Spring Cloud Stream to receive messages and write each payload to the console. The sink module has 2 primary components:
+## Build:
 
-* SinkApplication - the Spring Boot Main Application
-* LogSink - the module that receives the data from the stream and writes it out to the console
+```
+$ mvn clean package
+```
 
-## Building with Maven
+## Run:
 
-Build the sample by executing:
-
-	sink>$ mvn clean package
-
-## Running the Sample
-
-To start the sink module execute the following:
-
-	sink>$ java -jar target/spring-cloud-streams-sample-sink-1.0.0.BUILD-SNAPSHOT-exec.jar
-
+```
+$ java -jar target/log-sink-1.0.0.BUILD-SNAPSHOT-exec.jar
+```
