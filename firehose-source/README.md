@@ -32,9 +32,9 @@ This sample connects to a doppler remote websocket endpoint and emits events fro
 
 ## Building with Maven
 
-Build the sample by executing:
+Build the sample by executing (you need to explicitely remove the imports profile, otherwise build will fail:
 
-	source>$ mvn clean package
+	source>$ mvn clean package -P \!imports
 
 ## Running the Sample
 
