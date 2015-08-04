@@ -29,12 +29,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
 import org.springframework.integration.websocket.ClientWebSocketContainer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import source.FirehoseOptionsMetadata;
+import source.FirehoseSource;
 
 import javax.net.ssl.SSLContext;
 import java.net.URL;
@@ -46,6 +48,7 @@ import java.util.Collections;
  */
 @SpringBootApplication
 @EnableConfigurationProperties(FirehoseOptionsMetadata.class)
+@ComponentScan(basePackageClasses = FirehoseSource.class)
 public class FirehoseApplication {
 
     @Autowired
@@ -100,7 +103,7 @@ public class FirehoseApplication {
     private String getDopplerEndpoint() {
 
         String url = StringUtils.isEmpty(metadata.getDopplerUrl()) ? "wss://doppler." + metadata.getCfDomain() : metadata.getDopplerUrl();
-        String subscription = StringUtils.isEmpty(metadata.getDopplerSubscription()) ? "firehose-x" : metadata.getDopplerSubscription();
+        String subscription = StringUtils.isEmpty(metadata.getDopplerSubscription()) ? "firehose-a" : metadata.getDopplerSubscription();
         return url + "/firehose/" + subscription;
     }
 }

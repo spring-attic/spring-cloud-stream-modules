@@ -18,11 +18,15 @@
 
 package source;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+import org.cloudfoundry.dropsonde.events.EventFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.AbstractMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MimeTypeUtils;
+import org.springframework.xd.tuple.Tuple;
+import org.springframework.xd.tuple.TupleBuilder;
 
 import java.nio.ByteBuffer;
 
@@ -46,7 +50,14 @@ public class ByteBufferMessageConverter extends AbstractMessageConverter {
         ByteBuffer buffer = (ByteBuffer) message.getPayload();
         byte[] bytes = new byte[buffer.remaining()];
         buffer.get(bytes, 0, bytes.length);
-        return bytes;
+        Tuple result = TupleBuilder.tuple().build();
+        try {
+            EventFactory.Envelope envelope = EventFactory.Envelope.parseFrom(bytes);
+            result = TupleFactory.createTuple(envelope);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override

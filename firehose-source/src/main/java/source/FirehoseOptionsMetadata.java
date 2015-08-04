@@ -18,9 +18,12 @@
 
 package source;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 /**
  * @author Vinicius Carvalho
  */
+@ConfigurationProperties(prefix = "firehose")
 public class FirehoseOptionsMetadata {
 
     private String dopplerUrl;

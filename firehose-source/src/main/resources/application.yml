@@ -1,0 +1,2 @@
+firehose:
+  doppler-url: "ws://localhost:9090"

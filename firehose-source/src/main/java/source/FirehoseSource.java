@@ -21,9 +21,14 @@ package source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.integration.websocket.ClientWebSocketContainer;
 import org.springframework.integration.websocket.inbound.WebSocketInboundChannelAdapter;
+import org.springframework.messaging.MessageChannel;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -32,17 +37,25 @@ import java.util.Collections;
  * @author Vinicius Carvalho
  */
 @EnableModule(Source.class)
-public class FirehoseSource {
+@Configuration
+public class FirehoseSource implements ApplicationListener<ContextRefreshedEvent>{
 
     @Autowired
     private FirehoseOptionsMetadata metadata;
 
     @Bean
-    public WebSocketInboundChannelAdapter webSocketInboundChannelAdapter(ClientWebSocketContainer webSocketContainer, ByteBufferMessageConverter converter) {
+    public WebSocketInboundChannelAdapter webSocketInboundChannelAdapter(ClientWebSocketContainer webSocketContainer, ByteBufferMessageConverter converter, MessageChannel output) {
         WebSocketInboundChannelAdapter adapter = new WebSocketInboundChannelAdapter(webSocketContainer);
         adapter.setMessageConverters(Collections.singletonList(converter));
+        adapter.setOutputChannel(output);
         adapter.setPayloadType(ByteBuffer.class);
         return adapter;
     }
 
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        ApplicationContext ctx = contextRefreshedEvent.getApplicationContext();
+        ctx.getBean(ClientWebSocketContainer.class).start();
+        ctx.getBean(WebSocketInboundChannelAdapter.class).start();
+    }
 }
