@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package sink;
+package org.springframework.cloud.stream.module.log;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Sink;
 import org.springframework.integration.annotation.ServiceActivator;
 
 /**
  * @author Dave Syer
- *
  */
 @EnableModule(Sink.class)
 public class LogSink {

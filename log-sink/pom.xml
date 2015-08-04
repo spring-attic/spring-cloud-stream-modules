@@ -16,7 +16,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>demo.SinkApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.log.LogSinkApplication</start-class>
 		<java.version>1.8</java.version>
 	</properties>
 
