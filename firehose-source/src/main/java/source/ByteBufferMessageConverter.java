@@ -20,6 +20,7 @@ package source;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.cloudfoundry.dropsonde.events.EventFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.AbstractMessageConverter;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.xd.tuple.Tuple;
 import org.springframework.xd.tuple.TupleBuilder;
+import org.springframework.xd.tuple.TupleToJsonStringConverter;
 
 import java.nio.ByteBuffer;
 
@@ -39,6 +41,11 @@ public class ByteBufferMessageConverter extends AbstractMessageConverter {
     protected ByteBufferMessageConverter() {
         super(MimeTypeUtils.APPLICATION_OCTET_STREAM);
     }
+
+    private TupleToJsonStringConverter jsonConverter = new TupleToJsonStringConverter();
+
+    @Autowired
+    private FirehoseOptionsMetadata metadata;
 
     @Override
     protected boolean supports(Class<?> clazz) {
@@ -57,7 +64,7 @@ public class ByteBufferMessageConverter extends AbstractMessageConverter {
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-        return result;
+        return (metadata.isOutputJson()) ? jsonConverter.convert(result) : result;
     }
 
     @Override
