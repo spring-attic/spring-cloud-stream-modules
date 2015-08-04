@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package source;
+package org.springframework.cloud.stream.module.time;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -32,19 +32,18 @@ import java.util.Date;
 /**
  * @author Dave Syer
  * @author Glenn Renfro
- *
  */
 @EnableModule(Source.class)
-@EnableConfigurationProperties(TimeSourceOptionsMetadata.class)
+@EnableConfigurationProperties(TimeSourceProperties.class)
 public class TimeSource {
 
 	@Autowired
-	private TimeSourceOptionsMetadata options;
+	private TimeSourceProperties properties;
 
 	@Bean
 	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(fixedDelay = "${fixedDelay}", maxMessagesPerPoll = "1"))
 	public MessageSource<String> timerMessageSource() {
-		return () -> new GenericMessage<>(new SimpleDateFormat(this.options.getFormat()).format(new Date()));
+		return () -> new GenericMessage<>(new SimpleDateFormat(this.properties.getFormat()).format(new Date()));
 	}
 
 }

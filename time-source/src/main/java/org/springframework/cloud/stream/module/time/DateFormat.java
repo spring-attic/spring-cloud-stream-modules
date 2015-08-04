@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package source;
+package org.springframework.cloud.stream.module.time;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;

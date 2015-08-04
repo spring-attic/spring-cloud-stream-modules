@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package source;
+package org.springframework.cloud.stream.module.time;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
 /**
- * Describes options to the {@code time} source module.
+ * Describes properties of the {@code time} source module.
  *
  * @author Eric Bottard
  * @author Gary Russell
  */
-public class TimeSourceOptionsMetadata {
+public class TimeSourceProperties {
 
 	/**
 	 * 	how to render the current time, using SimpleDateFormat
@@ -95,6 +95,5 @@ public class TimeSourceOptionsMetadata {
 	public void setFixedDelay(int fixedDelay) {
 		this.fixedDelay = fixedDelay;
 	}
-
 
 }
