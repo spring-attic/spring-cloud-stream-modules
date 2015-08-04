@@ -19,12 +19,15 @@ package org.springframework.cloud.stream.module.time;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 /**
  * Describes properties of the {@code time} source module.
  *
  * @author Eric Bottard
  * @author Gary Russell
  */
+@ConfigurationProperties
 public class TimeSourceProperties {
 
 	/**
@@ -33,31 +36,27 @@ public class TimeSourceProperties {
 	private String format = "yyyy-MM-dd HH:mm:ss";
 
 	/**
-	 * time delay between messages, expressed in TimeUnits (seconds by default)
-	 */
-	private int fixedDelay = 1;
-
-	/**
 	 * an initial delay when using a fixed delay trigger, expressed in TimeUnits (seconds by default)
 	 */
 	private int initialDelay = 0;
+
+	/**
+	 * time delay between messages, expressed in TimeUnits (seconds by default)
+	 */
+	private int fixedDelay = 1;
 
 	/**
 	 * the time unit for the fixed and initial delays
 	 */
 	private String timeUnit = "SECONDS";
 
-	/**
-	 * the maximum messages per poll; -1 for unlimited
-	 */
-	long maxMessages = 1;
-
-	public long getMaxMessages() {
-		return this.maxMessages;
+	@DateFormat
+	public String getFormat() {
+		return this.format;
 	}
 
-	public void setMaxMessages(long maxMessages) {
-		this.maxMessages = maxMessages;
+	public void setFormat(String format) {
+		this.format = format;
 	}
 
 	@Min(0)
@@ -69,6 +68,14 @@ public class TimeSourceProperties {
 		this.initialDelay = initialDelay;
 	}
 
+	public int getFixedDelay() {
+		return this.fixedDelay;
+	}
+
+	public void setFixedDelay(int fixedDelay) {
+		this.fixedDelay = fixedDelay;
+	}
+
 	@Pattern(regexp = "(?i)(NANOSECONDS|MICROSECONDS|MILLISECONDS|SECONDS|MINUTES|HOURS|DAYS)",
 			message = "timeUnit must be one of NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS (case-insensitive)")
 	public String getTimeUnit() {
@@ -78,22 +85,4 @@ public class TimeSourceProperties {
 	public void setTimeUnit(String timeUnit) {
 		this.timeUnit = timeUnit.toUpperCase();
 	}
-
-	@DateFormat
-	public String getFormat() {
-		return this.format;
-	}
-
-	public void setFormat(String format) {
-		this.format = format;
-	}
-
-	public int getFixedDelay() {
-		return this.fixedDelay;
-	}
-
-	public void setFixedDelay(int fixedDelay) {
-		this.fixedDelay = fixedDelay;
-	}
-
 }

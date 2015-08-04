@@ -1,38 +1,31 @@
-Spring Cloud Stream Source Sample
-=============================
+Spring Cloud Stream Time Source
+===============================
 
-In this *Spring Cloud Stream* sample, a timestamp is published on an interval determined by the fixedDelay property.
+This module publishes a timestamp on an interval determined by the `fixedDelay` property.
 
-## Requirements
-
-To run this sample, you will need to have installed:
+## Requirements:
 
 * Java 7 or Above
+* Redis running on localhost
 
-This example requires Redis to be running on localhost.
+## Classes:
 
-## Code Tour
+* TimeSourceApplication - the Spring Boot Main Application
+* TimeSource - the module that will generate the timestamp and post it as a message
+* TimeSourceProperties - defines the configuration properties that are available for the TimeSource
+    	 * format - how to render the current time, using SimpleDateFormat (default: "yyyy-MM-dd HH:mm:ss")
+    	 * fixedDelay - time delay between messages (default: 5)
+    	 * initialDelay - delay before the first message (default: 1)
+    	 * timeUnit - the time unit for the fixed and initial delays (default: "seconds")
 
-This sample is a Spring Boot application that uses Spring Cloud Stream to publish timestamp data. The source module has 3 primary components:
+## Build:
 
-* SourceApplication - the Spring Boot Main Application
-* TimeSource - the module that will generate the timestamp and post the message to the stream
-* TimeSourceOptionsMetadata - defines the configurations that are available to setup the TimeSource
-    	 * format - how to render the current time, using SimpleDateFormat
-    	 * fixedDelay - time delay between messages
-    	 * initialDelay - delay before the first message
-    	 * timeUnit - the time unit for the fixed and initial delays
-    	 * maxMessages - the maximum messages per poll; -1 for unlimited
+```
+$ mvn clean package
+```
 
-## Building with Maven
+## Run:
 
-Build the sample by executing:
-
-	source>$ mvn clean package
-
-## Running the Sample
-
-To start the source module execute the following:
-
-	source>$ java -jar target/spring-cloud-streams-sample-source-1.0.0.BUILD-SNAPSHOT-exec.jar
-
+```
+$ java -jar target/time-source-1.0.0.BUILD-SNAPSHOT-exec.jar
+```

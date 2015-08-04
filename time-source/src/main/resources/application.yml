@@ -1,16 +1,9 @@
 server:
   port: 8080
-fixedDelay: 5000
+fixedDelay: 5
+initialDelay: 1
 spring:
   cloud:
     stream:
       bindings:
-        output: testtock
-
----
-spring:
-  profiles: extended
-  cloud:
-    stream:
-      bindings:
-        output: xformed
+        output: ticktock

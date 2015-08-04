@@ -16,6 +16,10 @@
 
 package org.springframework.cloud.stream.module.time;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableModule;
@@ -25,9 +29,8 @@ import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.messaging.support.GenericMessage;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.springframework.scheduling.Trigger;
+import org.springframework.scheduling.support.PeriodicTrigger;
 
 /**
  * @author Dave Syer
@@ -41,7 +44,14 @@ public class TimeSource {
 	private TimeSourceProperties properties;
 
 	@Bean
-	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(fixedDelay = "${fixedDelay}", maxMessagesPerPoll = "1"))
+	public Trigger trigger() {
+		PeriodicTrigger trigger = new PeriodicTrigger(properties.getFixedDelay(), TimeUnit.valueOf(properties.getTimeUnit()));
+		trigger.setInitialDelay(properties.getInitialDelay());
+		return trigger;
+	}
+
+	@Bean
+	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(trigger = "trigger", maxMessagesPerPoll = "1"))
 	public MessageSource<String> timerMessageSource() {
 		return () -> new GenericMessage<>(new SimpleDateFormat(this.properties.getFormat()).format(new Date()));
 	}
