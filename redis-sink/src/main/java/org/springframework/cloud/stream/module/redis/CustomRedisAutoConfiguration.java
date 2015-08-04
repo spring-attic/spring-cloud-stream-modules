@@ -29,7 +29,7 @@ import org.springframework.data.redis.core.RedisOperations;
 public class CustomRedisAutoConfiguration extends RedisAutoConfiguration {
 
 	@Bean(name = "redis.sink.RedisProperties")
-	@ConfigurationProperties("module.")
+	@ConfigurationProperties("module")
 	public RedisProperties redisProperties() {
 		return new RedisProperties();
 	}
@@ -40,7 +40,7 @@ public class CustomRedisAutoConfiguration extends RedisAutoConfiguration {
 	protected static class CustomRedisConnectionConfiguration extends RedisConnectionConfiguration {
 
 		@Bean
-		@Qualifier("custom")
+		@RedisSinkQualifier
 		public JedisConnectionFactory redisConnectionFactory()
 				throws UnknownHostException {
 			return super.redisConnectionFactory();
@@ -53,7 +53,7 @@ public class CustomRedisAutoConfiguration extends RedisAutoConfiguration {
 			RedisPooledConnectionConfiguration {
 
 		@Bean
-		@Qualifier("custom")
+		@RedisSinkQualifier
 		public JedisConnectionFactory redisConnectionFactory()
 				throws UnknownHostException {
 			return super.redisConnectionFactory();

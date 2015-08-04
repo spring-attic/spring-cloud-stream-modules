@@ -23,14 +23,19 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.config.ConsumerEndpointFactoryBean;
+import org.springframework.integration.redis.config.RedisStoreOutboundChannelAdapterParser;
 import org.springframework.integration.redis.outbound.RedisPublishingMessageHandler;
+import org.springframework.integration.redis.outbound.RedisQueueOutboundChannelAdapter;
+import org.springframework.integration.redis.outbound.RedisStoreWritingMessageHandler;
 import org.springframework.messaging.MessageHandler;
 
 /**
@@ -41,13 +46,11 @@ import org.springframework.messaging.MessageHandler;
 @EnableModule(Sink.class)
 public class RedisSink {
 
-	private static final Logger logger = LoggerFactory.getLogger(RedisSink.class);
-
 	@Autowired
 	private Sink sink;
 
 	@Autowired
-	@Qualifier("custom")
+	@RedisSinkQualifier
 	private RedisConnectionFactory redisConnectionFactory;
 
 	@Autowired
@@ -58,19 +61,41 @@ public class RedisSink {
 		return new RedisSinkModuleOptions();
 	}
 
+	@RedisSinkQualifier
+	@Autowired
+	private MessageHandler messageHandler;
+
 	@Bean
-	@ConditionalOnProperty("module.topicExpression")
+	@ConditionalOnExpression("@moduleOptions.topicExpression != null")
+	@RedisSinkQualifier
 	public MessageHandler topicExpressionMessageHandler() {
 		RedisPublishingMessageHandler redisPublishingMessageHandler = new RedisPublishingMessageHandler(redisConnectionFactory);
-		redisPublishingMessageHandler.setTopicExpression(new SpelExpressionParser().parseExpression(moduleOptions.getTopicExpression()));
+		redisPublishingMessageHandler.setTopicExpression(moduleOptions.getTopicExpression());
 		return redisPublishingMessageHandler;
+	}
+
+	@Bean
+	@ConditionalOnExpression("@moduleOptions.queueExpression != null")
+	@RedisSinkQualifier
+	public MessageHandler queueExpressionMessageHandler() {
+		RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter = new RedisQueueOutboundChannelAdapter(moduleOptions.getQueueExpression(), redisConnectionFactory);
+		return redisQueueOutboundChannelAdapter;
+	}
+
+	@Bean
+	@ConditionalOnExpression("@moduleOptions.keyExpression != null")
+	@RedisSinkQualifier
+	public MessageHandler storeExpressionMessageHandler() {
+		RedisStoreWritingMessageHandler redisStoreWritingMessageHandler = new RedisStoreWritingMessageHandler(redisConnectionFactory);
+		redisStoreWritingMessageHandler.setKeyExpression(moduleOptions.getKeyExpression());
+		return redisStoreWritingMessageHandler;
 	}
 
 	@Bean
 	public ConsumerEndpointFactoryBean consumerEndpointFactoryBean() {
 		ConsumerEndpointFactoryBean consumerEndpointFactoryBean = new ConsumerEndpointFactoryBean();
 		consumerEndpointFactoryBean.setInputChannel(sink.input());
-		consumerEndpointFactoryBean.setHandler(topicExpressionMessageHandler());
+		consumerEndpointFactoryBean.setHandler(messageHandler);
 		return consumerEndpointFactoryBean;
 	}
 
