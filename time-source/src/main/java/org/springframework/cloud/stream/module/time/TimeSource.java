@@ -27,8 +27,6 @@ import org.springframework.cloud.stream.annotation.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
-import org.springframework.integration.core.MessageSource;
-import org.springframework.messaging.support.GenericMessage;
 import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
@@ -50,10 +48,9 @@ public class TimeSource {
 		return trigger;
 	}
 
-	@Bean
 	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(trigger = "trigger", maxMessagesPerPoll = "1"))
-	public MessageSource<String> timerMessageSource() {
-		return () -> new GenericMessage<>(new SimpleDateFormat(this.properties.getFormat()).format(new Date()));
+	public String publishTime() {
+		return new SimpleDateFormat(this.properties.getFormat()).format(new Date());
 	}
 
 }
