@@ -26,7 +26,7 @@ import org.springframework.data.redis.core.RedisOperations;
 @Configuration
 @ConditionalOnClass({ JedisConnection.class, RedisOperations.class, Jedis.class })
 @EnableConfigurationProperties
-public class CustomRedisAutoConfiguration extends RedisAutoConfiguration {
+public class CustomRedisConfiguration extends RedisAutoConfiguration {
 
 	@Bean(name = "redis.sink.RedisProperties")
 	@ConfigurationProperties("module")

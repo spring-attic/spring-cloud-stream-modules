@@ -63,14 +63,7 @@ public class RedisSinkModuleOptions {
 	}
 
 	public Expression getKeyExpression() {
-		// The 3rd case is needed for conditional enablement in RedisSink
-		if (key != null) {
-			return new LiteralExpression(key);
-		} else if (keyExpression != null) {
-			return parser.parseExpression(keyExpression);
-		} else {
-			return null;
-		}
+		return key != null ? new LiteralExpression(key) : parser.parseExpression(keyExpression);
 	}
 
 	public void setKeyExpression(String keyExpression) {
@@ -78,14 +71,7 @@ public class RedisSinkModuleOptions {
 	}
 
 	public Expression getQueueExpression() {
-		// The 3rd case is needed for conditional enablement in RedisSink
-		if (queue != null) {
-			return new LiteralExpression(queue);
-		} else if (queueExpression != null) {
-			return parser.parseExpression(queueExpression);
-		} else {
-			return null;
-		}
+		return queue != null ? new LiteralExpression(queue) : parser.parseExpression(queueExpression);
 	}
 
 	public void setQueueExpression(String queueExpression) {
@@ -93,14 +79,7 @@ public class RedisSinkModuleOptions {
 	}
 
 	public Expression getTopicExpression() {
-		// The 3rd case is needed for conditional enablement in RedisSink
-		if (topic != null) {
-			return new LiteralExpression(topic);
-		} else if (topicExpression != null) {
-			return parser.parseExpression(topicExpression);
-		} else {
-			return null;
-		}
+		return topic != null ? new LiteralExpression(topic) : parser.parseExpression(topicExpression);
 	}
 
 	public void setTopicExpression(String topicExpression) {

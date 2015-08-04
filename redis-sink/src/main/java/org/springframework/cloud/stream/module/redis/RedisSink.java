@@ -66,7 +66,7 @@ public class RedisSink {
 	private MessageHandler messageHandler;
 
 	@Bean
-	@ConditionalOnExpression("@moduleOptions.topicExpression != null")
+	@ConditionalOnExpression("'${module.topic}'.substring(0,1)!='$' || '${module.topicExpression}'.substring(0,1)!='$'")
 	@RedisSinkQualifier
 	public MessageHandler topicExpressionMessageHandler() {
 		RedisPublishingMessageHandler redisPublishingMessageHandler = new RedisPublishingMessageHandler(redisConnectionFactory);
@@ -75,7 +75,7 @@ public class RedisSink {
 	}
 
 	@Bean
-	@ConditionalOnExpression("@moduleOptions.queueExpression != null")
+	@ConditionalOnExpression("'${module.queue}'.substring(0,1)!='$' || '${module.queueExpression}'.substring(0,1)!='$'")
 	@RedisSinkQualifier
 	public MessageHandler queueExpressionMessageHandler() {
 		RedisQueueOutboundChannelAdapter redisQueueOutboundChannelAdapter = new RedisQueueOutboundChannelAdapter(moduleOptions.getQueueExpression(), redisConnectionFactory);
@@ -83,7 +83,7 @@ public class RedisSink {
 	}
 
 	@Bean
-	@ConditionalOnExpression("@moduleOptions.keyExpression != null")
+	@ConditionalOnExpression("'${module.key}'.substring(0,1)!='$' || '${module.keyExpression}'.substring(0,1)!='$'")
 	@RedisSinkQualifier
 	public MessageHandler storeExpressionMessageHandler() {
 		RedisStoreWritingMessageHandler redisStoreWritingMessageHandler = new RedisStoreWritingMessageHandler(redisConnectionFactory);
