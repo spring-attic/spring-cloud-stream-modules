@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.messaging.support.GenericMessage;
 
 /**
@@ -46,6 +47,7 @@ public class CounterSinkTests {
 		counterSink = new CounterSink();
 		options = new CounterSinkOptions();
 		counterSink.setOptions(options);
+		counterSink.setEvaluationContext(new StandardEvaluationContext());
 
 		counterSink.setCounterService(counterService);
 	}
@@ -55,7 +57,7 @@ public class CounterSinkTests {
 
 		options.setName("foobar");
 
-		counterSink.counterSink(new GenericMessage<Object>("hello"));
+		counterSink.count(new GenericMessage<Object>("hello"));
 
 		Mockito.verify(counterService).increment("foobar");
 	}
@@ -66,7 +68,7 @@ public class CounterSinkTests {
 		counterSink.setOptions(options);
 		counterSink.setCounterService(counterService);
 
-		counterSink.counterSink(new GenericMessage<Object>("hello"));
+		counterSink.count(new GenericMessage<Object>("hello"));
 
 		Mockito.verify(counterService).increment("hell");
 

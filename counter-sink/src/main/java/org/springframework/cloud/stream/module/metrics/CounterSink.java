@@ -51,10 +51,7 @@ public class CounterSink {
 
 	private CounterSinkOptions options;
 
-	// Default value useful for tests
-	private EvaluationContext evaluationContext = new StandardEvaluationContext();
-
-	private boolean evaluationContextSet;
+	private EvaluationContext evaluationContext;
 
 	private BeanFactory beanFactory;
 
@@ -69,7 +66,7 @@ public class CounterSink {
 	}
 
 	@ServiceActivator(inputChannel=Sink.INPUT)
-	public void counterSink(Message<?> message) {
+	public void count(Message<?> message) {
 		String name = computeMetricName(message);
 		logger.debug("Received: {}, about to increment counter named '{}'", message, name);
 		counterService.increment(name);
@@ -86,7 +83,6 @@ public class CounterSink {
 	public void setEvaluationContext(EvaluationContext evaluationContext) {
 		Assert.notNull(evaluationContext, "'evaluationContext' cannot be null");
 		this.evaluationContext = evaluationContext;
-		this.evaluationContextSet = true;
 	}
 
 	@Autowired
@@ -96,7 +92,7 @@ public class CounterSink {
 
 	@PostConstruct
 	public void afterPropertiesSet() throws Exception {
-		if (!this.evaluationContextSet) {
+		if (this.evaluationContext == null) {
 			this.evaluationContext = IntegrationContextUtils.getEvaluationContext(this.beanFactory);
 		}
 	}
