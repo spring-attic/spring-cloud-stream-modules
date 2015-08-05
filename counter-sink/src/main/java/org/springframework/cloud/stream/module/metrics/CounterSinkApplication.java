@@ -28,7 +28,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class CounterSinkApplication {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		SpringApplication.run(CounterSinkApplication.class, args);
 	}
 
