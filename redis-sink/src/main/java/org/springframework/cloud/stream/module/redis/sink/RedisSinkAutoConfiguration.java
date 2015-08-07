@@ -19,8 +19,12 @@ import redis.clients.jedis.Jedis;
 import java.net.UnknownHostException;
 
 /**
- * Creates a dedicated RedisConnectionFactory different from the one spring-boot autoconfigures
- * The configuration prefix is "spring.cloud.stream.module.redis"
+ * Creates a dedicated RedisConnectionFactory different from the one spring-boot autoconfigure
+ * section that the bindings use in spring-cloud-stream.
+ *
+ * The configuration prefix is "spring.cloud.stream.module.redis" and contains the standard
+ * properties to configure a redis connection, host, port, etc as well as the additional properties for
+ * the sink, queue, key, etc.
  *
  * @author Eric Bottard
  */
