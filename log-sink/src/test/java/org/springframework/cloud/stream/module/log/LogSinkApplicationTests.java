@@ -45,9 +45,6 @@ public class LogSinkApplicationTests {
 	@Autowired
 	private Sink same;
 
-	@Output(Source.OUTPUT)
-	private MessageChannel output;
-
 	@Test
 	public void contextLoads() {
 		assertNotNull(this.sink.input());

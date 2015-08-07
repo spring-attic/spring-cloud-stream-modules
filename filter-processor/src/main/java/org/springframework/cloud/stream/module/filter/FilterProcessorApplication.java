@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.log;
+package org.springframework.cloud.stream.module.filter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * A main application that runs the Filter Processor as a standalone app.
+ *
+ * @author Eric Bottard
+ */
 @SpringBootApplication
-public class LogSinkApplication {
+public class FilterProcessorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LogSinkApplication.class, args);
+		SpringApplication.run(FilterProcessorApplication.class, args);
 	}
 }

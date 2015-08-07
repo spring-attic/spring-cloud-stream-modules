@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.log;
+package org.springframework.cloud.stream.module.transform;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * A main application that runs the Groovy Transform Processor as a standalone app.
+ *
+ * @author Eric Bottard
+ */
 @SpringBootApplication
-public class LogSinkApplication {
+public class GroovyTransformProcessorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LogSinkApplication.class, args);
+		SpringApplication.run(GroovyTransformProcessorApplication.class, args);
 	}
 }
