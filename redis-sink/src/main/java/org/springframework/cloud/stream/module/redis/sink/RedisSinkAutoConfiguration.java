@@ -29,13 +29,6 @@ import java.net.UnknownHostException;
 @EnableConfigurationProperties
 public class RedisSinkAutoConfiguration extends RedisAutoConfiguration {
 
-	@Bean(name = "org.springframework.cloud.stream.module.redis.sink.RedisProperties")
-	@ConfigurationProperties("spring.cloud.stream.module.redis.sink")
-	@ConditionalOnMissingBean
-	public RedisProperties redisProperties() {
-		return new RedisProperties();
-	}
-
 	@Bean(name = "org.springframework.cloud.stream.module.redis.sink.RedisSinkProperties")
 	@ConfigurationProperties("spring.cloud.stream.module.redis.sink")
 	@ConditionalOnMissingBean

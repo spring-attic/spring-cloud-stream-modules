@@ -5,10 +5,6 @@ spring:
     stream:
       bindings:
         input: testtock
-        # uncomment below to have this module consume from a specific partition
-        # in the range of 0 to N-1, where N is the upstream module's partitionCount
-        #consumerProperties:
-        #  partitionIndex: 1
 #      module:
 #        redis:
 #          sink:
@@ -17,4 +13,4 @@ spring:
 #            sentinel:
 #              master: mymaster
 #              nodes: 127.0.0.1:26379,127.0.0.1:26380,127.0.0.1:26381
-#            queue=myQueue
+#            queue: myQueue

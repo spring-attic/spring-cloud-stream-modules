@@ -1,5 +1,6 @@
 package org.springframework.cloud.stream.module.redis.sink;
 
+import org.springframework.boot.autoconfigure.redis.RedisProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
@@ -14,7 +15,7 @@ import javax.validation.constraints.AssertTrue;
  * @author Eric Bottard
  */
 @ConfigurationProperties(prefix = "spring.cloud.stream.module.redis.sink")
-public class RedisSinkProperties {
+public class RedisSinkProperties extends RedisProperties {
 
 	private SpelExpressionParser parser = new SpelExpressionParser();
 
