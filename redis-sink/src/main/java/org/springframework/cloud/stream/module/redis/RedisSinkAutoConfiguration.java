@@ -3,6 +3,7 @@ package org.springframework.cloud.stream.module.redis;
 import java.net.UnknownHostException;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import redis.clients.jedis.Jedis;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,19 +20,28 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
 
 /**
- * Creates a dedicated RedisConnectionFactory (that is, different from the spring-cloud-stream one).
+ * Creates a dedicated RedisConnectionFactory different from the one spring-boot autoconfigures
+ * The configuration prefix is "spring.cloud.stream.module.redis"
  *
  * @author Eric Bottard
  */
 @Configuration
 @ConditionalOnClass({ JedisConnection.class, RedisOperations.class, Jedis.class })
 @EnableConfigurationProperties
-public class CustomRedisConfiguration extends RedisAutoConfiguration {
+public class RedisSinkAutoConfiguration extends RedisAutoConfiguration {
 
-	@Bean(name = "redis.sink.RedisProperties")
-	@ConfigurationProperties("module")
+	@Bean(name = "org.springframework.cloud.stream.module.redis.RedisProperties")
+	@ConfigurationProperties("spring.cloud.stream.module.redis")
+	@ConditionalOnMissingBean
 	public RedisProperties redisProperties() {
 		return new RedisProperties();
+	}
+
+	@Bean(name = "org.springframework.cloud.stream.module.redis.RedisSinkProperties")
+	@ConfigurationProperties("spring.cloud.stream.module.redis.sink")
+	@ConditionalOnMissingBean
+	public RedisSinkProperties redisSinkProperties() {
+		return new RedisSinkProperties();
 	}
 
 
@@ -40,7 +50,7 @@ public class CustomRedisConfiguration extends RedisAutoConfiguration {
 	protected static class CustomRedisConnectionConfiguration extends RedisConnectionConfiguration {
 
 		@Bean
-		@RedisSinkQualifier
+		@Qualifier("redisSink")
 		public JedisConnectionFactory redisConnectionFactory()
 				throws UnknownHostException {
 			return super.redisConnectionFactory();
@@ -53,7 +63,7 @@ public class CustomRedisConfiguration extends RedisAutoConfiguration {
 			RedisPooledConnectionConfiguration {
 
 		@Bean
-		@RedisSinkQualifier
+		@Qualifier("redisSink")
 		public JedisConnectionFactory redisConnectionFactory()
 				throws UnknownHostException {
 			return super.redisConnectionFactory();

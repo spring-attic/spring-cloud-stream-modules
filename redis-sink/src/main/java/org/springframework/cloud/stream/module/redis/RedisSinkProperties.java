@@ -9,14 +9,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.util.StringUtils;
 
 /**
  * Used to configure those Redis Sink module options that are not related to connecting to Redis.
  *
  * @author Eric Bottard
  */
-@ConfigurationProperties("module")
-public class RedisSinkModuleOptions {
+@ConfigurationProperties(prefix = "spring.cloud.stream.module.redis.sink")
+public class RedisSinkProperties {
 
 	private SpelExpressionParser parser = new SpelExpressionParser();
 
@@ -86,6 +87,18 @@ public class RedisSinkModuleOptions {
 		this.topicExpression = topicExpression;
 	}
 
+	public boolean isKey() {
+		return StringUtils.hasText(key) || StringUtils.hasText(keyExpression);
+	}
+
+	public boolean isQueue() {
+		return StringUtils.hasText(queue) || StringUtils.hasText(queueExpression);
+	}
+
+	public boolean isTopic() {
+		return StringUtils.hasText(topic) || StringUtils.hasText(topicExpression);
+	}
+
 	private String getKey() {
 		return key;
 	}
@@ -97,6 +110,7 @@ public class RedisSinkModuleOptions {
 	private String getTopic() {
 		return topic;
 	}
+
 
 	// The javabean property name is what will be reported in case of violation. Make it meaningful
 	@AssertTrue(message = "Exactly one of 'queue', 'queueExpression', 'key', 'keyExpression', 'topic' and 'topicExpression' must be set")

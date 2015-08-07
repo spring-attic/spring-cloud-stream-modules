@@ -1,17 +1,15 @@
-package demo;
+package org.springframework.cloud.stream.module.redis;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import org.springframework.cloud.stream.module.redis.RedisSink;
-
 @SpringBootApplication
 @ComponentScan(basePackageClasses= RedisSink.class)
-public class SinkApplication {
+public class RedisSinkApplication {
 
 	public static void main(String[] args) throws InterruptedException {
-		SpringApplication.run(SinkApplication.class, args);
+		SpringApplication.run(RedisSinkApplication.class, args);
 	}
 
 }
