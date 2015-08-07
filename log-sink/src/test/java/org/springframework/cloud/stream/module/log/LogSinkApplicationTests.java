@@ -27,8 +27,6 @@ import org.springframework.cloud.stream.annotation.ModuleChannels;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.cloud.stream.annotation.Sink;
 import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.cloud.stream.module.log.LogSink;
-import org.springframework.cloud.stream.module.log.LogSinkApplication;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
