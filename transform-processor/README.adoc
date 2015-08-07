@@ -1,0 +1,26 @@
+= Spring Cloud Stream Transform Processor
+
+A *Spring Cloud Stream* module that allows one to transform messages using a SpEL expression.
+== Requirements
+
+* Java 7 or Above
+
+== Code Tour
+
+TransformProcessorApplication:: the Spring Boot Main Application
+TransformProcessor:: the actual module code that interacts with message channels
+TransformProcessorProperties:: defines the configuration properties that are available to the Transform Processor
+  * expression: a SpEL expression used to transform messages
+
+
+## Building with Maven
+
+```
+$> mvn package
+```
+
+## Running the Application
+
+```
+$> java -jar target/transform-processor-${version}-exec.jar
+```
