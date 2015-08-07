@@ -1,4 +1,4 @@
-package org.springframework.cloud.stream.module.redis;
+package org.springframework.cloud.stream.module.redis.sink;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,14 +29,14 @@ import java.net.UnknownHostException;
 @EnableConfigurationProperties
 public class RedisSinkAutoConfiguration extends RedisAutoConfiguration {
 
-	@Bean(name = "org.springframework.cloud.stream.module.redis.RedisProperties")
-	@ConfigurationProperties("spring.cloud.stream.module.redis")
+	@Bean(name = "org.springframework.cloud.stream.module.redis.sink.RedisProperties")
+	@ConfigurationProperties("spring.cloud.stream.module.redis.sink")
 	@ConditionalOnMissingBean
 	public RedisProperties redisProperties() {
 		return new RedisProperties();
 	}
 
-	@Bean(name = "org.springframework.cloud.stream.module.redis.RedisSinkProperties")
+	@Bean(name = "org.springframework.cloud.stream.module.redis.sink.RedisSinkProperties")
 	@ConfigurationProperties("spring.cloud.stream.module.redis.sink")
 	@ConditionalOnMissingBean
 	public RedisSinkProperties redisSinkProperties() {

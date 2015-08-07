@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-org.springframework.cloud.stream.module.redis.RedisSinkAutoConfiguration
+org.springframework.cloud.stream.module.redis.sink.RedisSinkAutoConfiguration

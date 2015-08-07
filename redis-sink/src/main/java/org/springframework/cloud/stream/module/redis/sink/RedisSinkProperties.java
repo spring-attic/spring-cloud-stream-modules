@@ -1,4 +1,4 @@
-package org.springframework.cloud.stream.module.redis;
+package org.springframework.cloud.stream.module.redis.sink;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
