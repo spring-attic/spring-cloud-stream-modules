@@ -1,13 +1,9 @@
 package org.springframework.cloud.stream.module.redis;
 
-import java.net.UnknownHostException;
-
 import org.apache.commons.pool2.impl.GenericObjectPool;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import redis.clients.jedis.Jedis;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.redis.RedisProperties;
@@ -18,6 +14,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisOperations;
+import redis.clients.jedis.Jedis;
+
+import java.net.UnknownHostException;
 
 /**
  * Creates a dedicated RedisConnectionFactory different from the one spring-boot autoconfigures

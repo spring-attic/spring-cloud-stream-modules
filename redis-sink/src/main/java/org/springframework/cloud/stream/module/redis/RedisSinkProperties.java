@@ -1,15 +1,12 @@
 package org.springframework.cloud.stream.module.redis;
 
-import java.util.Objects;
-
-import javax.validation.constraints.AssertFalse;
-import javax.validation.constraints.AssertTrue;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.util.StringUtils;
+
+import javax.validation.constraints.AssertTrue;
 
 /**
  * Used to configure those Redis Sink module options that are not related to connecting to Redis.
