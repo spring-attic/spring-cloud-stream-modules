@@ -18,6 +18,7 @@ package org.springframework.cloud.stream.module.redis.sink;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Sink;
 import org.springframework.context.annotation.Bean;
@@ -36,9 +37,6 @@ import org.springframework.messaging.MessageHandler;
  */
 @EnableModule(Sink.class)
 public class RedisSink {
-
-	@Autowired
-	private Sink sink;
 
 	@Autowired
 	@Qualifier("redisSink")

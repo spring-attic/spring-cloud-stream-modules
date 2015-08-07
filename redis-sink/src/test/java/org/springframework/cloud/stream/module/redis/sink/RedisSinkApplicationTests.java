@@ -15,43 +15,118 @@
  */
 package org.springframework.cloud.stream.module.redis.sink;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.SpringApplicationContextLoader;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.cloud.stream.annotation.Sink;
-import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.messaging.MessageChannel;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.support.collections.DefaultRedisList;
+import org.springframework.data.redis.support.collections.RedisList;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Mark Pollack
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RedisSinkApplication.class)
-@WebAppConfiguration
+@WebIntegrationTest({"server.port:0","spring.cloud.stream.module.redis.sink.key=foo"})
 @DirtiesContext
 public class RedisSinkApplicationTests {
+
+    //TODO Add RedisAvailabeRule in spring-cloud-stream-test
 
     @Autowired
     @ModuleChannels(RedisSink.class)
     private Sink sink;
 
     @Autowired
-    private Sink same;
+    @Qualifier("redisSink")
+    private RedisConnectionFactory redisConnectionFactory;
 
-    @Output(Source.OUTPUT)
-    private MessageChannel output;
 
-    @Ignore("need to set property of sink, e.g. queue")
+    @Test
     public void contextLoads() {
         assertNotNull(this.sink.input());
     }
+
+    @Test
+    public void testWithKey() throws Exception{
+        //Setup
+        String key = "foo";
+        StringRedisTemplate redisTemplate = createStringRedisTemplate(redisConnectionFactory);
+        redisTemplate.delete(key);
+
+        RedisList<String> redisList = new DefaultRedisList<String>(key, redisTemplate);
+        List<String> list = new ArrayList<String>();
+        list.add("Manny");
+        list.add("Moe");
+        list.add("Jack");
+
+        //Execute
+        Message<List<String>> message = new GenericMessage<List<String>>(list);
+        sink.input().send(message);
+
+        //Assert
+        assertEquals(3, redisList.size());
+        assertEquals("Manny", redisList.get(0));
+        assertEquals("Moe", redisList.get(1));
+        assertEquals("Jack", redisList.get(2));
+
+        //Cleanup
+        redisTemplate.delete(key);
+    }
+
+
+    protected StringRedisTemplate createStringRedisTemplate(RedisConnectionFactory connectionFactory) {
+        StringRedisTemplate redisTemplate = new StringRedisTemplate();
+        redisTemplate.setConnectionFactory(connectionFactory);
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
+    }
+
+//    @SpringApplicationConfiguration(classes = RedisSinkApplication.class)
+//    @RunWith(SpringJUnit4ClassRunner.class)
+//    @WebIntegrationTest({"server.port:0","spring.cloud.stream.module.redis.sink.key=bar"})
+//    @DirtiesContext
+//    static class KeyConfig {
+//    }
+
+
+//    private TestContext bootstrapContext(Class<?> testClass)
+//            throws Exception {
+//        TestContext context = new ExposedTestContextManager(testClass)
+//                .getExposedTestContext();
+//        new IntegrationTestPropertiesListener().prepareTestInstance(context);
+//        return context;
+//    }
+//
+//    /**
+//     * {@link TestContextManager} which exposes the {@link TestContext}.
+//     */
+//    private static class ExposedTestContextManager extends TestContextManager {
+//
+//        public ExposedTestContextManager(Class<?> testClass) {
+//            super(testClass);
+//        }
+//
+//        public final TestContext getExposedTestContext() {
+//            return super.getTestContext();
+//        }
+//
+//    }
 }
