@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.log;
+package org.springframework.cloud.stream.module.filter;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.cloud.stream.annotation.Input;
 import org.springframework.cloud.stream.annotation.ModuleChannels;
 import org.springframework.cloud.stream.annotation.Output;
+import org.springframework.cloud.stream.annotation.Processor;
 import org.springframework.cloud.stream.annotation.Sink;
 import org.springframework.cloud.stream.annotation.Source;
 import org.springframework.messaging.MessageChannel;
@@ -33,20 +36,30 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = LogSinkApplication.class)
+@SpringApplicationConfiguration(classes = FilterProcessorApplication.class)
 @WebAppConfiguration
 @DirtiesContext
-public class LogSinkApplicationTests {
+public class FilterProcessorApplicationTests {
 
 	@Autowired
-	@ModuleChannels(LogSink.class)
-	private Sink sink;
+	@ModuleChannels(FilterProcessor.class)
+	private Processor processor;
 
 	@Autowired
-	private Sink same;
+	private Processor same;
+
+	@Output(Source.OUTPUT)
+	private MessageChannel output;
+
+	@Input(Sink.INPUT)
+	private MessageChannel input;
 
 	@Test
+	@Ignore
 	public void contextLoads() {
-		assertNotNull(this.sink.input());
+		assertNotNull(this.processor.input());
+		assertNotNull(this.processor.output());
+		assertSame(this.processor.input(), same.input());
+		assertSame(this.processor.output(), same.output());
 	}
 }

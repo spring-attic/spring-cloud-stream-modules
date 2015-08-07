@@ -16,7 +16,10 @@
 		<version>1.0.0.BUILD-SNAPSHOT</version>
 	</parent>
 	<modules>
+		<module>common/script-variable-generator</module>
 		<module>time-source</module>
+		<module>filter-processor</module>
+		<module>transform-processor</module>
 		<module>log-sink</module>
 		<module>counter-sink</module>
 	</modules>
@@ -63,4 +66,13 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud.stream.module</groupId>
+				<artifactId>script-variable-generator</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

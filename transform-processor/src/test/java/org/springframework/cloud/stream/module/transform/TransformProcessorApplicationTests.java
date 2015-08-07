@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.log;
+package org.springframework.cloud.stream.module.transform;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,29 +24,40 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.cloud.stream.annotation.Sink;
-import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.messaging.MessageChannel;
+import org.springframework.cloud.stream.annotation.Processor;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertySource;
+import org.springframework.messaging.support.GenericMessage;
+import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+/**
+ * Integration Tests for the Transform Processor.
+ *
+ * @author Eric Bottard
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = LogSinkApplication.class)
+@SpringApplicationConfiguration(classes = TransformProcessorApplication.class)
 @WebAppConfiguration
 @DirtiesContext
-public class LogSinkApplicationTests {
+public class TransformProcessorApplicationTests {
 
 	@Autowired
-	@ModuleChannels(LogSink.class)
-	private Sink sink;
+	@ModuleChannels(TransformProcessor.class)
+	private Processor processor;
 
 	@Autowired
-	private Sink same;
+	private Processor same;
 
 	@Test
 	public void contextLoads() {
-		assertNotNull(this.sink.input());
+		assertNotNull(this.processor.input());
+		assertNotNull(this.processor.output());
+		assertSame(this.processor.input(), same.input());
+		assertSame(this.processor.output(), same.output());
 	}
+
 }
