@@ -28,7 +28,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
  * @author Eric Bottard
  */
 @ConfigurationProperties
-public class CounterSinkOptions {
+public class CounterSinkProperties {
 
 	private final SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
 

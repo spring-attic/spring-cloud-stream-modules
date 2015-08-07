@@ -40,12 +40,12 @@ public class CounterSinkTests {
 	@Mock
 	private CounterService counterService;
 
-	private CounterSinkOptions options;
+	private CounterSinkProperties options;
 
 	@Before
 	public void setUp() throws Exception {
 		counterSink = new CounterSink();
-		options = new CounterSinkOptions();
+		options = new CounterSinkProperties();
 		counterSink.setOptions(options);
 		counterSink.setEvaluationContext(new StandardEvaluationContext());
 

@@ -29,11 +29,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Sink;
 import org.springframework.expression.EvaluationContext;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.support.GenericMessage;
 import org.springframework.util.Assert;
 
 /**
@@ -42,21 +40,21 @@ import org.springframework.util.Assert;
  * @author Eric Bottard
  */
 @EnableModule(Sink.class)
-@EnableConfigurationProperties(CounterSinkOptions.class)
+@EnableConfigurationProperties(CounterSinkProperties.class)
 public class CounterSink {
 
 	private static Logger logger = LoggerFactory.getLogger(CounterSink.class);
 
 	private CounterService counterService;
 
-	private CounterSinkOptions options;
+	private CounterSinkProperties options;
 
 	private EvaluationContext evaluationContext;
 
 	private BeanFactory beanFactory;
 
 	@Autowired
-	public void setOptions(CounterSinkOptions options) {
+	public void setOptions(CounterSinkProperties options) {
 		this.options = options;
 	}
 
