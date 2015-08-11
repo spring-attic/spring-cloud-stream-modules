@@ -34,37 +34,18 @@ import org.springframework.messaging.MessageHandler;
  * A sink that can be used to insert data into a Redis store.
  *
  * @author Eric Bottard
+ * @author Mark Pollack
  */
 @EnableModule(Sink.class)
 public class RedisSink {
 
 	@Autowired
-	@Qualifier("redisSink")
-	private RedisConnectionFactory redisConnectionFactory;
-
-	@Autowired
-	private RedisSinkProperties moduleOptions;
-
-	@Bean
-	public MessageHandler messageHandler() {
-		if (moduleOptions.isKey()) {
-			RedisStoreWritingMessageHandler redisStoreWritingMessageHandler =
-					new RedisStoreWritingMessageHandler(redisConnectionFactory);
-			redisStoreWritingMessageHandler.setKeyExpression(moduleOptions.getKeyExpression());
-			return redisStoreWritingMessageHandler;
-		} else if (moduleOptions.isQueue()) {
-			return new RedisQueueOutboundChannelAdapter(moduleOptions.getQueueExpression(), redisConnectionFactory);
-		} else { // must be topic
-			RedisPublishingMessageHandler redisPublishingMessageHandler =
-					new RedisPublishingMessageHandler(redisConnectionFactory);
-			redisPublishingMessageHandler.setTopicExpression(moduleOptions.getTopicExpression());
-			return redisPublishingMessageHandler;
-		}
-	}
+	@Qualifier
+	private MessageHandler redisSinkMessageHandler;
 
 	@ServiceActivator(inputChannel=Sink.INPUT)
 	public void redisSink(Message message)  {
-		messageHandler().handleMessage(message);
+		redisSinkMessageHandler.handleMessage(message);
 	}
 
 

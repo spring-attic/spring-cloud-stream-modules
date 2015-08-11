@@ -13,9 +13,10 @@ import javax.validation.constraints.AssertTrue;
  * Used to configure those Redis Sink module options that are not related to connecting to Redis.
  *
  * @author Eric Bottard
+ * @author Mark Pollack
  */
-@ConfigurationProperties(prefix = "spring.cloud.stream.module.redis.sink")
-public class RedisSinkProperties extends RedisProperties {
+@ConfigurationProperties
+public class RedisSinkProperties {
 
 	private SpelExpressionParser parser = new SpelExpressionParser();
 

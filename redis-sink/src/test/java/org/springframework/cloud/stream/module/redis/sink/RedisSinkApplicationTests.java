@@ -44,7 +44,7 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RedisSinkApplication.class)
-@WebIntegrationTest({"server.port:0","spring.cloud.stream.module.redis.sink.key=foo"})
+@WebIntegrationTest({"server.port:0","key=foo"})
 @DirtiesContext
 public class RedisSinkApplicationTests {
 
@@ -55,9 +55,7 @@ public class RedisSinkApplicationTests {
     private Sink sink;
 
     @Autowired
-    @Qualifier("redisSink")
     private RedisConnectionFactory redisConnectionFactory;
-
 
     @Test
     public void contextLoads() {
