@@ -16,52 +16,34 @@
 
 package org.springframework.cloud.stream.module.metrics;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Sink;
-import org.springframework.expression.EvaluationContext;
 import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.messaging.Message;
-import org.springframework.util.Assert;
 
 /**
  * A simple module that counts messages received, using Spring Boot metrics abstraction.
  *
  * @author Eric Bottard
+ * @author Mark Pollack
  */
 @EnableModule(Sink.class)
-@EnableConfigurationProperties(CounterSinkProperties.class)
 public class CounterSink {
 
 	private static Logger logger = LoggerFactory.getLogger(CounterSink.class);
 
+	@Autowired
 	private CounterService counterService;
 
-	private CounterSinkProperties options;
-
-	private EvaluationContext evaluationContext;
-
-	private BeanFactory beanFactory;
+	@Autowired
+	private CounterSinkProperties counterSinkProperties;
 
 	@Autowired
-	public void setOptions(CounterSinkProperties options) {
-		this.options = options;
-	}
-
-	@Autowired
-	public void setCounterService(CounterService counterService) {
-		this.counterService = counterService;
-	}
+	private CounterSinkConfiguration counterSinkConfiguration;
 
 	@ServiceActivator(inputChannel=Sink.INPUT)
 	public void count(Message<?> message) {
@@ -71,28 +53,13 @@ public class CounterSink {
 	}
 
 	protected String computeMetricName(Message<?> message) {
-		if (options.getName() != null) {
-			return options.getName();
+		if (counterSinkProperties.getName() != null) {
+			return counterSinkProperties.getName();
 		} else {
-			return options.getNameExpression().getValue(evaluationContext, message, CharSequence.class).toString();
+			return counterSinkProperties.getNameExpression().getValue(counterSinkConfiguration.evaluationContext(),
+					message, CharSequence.class).toString();
 		}
 	}
 
-	public void setEvaluationContext(EvaluationContext evaluationContext) {
-		Assert.notNull(evaluationContext, "'evaluationContext' cannot be null");
-		this.evaluationContext = evaluationContext;
-	}
-
-	@Autowired
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = beanFactory;
-	}
-
-	@PostConstruct
-	public void afterPropertiesSet() throws Exception {
-		if (this.evaluationContext == null) {
-			this.evaluationContext = IntegrationContextUtils.getEvaluationContext(this.beanFactory);
-		}
-	}
 
 }

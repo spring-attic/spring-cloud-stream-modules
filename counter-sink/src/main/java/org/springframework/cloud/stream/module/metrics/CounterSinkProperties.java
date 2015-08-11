@@ -16,11 +16,11 @@
 
 package org.springframework.cloud.stream.module.metrics;
 
-import javax.validation.constraints.AssertTrue;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+
+import javax.validation.constraints.AssertTrue;
 
 /**
  * Holds configuration options for the Counter Sink.
