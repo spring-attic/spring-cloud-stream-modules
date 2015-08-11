@@ -49,15 +49,11 @@ public class TransformProcessorApplicationTests {
 	@ModuleChannels(TransformProcessor.class)
 	private Processor processor;
 
-	@Autowired
-	private Processor same;
-
+	/**
+	 * Validates that the module context loads with default properties.
+	 */
 	@Test
 	public void contextLoads() {
-		assertNotNull(this.processor.input());
-		assertNotNull(this.processor.output());
-		assertSame(this.processor.input(), same.input());
-		assertSame(this.processor.output(), same.output());
 	}
 
 }

@@ -32,7 +32,10 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.config.FilterFactoryBean;
 import org.springframework.integration.config.TransformerFactoryBean;
+import org.springframework.integration.groovy.GroovyScriptExecutingMessageProcessor;
+import org.springframework.integration.scripting.ScriptVariableGenerator;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.scripting.support.ResourceScriptSource;
 
 /**
  * A Processor module that allows one to discard or retain messages according to a predicate.
@@ -50,6 +53,9 @@ public class FilterProcessor {
 	@Autowired
 	private FilterProcessorProperties properties;
 
+	@Autowired(required = false)
+	private ScriptVariableGenerator scriptVariableGenerator;
+
 	@Bean
 	@Transformer(inputChannel = Processor.INPUT)
 	public MessageHandler transformer(BeanFactory beanFactory) throws Exception {
@@ -57,7 +63,16 @@ public class FilterProcessor {
 		FilterFactoryBean factoryBean = new FilterFactoryBean();
 		factoryBean.setBeanFactory(beanFactory);
 		factoryBean.setOutputChannel(channels.output());
-		properties.configure(factoryBean);
+		if (properties.getScript() != null) {
+			GroovyScriptExecutingMessageProcessor
+					processor = new GroovyScriptExecutingMessageProcessor(
+					new ResourceScriptSource(properties.getScript()), scriptVariableGenerator);
+			factoryBean.setTargetObject(processor);
+		}
+		else {
+			factoryBean.setExpression(properties.getExpression());
+		}
+
 		return factoryBean.getObject();
 	}
 

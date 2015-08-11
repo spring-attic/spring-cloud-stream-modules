@@ -41,12 +41,12 @@ public class TransformProcessorProperties {
 
 	private static final Expression DEFAULT_EXPRESSION = PARSER.parseExpression("payload");
 
+	/**
+	 * Reference to a script used to process messages.
+	 */
 	private Resource script;
 
 	private Expression expression = DEFAULT_EXPRESSION;
-
-	@Autowired(required = false)
-	private ScriptVariableGenerator scriptVariableGenerator;
 
 	public Resource getScript() {
 		return script;
@@ -70,16 +70,4 @@ public class TransformProcessorProperties {
 				|| script == null;
 	}
 
-	public void configure(TransformerFactoryBean factoryBean) {
-		if (getScript() != null) {
-			GroovyScriptExecutingMessageProcessor
-					processor = new GroovyScriptExecutingMessageProcessor(
-					new ResourceScriptSource(getScript()), scriptVariableGenerator);
-			factoryBean.setTargetObject(processor);
-		}
-		else {
-			factoryBean.setExpression(getExpression());
-		}
-
-	}
 }

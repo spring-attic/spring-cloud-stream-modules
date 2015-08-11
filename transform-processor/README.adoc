@@ -1,11 +1,9 @@
 = Spring Cloud Stream Transform Processor
 
-A *Spring Cloud Stream* module that allows A Processor module that allows transformation of messages
-using a SpEL expression or a Groovy script.
-
+A *Spring Cloud Stream* module that allows one to transform messages using either a scipt or a SpEL expression.
 == Requirements
 
-To run this sample, you will need to have installed:
+To run this module, you will need to have installed:
 
 * Java 7 or Above
 
@@ -13,12 +11,12 @@ This example requires Redis to be running on localhost.
 
 == Code Tour
 
-This project is a Spring Boot application that uses Spring Cloud Stream to
-bind module channels to external middleware.
-The Processor module has 2 primary components:
+TransformProcessorApplication:: the Spring Boot Main Application
+TransformProcessor:: the actual module code that interacts with message channels
+TransformProcessorProperties:: defines the configuration properties that are available to the Transform Processor
+  * script: reference to a script used to transform messages
+  * expression: a SpEL expression used to transform messages
 
-* TransformProcessorApplication - the Spring Boot Main Application
-* TransformProcessor - the actual module code that interacts with message channels
 
 ## Building with Maven
 
@@ -28,7 +26,7 @@ Build the module by executing:
 $> mvn package
 ```
 
-## Running the Sample
+## Running the Application
 
 To start the module execute the following:
 ```

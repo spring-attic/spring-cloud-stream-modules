@@ -31,6 +31,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.config.TransformerFactoryBean;
 import org.springframework.integration.groovy.GroovyScriptExecutingMessageProcessor;
+import org.springframework.integration.scripting.ScriptVariableGenerator;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.scripting.support.ResourceScriptSource;
 
@@ -45,6 +46,9 @@ import org.springframework.scripting.support.ResourceScriptSource;
 @EnableConfigurationProperties(TransformProcessorProperties.class)
 public class TransformProcessor {
 
+	@Autowired(required = false)
+	private ScriptVariableGenerator scriptVariableGenerator;
+
 	@Autowired
 	private Processor channels;
 
@@ -58,7 +62,15 @@ public class TransformProcessor {
 		TransformerFactoryBean factoryBean = new TransformerFactoryBean();
 		factoryBean.setBeanFactory(beanFactory);
 		factoryBean.setOutputChannel(channels.output());
-		properties.configure(factoryBean);
+		if (properties.getScript() != null) {
+			GroovyScriptExecutingMessageProcessor
+					processor = new GroovyScriptExecutingMessageProcessor(
+					new ResourceScriptSource(properties.getScript()), scriptVariableGenerator);
+			factoryBean.setTargetObject(processor);
+		}
+		else {
+			factoryBean.setExpression(properties.getExpression());
+		}
 		return factoryBean.getObject();
 	}
 

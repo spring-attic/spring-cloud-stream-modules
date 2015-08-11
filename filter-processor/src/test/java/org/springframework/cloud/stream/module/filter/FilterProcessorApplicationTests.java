@@ -45,21 +45,10 @@ public class FilterProcessorApplicationTests {
 	@ModuleChannels(FilterProcessor.class)
 	private Processor processor;
 
-	@Autowired
-	private Processor same;
-
-	@Output(Source.OUTPUT)
-	private MessageChannel output;
-
-	@Input(Sink.INPUT)
-	private MessageChannel input;
-
+	/**
+	 * Validates that the module loads with default properties.
+	 */
 	@Test
-	@Ignore
 	public void contextLoads() {
-		assertNotNull(this.processor.input());
-		assertNotNull(this.processor.output());
-		assertSame(this.processor.input(), same.input());
-		assertSame(this.processor.output(), same.output());
 	}
 }

@@ -45,9 +45,6 @@ public class FilterProcessorProperties {
 
 	private Expression expression = DEFAULT_EXPRESSION;
 
-	@Autowired(required = false)
-	private ScriptVariableGenerator scriptVariableGenerator;
-
 	public Resource getScript() {
 		return script;
 	}
@@ -70,16 +67,4 @@ public class FilterProcessorProperties {
 				|| script == null;
 	}
 
-	public void configure(FilterFactoryBean factoryBean) {
-		if (getScript() != null) {
-			GroovyScriptExecutingMessageProcessor
-					processor = new GroovyScriptExecutingMessageProcessor(
-					new ResourceScriptSource(getScript()), scriptVariableGenerator);
-			factoryBean.setTargetObject(processor);
-		}
-		else {
-			factoryBean.setExpression(getExpression());
-		}
-
-	}
 }
