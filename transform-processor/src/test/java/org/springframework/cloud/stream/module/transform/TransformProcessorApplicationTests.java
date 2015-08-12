@@ -16,15 +16,21 @@
 
 package org.springframework.cloud.stream.module.transform;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
+import static org.springframework.cloud.stream.test.matcher.MessageChannelMatcher.*;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.ModuleChannels;
 import org.springframework.cloud.stream.annotation.Processor;
+import org.springframework.cloud.stream.test.binder.TestSupportBinder;
+import org.springframework.cloud.stream.test.matcher.MessageChannelMatcher;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
@@ -41,7 +47,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TransformProcessorApplication.class)
-@WebAppConfiguration
+@WebIntegrationTest({"expression=payload+'foo'", "server.port=-1"})
 @DirtiesContext
 public class TransformProcessorApplicationTests {
 
@@ -49,11 +55,10 @@ public class TransformProcessorApplicationTests {
 	@ModuleChannels(TransformProcessor.class)
 	private Processor processor;
 
-	/**
-	 * Validates that the module context loads with default properties.
-	 */
 	@Test
-	public void contextLoads() {
+	public void testUsingExpression() {
+		processor.input().send(new GenericMessage<Object>("hello"));
+		assertThat(processor.output(), receivesPayloadThat(equalTo("hellofoo")).within(10));
 	}
 
 }
