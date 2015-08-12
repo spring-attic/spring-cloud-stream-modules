@@ -42,6 +42,19 @@ public class CounterSinkProperties {
 	 */
 	private String nameExpression;
 
+	/**
+	 * The name of a store used to store the counter.
+	 */
+	// Stored as a String to allow forward extension of the module
+	private String store = "memory";
+
+	public String getStore() {
+		return store;
+	}
+
+	public void setStore(String store) {
+		this.store = store;
+	}
 
 	public String getName() {
 		return name;

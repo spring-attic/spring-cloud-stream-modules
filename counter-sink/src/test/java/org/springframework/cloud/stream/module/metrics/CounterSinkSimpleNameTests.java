@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.metrics.repository.MetricRepository;
 import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -38,7 +39,7 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = CounterSinkApplication.class)
-@WebIntegrationTest({"server.port:0","name:simpleCounter"})
+@WebIntegrationTest({"server.port:0","name:simpleCounter","store:redis"})
 @DirtiesContext
 public class CounterSinkSimpleNameTests {
 
@@ -49,7 +50,7 @@ public class CounterSinkSimpleNameTests {
     private Sink sink;
 
     @Autowired
-    private RedisMetricRepository redisMetricRepository;
+    private MetricRepository redisMetricRepository;
 
     @Before
     public void init() {
@@ -62,10 +63,11 @@ public class CounterSinkSimpleNameTests {
     }
 
     @Test
-    public void testIncrement() {
+    public void testIncrement() throws InterruptedException {
         assertNotNull(this.sink.input());
         Message<String> message = MessageBuilder.withPayload("Hi").build();
         sink.input().send(message);
+        Thread.sleep(5500);
         //Note:  If the name of the counter does not start with 'counter' or 'metric' the 'counter.' prefix is added
         //       by the DefaultCounterService
         assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
