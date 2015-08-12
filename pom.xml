@@ -38,6 +38,7 @@
 		<module>counter-sink</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
+		<module>hdfs-sink</module>
 	</modules>
 	<build>
 		<plugins>
