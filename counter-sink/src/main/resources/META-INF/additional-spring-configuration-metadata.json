@@ -1,0 +1,22 @@
+{
+  "hints": [
+    {
+      "name": "backend",
+      "values": [
+        {
+          "value": "memory",
+          "description": "store the counter in memory only"
+        },
+        {
+          "value": "redis",
+          "description": "flush the counter value to redis periodically"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}
