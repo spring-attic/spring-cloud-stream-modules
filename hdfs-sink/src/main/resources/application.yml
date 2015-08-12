@@ -1,0 +1,21 @@
+server:
+  port: 8081
+spring:
+  cloud:
+    stream:
+      bindings:
+        input: ticktock
+      module:
+        hdfs:
+          sink:
+            directory: /xd/ticktock
+            fileName: mystuff
+            fileExtension: dat
+            fileUuid: false
+            rollover: 50000
+            overwrite: false
+#            codec: gzip
+            partitionPath: dateFormat('yyyy/MM/dd')
+#            fsUri: hdfs://borneo:8020
+  hadoop:
+    fsUri: hdfs://localhost:8020
