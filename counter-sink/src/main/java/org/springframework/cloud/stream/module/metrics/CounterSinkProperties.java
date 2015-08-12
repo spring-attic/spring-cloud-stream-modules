@@ -43,17 +43,17 @@ public class CounterSinkProperties {
 	private String nameExpression;
 
 	/**
-	 * The name of a backend used to store the counter.
+	 * The name of a store used to store the counter.
 	 */
 	// Stored as a String to allow forward extension of the module
-	private String backend = "memory";
+	private String store = "memory";
 
-	public String getBackend() {
-		return backend;
+	public String getStore() {
+		return store;
 	}
 
-	public void setBackend(String backend) {
-		this.backend = backend;
+	public void setStore(String store) {
+		this.store = store;
 	}
 
 	public String getName() {

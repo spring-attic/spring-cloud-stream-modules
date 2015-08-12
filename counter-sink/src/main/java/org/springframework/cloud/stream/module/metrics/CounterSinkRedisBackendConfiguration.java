@@ -18,20 +18,19 @@ package org.springframework.cloud.stream.module.metrics;
 import org.springframework.boot.actuate.autoconfigure.ExportMetricWriter;
 import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 /**
  * Used to configure the connection and offloading of counters to redis in case it is used as
- * a backend.
+ * a store.
  *
  * @author Eric Bottard
- * @see CounterSinkProperties#getBackend()
+ * @see CounterSinkProperties#getStore()
  */
 @Configuration
-@ConditionalOnProperty(value="backend", havingValue = "redis")
+@ConditionalOnProperty(value="store", havingValue = "redis")
 public class CounterSinkRedisBackendConfiguration {
 
 	@Bean
