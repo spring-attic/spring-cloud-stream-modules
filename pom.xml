@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>spring-cloud-stream-modules</artifactId>
 	<groupId>org.springframework.cloud.stream.module</groupId>
@@ -37,16 +38,15 @@
 			</plugin>
 		</plugins>
 	</build>
-	<distributionManagement>
-		<repository>
-			<id>spring-cloud-stream-modules</id>
-			<name>spring-cloud-stream-modules</name>
-			<url>http://repo.spring.io/spring-cloud-stream-modules</url>
-		</repository>
-		<snapshotRepository>
-			<id>spring-cloud-stream-modules-snapshot</id>
-			<name>spring-cloud-stream-modules snapshot</name>
-			<url>http://repo.spring.io/spring-cloud-stream-modules</url>
-		</snapshotRepository>
-	</distributionManagement>
+	<!--TODO: Move transport related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-binder-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
+		</dependency>
+	</dependencies>
 </project>
