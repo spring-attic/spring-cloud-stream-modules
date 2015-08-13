@@ -18,37 +18,30 @@ package org.springframework.cloud.stream.module.time;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
+import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
-import org.springframework.scheduling.Trigger;
-import org.springframework.scheduling.support.PeriodicTrigger;
 
 /**
  * @author Dave Syer
  * @author Glenn Renfro
  */
 @EnableModule(Source.class)
+@Import(PeriodicTriggerConfiguration.class)
 @EnableConfigurationProperties(TimeSourceProperties.class)
 public class TimeSource {
 
 	@Autowired
 	private TimeSourceProperties properties;
 
-	@Bean
-	public Trigger trigger() {
-		PeriodicTrigger trigger = new PeriodicTrigger(properties.getFixedDelay(), TimeUnit.valueOf(properties.getTimeUnit()));
-		trigger.setInitialDelay(properties.getInitialDelay());
-		return trigger;
-	}
-
-	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(trigger = "trigger", maxMessagesPerPoll = "1"))
+	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(trigger = PeriodicTriggerConfiguration
+			.TRIGGER_BEAN_NAME, maxMessagesPerPoll = "1"))
 	public String publishTime() {
 		return new SimpleDateFormat(this.properties.getFormat()).format(new Date());
 	}

@@ -1,6 +1,5 @@
 /*
- * Copyright 2013-2015 the original author or authors.
- *
+ * Copyright 2015 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,35 +13,27 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.time;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
+package org.springframework.cloud.stream.module;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Describes properties of the {@code time} source module.
- *
- * @author Eric Bottard
- * @author Gary Russell
+ * @author David Turanski
  */
 @ConfigurationProperties
-public class TimeSourceProperties {
+public class MaxMessagesConfigurationProperties {
 
 	/**
-	 * 	how to render the current time, using SimpleDateFormat
+	 * Maximum messages per poll. Default is -1 meaning no maximum.
 	 */
-	private String format = "yyyy-MM-dd HH:mm:ss";
+	long maxMessages = -1;
 
-	@DateFormat
-	public String getFormat() {
-		return this.format;
+	public long getMaxMessages() {
+		return this.maxMessages;
 	}
 
-	public void setFormat(String format) {
-		this.format = format;
+	public void setMaxMessages(long maxMessages) {
+		this.maxMessages = maxMessages;
 	}
-
 
 }
