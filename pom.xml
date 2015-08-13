@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>spring-cloud-stream-modules</artifactId>
 	<groupId>org.springframework.cloud.stream.module</groupId>
+	<artifactId>spring-cloud-stream-modules</artifactId>
 	<packaging>pom</packaging>
 	<url>http://projects.spring.io/spring-xd/</url>
 	<organization>
@@ -28,6 +28,10 @@
 		<module>ftp-source</module>
 		<module>time-source</module>
 		<!-- processors in alphabetical order -->
+		<module>filter-processor</module>
+		<module>groovy-filter-processor</module>
+		<module>groovy-transform-processor</module>
+		<module>transform-processor</module>
 		<!-- sinks in alphabatical order -->
 		<module>counter-sink</module>
 		<module>log-sink</module>
@@ -87,6 +91,11 @@
 				<version>0.10.1</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud.stream.module</groupId>
+				<artifactId>script-variable-generator</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<!--TODO: Move transport related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
@@ -117,6 +126,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-test-support</artifactId>
+ 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
