@@ -1,0 +1,11 @@
+server:
+  port: 7777
+firehose:
+  doppler-url: "ws://localhost:7777"
+  output-json: true
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        output: testtock
