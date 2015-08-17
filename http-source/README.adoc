@@ -8,10 +8,6 @@ This module converts incoming http requests into messages.
 
 == Code Tour
 
-This project is a Spring Boot application that uses Spring Cloud Stream to
-blah blah blah.
-The Source module has 2 primary components:
-
 HttpSourceApplication:: the Spring Boot Main Application
 HttpSource:: the actual module configuration that registers an http mapping
 HttpSourceProperties:: contains some of the module configuration properties
