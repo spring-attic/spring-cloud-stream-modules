@@ -26,13 +26,14 @@
 		<module>common</module>
 		<!-- sources in alphabetical order-->
 		<module>ftp-source</module>
+		<module>http-source</module>
 		<module>time-source</module>
 		<!-- processors in alphabetical order -->
 		<module>filter-processor</module>
 		<module>groovy-filter-processor</module>
 		<module>groovy-transform-processor</module>
 		<module>transform-processor</module>
-		<!-- sinks in alphabatical order -->
+		<!-- sinks in alphabetical order -->
 		<module>counter-sink</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
@@ -115,6 +116,8 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
+			<!--optional so that it does its job while compiling, but is not included in
+			the resulting artifact -->
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -125,7 +128,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-test-support</artifactId>
- 			<scope>test</scope>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
