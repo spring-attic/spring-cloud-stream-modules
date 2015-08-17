@@ -23,6 +23,7 @@
 		<module>time-source</module>
 		<module>log-sink</module>
 		<module>counter-sink</module>
+		<module>http-source</module>
 	</modules>
 	<build>
 		<plugins>
