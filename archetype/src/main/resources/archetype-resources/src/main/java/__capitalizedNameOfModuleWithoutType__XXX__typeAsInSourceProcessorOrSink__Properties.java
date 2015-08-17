@@ -22,11 +22,11 @@ package ${package};
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * This is the main module class.
+ * Holds configuration properties for the ${capitalizedNameOfModuleWithoutType} ${typeAsInSourceProcessorOrSink} module.
  */
 @ConfigurationProperties
 // The XXX part is needed to workaround a maven archetype bug. You'll want to perform a rename refactoring.
-public class ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Options {
+public class ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Properties {
 
 
 }

@@ -27,15 +27,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 /**
- * This is the main module class.
+ * ${singleLineDescriptionOfTheModule}.
  */
 @EnableModule(${typeAsInSourceProcessorOrSink}.class)
-@EnableConfigurationProperties(${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Options.class)
+@EnableConfigurationProperties(${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Properties.class)
 // The XXX part is needed to workaround a maven archetype bug. You'll want to perform a rename refactoring.
 public class ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink} {
 
 	private static final Logger logger = LoggerFactory.getLogger(${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}.class);
 
 	@Autowired
-	private ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Options options;
+	private ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Properties properties;
+
+	@Autowired
+	private ${typeAsInSourceProcessorOrSink} channels;
+
 }

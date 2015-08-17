@@ -1,12 +1,19 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 server:
-  port: 8081
+  port: 0
+name: ${symbol_dollar}{spring.application.name:${capitalizedNameOfModuleWithoutType.toLowerCase()}-${typeAsInSourceProcessorOrSink.toLowerCase()}}
 spring:
   cloud:
     stream:
       bindings:
-        input: testtock
-        # uncomment below to have this module consume from a specific partition
-        # in the range of 0 to N-1, where N is the upstream module's partitionCount
-        #consumerProperties:
-        #  partitionIndex: 1
-  
+#if("Sink" == "${typeAsInSourceProcessorOrSink}" || "Processor" == "${typeAsInSourceProcessorOrSink}")
+        input: ${symbol_dollar}name
+#end
+#if("Source" == "${typeAsInSourceProcessorOrSink}")
+        output: ${symbol_dollar}name
+#end
+#if("Processor" == "${typeAsInSourceProcessorOrSink}")
+        output: ${symbol_dollar}name.out
+#end
