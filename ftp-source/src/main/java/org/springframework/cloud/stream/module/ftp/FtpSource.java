@@ -112,7 +112,6 @@ public class FtpSource {
 				throw new IllegalArgumentException(fileConsumerConfig.getMode().name() +
 						" is not a supported file reading mode.");
 		}
-		((AbstractMessageChannel) source.output()).setComponentName("ftpSource.output");
 		return flowBuilder.channel(source.output()).get();
 	}
 }
