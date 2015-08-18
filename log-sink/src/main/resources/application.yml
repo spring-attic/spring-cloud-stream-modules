@@ -4,4 +4,4 @@ spring:
   cloud:
     stream:
       bindings:
-        input: ${remote.name:application:${server.port}}
+        input: ticktock
