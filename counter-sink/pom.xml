@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>time-source</artifactId>
+	<artifactId>counter-sink</artifactId>
 	<packaging>jar</packaging>
-	<name>time-source</name>
-	<description>Spring Cloud Stream time-source module</description>
+	<name>counter-sink</name>
+	<description>Counter Sink stream module</description>
 
 	<parent>
 		<groupId>org.springframework.cloud.stream.module</groupId>
@@ -16,7 +16,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>org.springframework.cloud.stream.module.time.TimeSourceApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.metrics.CounterSinkApplication</start-class>
 		<java.version>1.7</java.version>
 	</properties>
 
@@ -24,6 +24,10 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
