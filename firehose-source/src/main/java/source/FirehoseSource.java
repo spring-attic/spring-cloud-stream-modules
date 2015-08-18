@@ -1,5 +1,4 @@
 /*
- *
  *  Copyright 2015 original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +40,7 @@ import java.util.Collections;
 public class FirehoseSource implements ApplicationListener<ContextRefreshedEvent>{
 
     @Autowired
-    private FirehoseOptionsMetadata metadata;
+    private FirehoseProperties metadata;
 
     @Bean
     public WebSocketInboundChannelAdapter webSocketInboundChannelAdapter(ClientWebSocketContainer webSocketContainer, ByteBufferMessageConverter converter, MessageChannel output) {

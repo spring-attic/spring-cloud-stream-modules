@@ -1,5 +1,4 @@
 /*
- *
  *  Copyright 2015 original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,7 +44,7 @@ public class ByteBufferMessageConverter extends AbstractMessageConverter {
     private TupleToJsonStringConverter jsonConverter = new TupleToJsonStringConverter();
 
     @Autowired
-    private FirehoseOptionsMetadata metadata;
+    private FirehoseProperties metadata;
 
     @Override
     protected boolean supports(Class<?> clazz) {

@@ -1,5 +1,4 @@
 /*
- *
  *  Copyright 2015 original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +34,7 @@ import org.springframework.integration.websocket.ClientWebSocketContainer;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import source.FirehoseOptionsMetadata;
+import source.FirehoseProperties;
 import source.FirehoseSource;
 
 import javax.net.ssl.SSLContext;
@@ -47,12 +46,12 @@ import java.util.Collections;
  * @author Vinicius Carvalho
  */
 @SpringBootApplication
-@EnableConfigurationProperties(FirehoseOptionsMetadata.class)
+@EnableConfigurationProperties(FirehoseProperties.class)
 @ComponentScan(basePackageClasses = FirehoseSource.class)
 public class FirehoseApplication {
 
     @Autowired
-    private FirehoseOptionsMetadata metadata;
+    private FirehoseProperties metadata;
 
     public static void main(String[] args) {
         SpringApplication.run(FirehoseApplication.class, args);

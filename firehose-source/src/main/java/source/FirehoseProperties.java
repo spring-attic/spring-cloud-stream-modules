@@ -1,5 +1,4 @@
 /*
- *
  *  Copyright 2015 original author or authors.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +23,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Vinicius Carvalho
  */
 @ConfigurationProperties(prefix = "firehose")
-public class FirehoseOptionsMetadata {
+public class FirehoseProperties {
 
     private String dopplerUrl;
     private String cfDomain;

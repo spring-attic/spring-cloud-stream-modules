@@ -1,7 +1,7 @@
 Spring Cloud Stream Firehose Sample
 =============================
 
-In this *Spring Cloud Stream* sample, a source emits events from a [doppler](https://github.com/cloudfoundry/loggregator) endpoint
+In this *Spring Cloud Stream* module, a source emits events from a [doppler](https://github.com/cloudfoundry/loggregator) endpoint
 
 ## Requirements
 
@@ -14,7 +14,7 @@ To run this sample, you will need to have installed:
 
 ## Code Tour
 
-This sample connects to a doppler remote websocket endpoint and emits events from it. The sample converts the binary protocol buffer message into either a XD Tuple or a JSON String, depending on your configuration
+This sample connects to a doppler remote websocket endpoint and emits events from it. The sample converts the binary protocol buffer message into either a Tuple Object or a JSON String, depending on your configuration
 
 * demo/FirehoseApplication: Main boot application, bootstraps websocket clients and SSL contexts
 * source/FirehoseSource: Module that connects to the remote websocket. Note that connection needs to happen after the spring context was initialized
