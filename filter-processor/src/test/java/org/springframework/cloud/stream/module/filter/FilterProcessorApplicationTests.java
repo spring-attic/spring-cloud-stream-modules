@@ -42,7 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = FilterProcessorApplication.class)
 @WebIntegrationTest(randomPort = true)
 @DirtiesContext
-public class FilterProcessorApplicationTests {
+public abstract class FilterProcessorApplicationTests {
 
 	@Autowired
 	@ModuleChannels(FilterProcessor.class)

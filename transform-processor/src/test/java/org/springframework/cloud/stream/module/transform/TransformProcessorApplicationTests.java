@@ -16,11 +16,10 @@
 
 package org.springframework.cloud.stream.module.transform;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
-import static org.springframework.cloud.stream.test.matcher.MessageChannelMatcher.*;
+import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,36 +28,62 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.ModuleChannels;
 import org.springframework.cloud.stream.annotation.Processor;
-import org.springframework.cloud.stream.test.binder.TestSupportBinder;
-import org.springframework.cloud.stream.test.matcher.MessageChannelMatcher;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertySource;
+import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.support.GenericMessage;
-import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
  * Integration Tests for the Transform Processor.
  *
  * @author Eric Bottard
  */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TransformProcessorApplication.class)
-@WebIntegrationTest({"expression=payload+'foo'", "server.port=-1"})
+@WebIntegrationTest(randomPort = true)
 @DirtiesContext
-public class TransformProcessorApplicationTests {
+public abstract class TransformProcessorApplicationTests {
 
 	@Autowired
 	@ModuleChannels(TransformProcessor.class)
-	private Processor processor;
+	protected Processor channels;
 
-	@Test
-	public void testUsingExpression() {
-		processor.input().send(new GenericMessage<Object>("hello"));
-		assertThat(processor.output(), receivesPayloadThat(equalTo("hellofoo")).within(10));
+	@Autowired
+	protected MessageCollector collector;
+
+
+	/**
+	 * Validates that the module loads with default properties.
+	 */
+	public static class UsingNothingTests extends TransformProcessorApplicationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("hello"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello")));
+		}
+
+	}
+	@WebIntegrationTest("expression=payload.toUpperCase()")
+	public static class UsingExpressionTests extends TransformProcessorApplicationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("hello"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("HELLO")));
+		}
+
 	}
 
+	@WebIntegrationTest({"script=script.groovy", "variables=limit=5"})
+	public static class UsingScriptTests extends TransformProcessorApplicationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("hello world"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello")));
+		}
+
+	}
 }
