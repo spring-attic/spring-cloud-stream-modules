@@ -25,11 +25,9 @@ import org.springframework.cloud.stream.annotation.Source;
 import org.springframework.cloud.stream.module.MaxMessagesConfigurationProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerConfigurationProperties;
-import org.springframework.cloud.stream.module.file.FileReadingMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.channel.AbstractMessageChannel;
-import org.springframework.integration.channel.AbstractSubscribableChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
@@ -100,20 +98,21 @@ public class FtpSource {
 
 		switch (fileConsumerConfig.getMode()) {
 			case contents:
-				flowBuilder.enrichHeaders(Collections.singletonMap(MessageHeaders.CONTENT_TYPE,
+				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
 						"application/octet-stream"))
 						.transform(new FileToByteArrayTransformer());
 				break;
 			case lines:
-				flowBuilder.enrichHeaders(Collections.singletonMap(MessageHeaders.CONTENT_TYPE, "text/plain"))
+				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE, 
+						"text/plain"))
 						.split(new FileSplitter(true, fileConsumerConfig.getWithMarkers()), null);
 			case ref:
 				break;
 			default:
-				throw new IllegalArgumentException(fileConsumerConfig.getMode().name() + 
+				throw new IllegalArgumentException(fileConsumerConfig.getMode().name() +
 						" is not a supported file reading mode.");
 		}
-		((AbstractMessageChannel)source.output()).setComponentName("ftpSource.output");
+		((AbstractMessageChannel) source.output()).setComponentName("ftpSource.output");
 		return flowBuilder.channel(source.output()).get();
 	}
 }

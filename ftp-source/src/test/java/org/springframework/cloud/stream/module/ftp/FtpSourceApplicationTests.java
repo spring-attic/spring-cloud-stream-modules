@@ -64,7 +64,7 @@ public class FtpSourceApplicationTests {
 	@BeforeClass
 	public static void configureFtpServer() throws Throwable {
 
-		TestFtpServer ftpServer = new TestFtpServer("ftpTest");
+		final TestFtpServer ftpServer = new TestFtpServer("ftpTest");
 		ftpServer.setFtpTemporaryFolder(
 				new TemporaryFolder() {
 					@Override
@@ -112,10 +112,10 @@ public class FtpSourceApplicationTests {
 	Source ftpSource;
 
 	@Test
-	public void contextLoads() throws InterruptedException {
+	public void sourceFilesAsRef() throws InterruptedException {
 		sourcePollingChannelAdapter.start();
 		for (int i = 1; i <= 2; i++) {
-			Message<String> received = (Message<String>) messageCollector.forChannel(ftpSource.output()).poll(1, 
+			Message<File> received = (Message<File>) messageCollector.forChannel(ftpSource.output()).poll(1,
 					TimeUnit.SECONDS);
 			assertThat(received.getPayload(), equalTo(new File(config.getLocalDir() + "/ftpSource" + i + ".txt")));
 		}
