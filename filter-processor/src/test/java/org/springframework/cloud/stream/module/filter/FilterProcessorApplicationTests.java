@@ -16,39 +16,81 @@
 
 package org.springframework.cloud.stream.module.filter;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
-import org.junit.Ignore;
+import java.util.concurrent.TimeUnit;
+
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.cloud.stream.annotation.Input;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.cloud.stream.annotation.Processor;
-import org.springframework.cloud.stream.annotation.Sink;
-import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.messaging.MessageChannel;
+import org.springframework.cloud.stream.test.binder.MessageCollector;
+import org.springframework.cloud.stream.test.matcher.MessageQueueMatcher;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FilterProcessorApplication.class)
-@WebAppConfiguration
+@WebIntegrationTest(randomPort = true)
 @DirtiesContext
 public class FilterProcessorApplicationTests {
 
 	@Autowired
 	@ModuleChannels(FilterProcessor.class)
-	private Processor processor;
+	protected Processor channels;
+
+	@Autowired
+	protected MessageCollector collector;
+
 
 	/**
 	 * Validates that the module loads with default properties.
 	 */
-	@Test
-	public void contextLoads() {
+	public static class UsingNothingTests extends FilterProcessorApplicationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("hello"));
+			channels.input().send(new GenericMessage<Object>("hello world"));
+			channels.input().send(new GenericMessage<Object>("hi!"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello")));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello world")));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hi!")));
+		}
+
+	}
+	@WebIntegrationTest("expression=payload.length()>5")
+	public static class UsingExpressionTests extends FilterProcessorApplicationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("hello"));
+			channels.input().send(new GenericMessage<Object>("hello world"));
+			channels.input().send(new GenericMessage<Object>("hi!"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello world")));
+		}
+
+	}
+
+	@WebIntegrationTest({"script=script.groovy", "variables=threshold=5"})
+	public static class UsingScriptTests extends FilterProcessorApplicationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("hello"));
+			channels.input().send(new GenericMessage<Object>("hello world"));
+			channels.input().send(new GenericMessage<Object>("hi!"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello world")));
+		}
+
 	}
 }
