@@ -22,9 +22,8 @@ import org.cloudfoundry.dropsonde.events.EventFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.converter.AbstractMessageConverter;
+import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MimeTypeUtils;
 import org.springframework.xd.tuple.Tuple;
 import org.springframework.xd.tuple.TupleBuilder;
 import org.springframework.xd.tuple.TupleToJsonStringConverter;
@@ -32,14 +31,13 @@ import org.springframework.xd.tuple.TupleToJsonStringConverter;
 import java.nio.ByteBuffer;
 
 /**
+ * Converts from Protocol Buffers binary messages into {@link Tuple}
+ *
  * @author Vinicius Carvalho
  */
 @Component
-public class ByteBufferMessageConverter extends AbstractMessageConverter {
+public class ByteBufferMessageConverter implements MessageConverter {
 
-    protected ByteBufferMessageConverter() {
-        super(MimeTypeUtils.APPLICATION_OCTET_STREAM);
-    }
 
     private TupleToJsonStringConverter jsonConverter = new TupleToJsonStringConverter();
 
@@ -47,12 +45,7 @@ public class ByteBufferMessageConverter extends AbstractMessageConverter {
     private FirehoseProperties metadata;
 
     @Override
-    protected boolean supports(Class<?> clazz) {
-        return ByteBuffer.class.isAssignableFrom(clazz);
-    }
-
-    @Override
-    public Object convertFromInternal(Message<?> message, Class<?> aClass) {
+    public Object fromMessage(Message<?> message, Class<?> targetClass) {
         ByteBuffer buffer = (ByteBuffer) message.getPayload();
         byte[] bytes = new byte[buffer.remaining()];
         buffer.get(bytes, 0, bytes.length);
@@ -66,5 +59,8 @@ public class ByteBufferMessageConverter extends AbstractMessageConverter {
         return (metadata.isOutputJson()) ? jsonConverter.convert(result) : result;
     }
 
-  
+    @Override
+    public Message<?> toMessage(Object payload, MessageHeaders headers) {
+        throw new UnsupportedOperationException("Not supported by this converter");
+    }
 }

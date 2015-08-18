@@ -15,10 +15,9 @@
  *
  */
 
-package demo.support;
+package org.springframework.cloud.stream.module.firehose;
 
 import org.springframework.web.socket.BinaryMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 

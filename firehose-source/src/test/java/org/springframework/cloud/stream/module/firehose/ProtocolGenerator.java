@@ -15,7 +15,7 @@
  *
  */
 
-package demo.support;
+package org.springframework.cloud.stream.module.firehose;
 
 import org.cloudfoundry.dropsonde.events.EventFactory;
 import org.cloudfoundry.dropsonde.events.HttpFactory;

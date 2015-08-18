@@ -22,28 +22,41 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * @author Vinicius Carvalho
  */
-@ConfigurationProperties(prefix = "firehose")
+@ConfigurationProperties
 public class FirehoseProperties {
 
     /**
      * Doppler URL endpoint usually wss://doppler.{CF_DOMAIN} (required)
      */
     private String dopplerUrl;
+
     /**
-     *
+     * Domain of you CloudFoundry installation. Not required for lattice
      */
     private String cfDomain;
+
+    /**
+     * Authentication endpoint of your CloudFoundry installation. Not required for lattice
+     */
     private String authenticationUrl;
+
+    /**
+     * Cloudfoundry user that has permission to consume doppler events (optional)
+     */
     private String username;
+    /**
+     * User password
+     */
     private String password;
 
     /**
-     *
+     * Comma separated list of doppler events to consume.
+     * Possible values: HTTP_START, HTTP_STOP, HTTP_START_STOP, LOG_EVENT, COUNTER_EVENT, VALUE_METRIC, CONTAINER_METRIC
      */
     private String dopplerEvents;
 
     /**
-     * Name of doppler subscription. This assigns an websocket session id on the server side (required)
+     * Name of doppler subscription. Creates a websocket session on doppler server. (defaults to 'firehose-a')
      */
     private String dopplerSubscription;
 

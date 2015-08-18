@@ -1,8 +1,8 @@
 server:
   port: 7777
-firehose:
-  doppler-url: "ws://localhost:9090"
-  output-json: true
+
+doppler-url: "ws://localhost:9090"
+output-json: true
 
 spring:
   cloud:

@@ -134,12 +134,7 @@ public class TupleFactory {
                 .put("type", envelope.getEventType().toString());
     }
 
-    /**
-     * Needed due dropsonde decision to use uint64 and little endianess
-     *
-     * @param uuid
-     * @return
-     */
+
     public static String parseUUID(UuidFactory.UUID uuid) {
 
         String uuidStr = null;

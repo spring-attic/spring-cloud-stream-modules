@@ -47,62 +47,8 @@ import java.util.Collections;
  */
 @SpringBootApplication
 @EnableConfigurationProperties(FirehoseProperties.class)
-@ComponentScan(basePackageClasses = FirehoseSource.class)
 public class FirehoseApplication {
-
-    @Autowired
-    private FirehoseProperties metadata;
-
     public static void main(String[] args) {
         SpringApplication.run(FirehoseApplication.class, args);
-    }
-
-    @Bean
-    public WebSocketClient wsClient(){
-        StandardWebSocketClient wsClient = new StandardWebSocketClient();
-        if(metadata.isTrustSelfCerts()){
-            SSLContext context = buildSslContext();
-            wsClient.setUserProperties(Collections.singletonMap(WsWebSocketContainer.SSL_CONTEXT_PROPERTY,context));
-        }
-        return wsClient;
-    }
-
-    @Bean
-    public ClientWebSocketContainer webSocketContainer(WebSocketClient client) throws Exception {
-        ClientWebSocketContainer container = new ClientWebSocketContainer(client, getDopplerEndpoint());
-        HttpHeaders headers = new HttpHeaders();
-
-
-        if (!StringUtils.isEmpty(metadata.getUsername())) {
-            OauthClient oauthClient = new OauthClient(new URL(metadata.getAuthenticationUrl()), new RestUtil().createRestTemplate(null, true));
-            oauthClient.init(new CloudCredentials(metadata.getUsername(), metadata.getPassword()));
-            headers.add("Authorization", "bearer " + oauthClient.getToken().getValue());
-        } else {
-            headers.add("Authorization", "");
-        }
-        container.setHeaders(headers);
-        container.setOrigin(metadata.getOrigin());
-        return container;
-    }
-
-
-
-    private SSLContext buildSslContext() {
-        try {
-            SSLContextBuilder contextBuilder = new SSLContextBuilder().
-                    useProtocol("TLS").
-                    loadTrustMaterial(null, new TrustSelfSignedStrategy());
-            return contextBuilder.build();
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    private String getDopplerEndpoint() {
-
-        String url = StringUtils.isEmpty(metadata.getDopplerUrl()) ? "wss://doppler." + metadata.getCfDomain() : metadata.getDopplerUrl();
-        String subscription = StringUtils.isEmpty(metadata.getDopplerSubscription()) ? "firehose-a" : metadata.getDopplerSubscription();
-        return url + "/firehose/" + subscription;
     }
 }

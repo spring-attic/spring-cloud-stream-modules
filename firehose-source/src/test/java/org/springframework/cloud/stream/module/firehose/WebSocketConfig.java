@@ -15,10 +15,11 @@
  *
  */
 
-package demo.support;
+package org.springframework.cloud.stream.module.firehose;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
@@ -30,6 +31,7 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
  */
 @Configuration
 @EnableWebSocket
+@Order(Integer.MIN_VALUE)
 public class WebSocketConfig implements WebSocketConfigurer{
 
 

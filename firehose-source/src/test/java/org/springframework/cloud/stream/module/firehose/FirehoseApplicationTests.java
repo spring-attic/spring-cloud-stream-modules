@@ -15,9 +15,8 @@
  *
  */
 
-package demo;
+package org.springframework.cloud.stream.module.firehose;
 
-import demo.support.WebSocketConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.cloud.stream.module.firehose.FirehoseApplication;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
