@@ -18,10 +18,8 @@ package org.springframework.cloud.stream.module.log;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackageClasses=LogSink.class)
 public class LogSinkApplication {
 
 	public static void main(String[] args) throws InterruptedException {

@@ -5,4 +5,4 @@ spring:
   cloud:
     stream:
       bindings:
-        input: counter
+        input: ${remote.name:application:${server.port}}
