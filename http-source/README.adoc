@@ -1,0 +1,27 @@
+= Spring Cloud Stream Http Source
+
+This module converts incoming http requests into messages.
+
+== Requirements
+
+* Java 7 or Above
+
+== Code Tour
+
+HttpSourceApplication:: the Spring Boot Main Application
+HttpSource:: the actual module configuration that registers an http mapping
+HttpSourceProperties:: contains some of the module configuration properties
+
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+To start the module execute the following:
+```
+$> java -jar target/http-source-${version}-exec.jar
+```

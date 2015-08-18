@@ -19,7 +19,8 @@
 		<module>time-source</module>
 		<module>log-sink</module>
 		<module>counter-sink</module>
-	</modules>
+    <module>http-source</module>
+  </modules>
 	<build>
 		<plugins>
 			<plugin>
