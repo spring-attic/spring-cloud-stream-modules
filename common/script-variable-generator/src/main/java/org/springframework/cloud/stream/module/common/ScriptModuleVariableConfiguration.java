@@ -17,13 +17,13 @@ package org.springframework.cloud.stream.module.common;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.integration.scripting.DefaultScriptVariableGenerator;
 import org.springframework.integration.scripting.ScriptVariableGenerator;
 
@@ -36,47 +36,22 @@ import org.springframework.integration.scripting.ScriptVariableGenerator;
  * @author Eric Bottard
  */
 @Configuration
-@ConditionalOnProperty("script")
-@ConfigurationProperties
+@EnableConfigurationProperties(ScriptModuleVariablesProperties.class)
 public class ScriptModuleVariableConfiguration {
 
-	/**
-	 * Variable bindings as a comma delimited string of name-value pairs, e.g. 'foo=bar,baz=car'.
-	 */
-	private String variables;
-
-	/**
-	 * The location of a properties file containing custom script variable bindings.
-	 */
-	private Resource propertiesLocation;
+	@Autowired
+	private ScriptModuleVariablesProperties config;
 
 	@Bean(name = "variableGenerator")
 	@SuppressWarnings("unchecked")
-	ScriptVariableGenerator scriptVariableGenerator() throws IOException {
-		return new DefaultScriptVariableGenerator(scriptVariables());
+	public ScriptVariableGenerator scriptVariableGenerator() throws IOException {
+		Properties properties = new Properties();
+		properties.putAll(config.getVariables());
+		if (config.getPropertiesLocation()!= null) {
+			PropertiesLoaderUtils.fillProperties(properties, config.getPropertiesLocation());
+		}
+
+		return new DefaultScriptVariableGenerator((Map) properties);
 	}
 
-	@SuppressWarnings("unchecked")
-	private Map scriptVariables() {
-		ScriptModulePropertiesFactoryBean scriptModulePropertiesFactoryBean = new ScriptModulePropertiesFactoryBean();
-		scriptModulePropertiesFactoryBean.setVariables(variables);
-		if (propertiesLocation != null) {
-			scriptModulePropertiesFactoryBean.setLocation(propertiesLocation);
-		}
-		try {
-			scriptModulePropertiesFactoryBean.afterPropertiesSet();
-			return scriptModulePropertiesFactoryBean.getObject();
-		}
-		catch (IOException e) {
-			throw new BeanCreationException(e.getMessage());
-		}
-	}
-
-	public void setVariables(String variables) {
-		this.variables = variables;
-	}
-
-	public void setPropertiesLocation(Resource propertiesLocation) {
-		this.propertiesLocation = propertiesLocation;
-	}
 }
