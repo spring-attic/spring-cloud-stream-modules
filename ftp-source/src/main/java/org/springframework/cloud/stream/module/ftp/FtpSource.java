@@ -27,7 +27,6 @@ import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.integration.channel.AbstractMessageChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
@@ -91,8 +90,9 @@ public class FtpSource {
 
 			@Override
 			public void accept(SourcePollingChannelAdapterSpec sourcePollingChannelAdapterSpec) {
-				sourcePollingChannelAdapterSpec.autoStartup(config.isAutoStartUp());
-				sourcePollingChannelAdapterSpec.poller(poller());
+				sourcePollingChannelAdapterSpec
+						.autoStartup(false)
+						.poller(poller());
 			}
 		});
 
@@ -103,7 +103,7 @@ public class FtpSource {
 						.transform(new FileToByteArrayTransformer());
 				break;
 			case lines:
-				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE, 
+				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
 						"text/plain"))
 						.split(new FileSplitter(true, fileConsumerConfig.getWithMarkers()), null);
 			case ref:

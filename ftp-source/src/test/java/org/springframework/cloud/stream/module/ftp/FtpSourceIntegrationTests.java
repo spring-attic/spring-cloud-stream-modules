@@ -49,7 +49,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FtpSourceApplication.class, initializers = PropertiesInitializer.class)
 @DirtiesContext
-public class FtpSourceApplicationTests {
+public class FtpSourceIntegrationTests {
 
 	@Autowired ApplicationContext applicationContext;
 
