@@ -26,8 +26,7 @@ import org.springframework.integration.annotation.Transformer;
 import org.springframework.messaging.Message;
 
 /**
- * A Processor module that allows transformation of messages using a SpEL expression
- * or a Groovy script.
+ * A Processor module that allows transformation of messages using a SpEL expression.
  *
  * @author Eric Bottard
  */

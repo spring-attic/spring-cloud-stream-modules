@@ -26,8 +26,8 @@
 		<module>groovy-transform-processor</module>
 		<module>transform-processor</module>
 		<!-- Sinks, in alphabetical order -->
-		<module>log-sink</module>
 		<module>counter-sink</module>
+		<module>log-sink</module>
 	</modules>
 	<build>
 		<plugins>

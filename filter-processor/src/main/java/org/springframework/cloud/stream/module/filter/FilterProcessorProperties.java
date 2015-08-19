@@ -31,9 +31,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 @ConfigurationProperties
 public class FilterProcessorProperties {
 
-	private static final ExpressionParser PARSER = new SpelExpressionParser();
-
-	private static final Expression DEFAULT_EXPRESSION = PARSER.parseExpression("true");
+	private static final Expression DEFAULT_EXPRESSION = new SpelExpressionParser().parseExpression("true");
 
 	/**
 	 * A SpEL expression to be evaluated against each message, to decide whether or not to discard it.

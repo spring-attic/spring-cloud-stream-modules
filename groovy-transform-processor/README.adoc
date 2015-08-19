@@ -3,8 +3,6 @@
 A *Spring Cloud Stream* module that allows one to transform messages using a Groovy script.
 == Requirements
 
-To run this module, you will need to have installed:
-
 * Java 7 or Above
 
 == Code Tour
@@ -17,15 +15,12 @@ GroovyTransformProcessorProperties:: defines the configuration properties that a
 
 ## Building with Maven
 
-Build the module by executing:
-
 ```
 $> mvn package
 ```
 
 ## Running the Application
 
-To start the module execute the following:
 ```
 $> java -jar target/transform-processor-${version}-exec.jar
 ```

@@ -29,9 +29,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 @ConfigurationProperties
 public class TransformProcessorProperties {
 
-	private static final ExpressionParser PARSER = new SpelExpressionParser();
-
-	private static final Expression DEFAULT_EXPRESSION = PARSER.parseExpression("payload");
+	private static final Expression DEFAULT_EXPRESSION = new SpelExpressionParser().parseExpression("payload");
 
 	private Expression expression = DEFAULT_EXPRESSION;
 

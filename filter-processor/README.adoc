@@ -3,8 +3,6 @@
 A *Spring Cloud Stream* module that allows one to discard or retain messages according to a predicate.
 == Requirements
 
-To run this module, you will need to have installed:
-
 * Java 7 or Above
 
 == Code Tour
@@ -17,15 +15,12 @@ FilterProcessorProperties:: defines the configuration properties that are availa
 
 ## Building with Maven
 
-Build the module by executing:
-
 ```
 $> mvn package
 ```
 
 ## Running the Application
 
-To start the module execute the following:
 ```
 $> java -jar target/filter-processor-${version}-exec.jar
 ```

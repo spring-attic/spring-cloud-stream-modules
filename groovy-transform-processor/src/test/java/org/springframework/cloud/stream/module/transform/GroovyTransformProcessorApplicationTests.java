@@ -43,7 +43,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = GroovyTransformProcessorApplication.class)
 @WebIntegrationTest(randomPort = true)
 @DirtiesContext
-public abstract class TransformProcessorApplicationTests {
+public abstract class GroovyTransformProcessorApplicationTests {
 
 	@Autowired
 	@ModuleChannels(GroovyTransformProcessor.class)
@@ -53,7 +53,7 @@ public abstract class TransformProcessorApplicationTests {
 	protected MessageCollector collector;
 
 	@WebIntegrationTest({"script=script.groovy", "variables=limit=5"})
-	public static class UsingScriptTests extends TransformProcessorApplicationTests {
+	public static class UsingScriptTests extends GroovyTransformProcessorApplicationTests {
 
 		@Test
 		public void test() {

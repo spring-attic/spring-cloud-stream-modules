@@ -6,7 +6,7 @@
 	<artifactId>transform-processor</artifactId>
 	<packaging>jar</packaging>
 	<name>Transform Processor</name>
-	<description>Filter Processor stream module</description>
+	<description>Transform Processor stream module</description>
 
 	<parent>
 		<groupId>org.springframework.cloud.stream.module</groupId>
@@ -15,7 +15,7 @@
 	</parent>
 
 	<properties>
-		<start-class>GroovyTransformProcessorApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.transform.TransformProcessorApplication</start-class>
 	</properties>
 
 </project>

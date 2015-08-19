@@ -4,8 +4,6 @@ A *Spring Cloud Stream* module that allows one to discard or retain messages acc
 expressed using a Groovy script.
 == Requirements
 
-To run this module, you will need to have installed:
-
 * Java 7 or Above
 
 == Code Tour
@@ -18,15 +16,12 @@ GroovyFilterProcessorProperties:: defines the configuration properties that are 
 
 ## Building with Maven
 
-Build the module by executing:
-
 ```
 $> mvn package
 ```
 
 ## Running the Application
 
-To start the module execute the following:
 ```
 $> java -jar target/filter-processor-${version}-exec.jar
 ```

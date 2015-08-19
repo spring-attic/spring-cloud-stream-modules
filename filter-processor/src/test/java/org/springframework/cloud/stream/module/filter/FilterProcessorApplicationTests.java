@@ -33,6 +33,11 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+/**
+ * Integration tests for Filter Processor.
+ *
+ * @author Eric Bottard
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FilterProcessorApplication.class)
 @WebIntegrationTest(randomPort = true)
@@ -61,8 +66,8 @@ public abstract class FilterProcessorApplicationTests {
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello world")));
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hi!")));
 		}
-
 	}
+
 	@WebIntegrationTest("expression=payload.length()>5")
 	public static class UsingExpressionTests extends FilterProcessorApplicationTests {
 
@@ -72,6 +77,7 @@ public abstract class FilterProcessorApplicationTests {
 			channels.input().send(new GenericMessage<Object>("hello world"));
 			channels.input().send(new GenericMessage<Object>("hi!"));
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello world")));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is(nullValue())));
 		}
 
 	}
