@@ -103,7 +103,6 @@ public class FtpSourceIntegrationTests {
 		properties.put("password", "foo");
 		properties.put("port", ftpServer.getPort());
 		properties.put("mode", "ref");
-		properties.put("autoStartUp", false);
 		PropertiesInitializer.PROPERTIES = properties;
 	}
 
@@ -113,7 +112,6 @@ public class FtpSourceIntegrationTests {
 
 	@Test
 	public void sourceFilesAsRef() throws InterruptedException {
-		sourcePollingChannelAdapter.start();
 		for (int i = 1; i <= 2; i++) {
 			Message<File> received = (Message<File>) messageCollector.forChannel(ftpSource.output()).poll(1,
 					TimeUnit.SECONDS);

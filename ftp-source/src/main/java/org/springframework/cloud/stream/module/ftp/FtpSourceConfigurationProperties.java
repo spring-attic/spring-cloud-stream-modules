@@ -52,12 +52,12 @@ public class FtpSourceConfigurationProperties {
 	private String tmpFileSuffix = ".tmp";
 
 	/**
-	 * A filter pattern to match the names of files to transfer, "*" by default. 
+	 * A filter pattern to match the names of files to transfer, "*" by default.
 	 */
 	private String filenamePattern = "*";
 
 	/**
-	 * The remote file separator, "/" by default. 
+	 * The remote file separator, "/" by default.
 	 */
 	private String remoteFileSeparator = "/";
 
@@ -65,11 +65,6 @@ public class FtpSourceConfigurationProperties {
 	 * Set to true to preserve the original timestamp.
 	 */
 	private boolean preserveTimestamp = true;
-
-	/**
-	 * Set to false to manually start the inbound adapter.
-	 */
-	private boolean autoStartUp = true;
 
 	public boolean isAutoCreateLocalDir() {
 		return autoCreateLocalDir;
@@ -133,13 +128,5 @@ public class FtpSourceConfigurationProperties {
 
 	public void setPreserveTimestamp(boolean preserveTimestamp) {
 		this.preserveTimestamp = preserveTimestamp;
-	}
-
-	public boolean isAutoStartUp() {
-		return autoStartUp;
-	}
-
-	public void setAutoStartUp(boolean autoStartUp) {
-		this.autoStartUp = autoStartUp;
 	}
 }
