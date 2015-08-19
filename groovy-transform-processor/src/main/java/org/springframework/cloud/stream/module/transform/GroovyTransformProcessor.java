@@ -32,7 +32,7 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.scripting.support.ResourceScriptSource;
 
 /**
- * A Processor module that allows transformation of messages using a Groovy script.
+ * A Processor module that transforms messages using a Groovy script.
  *
  * @author Eric Bottard
  */
@@ -53,12 +53,10 @@ public class GroovyTransformProcessor {
 	@Bean
 	@Transformer(inputChannel = Processor.INPUT)
 	public MessageHandler transformer(BeanFactory beanFactory) throws Exception {
-
 		TransformerFactoryBean factoryBean = new TransformerFactoryBean();
 		factoryBean.setBeanFactory(beanFactory);
 		factoryBean.setOutputChannel(channels.output());
-		GroovyScriptExecutingMessageProcessor
-				processor = new GroovyScriptExecutingMessageProcessor(
+		GroovyScriptExecutingMessageProcessor processor = new GroovyScriptExecutingMessageProcessor(
 				new ResourceScriptSource(properties.getScript()), scriptVariableGenerator);
 		factoryBean.setTargetObject(processor);
 		return factoryBean.getObject();

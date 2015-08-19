@@ -1,5 +1,6 @@
 /*
  * Copyright 2015 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +17,7 @@
 package org.springframework.cloud.stream.module.common;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -26,11 +28,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.integration.scripting.DefaultScriptVariableGenerator;
 import org.springframework.integration.scripting.ScriptVariableGenerator;
+import org.springframework.util.CollectionUtils;
 
 /**
- * An AutoConfiguration that exposes a {@link ScriptVariableGenerator} to customize a script.
- *
- * <p>Only triggers on the presence of a {@code script} Environment property.</p>
+ * Configuration that provides a {@link ScriptVariableGenerator} to customize a script.
  *
  * @author David Turanski
  * @author Eric Bottard
@@ -43,15 +44,13 @@ public class ScriptModuleVariableConfiguration {
 	private ScriptModuleVariablesProperties config;
 
 	@Bean(name = "variableGenerator")
-	@SuppressWarnings("unchecked")
 	public ScriptVariableGenerator scriptVariableGenerator() throws IOException {
-		Properties properties = new Properties();
-		properties.putAll(config.getVariables());
-		if (config.getPropertiesLocation()!= null) {
-			PropertiesLoaderUtils.fillProperties(properties, config.getPropertiesLocation());
+		Map<String, Object> variables = new HashMap<>();
+		CollectionUtils.mergePropertiesIntoMap(config.getVariables(), variables);
+		if (config.getVariablesLocation() != null) {
+			Properties props = PropertiesLoaderUtils.loadProperties(config.getVariablesLocation());
+			CollectionUtils.mergePropertiesIntoMap(props, variables);
 		}
-
-		return new DefaultScriptVariableGenerator((Map) properties);
+		return new DefaultScriptVariableGenerator(variables);
 	}
-
 }

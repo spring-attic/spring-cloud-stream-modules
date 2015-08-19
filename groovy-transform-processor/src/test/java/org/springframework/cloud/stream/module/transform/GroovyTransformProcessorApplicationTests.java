@@ -34,11 +34,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Integration Tests for the Transform Processor.
+ * Integration Tests for the Groovy Transform Processor.
  *
  * @author Eric Bottard
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = GroovyTransformProcessorApplication.class)
 @WebIntegrationTest(randomPort = true)
@@ -60,6 +59,5 @@ public abstract class GroovyTransformProcessorApplicationTests {
 			channels.input().send(new GenericMessage<Object>("hello world"));
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello")));
 		}
-
 	}
 }

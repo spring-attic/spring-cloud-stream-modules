@@ -18,11 +18,10 @@ package org.springframework.cloud.stream.module.transform;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**
- * Holds configuration properties for the Transform Processor module.
+ * Configuration properties for the Transform Processor module.
  *
  * @author Eric Bottard
  */

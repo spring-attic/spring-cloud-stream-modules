@@ -26,7 +26,7 @@ import org.springframework.integration.annotation.Transformer;
 import org.springframework.messaging.Message;
 
 /**
- * A Processor module that allows transformation of messages using a SpEL expression.
+ * A Processor module that transforms messages using a SpEL expression.
  *
  * @author Eric Bottard
  */
@@ -39,8 +39,8 @@ public class TransformProcessor {
 	private TransformProcessorProperties properties;
 
 	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
-	public Object transform(Message<?> in) {
-		return properties.getExpression().getValue(in);
+	public Object transform(Message<?> message) {
+		return properties.getExpression().getValue(message);
 	}
 
 }

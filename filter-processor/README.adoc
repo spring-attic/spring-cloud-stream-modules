@@ -1,6 +1,7 @@
 = Spring Cloud Stream Filter Processor
 
-A *Spring Cloud Stream* module that allows one to discard or retain messages according to a predicate.
+A *Spring Cloud Stream* module that retains or discards messages according to a predicate.
+
 == Requirements
 
 * Java 7 or Above

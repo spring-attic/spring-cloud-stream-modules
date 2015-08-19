@@ -1,6 +1,7 @@
 = Spring Cloud Stream Transform Processor
 
 A *Spring Cloud Stream* module that allows one to transform messages using a SpEL expression.
+
 == Requirements
 
 * Java 7 or Above

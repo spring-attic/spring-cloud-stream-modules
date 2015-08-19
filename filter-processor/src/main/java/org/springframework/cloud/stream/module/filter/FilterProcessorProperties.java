@@ -20,11 +20,10 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**
- * Holds configuration properties for the Filter Processor module.
+ * Configuration properties for the Filter Processor module.
  *
  * @author Eric Bottard
  */
@@ -34,7 +33,7 @@ public class FilterProcessorProperties {
 	private static final Expression DEFAULT_EXPRESSION = new SpelExpressionParser().parseExpression("true");
 
 	/**
-	 * A SpEL expression to be evaluated against each message, to decide whether or not to discard it.
+	 * A SpEL expression to be evaluated against each message, to decide whether or not to accept it.
 	 */
 	private Expression expression = DEFAULT_EXPRESSION;
 

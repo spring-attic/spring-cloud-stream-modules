@@ -51,7 +51,6 @@ public abstract class TransformProcessorApplicationTests {
 	@Autowired
 	protected MessageCollector collector;
 
-
 	/**
 	 * Validates that the module loads with default properties.
 	 */
@@ -62,8 +61,8 @@ public abstract class TransformProcessorApplicationTests {
 			channels.input().send(new GenericMessage<Object>("hello"));
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello")));
 		}
-
 	}
+
 	@WebIntegrationTest("expression=payload.toUpperCase()")
 	public static class UsingExpressionTests extends TransformProcessorApplicationTests {
 
@@ -72,6 +71,5 @@ public abstract class TransformProcessorApplicationTests {
 			channels.input().send(new GenericMessage<Object>("hello"));
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("HELLO")));
 		}
-
 	}
 }

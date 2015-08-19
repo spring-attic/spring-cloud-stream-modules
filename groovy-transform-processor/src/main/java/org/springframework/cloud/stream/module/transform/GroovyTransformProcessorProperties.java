@@ -16,22 +16,13 @@
 
 package org.springframework.cloud.stream.module.transform;
 
-import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
-import org.springframework.expression.Expression;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.integration.config.TransformerFactoryBean;
-import org.springframework.integration.groovy.GroovyScriptExecutingMessageProcessor;
-import org.springframework.integration.scripting.ScriptVariableGenerator;
-import org.springframework.scripting.support.ResourceScriptSource;
 
 /**
- * Holds configuration properties for the Groovy Transform Processor module.
+ * Configuration properties for the Groovy Transform Processor module.
  *
  * @author Eric Bottard
  */

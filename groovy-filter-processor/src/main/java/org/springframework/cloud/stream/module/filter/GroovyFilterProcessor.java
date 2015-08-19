@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.stream.module.filter;
 
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableModule;
@@ -24,15 +23,15 @@ import org.springframework.cloud.stream.annotation.Processor;
 import org.springframework.cloud.stream.module.common.ScriptModuleVariableConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.integration.annotation.Transformer;
-import org.springframework.integration.config.FilterFactoryBean;
+import org.springframework.integration.annotation.Filter;
 import org.springframework.integration.groovy.GroovyScriptExecutingMessageProcessor;
+import org.springframework.integration.handler.MessageProcessor;
 import org.springframework.integration.scripting.ScriptVariableGenerator;
-import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.Message;
 import org.springframework.scripting.support.ResourceScriptSource;
 
 /**
- * A Processor module that allows one to discard or retain messages according to a predicate,
+ * A Processor module that retains or discards messages according to a predicate,
  * expressed as a Groovy script.
  *
  * @author Eric Bottard
@@ -43,27 +42,24 @@ import org.springframework.scripting.support.ResourceScriptSource;
 public class GroovyFilterProcessor {
 
 	@Autowired
-	private Processor channels;
-
-	@Autowired
 	private GroovyFilterProcessorProperties properties;
 
 	@Autowired
 	private ScriptVariableGenerator scriptVariableGenerator;
 
+	@Autowired
+	private MessageProcessor<?> processor;
+
 	@Bean
-	@Transformer(inputChannel = Processor.INPUT)
-	public MessageHandler transformer(BeanFactory beanFactory) throws Exception {
-
-		FilterFactoryBean factoryBean = new FilterFactoryBean();
-		factoryBean.setBeanFactory(beanFactory);
-		factoryBean.setOutputChannel(channels.output());
-		GroovyScriptExecutingMessageProcessor
-				processor = new GroovyScriptExecutingMessageProcessor(
+	public MessageProcessor<?> processor() {
+		return new GroovyScriptExecutingMessageProcessor(
 				new ResourceScriptSource(properties.getScript()), scriptVariableGenerator);
-		factoryBean.setTargetObject(processor);
+	}
 
-		return factoryBean.getObject();
+	@Filter(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	public boolean filter(Message<?> message) {
+		Object result = processor.processMessage(message);
+		return (result instanceof Boolean) ? (Boolean) result : false;
 	}
 
 }

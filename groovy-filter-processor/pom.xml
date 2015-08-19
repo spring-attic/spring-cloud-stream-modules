@@ -15,7 +15,7 @@
 	</parent>
 
 	<properties>
-		<start-class>org.springframework.cloud.stream.module.filter.FilterProcessorApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.filter.GroovyFilterProcessorApplication</start-class>
 	</properties>
 
 	<dependencies>

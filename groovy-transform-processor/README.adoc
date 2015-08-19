@@ -1,6 +1,7 @@
-= Spring Cloud Stream Transform Processor
+= Spring Cloud Stream Groovy Transform Processor
 
-A *Spring Cloud Stream* module that allows one to transform messages using a Groovy script.
+A *Spring Cloud Stream* module that transforms messages using a Groovy script.
+
 == Requirements
 
 * Java 7 or Above
@@ -22,5 +23,5 @@ $> mvn package
 ## Running the Application
 
 ```
-$> java -jar target/transform-processor-${version}-exec.jar
+$> java -jar target/groovy-transform-processor-${version}-exec.jar
 ```

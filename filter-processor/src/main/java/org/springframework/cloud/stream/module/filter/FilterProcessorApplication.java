@@ -20,7 +20,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * A main application that can be used to run the Filter Processor as a standalone app.
+ * A main application that runs the Filter Processor as a standalone app.
  *
  * @author Eric Bottard
  */

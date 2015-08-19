@@ -21,9 +21,6 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.*;
 
-import java.util.concurrent.TimeUnit;
-
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -56,7 +53,6 @@ public abstract class FilterProcessorApplicationTests {
 	@Autowired
 	protected MessageCollector collector;
 
-
 	/**
 	 * Validates that the module loads with default properties.
 	 */
@@ -84,6 +80,5 @@ public abstract class FilterProcessorApplicationTests {
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello world")));
 			assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
 		}
-
 	}
 }

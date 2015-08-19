@@ -21,7 +21,6 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.*;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -65,6 +64,5 @@ public abstract class GroovyFilterProcessorApplicationTests {
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello world")));
 			assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
 		}
-
 	}
 }

@@ -1,5 +1,6 @@
 /*
  * Copyright 2015 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,9 +22,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 
 /**
- * Holds configuration properties related to creating a script variables map.
+ * Configuration properties related to creating a script variables map.
  *
  * @author Eric Bottard
+ * @author Mark Fisher
  */
 @ConfigurationProperties
 public class ScriptModuleVariablesProperties {
@@ -36,7 +38,7 @@ public class ScriptModuleVariablesProperties {
 	/**
 	 * The location of a properties file containing custom script variable bindings.
 	 */
-	private Resource propertiesLocation;
+	private Resource variablesLocation;
 
 	public Properties getVariables() {
 		return variables;
@@ -46,11 +48,11 @@ public class ScriptModuleVariablesProperties {
 		this.variables = variables;
 	}
 
-	public Resource getPropertiesLocation() {
-		return propertiesLocation;
+	public Resource getVariablesLocation() {
+		return variablesLocation;
 	}
 
-	public void setPropertiesLocation(Resource propertiesLocation) {
-		this.propertiesLocation = propertiesLocation;
+	public void setVariablesLocation(Resource variablesLocation) {
+		this.variablesLocation = variablesLocation;
 	}
 }

@@ -22,11 +22,11 @@ import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Processor;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.context.annotation.Import;
-import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.annotation.Filter;
 import org.springframework.messaging.Message;
 
 /**
- * A Processor module that allows one to discard or retain messages according to a predicate.
+ * A Processor module that retains or discards messages according to a predicate.
  *
  * @author Eric Bottard
  */
@@ -38,13 +38,9 @@ public class FilterProcessor {
 	@Autowired
 	private FilterProcessorProperties properties;
 
-	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
-	public <T> Message<T> filter(Message<T> in) {
-		if (properties.getExpression().getValue(in, Boolean.class)) {
-			return in;
-		} else {
-			return null;
-		}
+	@Filter(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	public boolean filter(Message<?> message) {
+		return properties.getExpression().getValue(message, Boolean.class);
 	}
 
 }
