@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.log;
+package org.springframework.cloud.stream.module.filter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * A main application that can be used to run the Groovy Filter Processor as a standalone app.
+ *
+ * @author Eric Bottard
+ */
 @SpringBootApplication
-public class LogSinkApplication {
+public class GroovyFilterProcessorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LogSinkApplication.class, args);
+		SpringApplication.run(GroovyFilterProcessorApplication.class, args);
 	}
 }
