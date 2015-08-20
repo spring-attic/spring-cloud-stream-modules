@@ -14,7 +14,7 @@ To run this module, you will need to have installed:
 
 CounterSinkApplication:: the Spring Boot Main Application
 CounterSink:: the actual module code that interacts with message channels
-CounterSinkProperties:: defines the configuration properties that are available to the Filter Processor
+CounterSinkProperties:: defines the configuration properties that are available to the Counter Sink
   * name: the name of the counter to increment
   * nameExpression: a SpEL expression used to derive the name of the counter to increment
   * store: where to store counters. This project's code supports `memory` and `redis`
