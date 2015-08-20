@@ -16,8 +16,9 @@
 
 package org.springframework.cloud.stream.module.metrics;
 
-import org.springframework.boot.actuate.autoconfigure.ExportMetricWriter;
+import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
+import org.springframework.boot.actuate.metrics.writer.DefaultCounterService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +36,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 public class CounterSinkRedisStoreConfiguration {
 
 	@Bean
-	@ExportMetricWriter
+	public CounterService counterService(RedisMetricRepository redisMetricRepository) {
+		return new DefaultCounterService(redisMetricRepository);
+	}
+
+	@Bean
 	public RedisMetricRepository redisMetricRepository(RedisConnectionFactory connectionFactory) {
 		return new RedisMetricRepository(connectionFactory);
 	}
