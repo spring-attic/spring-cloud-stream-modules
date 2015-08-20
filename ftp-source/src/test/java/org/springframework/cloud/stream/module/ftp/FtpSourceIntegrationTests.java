@@ -59,7 +59,7 @@ public class FtpSourceIntegrationTests {
 	private MessageCollector messageCollector;
 
 	@Autowired
-	private FtpSourceConfigurationProperties config;
+	private FtpSourceProperties config;
 
 	@BeforeClass
 	public static void configureFtpServer() throws Throwable {

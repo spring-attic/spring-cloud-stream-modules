@@ -23,8 +23,7 @@
 
 	<modules>
 		<!-- common -->
-		<module>spring-cloud-stream-modules-common-configuration</module>
-		<module>spring-cloud-stream-modules-test-support</module>
+		<module>common</module>
 		<!-- sources in alphabetical order-->
 		<module>ftp-source</module>
 		<module>time-source</module>

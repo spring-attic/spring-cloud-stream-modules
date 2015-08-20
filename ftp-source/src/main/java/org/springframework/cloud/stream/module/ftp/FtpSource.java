@@ -22,9 +22,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.ModuleChannels;
 import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.cloud.stream.module.MaxMessagesConfigurationProperties;
+import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
-import org.springframework.cloud.stream.module.file.FileConsumerConfigurationProperties;
+import org.springframework.cloud.stream.module.file.FileConsumerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -45,19 +45,19 @@ import org.springframework.scheduling.Trigger;
  * @author David Turanski
  */
 @EnableModule(Source.class)
-@EnableConfigurationProperties({FtpSourceConfigurationProperties.class,
-		FileConsumerConfigurationProperties.class, MaxMessagesConfigurationProperties.class})
+@EnableConfigurationProperties({FtpSourceProperties.class,
+		FileConsumerProperties.class, MaxMessagesProperties.class})
 @Import({PeriodicTriggerConfiguration.class, FtpSessionFactoryConfiguration.class})
 public class FtpSource {
 
 	@Autowired
-	private FtpSourceConfigurationProperties config;
+	private FtpSourceProperties config;
 
 	@Autowired
-	private FileConsumerConfigurationProperties fileConsumerConfig;
+	private FileConsumerProperties fileConsumerConfig;
 
 	@Autowired
-	MaxMessagesConfigurationProperties maxMessagesConfig;
+	MaxMessagesProperties maxMessagesConfig;
 
 	@Autowired
 	DefaultFtpSessionFactory ftpSessionFactory;
