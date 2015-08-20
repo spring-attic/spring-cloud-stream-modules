@@ -28,7 +28,7 @@ import org.springframework.core.io.Resource;
  * @author Mark Fisher
  */
 @ConfigurationProperties
-public class ScriptModuleVariablesProperties {
+public class ScriptVariableProperties {
 
 	/**
 	 * Variable bindings as a comma delimited string of name-value pairs, e.g. 'foo=bar,baz=car'.

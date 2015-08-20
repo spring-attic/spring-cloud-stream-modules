@@ -19,7 +19,6 @@ package org.springframework.cloud.stream.module.common;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -35,21 +34,22 @@ import org.springframework.util.CollectionUtils;
  *
  * @author David Turanski
  * @author Eric Bottard
+ * @author Mark Fisher
  */
 @Configuration
-@EnableConfigurationProperties(ScriptModuleVariablesProperties.class)
-public class ScriptModuleVariableConfiguration {
+@EnableConfigurationProperties(ScriptVariableProperties.class)
+public class ScriptVariableGeneratorConfiguration {
 
 	@Autowired
-	private ScriptModuleVariablesProperties config;
+	private ScriptVariableProperties properties;
 
 	@Bean(name = "variableGenerator")
 	public ScriptVariableGenerator scriptVariableGenerator() throws IOException {
 		Map<String, Object> variables = new HashMap<>();
-		CollectionUtils.mergePropertiesIntoMap(config.getVariables(), variables);
-		if (config.getVariablesLocation() != null) {
-			Properties props = PropertiesLoaderUtils.loadProperties(config.getVariablesLocation());
-			CollectionUtils.mergePropertiesIntoMap(props, variables);
+		CollectionUtils.mergePropertiesIntoMap(properties.getVariables(), variables);
+		if (properties.getVariablesLocation() != null) {
+			CollectionUtils.mergePropertiesIntoMap(
+					PropertiesLoaderUtils.loadProperties(properties.getVariablesLocation()), variables);
 		}
 		return new DefaultScriptVariableGenerator(variables);
 	}

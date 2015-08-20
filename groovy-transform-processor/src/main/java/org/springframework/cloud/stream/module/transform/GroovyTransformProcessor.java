@@ -16,28 +16,27 @@
 
 package org.springframework.cloud.stream.module.transform;
 
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Processor;
-import org.springframework.cloud.stream.module.common.ScriptModuleVariableConfiguration;
+import org.springframework.cloud.stream.module.common.ScriptVariableGeneratorConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.Transformer;
-import org.springframework.integration.config.TransformerFactoryBean;
 import org.springframework.integration.groovy.GroovyScriptExecutingMessageProcessor;
+import org.springframework.integration.handler.MessageProcessor;
 import org.springframework.integration.scripting.ScriptVariableGenerator;
-import org.springframework.messaging.MessageHandler;
 import org.springframework.scripting.support.ResourceScriptSource;
 
 /**
  * A Processor module that transforms messages using a Groovy script.
  *
  * @author Eric Bottard
+ * @author Mark Fisher
  */
 @EnableModule(Processor.class)
-@Import(ScriptModuleVariableConfiguration.class)
+@Import(ScriptVariableGeneratorConfiguration.class)
 @EnableConfigurationProperties(GroovyTransformProcessorProperties.class)
 public class GroovyTransformProcessor {
 
@@ -45,21 +44,13 @@ public class GroovyTransformProcessor {
 	private ScriptVariableGenerator scriptVariableGenerator;
 
 	@Autowired
-	private Processor channels;
-
-	@Autowired
 	private GroovyTransformProcessorProperties properties;
 
 	@Bean
-	@Transformer(inputChannel = Processor.INPUT)
-	public MessageHandler transformer(BeanFactory beanFactory) throws Exception {
-		TransformerFactoryBean factoryBean = new TransformerFactoryBean();
-		factoryBean.setBeanFactory(beanFactory);
-		factoryBean.setOutputChannel(channels.output());
-		GroovyScriptExecutingMessageProcessor processor = new GroovyScriptExecutingMessageProcessor(
+	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	public MessageProcessor<?> transformer() {
+		return new GroovyScriptExecutingMessageProcessor(
 				new ResourceScriptSource(properties.getScript()), scriptVariableGenerator);
-		factoryBean.setTargetObject(processor);
-		return factoryBean.getObject();
 	}
 
 }

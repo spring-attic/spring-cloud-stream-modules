@@ -22,7 +22,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 
 /**
- * Holds configuration properties for the Groovy Filter Processor module.
+ * Configuration properties for the Groovy Filter Processor module.
  *
  * @author Eric Bottard
  */

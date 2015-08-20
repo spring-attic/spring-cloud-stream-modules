@@ -20,14 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Processor;
-import org.springframework.cloud.stream.module.common.ScriptModuleVariableConfiguration;
+import org.springframework.cloud.stream.module.common.ScriptVariableGeneratorConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.Filter;
 import org.springframework.integration.groovy.GroovyScriptExecutingMessageProcessor;
 import org.springframework.integration.handler.MessageProcessor;
 import org.springframework.integration.scripting.ScriptVariableGenerator;
-import org.springframework.messaging.Message;
 import org.springframework.scripting.support.ResourceScriptSource;
 
 /**
@@ -35,9 +34,10 @@ import org.springframework.scripting.support.ResourceScriptSource;
  * expressed as a Groovy script.
  *
  * @author Eric Bottard
+ * @author Mark Fisher
  */
 @EnableModule(Processor.class)
-@Import(ScriptModuleVariableConfiguration.class)
+@Import(ScriptVariableGeneratorConfiguration.class)
 @EnableConfigurationProperties(GroovyFilterProcessorProperties.class)
 public class GroovyFilterProcessor {
 
@@ -47,19 +47,11 @@ public class GroovyFilterProcessor {
 	@Autowired
 	private ScriptVariableGenerator scriptVariableGenerator;
 
-	@Autowired
-	private MessageProcessor<?> processor;
-
 	@Bean
-	public MessageProcessor<?> processor() {
+	@Filter(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	public MessageProcessor<?> filter() {
 		return new GroovyScriptExecutingMessageProcessor(
 				new ResourceScriptSource(properties.getScript()), scriptVariableGenerator);
-	}
-
-	@Filter(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
-	public boolean filter(Message<?> message) {
-		Object result = processor.processMessage(message);
-		return (result instanceof Boolean) ? (Boolean) result : false;
 	}
 
 }
