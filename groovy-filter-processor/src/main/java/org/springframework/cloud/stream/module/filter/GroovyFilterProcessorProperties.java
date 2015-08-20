@@ -14,15 +14,30 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.log;
+package org.springframework.cloud.stream.module.filter;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import javax.validation.constraints.NotNull;
 
-@SpringBootApplication
-public class LogSinkApplication {
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.Resource;
 
-	public static void main(String[] args) {
-		SpringApplication.run(LogSinkApplication.class, args);
+/**
+ * Configuration properties for the Groovy Filter Processor module.
+ *
+ * @author Eric Bottard
+ */
+@ConfigurationProperties
+public class GroovyFilterProcessorProperties {
+
+	private Resource script;
+
+	@NotNull
+	public Resource getScript() {
+		return script;
 	}
+
+	public void setScript(Resource script) {
+		this.script = script;
+	}
+
 }

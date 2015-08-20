@@ -14,15 +14,4 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.log;
-
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
-public class LogSinkApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(LogSinkApplication.class, args);
-	}
-}
+payload.length() > threshold.toInteger()

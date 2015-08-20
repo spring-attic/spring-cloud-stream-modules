@@ -1,0 +1,28 @@
+= Spring Cloud Stream Groovy Filter Processor
+
+A *Spring Cloud Stream* module that retains or discards messages according to a predicate,
+expressed using a Groovy script.
+
+== Requirements
+
+* Java 7 or Above
+
+== Code Tour
+
+GroovyFilterProcessorApplication:: the Spring Boot Main Application
+GroovyFilterProcessor:: the actual module code that interacts with message channels
+GroovyFilterProcessorProperties:: the configuration properties that are available to the Groovy Filter Processor
+  * script: reference to a script used to filter messages
+
+
+## Building with Maven
+
+```
+$> mvn package
+```
+
+## Running the Application
+
+```
+$> java -jar target/groovy-filter-processor-${version}-exec.jar
+```
