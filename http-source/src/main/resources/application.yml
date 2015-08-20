@@ -5,4 +5,4 @@ spring:
   cloud:
     stream:
       bindings:
-        output: ${name}
+        output: ${artifactId}
