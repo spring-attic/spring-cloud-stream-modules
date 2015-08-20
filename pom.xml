@@ -23,6 +23,7 @@
 		<module>time-source</module>
 		<module>log-sink</module>
 		<module>counter-sink</module>
+		<module>http-source</module>
 	</modules>
 	<build>
 		<plugins>
@@ -59,11 +60,18 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
+			<!--optional so that it does its job while compiling, but is not included in
+			the resulting artifact -->
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream-test-support</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
