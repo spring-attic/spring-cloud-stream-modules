@@ -69,6 +69,7 @@ public class FtpSessionFactoryConfigurationProperties {
 		this.port = port;
 	}
 
+	@NotBlank
 	public String getUsername() {
 		return username;
 	}

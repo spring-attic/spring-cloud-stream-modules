@@ -15,19 +15,21 @@
 
 package org.springframework.cloud.stream.module.ftp;
 
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.EnvironmentTestUtils;
-import org.springframework.cloud.stream.module.PeriodicTriggerConfigurationProperties;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * @author David Turanski
@@ -87,6 +89,23 @@ public class FtpSessionFactoryConfigurationPropertiesTests {
 		FtpSessionFactoryConfigurationProperties properties = context.getBean(FtpSessionFactoryConfigurationProperties
 				.class);
 		assertThat(properties.getPassword(), equalTo("pass"));
+	}
+
+	@Test
+	public void noPropertiesThrowsMeaningfulException() {
+		try {
+			AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+			context.register(Conf.class);
+			context.refresh();
+			fail("should throw exception");
+		}
+		catch (Exception e) {
+			assertThat(e.getCause(), instanceOf(BindException.class));
+			BindException bindException = (BindException) e.getCause();
+			FieldError fieldError = (FieldError) bindException.getAllErrors().get(0);
+			assertThat(fieldError.getArguments()[0].toString(), containsString("username"));
+			assertThat(fieldError.getDefaultMessage(), equalTo("may not be empty"));
+		}
 	}
 
 	@Configuration
