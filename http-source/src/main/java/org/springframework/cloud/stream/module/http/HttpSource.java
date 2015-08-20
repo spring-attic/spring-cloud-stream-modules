@@ -16,23 +16,30 @@
 
 package org.springframework.cloud.stream.module.http;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.support.GenericMessage;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * A source module that listens for http connections as an endpoint and emits the
- * http body as a message payload.
+ * A source module that listens for HTTP requests and emits the body as a message payload.
+ * If the Content-Type matches 'text/*' or 'application/json', the payload will be a String,
+ * otherwise the payload will be a byte array.
  *
  * @author Eric Bottard
+ * @author Mark Fisher
  */
 @Controller
 @EnableModule(Source.class)
@@ -41,10 +48,20 @@ public class HttpSource {
 	@Autowired
 	private Source channels;
 
-	@RequestMapping(path = "${pathPattern}", method = POST)
+	@RequestMapping(path = "${pathPattern}", method = POST, consumes = { "text/*", "application/json" })
 	@ResponseStatus(HttpStatus.ACCEPTED)
-	public void handleRequest(@RequestBody byte[] body) {
-		channels.output().send(new GenericMessage<Object>(body));
+	public void handleRequest(@RequestBody String body, @RequestHeader(HttpHeaders.CONTENT_TYPE) Object contentType) {
+		sendMessage(body, contentType);
 	}
 
+	@RequestMapping(path = "${pathPattern}", method = POST, consumes = "*/*")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public void handleRequest(@RequestBody byte[] body, @RequestHeader(HttpHeaders.CONTENT_TYPE) Object contentType) {
+		sendMessage(body, contentType);
+	}
+
+	private void sendMessage(Object body, Object contentType) {
+		channels.output().send(MessageBuilder.createMessage(body,
+				new MessageHeaders(Collections.singletonMap(MessageHeaders.CONTENT_TYPE, contentType))));
+	}
 }
