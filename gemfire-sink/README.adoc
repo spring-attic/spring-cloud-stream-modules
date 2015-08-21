@@ -5,9 +5,9 @@ A *Spring Cloud Stream* module that allows one to write message payloads to a Ge
 == Requirements
 
 * Java 7 or above
-* Gemfire 8 or above 
+* Gemfire 8.0 or above 
 
-Note: This module uses Gemfire v8.1.0. To use with earlier versions of Gemfire, you must change the Gemfire versions in 
+Note: This module uses Gemfire v8.0.0. To use with earlier versions of Gemfire, you must change the Gemfire versions in 
 the root pom file and rebuild.
 
 == Code Tour
