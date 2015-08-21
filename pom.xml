@@ -38,6 +38,7 @@
 		<!-- sinks in alphabetical order -->
 		<module>counter-sink</module>
 		<module>file-sink</module>
+		<module>gemfire-sink</module>
 		<module>hdfs-sink</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
@@ -66,6 +67,33 @@
 				<groupId>org.springframework.cloud.stream.module</groupId>
 				<artifactId>spring-cloud-stream-modules-common-configuration</artifactId>
 				<version>1.0.0.BUILD-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.integration</groupId>
+				<artifactId>spring-integration-gemfire</artifactId>
+				<version>${spring-integration.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework.data</groupId>
+						<artifactId>spring-data-gemfire</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-gemfire</artifactId>
+				<version>1.6.2.RELEASE</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.gemstone.gemfire</groupId>
+						<artifactId>gemfire</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.gemstone.gemfire</groupId>
+				<artifactId>gemfire</artifactId>
+				<version>8.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
