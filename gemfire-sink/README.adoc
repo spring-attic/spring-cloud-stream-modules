@@ -1,0 +1,37 @@
+= Spring Cloud Stream Gemfire Sink
+
+A *Spring Cloud Stream* module that allows one to write message payloads to a Gemfire server.
+
+== Requirements
+
+* Java 7 or above
+* Gemfire 8 or above 
+
+Note: This module uses Gemfire v8.1.0. To use with earlier versions of Gemfire, you must change the Gemfire versions in 
+the root pom file and rebuild.
+
+== Code Tour
+
+GemfireSinkApplication:: the Spring Boot Main Application
+GemfireSink:: the actual module code that interacts with the input channel.
+GemfireSinkProperties:: defines the configuration properties that are available to the Gemfire Sink.
+
+  * keyExpression: a SpEL expression used for the cache key (the value is currently the message payload).
+  
+This also uses common Gemfire configuration Properties to configure a Gemfire Client Region:
+  
+  * regionName: the name of the region (must be created in the cache server) (default is ${spring.application.name})
+  * hostAddresses: a comma separated list of [host]:[port] specifying either locator or server addresses for the client connection pool(default: localhost:10334)
+  * connectType: 'server' or 'locator' (default 'locator')
+
+## Building with Maven
+
+```
+$> mvn package
+```
+
+## Running the Application
+
+```
+$> java -DregionName=${regionName} -DkeyExpression=${keyExpression} -jar target/gemfire-sink-${version}-exec.jar
+```
