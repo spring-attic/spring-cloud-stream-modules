@@ -15,7 +15,6 @@
 	</parent>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>org.springframework.cloud.stream.module.log.LogSinkApplication</start-class>
 	</properties>
 
