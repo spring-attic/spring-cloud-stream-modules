@@ -18,7 +18,6 @@ package org.springframework.cloud.stream.module.http;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.PropertySource;
 
 /**
  * A main application that can be used to run the HTTP Source as a standalone app.
@@ -26,7 +25,6 @@ import org.springframework.context.annotation.PropertySource;
  * @author Eric Bottard
  */
 @SpringBootApplication
-@PropertySource("classpath:http-source.properties")
 public class HttpSourceApplication {
 
 	public static void main(String[] args) {

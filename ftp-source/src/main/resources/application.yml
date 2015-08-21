@@ -1,8 +1,0 @@
-server:
-  port: 0
-name: ${spring.application.name:ftp-source}
-spring:
-  cloud:
-    stream:
-      bindings:
-        output: ${name}

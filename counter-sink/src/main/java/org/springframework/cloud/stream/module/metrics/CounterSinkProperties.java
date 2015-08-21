@@ -16,11 +16,12 @@
 
 package org.springframework.cloud.stream.module.metrics;
 
+import javax.validation.constraints.AssertTrue;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-
-import javax.validation.constraints.AssertTrue;
 
 /**
  * Holds configuration options for the Counter Sink.
@@ -35,6 +36,7 @@ public class CounterSinkProperties {
 	/**
 	 * The name of the counter to increment.
 	 */
+	@Value("${spring.application.name:counts}")
 	private String name;
 
 	/**
