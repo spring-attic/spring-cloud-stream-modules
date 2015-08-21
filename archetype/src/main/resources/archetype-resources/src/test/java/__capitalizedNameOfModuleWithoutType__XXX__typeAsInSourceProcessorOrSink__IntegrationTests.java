@@ -37,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Application.class)
 @WebIntegrationTest(randomPort = true)
-public abstract class ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Tests {
+public abstract class ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}IntegrationTests {
 
 	@Autowired
 	@ModuleChannels(${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}.class)
@@ -47,7 +47,7 @@ public abstract class ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourcePr
 	protected MessageCollector messageCollector;
 
 	@WebIntegrationTest(value = "foo=bar")
-	public static class SimpleMappingTests extends ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Tests {
+	public static class SimpleMappingTests extends ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}IntegrationTests {
 
 		@Test
 		public void someIntegrationTest() {
