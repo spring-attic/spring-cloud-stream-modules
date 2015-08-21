@@ -29,7 +29,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringApplicationConfiguration(classes = TimeSourceApplication.class)
 @WebAppConfiguration
 @DirtiesContext
-public class TimeSourceApplicationTests {
+public class TimeSourceIntegrationTests {
 
 	@Test
 	public void contextLoads() {
