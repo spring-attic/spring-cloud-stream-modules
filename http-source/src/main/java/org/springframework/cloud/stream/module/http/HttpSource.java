@@ -48,13 +48,13 @@ public class HttpSource {
 	@Autowired
 	private Source channels;
 
-	@RequestMapping(path = "${pathPattern}", method = POST, consumes = { "text/*", "application/json" })
+	@RequestMapping(path = "${pathPattern:/messages}", method = POST, consumes = { "text/*", "application/json" })
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public void handleRequest(@RequestBody String body, @RequestHeader(HttpHeaders.CONTENT_TYPE) Object contentType) {
 		sendMessage(body, contentType);
 	}
 
-	@RequestMapping(path = "${pathPattern}", method = POST, consumes = "*/*")
+	@RequestMapping(path = "${pathPattern:/messages}", method = POST, consumes = "*/*")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public void handleRequest(@RequestBody byte[] body, @RequestHeader(HttpHeaders.CONTENT_TYPE) Object contentType) {
 		sendMessage(body, contentType);
