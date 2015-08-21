@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.stream.module.hdfs.sink;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.validation.constraints.Pattern;
@@ -36,67 +37,68 @@ public class HdfsSinkProperties {
 	/**
 	 * base path to write files to
 	 */
-	private volatile String directory = "/xd/test";
+	private String directory = "/xd/test";
 
 	/**
 	 * the base filename to use for the created files
 	 */
-	private volatile String fileName = "data";
+	@Value("${spring.application.name:data}")
+	private String fileName;
 
 	/**
 	 * the base filename extension to use for the created files
 	 */
-	private volatile String fileExtension = "txt";
+	private String fileExtension = "txt";
 
 	/**
 	 * compression codec alias name (gzip, snappy, bzip2, lzo, or slzo)
 	 */
-	private volatile String codec = null;
+	private String codec = null;
 
 	/**
 	 * whether file name should contain uuid
 	 */
-	private volatile boolean fileUuid = false;
+	private boolean fileUuid = false;
 
 	/**
 	 * whether writer is allowed to overwrite files in Hadoop FileSystem
 	 */
-	private volatile boolean overwrite = false;
+	private boolean overwrite = false;
 
 	/**
 	 * threshold in bytes when file will be automatically rolled over.
 	 */
-	private volatile int rollover = 1000000000;
+	private int rollover = 1000000000;
 
 	/**
 	 * inactivity timeout in ms after which file will be automatically closed
 	 */
-	private volatile long idleTimeout = 0L;
+	private long idleTimeout = 0L;
 
 	/**
 	 * timeout in ms, regardless of activity, after which file will be automatically closed
 	 */
-	private volatile long closeTimeout = 0L;
+	private long closeTimeout = 0L;
 
 	/**
 	 * prefix for files currently being written
 	 */
-	private volatile String inUsePrefix;
+	private String inUsePrefix;
 
 	/**
 	 * suffix for files currently being written
 	 */
-	private volatile String inUseSuffix;
+	private String inUseSuffix;
 
 	/**
 	 * maximum number of file open attempts to find a path
 	 */
-	private volatile int fileOpenAttempts = 10;
+	private int fileOpenAttempts = 10;
 
 	/**
 	 * a SpEL expression defining the partition path
 	 */
-	private volatile String partitionPath;
+	private String partitionPath;
 
 	public String getFsUri() {
 		return fsUri;
