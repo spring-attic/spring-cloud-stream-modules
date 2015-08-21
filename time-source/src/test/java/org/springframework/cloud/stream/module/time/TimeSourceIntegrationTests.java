@@ -16,23 +16,50 @@
 
 package org.springframework.cloud.stream.module.time;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.cloud.stream.module.time.TimeSourceApplication;
+import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.cloud.stream.annotation.ModuleChannels;
+import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TimeSourceApplication.class)
-@WebAppConfiguration
+@WebIntegrationTest(randomPort = true)
 @DirtiesContext
-public class TimeSourceIntegrationTests {
+public abstract class TimeSourceIntegrationTests {
 
-	@Test
-	public void contextLoads() {
+	@Autowired
+	@ModuleChannels(TimeSource.class)
+	protected Source timeSource;
+
+	@Autowired
+	protected MessageCollector messageCollector;
+
+	public static class DefaultPropertiesTests extends TimeSourceIntegrationTests {
+		@Test
+		public void test() throws InterruptedException {
+			Thread.sleep(1100);
+			assertEquals(2, messageCollector.forChannel(timeSource.output()).size());
+		}
 	}
 
+	@IntegrationTest({"timeUnit=MILLISECONDS" })
+	public static class TimeUnitPropertiesTests extends TimeSourceIntegrationTests {
+		@Test
+		public void test() throws InterruptedException {
+			Thread.sleep(1000);
+			assertThat(messageCollector.forChannel(timeSource.output()).size(), Matchers.greaterThanOrEqualTo(500));
+		}
+	}
 }
