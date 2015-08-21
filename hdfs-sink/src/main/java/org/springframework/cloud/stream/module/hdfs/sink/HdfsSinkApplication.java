@@ -25,7 +25,6 @@ import org.springframework.context.annotation.ComponentScan;
  * @author Thomas Risberg
  */
 @SpringBootApplication
-@ComponentScan(basePackageClasses= HdfsSink.class)
 public class HdfsSinkApplication {
 
 	public static void main(String[] args) throws InterruptedException {

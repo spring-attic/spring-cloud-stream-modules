@@ -26,7 +26,7 @@ import javax.validation.constraints.Pattern;
  *
  * @author Thomas Risberg
  */
-@ConfigurationProperties(prefix = "spring.cloud.stream.module.hdfs.sink")
+@ConfigurationProperties
 public class HdfsSinkProperties {
 
 	/**

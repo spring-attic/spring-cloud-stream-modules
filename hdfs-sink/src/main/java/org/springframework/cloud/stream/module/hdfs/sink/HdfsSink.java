@@ -41,12 +41,10 @@ public class HdfsSink {
 
 	@ServiceActivator(inputChannel=Sink.INPUT)
 	public void hdfsSink(Object payload) {
-		if (payload != null) {
-			try {
-				dataStoreWriter.write(payload.toString());
-			} catch (IOException e) {
-				throw new IllegalStateException("Error while writing to HDFS", e);
-			}
+		try {
+			dataStoreWriter.write(payload.toString());
+		} catch (IOException e) {
+			throw new IllegalStateException("Error while writing to HDFS", e);
 		}
 	}
 

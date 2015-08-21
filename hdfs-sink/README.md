@@ -23,20 +23,14 @@ $ java -jar target/hdfs-sink-1.0.0.BUILD-SNAPSHOT-exec.jar --server.port=8081 --
 
 Available module options (with defaults):
 
-spring:
-  cloud:
-    stream:
-      module:
-        hdfs:
-          sink:
-            directory: /xd/test
-            fileName: data
-            fileExtension: txt
-            fileUuid: false
-            rollover: 1000000000
-            overwrite: false
-            codec: 
-            partitionPath: 
-            fsUri: 
+    directory: /xd/test
+    fileName: data
+    fileExtension: txt
+    fileUuid: false
+    rollover: 1000000000
+    overwrite: false
+    codec: 
+    partitionPath: 
+    fsUri: 
 
 
