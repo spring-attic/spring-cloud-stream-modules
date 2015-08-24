@@ -1,8 +1,0 @@
-server:
-  port: 8081
-name: ${spring.application.name:counts}
-spring:
-  cloud:
-    stream:
-      bindings:
-        input: counter

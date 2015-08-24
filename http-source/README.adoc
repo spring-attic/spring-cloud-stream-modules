@@ -1,0 +1,26 @@
+= Spring Cloud Stream Http Source
+
+This module converts incoming HTTP requests into messages.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+HttpSourceApplication:: the Spring Boot Main Application
+HttpSource:: the HTTP request mapping endpoint
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/http-source-${version}-exec.jar
+```
+
+The "pathPattern" property determines the request mapping path (default is /messages).

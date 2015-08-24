@@ -1,9 +1,0 @@
-server:
-  port: 8080
-fixedDelay: 5
-initialDelay: 1
-spring:
-  cloud:
-    stream:
-      bindings:
-        output: ticktock

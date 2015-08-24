@@ -26,6 +26,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * @author Eric Bottard
  * @author Gary Russell
+ * @author David Turanski
  */
 @ConfigurationProperties
 public class TimeSourceProperties {
@@ -34,21 +35,6 @@ public class TimeSourceProperties {
 	 * 	how to render the current time, using SimpleDateFormat
 	 */
 	private String format = "yyyy-MM-dd HH:mm:ss";
-
-	/**
-	 * an initial delay when using a fixed delay trigger, expressed in TimeUnits (seconds by default)
-	 */
-	private int initialDelay = 0;
-
-	/**
-	 * time delay between messages, expressed in TimeUnits (seconds by default)
-	 */
-	private int fixedDelay = 1;
-
-	/**
-	 * the time unit for the fixed and initial delays
-	 */
-	private String timeUnit = "SECONDS";
 
 	@DateFormat
 	public String getFormat() {
@@ -59,30 +45,4 @@ public class TimeSourceProperties {
 		this.format = format;
 	}
 
-	@Min(0)
-	public int getInitialDelay() {
-		return this.initialDelay;
-	}
-
-	public void setInitialDelay(int initialDelay) {
-		this.initialDelay = initialDelay;
-	}
-
-	public int getFixedDelay() {
-		return this.fixedDelay;
-	}
-
-	public void setFixedDelay(int fixedDelay) {
-		this.fixedDelay = fixedDelay;
-	}
-
-	@Pattern(regexp = "(?i)(NANOSECONDS|MICROSECONDS|MILLISECONDS|SECONDS|MINUTES|HOURS|DAYS)",
-			message = "timeUnit must be one of NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS (case-insensitive)")
-	public String getTimeUnit() {
-		return this.timeUnit;
-	}
-
-	public void setTimeUnit(String timeUnit) {
-		this.timeUnit = timeUnit.toUpperCase();
-	}
 }
