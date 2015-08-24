@@ -25,6 +25,7 @@ import org.cloudfoundry.client.lib.oauth2.OauthClient;
 import org.cloudfoundry.client.lib.util.RestUtil;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Source;
 import org.springframework.context.ApplicationContext;
@@ -53,6 +54,7 @@ import java.util.Collections;
  */
 @EnableModule(Source.class)
 @Configuration
+@EnableConfigurationProperties(FirehoseProperties.class)
 public class FirehoseSource implements InitializingBean{
 
     @Autowired
@@ -130,7 +132,6 @@ public class FirehoseSource implements InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        webSocketContainer().start();
         webSocketInboundChannelAdapter().start();
     }
 }

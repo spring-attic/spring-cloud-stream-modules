@@ -1,5 +1,5 @@
 server:
-  port: 7777
+  port: 8282
 
 doppler-url: "ws://localhost:7777"
 output-json: true

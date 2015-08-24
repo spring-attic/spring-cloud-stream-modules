@@ -46,7 +46,6 @@ import java.util.Collections;
  * @author Vinicius Carvalho
  */
 @SpringBootApplication
-@EnableConfigurationProperties(FirehoseProperties.class)
 public class FirehoseApplication {
     public static void main(String[] args) {
         SpringApplication.run(FirehoseApplication.class, args);

@@ -1,7 +1,7 @@
 server:
-  port: 7777
+  port: 9090
 
-doppler-url: "ws://localhost:9090"
+doppler-url: "ws://localhost:7777"
 output-json: true
 
 spring:

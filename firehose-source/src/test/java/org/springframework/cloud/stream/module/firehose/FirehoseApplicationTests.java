@@ -17,6 +17,8 @@
 
 package org.springframework.cloud.stream.module.firehose;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +26,47 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.cloud.stream.module.firehose.netty.NettyWebSocketServer;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.websocket.ClientWebSocketContainer;
+import org.springframework.integration.websocket.inbound.WebSocketInboundChannelAdapter;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Vinicius Carvalho
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {FirehoseApplication.class, WebSocketConfig.class})
+@SpringApplicationConfiguration(classes = {FirehoseApplication.class})
 @WebIntegrationTest
-@DirtiesContext
 public class FirehoseApplicationTests {
+
+
+    @Autowired
+    private MessageCollector messageCollector;
+
+    private static NettyWebSocketServer server;
+
+    @BeforeClass
+    public static void start(){
+        server = new NettyWebSocketServer();
+        server.start();
+    }
+
+
+    @AfterClass
+    public static void stop(){
+        server.stop();
+    }
 
     @Autowired
     @Output(Source.OUTPUT)
     private MessageChannel output;
 
+
     @Test
-    public void contextLoads() {
+    public void contextLoads() throws Exception{
 
     }
 
