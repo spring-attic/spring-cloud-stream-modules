@@ -28,7 +28,14 @@ import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketSe
 /**
  * @author Vinicius Carvalho
  */
-public class WebsocketInitializer extends ChannelInitializer<SocketChannel>{
+public class WebsocketInitializer extends ChannelInitializer<SocketChannel> {
+
+
+    private WebSocketHandler handler;
+
+    public WebsocketInitializer(WebSocketHandler handler) {
+        this.handler = handler;
+    }
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
@@ -36,7 +43,7 @@ public class WebsocketInitializer extends ChannelInitializer<SocketChannel>{
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(65536));
         pipeline.addLast(new WebSocketServerCompressionHandler());
-        pipeline.addLast(new WebSocketHandler());
+        pipeline.addLast(this.handler);
 
     }
 }

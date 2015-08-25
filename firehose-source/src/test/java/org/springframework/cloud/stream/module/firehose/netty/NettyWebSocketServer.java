@@ -22,11 +22,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -40,15 +37,14 @@ public class NettyWebSocketServer {
     private Channel serverChannel;
 
 
-
-    public void start(){
+    public void start(WebSocketHandler handler) {
         final CountDownLatch latch = new CountDownLatch(1);
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(bossGroup,workerGroup)
+        bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new WebsocketInitializer());
+                .childHandler(new WebsocketInitializer(handler));
         try {
             ChannelFuture f = bootstrap.bind(7777).sync();
             f.addListener(new ChannelFutureListener() {
@@ -59,15 +55,15 @@ public class NettyWebSocketServer {
             });
             serverChannel = f.channel();
             latch.await(5, TimeUnit.SECONDS);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
     }
 
 
-    public void stop(){
-        if(serverChannel != null){
+    public void stop() {
+        if (serverChannel != null) {
             serverChannel.close();
         }
     }

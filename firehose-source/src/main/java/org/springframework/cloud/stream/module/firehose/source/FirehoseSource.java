@@ -28,20 +28,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableModule;
 import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.http.HttpHeaders;
 import org.springframework.integration.websocket.ClientWebSocketContainer;
 import org.springframework.integration.websocket.inbound.WebSocketInboundChannelAdapter;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 
-import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -53,9 +47,8 @@ import java.util.Collections;
  * @author Vinicius Carvalho
  */
 @EnableModule(Source.class)
-@Configuration
 @EnableConfigurationProperties(FirehoseProperties.class)
-public class FirehoseSource implements InitializingBean{
+public class FirehoseSource implements InitializingBean {
 
     @Autowired
     private FirehoseProperties metadata;
@@ -76,11 +69,11 @@ public class FirehoseSource implements InitializingBean{
     }
 
     @Bean
-    public WebSocketClient wsClient(){
+    public WebSocketClient wsClient() {
         StandardWebSocketClient wsClient = new StandardWebSocketClient();
-        if(metadata.isTrustSelfCerts()){
+        if (metadata.isTrustSelfCerts()) {
             SSLContext context = buildSslContext();
-            wsClient.setUserProperties(Collections.singletonMap(WsWebSocketContainer.SSL_CONTEXT_PROPERTY,context));
+            wsClient.setUserProperties(Collections.singletonMap(WsWebSocketContainer.SSL_CONTEXT_PROPERTY, context));
         }
         return wsClient;
     }
@@ -108,7 +101,6 @@ public class FirehoseSource implements InitializingBean{
         container.setOrigin(metadata.getOrigin());
         return container;
     }
-
 
 
     private SSLContext buildSslContext() {

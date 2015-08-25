@@ -17,22 +17,25 @@
 
 package org.springframework.cloud.stream.module.firehose;
 
+import org.cloudfoundry.dropsonde.events.EventFactory;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.Output;
+import org.springframework.cloud.stream.annotation.ModuleChannels;
 import org.springframework.cloud.stream.annotation.Source;
 import org.springframework.cloud.stream.module.firehose.netty.NettyWebSocketServer;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.websocket.ClientWebSocketContainer;
-import org.springframework.integration.websocket.inbound.WebSocketInboundChannelAdapter;
+import org.springframework.cloud.stream.module.firehose.netty.WebSocketHandler;
+import org.springframework.cloud.stream.module.firehose.source.FirehoseSource;
+import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Vinicius Carvalho
@@ -43,36 +46,33 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class FirehoseApplicationTests {
 
 
+    private static NettyWebSocketServer server;
+    private static WebSocketHandler handler;
+    @Autowired
+    @ModuleChannels(FirehoseSource.class)
+    Source firehoseSource;
     @Autowired
     private MessageCollector messageCollector;
 
-    private static NettyWebSocketServer server;
-
     @BeforeClass
-    public static void start(){
+    public static void start() {
+        handler = new WebSocketHandler();
         server = new NettyWebSocketServer();
-        server.start();
+        server.start(handler);
     }
 
-
     @AfterClass
-    public static void stop(){
+    public static void stop() {
         server.stop();
     }
 
-    @Autowired
-    @Output(Source.OUTPUT)
-    private MessageChannel output;
-
-
     @Test
-    public void contextLoads() throws Exception{
-
+    public void contextLoads() throws Exception {
+        EventFactory.Envelope event = ProtocolGenerator.httpStartStopEvent();
+        handler.addMessage(event);
+        Message m = messageCollector.forChannel(firehoseSource.output()).poll(10, TimeUnit.SECONDS);
+        Assert.assertNotNull(m.getPayload());
     }
 
-    @ServiceActivator(inputChannel = Source.OUTPUT)
-    public void receive(Message message) {
-        System.out.println(message.getPayload());
-    }
 
 }

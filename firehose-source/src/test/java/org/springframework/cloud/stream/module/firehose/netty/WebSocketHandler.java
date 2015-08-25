@@ -24,17 +24,31 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.*;
-import org.springframework.cloud.stream.module.firehose.ProtocolGenerator;
+import org.cloudfoundry.dropsonde.events.EventFactory;
 
-import static io.netty.handler.codec.http.HttpHeaderNames.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static io.netty.handler.codec.http.HttpHeaderNames.HOST;
 
 /**
  * @author Vinicius Carvalho
  */
 public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
-    private WebSocketServerHandshaker handshaker;
     private static final String WEBSOCKET_PATH = "/firehose/firehose-a";
+    private WebSocketServerHandshaker handshaker;
+    private ExecutorService pool = Executors.newFixedThreadPool(4);
+    private BlockingQueue<EventFactory.Envelope> messages = new ArrayBlockingQueue(10);
+
+    private static String getWebSocketLocation(FullHttpRequest req) {
+
+        String location = req.headers().get(HOST) + WEBSOCKET_PATH;
+
+        return "ws://" + location;
+    }
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -61,9 +75,8 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
             handshaker.handshake(ctx.channel(), req).addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    ByteBuf buffer = ctx.alloc().buffer();
-                    buffer.writeBytes(ProtocolGenerator.httpStartStopEvent().toByteArray());
-                    ctx.channel().writeAndFlush(new BinaryWebSocketFrame(buffer));
+                    Worker worker = new Worker(ctx);
+                    pool.submit(worker);
                 }
             });
         }
@@ -84,12 +97,31 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
     }
 
+    public void addMessage(EventFactory.Envelope envelope) {
+        messages.offer(envelope);
+    }
 
-    private static String getWebSocketLocation(FullHttpRequest req) {
+    class Worker implements Runnable {
+        private ChannelHandlerContext ctx;
 
-        String location =  req.headers().get(HOST) + WEBSOCKET_PATH;
+        public Worker(ChannelHandlerContext ctx) {
+            this.ctx = ctx;
+        }
 
-        return "ws://" + location;
+        @Override
+        public void run() {
+
+            try {
+                EventFactory.Envelope envelope = null;
+                while ((envelope = WebSocketHandler.this.messages.take()) != null) {
+                    ByteBuf buffer = ctx.alloc().buffer();
+                    buffer.writeBytes(envelope.toByteArray());
+                    ctx.channel().writeAndFlush(new BinaryWebSocketFrame(buffer));
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

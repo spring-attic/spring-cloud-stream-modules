@@ -4,8 +4,3 @@ server:
 doppler-url: "ws://localhost:7777"
 output-json: true
 
-spring:
-  cloud:
-    stream:
-      bindings:
-        output: testtock

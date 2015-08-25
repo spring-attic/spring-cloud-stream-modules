@@ -17,30 +17,8 @@
 
 package org.springframework.cloud.stream.module.firehose;
 
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.tomcat.websocket.WsWebSocketContainer;
-import org.cloudfoundry.client.lib.CloudCredentials;
-import org.cloudfoundry.client.lib.oauth2.OauthClient;
-import org.cloudfoundry.client.lib.util.RestUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpHeaders;
-import org.springframework.integration.websocket.ClientWebSocketContainer;
-import org.springframework.util.StringUtils;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.cloud.stream.module.firehose.source.FirehoseProperties;
-import org.springframework.cloud.stream.module.firehose.source.FirehoseSource;
-
-import javax.net.ssl.SSLContext;
-import java.net.URL;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
 
 /**
  * @author Vinicius Carvalho

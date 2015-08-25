@@ -26,7 +26,7 @@ import org.cloudfoundry.dropsonde.events.UuidFactory;
  */
 public class ProtocolGenerator {
 
-    public static EventFactory.Envelope httpStartStopEvent(){
+    public static EventFactory.Envelope httpStartStopEvent() {
         EventFactory.Envelope startStop = EventFactory.Envelope.newBuilder().setOrigin("localhost").setTimestamp(System.currentTimeMillis())
 
                 .setEventType(EventFactory.Envelope.EventType.HttpStartStop)
