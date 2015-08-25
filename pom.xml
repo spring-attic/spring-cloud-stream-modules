@@ -29,6 +29,7 @@
 		<module>file-source</module>
 		<module>ftp-source</module>
 		<module>http-source</module>
+		<module>load-generator-source</module>
 		<module>sftp-source</module>
 		<module>time-source</module>
 		<module>twitterstream-source</module>
@@ -36,6 +37,7 @@
 		<module>filter-processor</module>
 		<module>groovy-filter-processor</module>
 		<module>groovy-transform-processor</module>
+		<module>noop-processor</module>
 		<module>transform-processor</module>
 		<!-- sinks in alphabetical order -->
 		<module>cassandra-sink</module>
@@ -47,6 +49,7 @@
 		<module>jdbc-sink</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
+		<module>throughput-sink</module>
 		<module>websocket-sink</module>
 	</modules>
 	<build>

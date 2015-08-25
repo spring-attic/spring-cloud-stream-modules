@@ -1,0 +1,26 @@
+= Spring Cloud Stream Throughput Sink
+
+A simple handler that will count messages and log witnessed throughput at a selected
+ interval.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+ThroughputSinkApplication:: the Spring Boot Main Application
+ThroughputSink:: A simple handler that will count messages and log witnessed throughput
+at a selected interval.
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/throughput-sink-${version}-exec.jar --spring.cloud.stream.bindings.input=<where to bind> --reportEveryMs=<period of time to report in millis>
+```

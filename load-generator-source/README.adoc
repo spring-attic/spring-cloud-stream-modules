@@ -1,0 +1,25 @@
+= Spring Cloud Stream Load Generator Source
+
+This module generates messages with a payload of a set size to test performance of the infrastructure.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+LoadGeneratorSourceApplication:: the Spring Boot Main Application
+LoadGeneratorSource:: generates a set number messages with a payload of a specific size
+and sends them to channel
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/load-generator-source-${version}-exec.jar --spring.cloud.stream.bindings.output=<where to bind> --messageSize=<sizeOfMessage> --messageCount=<number of messages to send>
+```
