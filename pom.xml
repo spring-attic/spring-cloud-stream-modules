@@ -105,6 +105,13 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream</artifactId>
 		</dependency>
+		<!-- Lattice core dependency that activates cloud,lattice profiles when running on Lattice -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-lattice-core</artifactId>
+			<version>${spring-cloud-lattice.version}</version>
+			<optional>true</optional>
+		</dependency>
 		<!-- Cloud connector dependencies -->
 		<!-- Lattice connector dependency to create services info from lattice -->
 		<dependency>
