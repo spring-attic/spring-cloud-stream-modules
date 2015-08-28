@@ -38,6 +38,8 @@
 		<module>counter-sink</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
+		<!-- tasks in alphabetical order -->
+		<module>timestamp-task</module>
 	</modules>
 	<build>
 		<plugins>
