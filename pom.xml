@@ -26,6 +26,7 @@
 		<!-- common -->
 		<module>common</module>
 		<!-- sources in alphabetical order-->
+		<module>firehose-source</module>
 		<module>ftp-source</module>
 		<module>http-source</module>
 		<module>time-source</module>
