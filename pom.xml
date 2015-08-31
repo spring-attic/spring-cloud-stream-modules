@@ -58,6 +58,35 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!--
+We need to enable this profile for now in order to override the imports execution that removes any dependencies from google.
+
+As of now, the imports activation of spring-cloud-build is not working properly. It activates regardless of the inclusion of the .google file on the source folder.
+-->
+	<profiles>
+		<profile>
+			<id>firehose</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>imports</id>
+								<phase>none</phase>
+
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
