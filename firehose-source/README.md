@@ -10,7 +10,11 @@ To run this sample, you will need to have installed:
 * Java 7 or Above
 * A Redis server
 * [Cloudfoundry](https://github.com/cloudfoundry/cf-release), [Lattice](http://lattice.cf) or a doppler [simulator](https://github.com/viniciusccarvalho/doppler-simulator) running
-* A [protobuf](https://developers.google.com/protocol-buffers) compiler installed and available on your path
+
+## Protocol buffer depdendencies
+
+The firehose depends on generated code from [droposonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol), in order to simplify requirements to run this module
+all classes are generated already. But the code has the `.proto` files also if you decide to update the generated code.
 
 ## Code Tour
 
@@ -21,20 +25,20 @@ This sample connects to a doppler remote websocket endpoint and emits events fro
 * source/ByteByfferMessageConverter: Message converter to read the binary message and convert into protocol buffers and then a tuple or JSON
 * source/TupleFactory: Support class to convert from Protobuf pojos into an XD tuple
 * source/FirehoseOptionsMetadata: Configuration for this sample
-			* dopplerUrl (required) : Remote endpoint of doppler, usually ws://doppler.<domain>
-			* cfDomain (cloudfoundry only) :  this is your application domain on cloudfoundry
-			* authenticationURL (cloudfoundry only) : UAA authentication endpoint
-			* username (cloudfoundry only) : user with doppler rights
-			* password (cloudfoundry only) : user credentials
-			* dopplerSubscription (optional) : the subscription id, leave it blank for the simulator
-			* outputJson (optional) : Output JSON string instead of Tuple
-			* trustSelfCerts (optional) : If you are using wss and self signed certs on the doppler endpoint 
+  * dopplerUrl (required) : Remote endpoint of doppler, usually ws://doppler.<domain>
+  * cfDomain (cloudfoundry only) :  this is your application domain on cloudfoundry
+  * authenticationURL (cloudfoundry only) : UAA authentication endpoint
+  * username (cloudfoundry only) : user with doppler rights
+  * password (cloudfoundry only) : user credentials
+  * dopplerSubscription (optional) : the subscription id, leave it blank for the simulator
+  * outputJson (optional) : Output JSON string instead of Tuple
+  * trustSelfCerts (optional) : If you are using wss and self signed certs on the doppler endpoint 
 
 ## Building with Maven
 
 Build the sample by executing (you need to explicitely remove the imports profile, otherwise build will fail:
 
-	source>$ mvn clean package -P \!imports
+	source>$ mvn clean package 
 
 ## Running the Sample
 

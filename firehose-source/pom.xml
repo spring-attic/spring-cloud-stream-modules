@@ -35,7 +35,11 @@
         </pluginRepository>
 
     </pluginRepositories>
+<!--
+We need to enable this profile for now in order to override the imports execution that removes any dependencies from google.
 
+As of now, the imports activation of spring-cloud-build is not working properly. It activates regardless of the inclusion of the .google file on the source folder.
+-->
     <profiles>
         <profile>
             <id>firehose</id>
