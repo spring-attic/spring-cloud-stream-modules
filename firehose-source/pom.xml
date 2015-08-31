@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <artifactId>firehose-source</artifactId>
+    <name>firehose-source</name>
+
+    <parent>
+        <artifactId>spring-cloud-stream-modules</artifactId>
+        <groupId>org.springframework.cloud.stream.module</groupId>
+        <version>1.0.0.BUILD-SNAPSHOT</version>
+    </parent>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <start-class>org.springframework.cloud.stream.module.firehose.FirehoseApplication</start-class>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </pluginRepository>
+
+    </pluginRepositories>
+<!--
+We need to enable this profile for now in order to override the imports execution that removes any dependencies from google.
+
+As of now, the imports activation of spring-cloud-build is not working properly. It activates regardless of the inclusion of the .google file on the source folder.
+-->
+    <profiles>
+        <profile>
+            <id>firehose</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>imports</id>
+                                <phase>none</phase>
+
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud.stream.module</groupId>
+            <artifactId>spring-cloud-stream-modules-common-configuration</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.cloudfoundry</groupId>
+            <artifactId>cloudfoundry-client-lib</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>2.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.xd</groupId>
+            <artifactId>spring-xd-tuple</artifactId>
+            <version>1.2.0.BUILD-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud.stream.module</groupId>
+            <artifactId>spring-cloud-stream-modules-test-support</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>5.0.0.Alpha2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -36,6 +36,7 @@
 		<module>transform-processor</module>
 		<!-- sinks in alphabetical order -->
 		<module>counter-sink</module>
+		<module>firehose-source</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
 		<!-- tasks in alphabetical order -->
