@@ -20,7 +20,6 @@
 		<start-class>org.springframework.cloud.task.module.timestamp.TimestampTaskApplication</start-class>
 	</properties>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -30,8 +29,12 @@
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+			<version>${cloud-config.version}</version>
+		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
