@@ -19,6 +19,46 @@ enum Method {
     PUT = 3;
     DELETE = 4;
     HEAD = 5;
+
+    ACL = 6;
+    BASELINE_CONTROL = 7;
+    BIND = 8;
+    CHECKIN = 9;
+    CHECKOUT = 10;
+    CONNECT = 11;
+    COPY = 12;
+    DEBUG = 13;
+    LABEL = 14;
+    LINK = 15;
+    LOCK = 16;
+    MERGE = 17;
+    MKACTIVITY = 18;
+    MKCALENDAR = 19;
+    MKCOL = 20;
+    MKREDIRECTREF = 21;
+    MKWORKSPACE = 22;
+    MOVE = 23;
+    OPTIONS = 24;
+    ORDERPATCH = 25;
+    PATCH = 26;
+    PRI = 27;
+    PROPFIND = 28;
+    PROPPATCH = 29;
+    REBIND = 30;
+    REPORT = 31;
+    SEARCH = 32;
+    SHOWMETHOD = 33;
+    SPACEJUMP = 34;
+    TEXTSEARCH = 35;
+    TRACE = 36;
+    TRACK = 37;
+    UNBIND = 38;
+    UNCHECKOUT = 39;
+    UNLINK = 40;
+    UNLOCK = 41;
+    UPDATE = 42;
+    UPDATEREDIRECTREF = 43;
+    VERSION_CONTROL = 44;
 }
 
 /// An HttpStart event is emitted when a client sends a request (or immediately when a server receives the request).

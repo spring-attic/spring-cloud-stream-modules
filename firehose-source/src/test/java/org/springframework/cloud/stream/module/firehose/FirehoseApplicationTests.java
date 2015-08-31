@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {FirehoseApplication.class})
-@WebIntegrationTest
+@WebIntegrationTest({"server.port:0", "dopplerUrl:'ws://localhost:7777'"})
 public class FirehoseApplicationTests {
 
 
@@ -53,6 +53,7 @@ public class FirehoseApplicationTests {
     Source firehoseSource;
     @Autowired
     private MessageCollector messageCollector;
+
 
     @BeforeClass
     public static void start() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -33,35 +33,33 @@
             <name>Central Repository</name>
             <url>https://repo.maven.apache.org/maven2</url>
         </pluginRepository>
-        <pluginRepository>
-            <id>protoc-plugin</id>
-            <url>https://dl.bintray.com/sergei-ivanov/maven/</url>
-        </pluginRepository>
+
     </pluginRepositories>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.google.protobuf.tools</groupId>
-                <artifactId>maven-protoc-plugin</artifactId>
-                <version>0.4.2</version>
-                <configuration>
-                    <protoSourceRoot>${basedir}/src/main/proto/events</protoSourceRoot>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
+    <profiles>
+        <profile>
+            <id>firehose</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>imports</id>
+                                <phase>none</phase>
 
-                </executions>
-            </plugin>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
-        </plugins>
-
-    </build>
 
     <dependencies>
         <dependency>

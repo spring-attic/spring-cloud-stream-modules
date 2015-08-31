@@ -1,4 +1,0 @@
-server:
-  port: 8282
-
-doppler-url: "ws://localhost:7777"
