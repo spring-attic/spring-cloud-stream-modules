@@ -1,4 +1,4 @@
-Spring Cloud Stream Firehose Sample
+Spring Cloud Stream Firehose Module
 =============================
 
 In this *Spring Cloud Stream* module, a source emits events from a [doppler](https://github.com/cloudfoundry/loggregator) endpoint
@@ -11,10 +11,15 @@ To run this sample, you will need to have installed:
 * A Redis server
 * [Cloudfoundry](https://github.com/cloudfoundry/cf-release), [Lattice](http://lattice.cf) or a doppler [simulator](https://github.com/viniciusccarvalho/doppler-simulator) running
 
-## Protocol buffer depdendencies
+## Generated sources
 
-The firehose depends on generated code from [droposonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol), in order to simplify requirements to run this module
-all classes are generated already. But the code has the `.proto` files also if you decide to update the generated code.
+The firehose depends on generated code from [droposonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol). In order to simplify requirements to run this module
+all java sources have been generated already.
+
+The [droposonde-protocol](https://github.com/cloudfoundry/dropsonde-protocol) repo has instructions and a script on how to generate java code
+from proto files.
+
+This module targets the PCF 1.5 version of the dropsonde protocol [dropsonde-protocol@ff69d48b9c570b0549c9161c8377f610b6e81dda](https://github.com/cloudfoundry/dropsonde-protocol/tree/ff69d48b9c570b0549c9161c8377f610b6e81dda)
 
 ## Code Tour
 

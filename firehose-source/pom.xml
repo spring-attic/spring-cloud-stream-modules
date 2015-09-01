@@ -14,28 +14,9 @@
         <version>1.0.0.BUILD-SNAPSHOT</version>
     </parent>
 
-
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>org.springframework.cloud.stream.module.firehose.FirehoseApplication</start-class>
-        <java.version>1.8</java.version>
     </properties>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <releases>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>central</id>
-            <name>Central Repository</name>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </pluginRepository>
-
-    </pluginRepositories>
-
 
     <dependencies>
         <dependency>
