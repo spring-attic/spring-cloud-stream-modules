@@ -26,6 +26,7 @@ import javax.validation.constraints.Pattern;
  *
  * @author Thomas Risberg
  */
+@SuppressWarnings("unused")
 @ConfigurationProperties
 public class HdfsSinkProperties {
 
@@ -37,7 +38,8 @@ public class HdfsSinkProperties {
 	/**
 	 * base path to write files to
 	 */
-	private String directory = "/xd/test";
+	@Value("/tmp/${spring.application.name:hdfs-sink}")
+	private String directory;
 
 	/**
 	 * the base filename to use for the created files
@@ -139,7 +141,6 @@ public class HdfsSinkProperties {
 	public void setFileUuid(boolean fileUuid) {
 		this.fileUuid = fileUuid;
 	}
-
 
 	@Pattern(regexp = "(?i)(GZIP|SNAPPY|BZIP2|LZO|SLZO)",
 			message = "codec must be one of GZIP, SNAPPY, BZIP2, LZO, or SLZO (case-insensitive)")

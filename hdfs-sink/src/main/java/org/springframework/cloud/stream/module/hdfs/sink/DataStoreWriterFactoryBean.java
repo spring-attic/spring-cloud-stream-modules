@@ -26,6 +26,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.Lifecycle;
 import org.springframework.data.hadoop.store.DataStoreWriter;
 import org.springframework.data.hadoop.store.codec.CodecInfo;
 import org.springframework.data.hadoop.store.codec.Codecs;
@@ -41,6 +42,8 @@ import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.messaging.Message;
 import org.springframework.util.StringUtils;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +56,8 @@ import java.util.List;
  * @author Janne Valkealahti
  * @author Gary Russell
  */
-public class DataStoreWriterFactoryBean implements InitializingBean, DisposableBean, FactoryBean<DataStoreWriter<String>>, BeanFactoryAware {
+public class DataStoreWriterFactoryBean implements InitializingBean, DisposableBean, FactoryBean<DataStoreWriter<String>>,
+		BeanFactoryAware, Lifecycle {
 
 	private HdfsSinkProperties properties;
 
@@ -168,6 +172,9 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 			}
 			storeWriter = writer;
 		}
+		if (storeWriter instanceof InitializingBean) {
+			((InitializingBean) storeWriter).afterPropertiesSet();
+		}
 	}
 
 	@Autowired
@@ -183,5 +190,34 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
+	}
+
+	@Override
+	public void start() {
+		if (storeWriter instanceof Lifecycle) {
+			((Lifecycle) storeWriter).start();
+		}
+	}
+
+	@Override
+	public void stop() {
+		try {
+			storeWriter.close();
+		} catch (IOException e) {
+			throw new IllegalStateException("Error while closing StoreWriter", e);
+		}
+		if (storeWriter instanceof Lifecycle) {
+			((Lifecycle) storeWriter).stop();
+		}
+	}
+
+	@Override
+	public boolean isRunning() {
+		if (storeWriter instanceof Lifecycle) {
+			return ((Lifecycle) storeWriter).isRunning();
+		}
+		else {
+			return false;
+		}
 	}
 }

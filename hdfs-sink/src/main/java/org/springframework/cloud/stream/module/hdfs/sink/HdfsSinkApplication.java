@@ -21,7 +21,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- *
+ * Spring Boot App for starting the {@link HdfsSink} module
  * @author Thomas Risberg
  */
 @SpringBootApplication

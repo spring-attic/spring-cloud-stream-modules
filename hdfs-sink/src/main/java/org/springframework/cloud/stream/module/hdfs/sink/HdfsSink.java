@@ -44,7 +44,7 @@ public class HdfsSink {
 		try {
 			dataStoreWriter.write(payload.toString());
 		} catch (IOException e) {
-			throw new IllegalStateException("Error while writing to HDFS", e);
+			throw new IllegalStateException("Error while writing", e);
 		}
 	}
 
