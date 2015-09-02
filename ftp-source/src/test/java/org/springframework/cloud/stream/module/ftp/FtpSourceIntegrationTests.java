@@ -28,8 +28,8 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
 import org.springframework.cloud.stream.modules.test.ftp.TestFtpServer;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
@@ -45,6 +45,7 @@ import static org.junit.Assert.assertThat;
 
 /**
  * @author David Turanski
+ * @author Marius Bogoevici
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FtpSourceApplication.class, initializers = PropertiesInitializer.class)
@@ -107,7 +108,7 @@ public class FtpSourceIntegrationTests {
 	}
 
 	@Autowired
-	@ModuleChannels(FtpSource.class)
+	@Bindings(FtpSource.class)
 	Source ftpSource;
 
 	@Test

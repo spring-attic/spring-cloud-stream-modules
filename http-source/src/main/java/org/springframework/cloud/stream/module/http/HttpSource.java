@@ -22,7 +22,7 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.MessageHeaders;
@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *
  * @author Eric Bottard
  * @author Mark Fisher
+ * @author Marius Bogoevici
  */
 @Controller
 @EnableBinding(Source.class)

@@ -18,12 +18,10 @@ package org.springframework.cloud.stream.module.redis.sink;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.SpringApplicationContextLoader;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Sink;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.support.collections.DefaultRedisList;
@@ -41,6 +39,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Mark Pollack
+ * @author Marius Bogoevici
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = RedisSinkApplication.class)
@@ -51,7 +50,7 @@ public class RedisSinkApplicationTests {
     //TODO Add RedisAvailabeRule in spring-cloud-stream-test
 
     @Autowired
-    @ModuleChannels(RedisSink.class)
+    @Bindings(RedisSink.class)
     private Sink sink;
 
     @Autowired

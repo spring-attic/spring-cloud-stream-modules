@@ -23,11 +23,8 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Output;
-import org.springframework.cloud.stream.annotation.Sink;
-import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.messaging.MessageChannel;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -39,7 +36,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class LogSinkApplicationTests {
 
 	@Autowired
-	@ModuleChannels(LogSink.class)
+	@Bindings(LogSink.class)
 	private Sink sink;
 
 	@Autowired

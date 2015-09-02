@@ -27,8 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.repository.MetricRepository;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Sink;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -36,6 +36,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Mark Pollack
+ * @author Marius Bogoevici
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = CounterSinkApplication.class)
@@ -46,7 +47,7 @@ public class CounterSinkSimpleNameTests {
     //TODO RedisAvailable Rule
 
     @Autowired
-    @ModuleChannels(CounterSink.class)
+    @Bindings(CounterSink.class)
     private Sink sink;
 
     @Autowired
