@@ -16,7 +16,7 @@
 
 	<properties>
 		<start-class>org.springframework.cloud.stream.module.hdfs.sink.HdfsSinkApplication</start-class>
-		<spring-data-hadoop.version>2.3.0.M2-phd30</spring-data-hadoop.version>
+		<spring-data-hadoop.version>2.3.0.M2</spring-data-hadoop.version>
 	</properties>
 
 	<dependencies>
@@ -46,11 +46,13 @@
 					<artifactId>jsp-api</artifactId>
 				</exclusion>
 			</exclusions>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-hadoop-store</artifactId>
 			<version>${spring-data-hadoop.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
