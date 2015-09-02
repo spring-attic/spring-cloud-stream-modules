@@ -18,7 +18,7 @@ package org.springframework.cloud.stream.module.filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableModule;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Processor;
 import org.springframework.cloud.stream.module.common.ScriptVariableGeneratorConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +36,7 @@ import org.springframework.scripting.support.ResourceScriptSource;
  * @author Eric Bottard
  * @author Mark Fisher
  */
-@EnableModule(Processor.class)
+@EnableBinding(Processor.class)
 @Import(ScriptVariableGeneratorConfiguration.class)
 @EnableConfigurationProperties(GroovyFilterProcessorProperties.class)
 public class GroovyFilterProcessor {

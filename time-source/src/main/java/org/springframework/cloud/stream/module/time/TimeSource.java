@@ -21,7 +21,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableModule;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Source;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.context.annotation.Import;
@@ -32,7 +32,7 @@ import org.springframework.integration.annotation.Poller;
  * @author Dave Syer
  * @author Glenn Renfro
  */
-@EnableModule(Source.class)
+@EnableBinding(Source.class)
 @EnableConfigurationProperties(TimeSourceProperties.class)
 @Import(PeriodicTriggerConfiguration.class)
 public class TimeSource {

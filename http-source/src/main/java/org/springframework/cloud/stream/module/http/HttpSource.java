@@ -21,7 +21,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.EnableModule;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.Source;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Mark Fisher
  */
 @Controller
-@EnableModule(Source.class)
+@EnableBinding(Source.class)
 public class HttpSource {
 
 	@Autowired

@@ -19,7 +19,7 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableModule;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.ModuleChannels;
 import org.springframework.cloud.stream.annotation.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
@@ -44,7 +44,7 @@ import org.springframework.scheduling.Trigger;
 /**
  * @author David Turanski
  */
-@EnableModule(Source.class)
+@EnableBinding(Source.class)
 @EnableConfigurationProperties({FtpSourceProperties.class,
 		FileConsumerProperties.class, MaxMessagesProperties.class})
 @Import({PeriodicTriggerConfiguration.class, FtpSessionFactoryConfiguration.class})
