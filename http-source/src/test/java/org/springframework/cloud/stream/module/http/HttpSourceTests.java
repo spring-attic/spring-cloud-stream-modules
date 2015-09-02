@@ -16,9 +16,10 @@
 
 package org.springframework.cloud.stream.module.http;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
@@ -30,8 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -49,6 +50,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author Eric Bottard
  * @author Mark Fisher
+ * @author Marius Bogoevici
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = HttpSourceApplication.class)
@@ -56,7 +58,7 @@ import org.springframework.web.client.RestTemplate;
 public abstract class HttpSourceTests {
 
 	@Autowired
-	@ModuleChannels(HttpSource.class)
+	@Bindings(HttpSource.class)
 	protected Source channels;
 
 	@Value("${local.server.port}")

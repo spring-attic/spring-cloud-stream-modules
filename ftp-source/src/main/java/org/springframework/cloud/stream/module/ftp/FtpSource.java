@@ -19,9 +19,9 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableModule;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
@@ -43,8 +43,9 @@ import org.springframework.scheduling.Trigger;
 
 /**
  * @author David Turanski
+ * @author Marius Bogoevici
  */
-@EnableModule(Source.class)
+@EnableBinding(Source.class)
 @EnableConfigurationProperties({FtpSourceProperties.class,
 		FileConsumerProperties.class, MaxMessagesProperties.class})
 @Import({PeriodicTriggerConfiguration.class, FtpSessionFactoryConfiguration.class})
@@ -66,7 +67,7 @@ public class FtpSource {
 	Trigger trigger;
 
 	@Autowired
-	@ModuleChannels(FtpSource.class)
+	@Bindings(FtpSource.class)
 	Source source;
 
 	@Bean

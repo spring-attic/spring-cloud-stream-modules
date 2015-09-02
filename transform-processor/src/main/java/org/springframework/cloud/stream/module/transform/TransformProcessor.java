@@ -18,9 +18,9 @@ package org.springframework.cloud.stream.module.transform;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableModule;
-import org.springframework.cloud.stream.annotation.Processor;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
+import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.messaging.Message;
@@ -29,8 +29,9 @@ import org.springframework.messaging.Message;
  * A Processor module that transforms messages using a SpEL expression.
  *
  * @author Eric Bottard
+ * @author Marius Bogoevici
  */
-@EnableModule(Processor.class)
+@EnableBinding(Processor.class)
 @Import(SpelExpressionConverterConfiguration.class)
 @EnableConfigurationProperties(TransformProcessorProperties.class)
 public class TransformProcessor {

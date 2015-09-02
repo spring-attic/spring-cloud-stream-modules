@@ -18,8 +18,8 @@ package org.springframework.cloud.stream.module.redis.sink;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cloud.stream.annotation.EnableModule;
-import org.springframework.cloud.stream.annotation.Sink;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
@@ -29,8 +29,9 @@ import org.springframework.messaging.MessageHandler;
  *
  * @author Eric Bottard
  * @author Mark Pollack
+ * @autor Marius Bogoevici
  */
-@EnableModule(Sink.class)
+@EnableBinding(Sink.class)
 public class RedisSink {
 
     @Autowired

@@ -17,9 +17,10 @@
 package org.springframework.cloud.stream.module.filter;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +28,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Processor;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -39,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Integration tests for Filter Processor.
  *
  * @author Eric Bottard
+ * @author Marius Bogoevici
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FilterProcessorApplication.class)
@@ -47,7 +49,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class FilterProcessorIntegrationTests {
 
 	@Autowired
-	@ModuleChannels(FilterProcessor.class)
+	@Bindings(FilterProcessor.class)
 	protected Processor channels;
 
 	@Autowired
