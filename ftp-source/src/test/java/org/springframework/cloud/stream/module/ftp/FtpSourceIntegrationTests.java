@@ -15,6 +15,9 @@
 
 package org.springframework.cloud.stream.module.ftp;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
@@ -38,9 +42,6 @@ import org.springframework.integration.endpoint.SourcePollingChannelAdapter;
 import org.springframework.messaging.Message;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 
 
 /**
@@ -111,7 +112,7 @@ public class FtpSourceIntegrationTests {
 	@Bindings(FtpSource.class)
 	Source ftpSource;
 
-	@Test
+	@Test @Ignore
 	public void sourceFilesAsRef() throws InterruptedException {
 		for (int i = 1; i <= 2; i++) {
 			Message<File> received = (Message<File>) messageCollector.forChannel(ftpSource.output()).poll(1,
