@@ -1,0 +1,73 @@
+---
+# The name of your project
+title: Spring Data JPA
+
+badges:
+
+  # Specify your project's twitter handle, if any. Delete if none.
+  twitter: SpringData
+
+  # Customize your project's badges. Delete any entries that do not apply.
+  custom:
+    - name: Source (GitHub)
+      url:  https://github.com/spring-cloud/spring-cloud-stream-modules
+      icon: github
+
+    - name: Issues (GitHub)
+      url:  https://github.com/spring-cloud/spring-cloud-stream-modules/issues
+      icon: tracking
+
+    - name: CI (Bamboo)
+      url:  https://build.spring.io/browse/SCS
+      icon: ci
+
+    - name: StackOverflow
+      url:  http://stackoverflow.com/questions/tagged/spring-cloud
+      icon: stackoverflow
+
+---
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<!-- Specify the parent of this project (or delete if none) to influence the rendering of the breadcrumb -->
+{% capture parent_link %}
+[Spring Cloud]({{ site.projects_site_url }}/spring-cloud)
+{% endcapture %}
+
+
+{% capture billboard_description %}
+
+**PROJECT DESCRIPTION**
+Spring Cloud Stream Modules provide out-of-the-box modules for [Spring Cloud Stream](http://cloud.spring.io/spring-cloud-stream/).
+
+{% endcapture %}
+
+{% capture main_content %}
+
+**Available Modules**
+
+* counter (sink)
+* filter (processor)
+* ftp (source)
+* groovy-filter (processor)
+* groovy-transform (processor)
+* http (source)
+* log (sink)
+* redis (sink)
+* time (source)
+* transform (processor)
+
+{% endcapture %}
+
+{% capture related_resources %}
+
+### Related Projects
+
+* [Spring Cloud Stream]({{site.projects_site_url}}/spring-cloud-stream/)
+* [Spring Cloud Data]({{site.projects_site_url}}/spring-cloud-data/)
+* [Spring XD]({{site.projects_site_url}}/spring-xd/)
+
+{% endcapture %}
+
+{% include project_page.html %}
+</html>
