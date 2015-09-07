@@ -46,37 +46,36 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @WebIntegrationTest({"server.port:0", "dopplerUrl:ws://localhost:7777"})
 public class FirehoseApplicationTests {
 
-    private static NettyWebSocketServer server;
+	private static NettyWebSocketServer server;
 
-    private static WebSocketHandler handler;
+	private static WebSocketHandler handler;
 
-    @Autowired
-    @Bindings(FirehoseSource.class)
-    Source firehoseSource;
+	@Autowired
+	@Bindings(FirehoseSource.class)
+	Source firehoseSource;
 
-    @Autowired
-    private MessageCollector messageCollector;
+	@Autowired
+	private MessageCollector messageCollector;
 
 
-    @BeforeClass
-    public static void start() {
-        handler = new WebSocketHandler();
-        server = new NettyWebSocketServer();
-        server.start(handler);
-    }
+	@BeforeClass
+	public static void start() {
+		handler = new WebSocketHandler();
+		server = new NettyWebSocketServer();
+		server.start(handler);
+	}
 
-    @AfterClass
-    public static void stop() {
-        server.stop();
-    }
+	@AfterClass
+	public static void stop() {
+		server.stop();
+	}
 
-    @Test
-    public void contextLoads() throws Exception {
-        EventFactory.Envelope event = ProtocolGenerator.httpStartStopEvent();
-        handler.addMessage(event);
-        Message m = messageCollector.forChannel(firehoseSource.output()).poll(10, TimeUnit.SECONDS);
-        Assert.assertNotNull(m.getPayload());
-    }
-
+	@Test
+	public void contextLoads() throws Exception {
+		EventFactory.Envelope event = ProtocolGenerator.httpStartStopEvent();
+		handler.addMessage(event);
+		Message m = messageCollector.forChannel(firehoseSource.output()).poll(10, TimeUnit.SECONDS);
+		Assert.assertNotNull(m.getPayload());
+	}
 
 }

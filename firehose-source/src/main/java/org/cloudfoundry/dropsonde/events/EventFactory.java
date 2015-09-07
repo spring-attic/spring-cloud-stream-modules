@@ -4,3677 +4,3848 @@
 package org.cloudfoundry.dropsonde.events;
 
 public final class EventFactory {
-    private static final com.google.protobuf.Descriptors.Descriptor
-            internal_static_events_Envelope_descriptor;
-    private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-            internal_static_events_Envelope_fieldAccessorTable;
-    private static com.google.protobuf.Descriptors.FileDescriptor
-            descriptor;
-
-    static {
-        java.lang.String[] descriptorData = {
-                "\n\016envelope.proto\022\006events\032\nhttp.proto\032\tlo" +
-                        "g.proto\032\014metric.proto\032\013error.proto\"\357\004\n\010E" +
-                        "nvelope\022\016\n\006origin\030\001 \002(\t\022-\n\teventType\030\002 \002" +
-                        "(\0162\032.events.Envelope.EventType\022\021\n\ttimest" +
-                        "amp\030\006 \001(\003\022\022\n\ndeployment\030\r \001(\t\022\013\n\003job\030\016 \001" +
-                        "(\t\022\r\n\005index\030\017 \001(\t\022\n\n\002ip\030\020 \001(\t\022$\n\thttpSta" +
-                        "rt\030\004 \001(\0132\021.events.HttpStart\022\"\n\010httpStop\030" +
-                        "\005 \001(\0132\020.events.HttpStop\022,\n\rhttpStartStop" +
-                        "\030\007 \001(\0132\025.events.HttpStartStop\022&\n\nlogMess" +
-                        "age\030\010 \001(\0132\022.events.LogMessage\022(\n\013valueMe",
-                "tric\030\t \001(\0132\023.events.ValueMetric\022*\n\014count" +
-                        "erEvent\030\n \001(\0132\024.events.CounterEvent\022\034\n\005e" +
-                        "rror\030\013 \001(\0132\r.events.Error\0220\n\017containerMe" +
-                        "tric\030\014 \001(\0132\027.events.ContainerMetric\"\216\001\n\t" +
-                        "EventType\022\r\n\tHttpStart\020\002\022\014\n\010HttpStop\020\003\022\021" +
-                        "\n\rHttpStartStop\020\004\022\016\n\nLogMessage\020\005\022\017\n\013Val" +
-                        "ueMetric\020\006\022\020\n\014CounterEvent\020\007\022\t\n\005Error\020\010\022" +
-                        "\023\n\017ContainerMetric\020\tB1\n!org.cloudfoundry" +
-                        ".dropsonde.eventsB\014EventFactory"
-        };
-        com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-                new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-                    public com.google.protobuf.ExtensionRegistry assignDescriptors(
-                            com.google.protobuf.Descriptors.FileDescriptor root) {
-                        descriptor = root;
-                        return null;
-                    }
-                };
-        com.google.protobuf.Descriptors.FileDescriptor
-                .internalBuildGeneratedFileFrom(descriptorData,
-                        new com.google.protobuf.Descriptors.FileDescriptor[]{
-                                org.cloudfoundry.dropsonde.events.HttpFactory.getDescriptor(),
-                                org.cloudfoundry.dropsonde.events.LogFactory.getDescriptor(),
-                                org.cloudfoundry.dropsonde.events.MetricFactory.getDescriptor(),
-                                org.cloudfoundry.dropsonde.events.ErrorFactory.getDescriptor(),
-                        }, assigner);
-        internal_static_events_Envelope_descriptor =
-                getDescriptor().getMessageTypes().get(0);
-        internal_static_events_Envelope_fieldAccessorTable = new
-                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_events_Envelope_descriptor,
-                new java.lang.String[]{"Origin", "EventType", "Timestamp", "Deployment", "Job", "Index", "Ip", "HttpStart", "HttpStop", "HttpStartStop", "LogMessage", "ValueMetric", "CounterEvent", "Error", "ContainerMetric",});
-        org.cloudfoundry.dropsonde.events.HttpFactory.getDescriptor();
-        org.cloudfoundry.dropsonde.events.LogFactory.getDescriptor();
-        org.cloudfoundry.dropsonde.events.MetricFactory.getDescriptor();
-        org.cloudfoundry.dropsonde.events.ErrorFactory.getDescriptor();
-    }
-
-    private EventFactory() {
-    }
-
-    public static void registerAllExtensions(
-            com.google.protobuf.ExtensionRegistry registry) {
-    }
-
-    public static com.google.protobuf.Descriptors.FileDescriptor
-    getDescriptor() {
-        return descriptor;
-    }
-
-    public interface EnvelopeOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:events.Envelope)
-            com.google.protobuf.MessageOrBuilder {
-
-        /**
-         * <code>required string origin = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Unique description of the origin of this event.
-         * </pre>
-         */
-        boolean hasOrigin();
-
-        /**
-         * <code>required string origin = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Unique description of the origin of this event.
-         * </pre>
-         */
-        java.lang.String getOrigin();
-
-        /**
-         * <code>required string origin = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Unique description of the origin of this event.
-         * </pre>
-         */
-        com.google.protobuf.ByteString
-        getOriginBytes();
-
-        /**
-         * <code>required .events.Envelope.EventType eventType = 2;</code>
-         * <p>
-         * <pre>
-         * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
-         * </pre>
-         */
-        boolean hasEventType();
-
-        /**
-         * <code>required .events.Envelope.EventType eventType = 2;</code>
-         * <p>
-         * <pre>
-         * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
-         * </pre>
-         */
-        org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType getEventType();
-
-        /**
-         * <code>optional int64 timestamp = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
-         * </pre>
-         */
-        boolean hasTimestamp();
-
-        /**
-         * <code>optional int64 timestamp = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
-         * </pre>
-         */
-        long getTimestamp();
-
-        /**
-         * <code>optional string deployment = 13;</code>
-         * <p>
-         * <pre>
-         * &#47; Deployment name (used to uniquely identify source).
-         * </pre>
-         */
-        boolean hasDeployment();
-
-        /**
-         * <code>optional string deployment = 13;</code>
-         * <p>
-         * <pre>
-         * &#47; Deployment name (used to uniquely identify source).
-         * </pre>
-         */
-        java.lang.String getDeployment();
-
-        /**
-         * <code>optional string deployment = 13;</code>
-         * <p>
-         * <pre>
-         * &#47; Deployment name (used to uniquely identify source).
-         * </pre>
-         */
-        com.google.protobuf.ByteString
-        getDeploymentBytes();
-
-        /**
-         * <code>optional string job = 14;</code>
-         * <p>
-         * <pre>
-         * &#47; Job name (used to uniquely identify source).
-         * </pre>
-         */
-        boolean hasJob();
-
-        /**
-         * <code>optional string job = 14;</code>
-         * <p>
-         * <pre>
-         * &#47; Job name (used to uniquely identify source).
-         * </pre>
-         */
-        java.lang.String getJob();
-
-        /**
-         * <code>optional string job = 14;</code>
-         * <p>
-         * <pre>
-         * &#47; Job name (used to uniquely identify source).
-         * </pre>
-         */
-        com.google.protobuf.ByteString
-        getJobBytes();
-
-        /**
-         * <code>optional string index = 15;</code>
-         * <p>
-         * <pre>
-         * &#47; Index of job (used to uniquely identify source).
-         * </pre>
-         */
-        boolean hasIndex();
-
-        /**
-         * <code>optional string index = 15;</code>
-         * <p>
-         * <pre>
-         * &#47; Index of job (used to uniquely identify source).
-         * </pre>
-         */
-        java.lang.String getIndex();
-
-        /**
-         * <code>optional string index = 15;</code>
-         * <p>
-         * <pre>
-         * &#47; Index of job (used to uniquely identify source).
-         * </pre>
-         */
-        com.google.protobuf.ByteString
-        getIndexBytes();
-
-        /**
-         * <code>optional string ip = 16;</code>
-         * <p>
-         * <pre>
-         * &#47; IP address (used to uniquely identify source).
-         * </pre>
-         */
-        boolean hasIp();
-
-        /**
-         * <code>optional string ip = 16;</code>
-         * <p>
-         * <pre>
-         * &#47; IP address (used to uniquely identify source).
-         * </pre>
-         */
-        java.lang.String getIp();
-
-        /**
-         * <code>optional string ip = 16;</code>
-         * <p>
-         * <pre>
-         * &#47; IP address (used to uniquely identify source).
-         * </pre>
-         */
-        com.google.protobuf.ByteString
-        getIpBytes();
-
-        /**
-         * <code>optional .events.HttpStart httpStart = 4;</code>
-         * <p>
-         * <pre>
-         * Removed Heartbeat at position 3
-         * </pre>
-         */
-        boolean hasHttpStart();
-
-        /**
-         * <code>optional .events.HttpStart httpStart = 4;</code>
-         * <p>
-         * <pre>
-         * Removed Heartbeat at position 3
-         * </pre>
-         */
-        org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart getHttpStart();
-
-        /**
-         * <code>optional .events.HttpStart httpStart = 4;</code>
-         * <p>
-         * <pre>
-         * Removed Heartbeat at position 3
-         * </pre>
-         */
-        org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder getHttpStartOrBuilder();
-
-        /**
-         * <code>optional .events.HttpStop httpStop = 5;</code>
-         */
-        boolean hasHttpStop();
-
-        /**
-         * <code>optional .events.HttpStop httpStop = 5;</code>
-         */
-        org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop getHttpStop();
-
-        /**
-         * <code>optional .events.HttpStop httpStop = 5;</code>
-         */
-        org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder getHttpStopOrBuilder();
-
-        /**
-         * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-         */
-        boolean hasHttpStartStop();
-
-        /**
-         * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-         */
-        org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop getHttpStartStop();
-
-        /**
-         * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-         */
-        org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder getHttpStartStopOrBuilder();
-
-        /**
-         * <code>optional .events.LogMessage logMessage = 8;</code>
-         */
-        boolean hasLogMessage();
-
-        /**
-         * <code>optional .events.LogMessage logMessage = 8;</code>
-         */
-        org.cloudfoundry.dropsonde.events.LogFactory.LogMessage getLogMessage();
-
-        /**
-         * <code>optional .events.LogMessage logMessage = 8;</code>
-         */
-        org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder getLogMessageOrBuilder();
-
-        /**
-         * <code>optional .events.ValueMetric valueMetric = 9;</code>
-         */
-        boolean hasValueMetric();
-
-        /**
-         * <code>optional .events.ValueMetric valueMetric = 9;</code>
-         */
-        org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric getValueMetric();
-
-        /**
-         * <code>optional .events.ValueMetric valueMetric = 9;</code>
-         */
-        org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder getValueMetricOrBuilder();
-
-        /**
-         * <code>optional .events.CounterEvent counterEvent = 10;</code>
-         */
-        boolean hasCounterEvent();
-
-        /**
-         * <code>optional .events.CounterEvent counterEvent = 10;</code>
-         */
-        org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent getCounterEvent();
-
-        /**
-         * <code>optional .events.CounterEvent counterEvent = 10;</code>
-         */
-        org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder getCounterEventOrBuilder();
-
-        /**
-         * <code>optional .events.Error error = 11;</code>
-         */
-        boolean hasError();
-
-        /**
-         * <code>optional .events.Error error = 11;</code>
-         */
-        org.cloudfoundry.dropsonde.events.ErrorFactory.Error getError();
-
-        /**
-         * <code>optional .events.Error error = 11;</code>
-         */
-        org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder getErrorOrBuilder();
-
-        /**
-         * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-         */
-        boolean hasContainerMetric();
-
-        /**
-         * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-         */
-        org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric getContainerMetric();
-
-        /**
-         * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-         */
-        org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder getContainerMetricOrBuilder();
-    }
-
-    /**
-     * Protobuf type {@code events.Envelope}
-     * <p>
-     * <pre>
-     * &#47; Envelope wraps an Event and adds metadata.
-     * </pre>
-     */
-    public static final class Envelope extends
-            com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:events.Envelope)
-            EnvelopeOrBuilder {
-        public static final int ORIGIN_FIELD_NUMBER = 1;
-        public static final int EVENTTYPE_FIELD_NUMBER = 2;
-        public static final int TIMESTAMP_FIELD_NUMBER = 6;
-        public static final int DEPLOYMENT_FIELD_NUMBER = 13;
-        public static final int JOB_FIELD_NUMBER = 14;
-        public static final int INDEX_FIELD_NUMBER = 15;
-        public static final int IP_FIELD_NUMBER = 16;
-        public static final int HTTPSTART_FIELD_NUMBER = 4;
-        public static final int HTTPSTOP_FIELD_NUMBER = 5;
-        public static final int HTTPSTARTSTOP_FIELD_NUMBER = 7;
-        public static final int LOGMESSAGE_FIELD_NUMBER = 8;
-        public static final int VALUEMETRIC_FIELD_NUMBER = 9;
-        public static final int COUNTEREVENT_FIELD_NUMBER = 10;
-        public static final int ERROR_FIELD_NUMBER = 11;
-        public static final int CONTAINERMETRIC_FIELD_NUMBER = 12;
-        private static final Envelope defaultInstance;
-        private static final long serialVersionUID = 0L;
-        public static com.google.protobuf.Parser<Envelope> PARSER =
-                new com.google.protobuf.AbstractParser<Envelope>() {
-                    public Envelope parsePartialFrom(
-                            com.google.protobuf.CodedInputStream input,
-                            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                            throws com.google.protobuf.InvalidProtocolBufferException {
-                        return new Envelope(input, extensionRegistry);
-                    }
-                };
-
-        static {
-            defaultInstance = new Envelope(true);
-            defaultInstance.initFields();
-        }
-
-        private final com.google.protobuf.UnknownFieldSet unknownFields;
-        private int bitField0_;
-        private java.lang.Object origin_;
-        private org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType eventType_;
-        private long timestamp_;
-        private java.lang.Object deployment_;
-        private java.lang.Object job_;
-        private java.lang.Object index_;
-        private java.lang.Object ip_;
-        private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart httpStart_;
-        private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop httpStop_;
-        private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop httpStartStop_;
-        private org.cloudfoundry.dropsonde.events.LogFactory.LogMessage logMessage_;
-        private org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric valueMetric_;
-        private org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent counterEvent_;
-        private org.cloudfoundry.dropsonde.events.ErrorFactory.Error error_;
-        private org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric containerMetric_;
-        private byte memoizedIsInitialized = -1;
-        private int memoizedSerializedSize = -1;
-        // Use Envelope.newBuilder() to construct.
-        private Envelope(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-            super(builder);
-            this.unknownFields = builder.getUnknownFields();
-        }
-
-        private Envelope(boolean noInit) {
-            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
-        }
-
-        private Envelope(
-                com.google.protobuf.CodedInputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            initFields();
-            int mutable_bitField0_ = 0;
-            com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-                    com.google.protobuf.UnknownFieldSet.newBuilder();
-            try {
-                boolean done = false;
-                while (!done) {
-                    int tag = input.readTag();
-                    switch (tag) {
-                        case 0:
-                            done = true;
-                            break;
-                        default: {
-                            if (!parseUnknownField(input, unknownFields,
-                                    extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                        case 10: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000001;
-                            origin_ = bs;
-                            break;
-                        }
-                        case 16: {
-                            int rawValue = input.readEnum();
-                            org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType value = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.valueOf(rawValue);
-                            if (value == null) {
-                                unknownFields.mergeVarintField(2, rawValue);
-                            } else {
-                                bitField0_ |= 0x00000002;
-                                eventType_ = value;
-                            }
-                            break;
-                        }
-                        case 34: {
-                            org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                                subBuilder = httpStart_.toBuilder();
-                            }
-                            httpStart_ = input.readMessage(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(httpStart_);
-                                httpStart_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00000080;
-                            break;
-                        }
-                        case 42: {
-                            org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                                subBuilder = httpStop_.toBuilder();
-                            }
-                            httpStop_ = input.readMessage(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(httpStop_);
-                                httpStop_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00000100;
-                            break;
-                        }
-                        case 48: {
-                            bitField0_ |= 0x00000004;
-                            timestamp_ = input.readInt64();
-                            break;
-                        }
-                        case 58: {
-                            org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00000200) == 0x00000200)) {
-                                subBuilder = httpStartStop_.toBuilder();
-                            }
-                            httpStartStop_ = input.readMessage(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(httpStartStop_);
-                                httpStartStop_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00000200;
-                            break;
-                        }
-                        case 66: {
-                            org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                                subBuilder = logMessage_.toBuilder();
-                            }
-                            logMessage_ = input.readMessage(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(logMessage_);
-                                logMessage_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00000400;
-                            break;
-                        }
-                        case 74: {
-                            org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00000800) == 0x00000800)) {
-                                subBuilder = valueMetric_.toBuilder();
-                            }
-                            valueMetric_ = input.readMessage(org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(valueMetric_);
-                                valueMetric_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00000800;
-                            break;
-                        }
-                        case 82: {
-                            org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00001000) == 0x00001000)) {
-                                subBuilder = counterEvent_.toBuilder();
-                            }
-                            counterEvent_ = input.readMessage(org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(counterEvent_);
-                                counterEvent_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00001000;
-                            break;
-                        }
-                        case 90: {
-                            org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                                subBuilder = error_.toBuilder();
-                            }
-                            error_ = input.readMessage(org.cloudfoundry.dropsonde.events.ErrorFactory.Error.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(error_);
-                                error_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00002000;
-                            break;
-                        }
-                        case 98: {
-                            org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder subBuilder = null;
-                            if (((bitField0_ & 0x00004000) == 0x00004000)) {
-                                subBuilder = containerMetric_.toBuilder();
-                            }
-                            containerMetric_ = input.readMessage(org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.PARSER, extensionRegistry);
-                            if (subBuilder != null) {
-                                subBuilder.mergeFrom(containerMetric_);
-                                containerMetric_ = subBuilder.buildPartial();
-                            }
-                            bitField0_ |= 0x00004000;
-                            break;
-                        }
-                        case 106: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000008;
-                            deployment_ = bs;
-                            break;
-                        }
-                        case 114: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000010;
-                            job_ = bs;
-                            break;
-                        }
-                        case 122: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000020;
-                            index_ = bs;
-                            break;
-                        }
-                        case 130: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000040;
-                            ip_ = bs;
-                            break;
-                        }
-                    }
-                }
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                throw e.setUnfinishedMessage(this);
-            } catch (java.io.IOException e) {
-                throw new com.google.protobuf.InvalidProtocolBufferException(
-                        e.getMessage()).setUnfinishedMessage(this);
-            } finally {
-                this.unknownFields = unknownFields.build();
-                makeExtensionsImmutable();
-            }
-        }
-
-        public static Envelope getDefaultInstance() {
-            return defaultInstance;
-        }
-
-        public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-            return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_descriptor;
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
-                com.google.protobuf.ByteString data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
-                com.google.protobuf.ByteString data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(byte[] data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
-                byte[] data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(java.io.InputStream input)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
-                java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseDelimitedFrom(java.io.InputStream input)
-                throws java.io.IOException {
-            return PARSER.parseDelimitedFrom(input);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseDelimitedFrom(
-                java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws java.io.IOException {
-            return PARSER.parseDelimitedFrom(input, extensionRegistry);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
-                com.google.protobuf.CodedInputStream input)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
-                com.google.protobuf.CodedInputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static Builder newBuilder() {
-            return Builder.create();
-        }
-
-        public static Builder newBuilder(org.cloudfoundry.dropsonde.events.EventFactory.Envelope prototype) {
-            return newBuilder().mergeFrom(prototype);
-        }
-
-        public Envelope getDefaultInstanceForType() {
-            return defaultInstance;
-        }
-
-        @java.lang.Override
-        public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-            return this.unknownFields;
-        }
-
-        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-            return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_fieldAccessorTable
-                    .ensureFieldAccessorsInitialized(
-                            org.cloudfoundry.dropsonde.events.EventFactory.Envelope.class, org.cloudfoundry.dropsonde.events.EventFactory.Envelope.Builder.class);
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Parser<Envelope> getParserForType() {
-            return PARSER;
-        }
-
-        /**
-         * <code>required string origin = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Unique description of the origin of this event.
-         * </pre>
-         */
-        public boolean hasOrigin() {
-            return ((bitField0_ & 0x00000001) == 0x00000001);
-        }
-
-        /**
-         * <code>required string origin = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Unique description of the origin of this event.
-         * </pre>
-         */
-        public java.lang.String getOrigin() {
-            java.lang.Object ref = origin_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    origin_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>required string origin = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Unique description of the origin of this event.
-         * </pre>
-         */
-        public com.google.protobuf.ByteString
-        getOriginBytes() {
-            java.lang.Object ref = origin_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b =
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                                (java.lang.String) ref);
-                origin_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        /**
-         * <code>required .events.Envelope.EventType eventType = 2;</code>
-         * <p>
-         * <pre>
-         * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
-         * </pre>
-         */
-        public boolean hasEventType() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
-        }
-
-        /**
-         * <code>required .events.Envelope.EventType eventType = 2;</code>
-         * <p>
-         * <pre>
-         * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
-         * </pre>
-         */
-        public org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType getEventType() {
-            return eventType_;
-        }
-
-        /**
-         * <code>optional int64 timestamp = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
-         * </pre>
-         */
-        public boolean hasTimestamp() {
-            return ((bitField0_ & 0x00000004) == 0x00000004);
-        }
-
-        /**
-         * <code>optional int64 timestamp = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
-         * </pre>
-         */
-        public long getTimestamp() {
-            return timestamp_;
-        }
-
-        /**
-         * <code>optional string deployment = 13;</code>
-         * <p>
-         * <pre>
-         * &#47; Deployment name (used to uniquely identify source).
-         * </pre>
-         */
-        public boolean hasDeployment() {
-            return ((bitField0_ & 0x00000008) == 0x00000008);
-        }
-
-        /**
-         * <code>optional string deployment = 13;</code>
-         * <p>
-         * <pre>
-         * &#47; Deployment name (used to uniquely identify source).
-         * </pre>
-         */
-        public java.lang.String getDeployment() {
-            java.lang.Object ref = deployment_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    deployment_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string deployment = 13;</code>
-         * <p>
-         * <pre>
-         * &#47; Deployment name (used to uniquely identify source).
-         * </pre>
-         */
-        public com.google.protobuf.ByteString
-        getDeploymentBytes() {
-            java.lang.Object ref = deployment_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b =
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                                (java.lang.String) ref);
-                deployment_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        /**
-         * <code>optional string job = 14;</code>
-         * <p>
-         * <pre>
-         * &#47; Job name (used to uniquely identify source).
-         * </pre>
-         */
-        public boolean hasJob() {
-            return ((bitField0_ & 0x00000010) == 0x00000010);
-        }
-
-        /**
-         * <code>optional string job = 14;</code>
-         * <p>
-         * <pre>
-         * &#47; Job name (used to uniquely identify source).
-         * </pre>
-         */
-        public java.lang.String getJob() {
-            java.lang.Object ref = job_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    job_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string job = 14;</code>
-         * <p>
-         * <pre>
-         * &#47; Job name (used to uniquely identify source).
-         * </pre>
-         */
-        public com.google.protobuf.ByteString
-        getJobBytes() {
-            java.lang.Object ref = job_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b =
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                                (java.lang.String) ref);
-                job_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        /**
-         * <code>optional string index = 15;</code>
-         * <p>
-         * <pre>
-         * &#47; Index of job (used to uniquely identify source).
-         * </pre>
-         */
-        public boolean hasIndex() {
-            return ((bitField0_ & 0x00000020) == 0x00000020);
-        }
-
-        /**
-         * <code>optional string index = 15;</code>
-         * <p>
-         * <pre>
-         * &#47; Index of job (used to uniquely identify source).
-         * </pre>
-         */
-        public java.lang.String getIndex() {
-            java.lang.Object ref = index_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    index_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string index = 15;</code>
-         * <p>
-         * <pre>
-         * &#47; Index of job (used to uniquely identify source).
-         * </pre>
-         */
-        public com.google.protobuf.ByteString
-        getIndexBytes() {
-            java.lang.Object ref = index_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b =
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                                (java.lang.String) ref);
-                index_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        /**
-         * <code>optional string ip = 16;</code>
-         * <p>
-         * <pre>
-         * &#47; IP address (used to uniquely identify source).
-         * </pre>
-         */
-        public boolean hasIp() {
-            return ((bitField0_ & 0x00000040) == 0x00000040);
-        }
-
-        /**
-         * <code>optional string ip = 16;</code>
-         * <p>
-         * <pre>
-         * &#47; IP address (used to uniquely identify source).
-         * </pre>
-         */
-        public java.lang.String getIp() {
-            java.lang.Object ref = ip_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    ip_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string ip = 16;</code>
-         * <p>
-         * <pre>
-         * &#47; IP address (used to uniquely identify source).
-         * </pre>
-         */
-        public com.google.protobuf.ByteString
-        getIpBytes() {
-            java.lang.Object ref = ip_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b =
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                                (java.lang.String) ref);
-                ip_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        /**
-         * <code>optional .events.HttpStart httpStart = 4;</code>
-         * <p>
-         * <pre>
-         * Removed Heartbeat at position 3
-         * </pre>
-         */
-        public boolean hasHttpStart() {
-            return ((bitField0_ & 0x00000080) == 0x00000080);
-        }
-
-        /**
-         * <code>optional .events.HttpStart httpStart = 4;</code>
-         * <p>
-         * <pre>
-         * Removed Heartbeat at position 3
-         * </pre>
-         */
-        public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart getHttpStart() {
-            return httpStart_;
-        }
-
-        /**
-         * <code>optional .events.HttpStart httpStart = 4;</code>
-         * <p>
-         * <pre>
-         * Removed Heartbeat at position 3
-         * </pre>
-         */
-        public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder getHttpStartOrBuilder() {
-            return httpStart_;
-        }
-
-        /**
-         * <code>optional .events.HttpStop httpStop = 5;</code>
-         */
-        public boolean hasHttpStop() {
-            return ((bitField0_ & 0x00000100) == 0x00000100);
-        }
-
-        /**
-         * <code>optional .events.HttpStop httpStop = 5;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop getHttpStop() {
-            return httpStop_;
-        }
-
-        /**
-         * <code>optional .events.HttpStop httpStop = 5;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder getHttpStopOrBuilder() {
-            return httpStop_;
-        }
-
-        /**
-         * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-         */
-        public boolean hasHttpStartStop() {
-            return ((bitField0_ & 0x00000200) == 0x00000200);
-        }
-
-        /**
-         * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop getHttpStartStop() {
-            return httpStartStop_;
-        }
-
-        /**
-         * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder getHttpStartStopOrBuilder() {
-            return httpStartStop_;
-        }
-
-        /**
-         * <code>optional .events.LogMessage logMessage = 8;</code>
-         */
-        public boolean hasLogMessage() {
-            return ((bitField0_ & 0x00000400) == 0x00000400);
-        }
-
-        /**
-         * <code>optional .events.LogMessage logMessage = 8;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage getLogMessage() {
-            return logMessage_;
-        }
-
-        /**
-         * <code>optional .events.LogMessage logMessage = 8;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder getLogMessageOrBuilder() {
-            return logMessage_;
-        }
-
-        /**
-         * <code>optional .events.ValueMetric valueMetric = 9;</code>
-         */
-        public boolean hasValueMetric() {
-            return ((bitField0_ & 0x00000800) == 0x00000800);
-        }
-
-        /**
-         * <code>optional .events.ValueMetric valueMetric = 9;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric getValueMetric() {
-            return valueMetric_;
-        }
-
-        /**
-         * <code>optional .events.ValueMetric valueMetric = 9;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder getValueMetricOrBuilder() {
-            return valueMetric_;
-        }
-
-        /**
-         * <code>optional .events.CounterEvent counterEvent = 10;</code>
-         */
-        public boolean hasCounterEvent() {
-            return ((bitField0_ & 0x00001000) == 0x00001000);
-        }
-
-        /**
-         * <code>optional .events.CounterEvent counterEvent = 10;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent getCounterEvent() {
-            return counterEvent_;
-        }
-
-        /**
-         * <code>optional .events.CounterEvent counterEvent = 10;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder getCounterEventOrBuilder() {
-            return counterEvent_;
-        }
-
-        /**
-         * <code>optional .events.Error error = 11;</code>
-         */
-        public boolean hasError() {
-            return ((bitField0_ & 0x00002000) == 0x00002000);
-        }
-
-        /**
-         * <code>optional .events.Error error = 11;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.ErrorFactory.Error getError() {
-            return error_;
-        }
-
-        /**
-         * <code>optional .events.Error error = 11;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder getErrorOrBuilder() {
-            return error_;
-        }
-
-        /**
-         * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-         */
-        public boolean hasContainerMetric() {
-            return ((bitField0_ & 0x00004000) == 0x00004000);
-        }
-
-        /**
-         * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric getContainerMetric() {
-            return containerMetric_;
-        }
-
-        /**
-         * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-         */
-        public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder getContainerMetricOrBuilder() {
-            return containerMetric_;
-        }
-
-        private void initFields() {
-            origin_ = "";
-            eventType_ = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.HttpStart;
-            timestamp_ = 0L;
-            deployment_ = "";
-            job_ = "";
-            index_ = "";
-            ip_ = "";
-            httpStart_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance();
-            httpStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance();
-            httpStartStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance();
-            logMessage_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
-            valueMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance();
-            counterEvent_ = org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance();
-            error_ = org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance();
-            containerMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance();
-        }
-
-        public final boolean isInitialized() {
-            byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1) return true;
-            if (isInitialized == 0) return false;
-
-            if (!hasOrigin()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasEventType()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (hasHttpStart()) {
-                if (!getHttpStart().isInitialized()) {
-                    memoizedIsInitialized = 0;
-                    return false;
-                }
-            }
-            if (hasHttpStop()) {
-                if (!getHttpStop().isInitialized()) {
-                    memoizedIsInitialized = 0;
-                    return false;
-                }
-            }
-            if (hasHttpStartStop()) {
-                if (!getHttpStartStop().isInitialized()) {
-                    memoizedIsInitialized = 0;
-                    return false;
-                }
-            }
-            if (hasLogMessage()) {
-                if (!getLogMessage().isInitialized()) {
-                    memoizedIsInitialized = 0;
-                    return false;
-                }
-            }
-            if (hasValueMetric()) {
-                if (!getValueMetric().isInitialized()) {
-                    memoizedIsInitialized = 0;
-                    return false;
-                }
-            }
-            if (hasCounterEvent()) {
-                if (!getCounterEvent().isInitialized()) {
-                    memoizedIsInitialized = 0;
-                    return false;
-                }
-            }
-            if (hasError()) {
-                if (!getError().isInitialized()) {
-                    memoizedIsInitialized = 0;
-                    return false;
-                }
-            }
-            if (hasContainerMetric()) {
-                if (!getContainerMetric().isInitialized()) {
-                    memoizedIsInitialized = 0;
-                    return false;
-                }
-            }
-            memoizedIsInitialized = 1;
-            return true;
-        }
-
-        public void writeTo(com.google.protobuf.CodedOutputStream output)
-                throws java.io.IOException {
-            getSerializedSize();
-            if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeBytes(1, getOriginBytes());
-            }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeEnum(2, eventType_.getNumber());
-            }
-            if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                output.writeMessage(4, httpStart_);
-            }
-            if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                output.writeMessage(5, httpStop_);
-            }
-            if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeInt64(6, timestamp_);
-            }
-            if (((bitField0_ & 0x00000200) == 0x00000200)) {
-                output.writeMessage(7, httpStartStop_);
-            }
-            if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                output.writeMessage(8, logMessage_);
-            }
-            if (((bitField0_ & 0x00000800) == 0x00000800)) {
-                output.writeMessage(9, valueMetric_);
-            }
-            if (((bitField0_ & 0x00001000) == 0x00001000)) {
-                output.writeMessage(10, counterEvent_);
-            }
-            if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                output.writeMessage(11, error_);
-            }
-            if (((bitField0_ & 0x00004000) == 0x00004000)) {
-                output.writeMessage(12, containerMetric_);
-            }
-            if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                output.writeBytes(13, getDeploymentBytes());
-            }
-            if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                output.writeBytes(14, getJobBytes());
-            }
-            if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                output.writeBytes(15, getIndexBytes());
-            }
-            if (((bitField0_ & 0x00000040) == 0x00000040)) {
-                output.writeBytes(16, getIpBytes());
-            }
-            getUnknownFields().writeTo(output);
-        }
-
-        public int getSerializedSize() {
-            int size = memoizedSerializedSize;
-            if (size != -1) return size;
-
-            size = 0;
-            if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(1, getOriginBytes());
-            }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeEnumSize(2, eventType_.getNumber());
-            }
-            if (((bitField0_ & 0x00000080) == 0x00000080)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeMessageSize(4, httpStart_);
-            }
-            if (((bitField0_ & 0x00000100) == 0x00000100)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeMessageSize(5, httpStop_);
-            }
-            if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeInt64Size(6, timestamp_);
-            }
-            if (((bitField0_ & 0x00000200) == 0x00000200)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeMessageSize(7, httpStartStop_);
-            }
-            if (((bitField0_ & 0x00000400) == 0x00000400)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeMessageSize(8, logMessage_);
-            }
-            if (((bitField0_ & 0x00000800) == 0x00000800)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeMessageSize(9, valueMetric_);
-            }
-            if (((bitField0_ & 0x00001000) == 0x00001000)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeMessageSize(10, counterEvent_);
-            }
-            if (((bitField0_ & 0x00002000) == 0x00002000)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeMessageSize(11, error_);
-            }
-            if (((bitField0_ & 0x00004000) == 0x00004000)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeMessageSize(12, containerMetric_);
-            }
-            if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(13, getDeploymentBytes());
-            }
-            if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(14, getJobBytes());
-            }
-            if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(15, getIndexBytes());
-            }
-            if (((bitField0_ & 0x00000040) == 0x00000040)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(16, getIpBytes());
-            }
-            size += getUnknownFields().getSerializedSize();
-            memoizedSerializedSize = size;
-            return size;
-        }
-
-        @java.lang.Override
-        protected java.lang.Object writeReplace()
-                throws java.io.ObjectStreamException {
-            return super.writeReplace();
-        }
-
-        public Builder newBuilderForType() {
-            return newBuilder();
-        }
-
-        public Builder toBuilder() {
-            return newBuilder(this);
-        }
-
-        @java.lang.Override
-        protected Builder newBuilderForType(
-                com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-            Builder builder = new Builder(parent);
-            return builder;
-        }
-
-        /**
-         * Protobuf enum {@code events.Envelope.EventType}
-         * <p>
-         * <pre>
-         * &#47; Type of the wrapped event.
-         * </pre>
-         */
-        public enum EventType
-                implements com.google.protobuf.ProtocolMessageEnum {
-            /**
-             * <code>HttpStart = 2;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 1
-             * </pre>
-             */
-            HttpStart(0, 2),
-            /**
-             * <code>HttpStop = 3;</code>
-             */
-            HttpStop(1, 3),
-            /**
-             * <code>HttpStartStop = 4;</code>
-             */
-            HttpStartStop(2, 4),
-            /**
-             * <code>LogMessage = 5;</code>
-             */
-            LogMessage(3, 5),
-            /**
-             * <code>ValueMetric = 6;</code>
-             */
-            ValueMetric(4, 6),
-            /**
-             * <code>CounterEvent = 7;</code>
-             */
-            CounterEvent(5, 7),
-            /**
-             * <code>Error = 8;</code>
-             */
-            Error(6, 8),
-            /**
-             * <code>ContainerMetric = 9;</code>
-             */
-            ContainerMetric(7, 9),;
-
-            /**
-             * <code>HttpStart = 2;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 1
-             * </pre>
-             */
-            public static final int HttpStart_VALUE = 2;
-            /**
-             * <code>HttpStop = 3;</code>
-             */
-            public static final int HttpStop_VALUE = 3;
-            /**
-             * <code>HttpStartStop = 4;</code>
-             */
-            public static final int HttpStartStop_VALUE = 4;
-            /**
-             * <code>LogMessage = 5;</code>
-             */
-            public static final int LogMessage_VALUE = 5;
-            /**
-             * <code>ValueMetric = 6;</code>
-             */
-            public static final int ValueMetric_VALUE = 6;
-            /**
-             * <code>CounterEvent = 7;</code>
-             */
-            public static final int CounterEvent_VALUE = 7;
-            /**
-             * <code>Error = 8;</code>
-             */
-            public static final int Error_VALUE = 8;
-            /**
-             * <code>ContainerMetric = 9;</code>
-             */
-            public static final int ContainerMetric_VALUE = 9;
-            private static final EventType[] VALUES = values();
-            private static com.google.protobuf.Internal.EnumLiteMap<EventType>
-                    internalValueMap =
-                    new com.google.protobuf.Internal.EnumLiteMap<EventType>() {
-                        public EventType findValueByNumber(int number) {
-                            return EventType.valueOf(number);
-                        }
-                    };
-            private final int index;
-            private final int value;
-
-            private EventType(int index, int value) {
-                this.index = index;
-                this.value = value;
-            }
-
-            public static EventType valueOf(int value) {
-                switch (value) {
-                    case 2:
-                        return HttpStart;
-                    case 3:
-                        return HttpStop;
-                    case 4:
-                        return HttpStartStop;
-                    case 5:
-                        return LogMessage;
-                    case 6:
-                        return ValueMetric;
-                    case 7:
-                        return CounterEvent;
-                    case 8:
-                        return Error;
-                    case 9:
-                        return ContainerMetric;
-                    default:
-                        return null;
-                }
-            }
-
-            public static com.google.protobuf.Internal.EnumLiteMap<EventType>
-            internalGetValueMap() {
-                return internalValueMap;
-            }
-
-            public static final com.google.protobuf.Descriptors.EnumDescriptor
-            getDescriptor() {
-                return org.cloudfoundry.dropsonde.events.EventFactory.Envelope.getDescriptor().getEnumTypes().get(0);
-            }
-
-            public static EventType valueOf(
-                    com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-                if (desc.getType() != getDescriptor()) {
-                    throw new java.lang.IllegalArgumentException(
-                            "EnumValueDescriptor is not for this type.");
-                }
-                return VALUES[desc.getIndex()];
-            }
-
-            public final int getNumber() {
-                return value;
-            }
-
-            public final com.google.protobuf.Descriptors.EnumValueDescriptor
-            getValueDescriptor() {
-                return getDescriptor().getValues().get(index);
-            }
-
-            public final com.google.protobuf.Descriptors.EnumDescriptor
-            getDescriptorForType() {
-                return getDescriptor();
-            }
-
-            // @@protoc_insertion_point(enum_scope:events.Envelope.EventType)
-        }
-
-        /**
-         * Protobuf type {@code events.Envelope}
-         * <p>
-         * <pre>
-         * &#47; Envelope wraps an Event and adds metadata.
-         * </pre>
-         */
-        public static final class Builder extends
-                com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:events.Envelope)
-                org.cloudfoundry.dropsonde.events.EventFactory.EnvelopeOrBuilder {
-            private int bitField0_;
-            private java.lang.Object origin_ = "";
-            private org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType eventType_ = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.HttpStart;
-            private long timestamp_;
-            private java.lang.Object deployment_ = "";
-            private java.lang.Object job_ = "";
-            private java.lang.Object index_ = "";
-            private java.lang.Object ip_ = "";
-            private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart httpStart_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder> httpStartBuilder_;
-            private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop httpStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder> httpStopBuilder_;
-            private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop httpStartStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder> httpStartStopBuilder_;
-            private org.cloudfoundry.dropsonde.events.LogFactory.LogMessage logMessage_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.LogFactory.LogMessage, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder, org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder> logMessageBuilder_;
-            private org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric valueMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder> valueMetricBuilder_;
-            private org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent counterEvent_ = org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder> counterEventBuilder_;
-            private org.cloudfoundry.dropsonde.events.ErrorFactory.Error error_ = org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.ErrorFactory.Error, org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder, org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder> errorBuilder_;
-            private org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric containerMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance();
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder> containerMetricBuilder_;
-
-            // Construct using org.cloudfoundry.dropsonde.events.EventFactory.Envelope.newBuilder()
-            private Builder() {
-                maybeForceBuilderInitialization();
-            }
-
-            private Builder(
-                    com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-                super(parent);
-                maybeForceBuilderInitialization();
-            }
-
-            public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-                return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_descriptor;
-            }
-
-            private static Builder create() {
-                return new Builder();
-            }
-
-            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-                return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_fieldAccessorTable
-                        .ensureFieldAccessorsInitialized(
-                                org.cloudfoundry.dropsonde.events.EventFactory.Envelope.class, org.cloudfoundry.dropsonde.events.EventFactory.Envelope.Builder.class);
-            }
-
-            private void maybeForceBuilderInitialization() {
-                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-                    getHttpStartFieldBuilder();
-                    getHttpStopFieldBuilder();
-                    getHttpStartStopFieldBuilder();
-                    getLogMessageFieldBuilder();
-                    getValueMetricFieldBuilder();
-                    getCounterEventFieldBuilder();
-                    getErrorFieldBuilder();
-                    getContainerMetricFieldBuilder();
-                }
-            }
-
-            public Builder clear() {
-                super.clear();
-                origin_ = "";
-                bitField0_ = (bitField0_ & ~0x00000001);
-                eventType_ = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.HttpStart;
-                bitField0_ = (bitField0_ & ~0x00000002);
-                timestamp_ = 0L;
-                bitField0_ = (bitField0_ & ~0x00000004);
-                deployment_ = "";
-                bitField0_ = (bitField0_ & ~0x00000008);
-                job_ = "";
-                bitField0_ = (bitField0_ & ~0x00000010);
-                index_ = "";
-                bitField0_ = (bitField0_ & ~0x00000020);
-                ip_ = "";
-                bitField0_ = (bitField0_ & ~0x00000040);
-                if (httpStartBuilder_ == null) {
-                    httpStart_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance();
-                } else {
-                    httpStartBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000080);
-                if (httpStopBuilder_ == null) {
-                    httpStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance();
-                } else {
-                    httpStopBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000100);
-                if (httpStartStopBuilder_ == null) {
-                    httpStartStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance();
-                } else {
-                    httpStartStopBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000200);
-                if (logMessageBuilder_ == null) {
-                    logMessage_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
-                } else {
-                    logMessageBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000400);
-                if (valueMetricBuilder_ == null) {
-                    valueMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance();
-                } else {
-                    valueMetricBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000800);
-                if (counterEventBuilder_ == null) {
-                    counterEvent_ = org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance();
-                } else {
-                    counterEventBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00001000);
-                if (errorBuilder_ == null) {
-                    error_ = org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance();
-                } else {
-                    errorBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00002000);
-                if (containerMetricBuilder_ == null) {
-                    containerMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance();
-                } else {
-                    containerMetricBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00004000);
-                return this;
-            }
-
-            public Builder clone() {
-                return create().mergeFrom(buildPartial());
-            }
-
-            public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-                return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_descriptor;
-            }
-
-            public org.cloudfoundry.dropsonde.events.EventFactory.Envelope getDefaultInstanceForType() {
-                return org.cloudfoundry.dropsonde.events.EventFactory.Envelope.getDefaultInstance();
-            }
-
-            public org.cloudfoundry.dropsonde.events.EventFactory.Envelope build() {
-                org.cloudfoundry.dropsonde.events.EventFactory.Envelope result = buildPartial();
-                if (!result.isInitialized()) {
-                    throw newUninitializedMessageException(result);
-                }
-                return result;
-            }
-
-            public org.cloudfoundry.dropsonde.events.EventFactory.Envelope buildPartial() {
-                org.cloudfoundry.dropsonde.events.EventFactory.Envelope result = new org.cloudfoundry.dropsonde.events.EventFactory.Envelope(this);
-                int from_bitField0_ = bitField0_;
-                int to_bitField0_ = 0;
-                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-                    to_bitField0_ |= 0x00000001;
-                }
-                result.origin_ = origin_;
-                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-                    to_bitField0_ |= 0x00000002;
-                }
-                result.eventType_ = eventType_;
-                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-                    to_bitField0_ |= 0x00000004;
-                }
-                result.timestamp_ = timestamp_;
-                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-                    to_bitField0_ |= 0x00000008;
-                }
-                result.deployment_ = deployment_;
-                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-                    to_bitField0_ |= 0x00000010;
-                }
-                result.job_ = job_;
-                if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-                    to_bitField0_ |= 0x00000020;
-                }
-                result.index_ = index_;
-                if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-                    to_bitField0_ |= 0x00000040;
-                }
-                result.ip_ = ip_;
-                if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-                    to_bitField0_ |= 0x00000080;
-                }
-                if (httpStartBuilder_ == null) {
-                    result.httpStart_ = httpStart_;
-                } else {
-                    result.httpStart_ = httpStartBuilder_.build();
-                }
-                if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
-                    to_bitField0_ |= 0x00000100;
-                }
-                if (httpStopBuilder_ == null) {
-                    result.httpStop_ = httpStop_;
-                } else {
-                    result.httpStop_ = httpStopBuilder_.build();
-                }
-                if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
-                    to_bitField0_ |= 0x00000200;
-                }
-                if (httpStartStopBuilder_ == null) {
-                    result.httpStartStop_ = httpStartStop_;
-                } else {
-                    result.httpStartStop_ = httpStartStopBuilder_.build();
-                }
-                if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
-                    to_bitField0_ |= 0x00000400;
-                }
-                if (logMessageBuilder_ == null) {
-                    result.logMessage_ = logMessage_;
-                } else {
-                    result.logMessage_ = logMessageBuilder_.build();
-                }
-                if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
-                    to_bitField0_ |= 0x00000800;
-                }
-                if (valueMetricBuilder_ == null) {
-                    result.valueMetric_ = valueMetric_;
-                } else {
-                    result.valueMetric_ = valueMetricBuilder_.build();
-                }
-                if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
-                    to_bitField0_ |= 0x00001000;
-                }
-                if (counterEventBuilder_ == null) {
-                    result.counterEvent_ = counterEvent_;
-                } else {
-                    result.counterEvent_ = counterEventBuilder_.build();
-                }
-                if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
-                    to_bitField0_ |= 0x00002000;
-                }
-                if (errorBuilder_ == null) {
-                    result.error_ = error_;
-                } else {
-                    result.error_ = errorBuilder_.build();
-                }
-                if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
-                    to_bitField0_ |= 0x00004000;
-                }
-                if (containerMetricBuilder_ == null) {
-                    result.containerMetric_ = containerMetric_;
-                } else {
-                    result.containerMetric_ = containerMetricBuilder_.build();
-                }
-                result.bitField0_ = to_bitField0_;
-                onBuilt();
-                return result;
-            }
-
-            public Builder mergeFrom(com.google.protobuf.Message other) {
-                if (other instanceof org.cloudfoundry.dropsonde.events.EventFactory.Envelope) {
-                    return mergeFrom((org.cloudfoundry.dropsonde.events.EventFactory.Envelope) other);
-                } else {
-                    super.mergeFrom(other);
-                    return this;
-                }
-            }
-
-            public Builder mergeFrom(org.cloudfoundry.dropsonde.events.EventFactory.Envelope other) {
-                if (other == org.cloudfoundry.dropsonde.events.EventFactory.Envelope.getDefaultInstance()) return this;
-                if (other.hasOrigin()) {
-                    bitField0_ |= 0x00000001;
-                    origin_ = other.origin_;
-                    onChanged();
-                }
-                if (other.hasEventType()) {
-                    setEventType(other.getEventType());
-                }
-                if (other.hasTimestamp()) {
-                    setTimestamp(other.getTimestamp());
-                }
-                if (other.hasDeployment()) {
-                    bitField0_ |= 0x00000008;
-                    deployment_ = other.deployment_;
-                    onChanged();
-                }
-                if (other.hasJob()) {
-                    bitField0_ |= 0x00000010;
-                    job_ = other.job_;
-                    onChanged();
-                }
-                if (other.hasIndex()) {
-                    bitField0_ |= 0x00000020;
-                    index_ = other.index_;
-                    onChanged();
-                }
-                if (other.hasIp()) {
-                    bitField0_ |= 0x00000040;
-                    ip_ = other.ip_;
-                    onChanged();
-                }
-                if (other.hasHttpStart()) {
-                    mergeHttpStart(other.getHttpStart());
-                }
-                if (other.hasHttpStop()) {
-                    mergeHttpStop(other.getHttpStop());
-                }
-                if (other.hasHttpStartStop()) {
-                    mergeHttpStartStop(other.getHttpStartStop());
-                }
-                if (other.hasLogMessage()) {
-                    mergeLogMessage(other.getLogMessage());
-                }
-                if (other.hasValueMetric()) {
-                    mergeValueMetric(other.getValueMetric());
-                }
-                if (other.hasCounterEvent()) {
-                    mergeCounterEvent(other.getCounterEvent());
-                }
-                if (other.hasError()) {
-                    mergeError(other.getError());
-                }
-                if (other.hasContainerMetric()) {
-                    mergeContainerMetric(other.getContainerMetric());
-                }
-                this.mergeUnknownFields(other.getUnknownFields());
-                return this;
-            }
-
-            public final boolean isInitialized() {
-                if (!hasOrigin()) {
-
-                    return false;
-                }
-                if (!hasEventType()) {
-
-                    return false;
-                }
-                if (hasHttpStart()) {
-                    if (!getHttpStart().isInitialized()) {
-
-                        return false;
-                    }
-                }
-                if (hasHttpStop()) {
-                    if (!getHttpStop().isInitialized()) {
-
-                        return false;
-                    }
-                }
-                if (hasHttpStartStop()) {
-                    if (!getHttpStartStop().isInitialized()) {
-
-                        return false;
-                    }
-                }
-                if (hasLogMessage()) {
-                    if (!getLogMessage().isInitialized()) {
-
-                        return false;
-                    }
-                }
-                if (hasValueMetric()) {
-                    if (!getValueMetric().isInitialized()) {
-
-                        return false;
-                    }
-                }
-                if (hasCounterEvent()) {
-                    if (!getCounterEvent().isInitialized()) {
-
-                        return false;
-                    }
-                }
-                if (hasError()) {
-                    if (!getError().isInitialized()) {
-
-                        return false;
-                    }
-                }
-                if (hasContainerMetric()) {
-                    if (!getContainerMetric().isInitialized()) {
-
-                        return false;
-                    }
-                }
-                return true;
-            }
-
-            public Builder mergeFrom(
-                    com.google.protobuf.CodedInputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                    throws java.io.IOException {
-                org.cloudfoundry.dropsonde.events.EventFactory.Envelope parsedMessage = null;
-                try {
-                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                    parsedMessage = (org.cloudfoundry.dropsonde.events.EventFactory.Envelope) e.getUnfinishedMessage();
-                    throw e;
-                } finally {
-                    if (parsedMessage != null) {
-                        mergeFrom(parsedMessage);
-                    }
-                }
-                return this;
-            }
-
-            /**
-             * <code>required string origin = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Unique description of the origin of this event.
-             * </pre>
-             */
-            public boolean hasOrigin() {
-                return ((bitField0_ & 0x00000001) == 0x00000001);
-            }
-
-            /**
-             * <code>required string origin = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Unique description of the origin of this event.
-             * </pre>
-             */
-            public java.lang.String getOrigin() {
-                java.lang.Object ref = origin_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                            (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        origin_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>required string origin = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Unique description of the origin of this event.
-             * </pre>
-             */
-            public Builder setOrigin(
-                    java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000001;
-                origin_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required string origin = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Unique description of the origin of this event.
-             * </pre>
-             */
-            public com.google.protobuf.ByteString
-            getOriginBytes() {
-                java.lang.Object ref = origin_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b =
-                            com.google.protobuf.ByteString.copyFromUtf8(
-                                    (java.lang.String) ref);
-                    origin_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>required string origin = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Unique description of the origin of this event.
-             * </pre>
-             */
-            public Builder setOriginBytes(
-                    com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000001;
-                origin_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required string origin = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Unique description of the origin of this event.
-             * </pre>
-             */
-            public Builder clearOrigin() {
-                bitField0_ = (bitField0_ & ~0x00000001);
-                origin_ = getDefaultInstance().getOrigin();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required .events.Envelope.EventType eventType = 2;</code>
-             * <p>
-             * <pre>
-             * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
-             * </pre>
-             */
-            public boolean hasEventType() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
-            }
-
-            /**
-             * <code>required .events.Envelope.EventType eventType = 2;</code>
-             * <p>
-             * <pre>
-             * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
-             * </pre>
-             */
-            public org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType getEventType() {
-                return eventType_;
-            }
-
-            /**
-             * <code>required .events.Envelope.EventType eventType = 2;</code>
-             * <p>
-             * <pre>
-             * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
-             * </pre>
-             */
-            public Builder setEventType(org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000002;
-                eventType_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required .events.Envelope.EventType eventType = 2;</code>
-             * <p>
-             * <pre>
-             * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
-             * </pre>
-             */
-            public Builder clearEventType() {
-                bitField0_ = (bitField0_ & ~0x00000002);
-                eventType_ = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.HttpStart;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional int64 timestamp = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
-             * </pre>
-             */
-            public boolean hasTimestamp() {
-                return ((bitField0_ & 0x00000004) == 0x00000004);
-            }
-
-            /**
-             * <code>optional int64 timestamp = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
-             * </pre>
-             */
-            public long getTimestamp() {
-                return timestamp_;
-            }
-
-            /**
-             * <code>optional int64 timestamp = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
-             * </pre>
-             */
-            public Builder setTimestamp(long value) {
-                bitField0_ |= 0x00000004;
-                timestamp_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional int64 timestamp = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
-             * </pre>
-             */
-            public Builder clearTimestamp() {
-                bitField0_ = (bitField0_ & ~0x00000004);
-                timestamp_ = 0L;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string deployment = 13;</code>
-             * <p>
-             * <pre>
-             * &#47; Deployment name (used to uniquely identify source).
-             * </pre>
-             */
-            public boolean hasDeployment() {
-                return ((bitField0_ & 0x00000008) == 0x00000008);
-            }
-
-            /**
-             * <code>optional string deployment = 13;</code>
-             * <p>
-             * <pre>
-             * &#47; Deployment name (used to uniquely identify source).
-             * </pre>
-             */
-            public java.lang.String getDeployment() {
-                java.lang.Object ref = deployment_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                            (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        deployment_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string deployment = 13;</code>
-             * <p>
-             * <pre>
-             * &#47; Deployment name (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder setDeployment(
-                    java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000008;
-                deployment_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string deployment = 13;</code>
-             * <p>
-             * <pre>
-             * &#47; Deployment name (used to uniquely identify source).
-             * </pre>
-             */
-            public com.google.protobuf.ByteString
-            getDeploymentBytes() {
-                java.lang.Object ref = deployment_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b =
-                            com.google.protobuf.ByteString.copyFromUtf8(
-                                    (java.lang.String) ref);
-                    deployment_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string deployment = 13;</code>
-             * <p>
-             * <pre>
-             * &#47; Deployment name (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder setDeploymentBytes(
-                    com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000008;
-                deployment_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string deployment = 13;</code>
-             * <p>
-             * <pre>
-             * &#47; Deployment name (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder clearDeployment() {
-                bitField0_ = (bitField0_ & ~0x00000008);
-                deployment_ = getDefaultInstance().getDeployment();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string job = 14;</code>
-             * <p>
-             * <pre>
-             * &#47; Job name (used to uniquely identify source).
-             * </pre>
-             */
-            public boolean hasJob() {
-                return ((bitField0_ & 0x00000010) == 0x00000010);
-            }
-
-            /**
-             * <code>optional string job = 14;</code>
-             * <p>
-             * <pre>
-             * &#47; Job name (used to uniquely identify source).
-             * </pre>
-             */
-            public java.lang.String getJob() {
-                java.lang.Object ref = job_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                            (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        job_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string job = 14;</code>
-             * <p>
-             * <pre>
-             * &#47; Job name (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder setJob(
-                    java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000010;
-                job_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string job = 14;</code>
-             * <p>
-             * <pre>
-             * &#47; Job name (used to uniquely identify source).
-             * </pre>
-             */
-            public com.google.protobuf.ByteString
-            getJobBytes() {
-                java.lang.Object ref = job_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b =
-                            com.google.protobuf.ByteString.copyFromUtf8(
-                                    (java.lang.String) ref);
-                    job_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string job = 14;</code>
-             * <p>
-             * <pre>
-             * &#47; Job name (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder setJobBytes(
-                    com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000010;
-                job_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string job = 14;</code>
-             * <p>
-             * <pre>
-             * &#47; Job name (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder clearJob() {
-                bitField0_ = (bitField0_ & ~0x00000010);
-                job_ = getDefaultInstance().getJob();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string index = 15;</code>
-             * <p>
-             * <pre>
-             * &#47; Index of job (used to uniquely identify source).
-             * </pre>
-             */
-            public boolean hasIndex() {
-                return ((bitField0_ & 0x00000020) == 0x00000020);
-            }
-
-            /**
-             * <code>optional string index = 15;</code>
-             * <p>
-             * <pre>
-             * &#47; Index of job (used to uniquely identify source).
-             * </pre>
-             */
-            public java.lang.String getIndex() {
-                java.lang.Object ref = index_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                            (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        index_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string index = 15;</code>
-             * <p>
-             * <pre>
-             * &#47; Index of job (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder setIndex(
-                    java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000020;
-                index_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string index = 15;</code>
-             * <p>
-             * <pre>
-             * &#47; Index of job (used to uniquely identify source).
-             * </pre>
-             */
-            public com.google.protobuf.ByteString
-            getIndexBytes() {
-                java.lang.Object ref = index_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b =
-                            com.google.protobuf.ByteString.copyFromUtf8(
-                                    (java.lang.String) ref);
-                    index_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string index = 15;</code>
-             * <p>
-             * <pre>
-             * &#47; Index of job (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder setIndexBytes(
-                    com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000020;
-                index_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string index = 15;</code>
-             * <p>
-             * <pre>
-             * &#47; Index of job (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder clearIndex() {
-                bitField0_ = (bitField0_ & ~0x00000020);
-                index_ = getDefaultInstance().getIndex();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string ip = 16;</code>
-             * <p>
-             * <pre>
-             * &#47; IP address (used to uniquely identify source).
-             * </pre>
-             */
-            public boolean hasIp() {
-                return ((bitField0_ & 0x00000040) == 0x00000040);
-            }
-
-            /**
-             * <code>optional string ip = 16;</code>
-             * <p>
-             * <pre>
-             * &#47; IP address (used to uniquely identify source).
-             * </pre>
-             */
-            public java.lang.String getIp() {
-                java.lang.Object ref = ip_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                            (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        ip_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string ip = 16;</code>
-             * <p>
-             * <pre>
-             * &#47; IP address (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder setIp(
-                    java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000040;
-                ip_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string ip = 16;</code>
-             * <p>
-             * <pre>
-             * &#47; IP address (used to uniquely identify source).
-             * </pre>
-             */
-            public com.google.protobuf.ByteString
-            getIpBytes() {
-                java.lang.Object ref = ip_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b =
-                            com.google.protobuf.ByteString.copyFromUtf8(
-                                    (java.lang.String) ref);
-                    ip_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string ip = 16;</code>
-             * <p>
-             * <pre>
-             * &#47; IP address (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder setIpBytes(
-                    com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000040;
-                ip_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string ip = 16;</code>
-             * <p>
-             * <pre>
-             * &#47; IP address (used to uniquely identify source).
-             * </pre>
-             */
-            public Builder clearIp() {
-                bitField0_ = (bitField0_ & ~0x00000040);
-                ip_ = getDefaultInstance().getIp();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            public boolean hasHttpStart() {
-                return ((bitField0_ & 0x00000080) == 0x00000080);
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart getHttpStart() {
-                if (httpStartBuilder_ == null) {
-                    return httpStart_;
-                } else {
-                    return httpStartBuilder_.getMessage();
-                }
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            public Builder setHttpStart(
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder builderForValue) {
-                if (httpStartBuilder_ == null) {
-                    httpStart_ = builderForValue.build();
-                    onChanged();
-                } else {
-                    httpStartBuilder_.setMessage(builderForValue.build());
-                }
-                bitField0_ |= 0x00000080;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            public Builder setHttpStart(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart value) {
-                if (httpStartBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    httpStart_ = value;
-                    onChanged();
-                } else {
-                    httpStartBuilder_.setMessage(value);
-                }
-                bitField0_ |= 0x00000080;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            public Builder mergeHttpStart(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart value) {
-                if (httpStartBuilder_ == null) {
-                    if (((bitField0_ & 0x00000080) == 0x00000080) &&
-                            httpStart_ != org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance()) {
-                        httpStart_ =
-                                org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.newBuilder(httpStart_).mergeFrom(value).buildPartial();
-                    } else {
-                        httpStart_ = value;
-                    }
-                    onChanged();
-                } else {
-                    httpStartBuilder_.mergeFrom(value);
-                }
-                bitField0_ |= 0x00000080;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            public Builder clearHttpStart() {
-                if (httpStartBuilder_ == null) {
-                    httpStart_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance();
-                    onChanged();
-                } else {
-                    httpStartBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000080);
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder getHttpStartBuilder() {
-                bitField0_ |= 0x00000080;
-                onChanged();
-                return getHttpStartFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder getHttpStartOrBuilder() {
-                if (httpStartBuilder_ != null) {
-                    return httpStartBuilder_.getMessageOrBuilder();
-                } else {
-                    return httpStart_;
-                }
-            }
-
-            /**
-             * <code>optional .events.HttpStart httpStart = 4;</code>
-             * <p>
-             * <pre>
-             * Removed Heartbeat at position 3
-             * </pre>
-             */
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder>
-            getHttpStartFieldBuilder() {
-                if (httpStartBuilder_ == null) {
-                    httpStartBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                            org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder>(
-                            getHttpStart(),
-                            getParentForChildren(),
-                            isClean());
-                    httpStart_ = null;
-                }
-                return httpStartBuilder_;
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            public boolean hasHttpStop() {
-                return ((bitField0_ & 0x00000100) == 0x00000100);
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop getHttpStop() {
-                if (httpStopBuilder_ == null) {
-                    return httpStop_;
-                } else {
-                    return httpStopBuilder_.getMessage();
-                }
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            public Builder setHttpStop(
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder builderForValue) {
-                if (httpStopBuilder_ == null) {
-                    httpStop_ = builderForValue.build();
-                    onChanged();
-                } else {
-                    httpStopBuilder_.setMessage(builderForValue.build());
-                }
-                bitField0_ |= 0x00000100;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            public Builder setHttpStop(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop value) {
-                if (httpStopBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    httpStop_ = value;
-                    onChanged();
-                } else {
-                    httpStopBuilder_.setMessage(value);
-                }
-                bitField0_ |= 0x00000100;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            public Builder mergeHttpStop(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop value) {
-                if (httpStopBuilder_ == null) {
-                    if (((bitField0_ & 0x00000100) == 0x00000100) &&
-                            httpStop_ != org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance()) {
-                        httpStop_ =
-                                org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.newBuilder(httpStop_).mergeFrom(value).buildPartial();
-                    } else {
-                        httpStop_ = value;
-                    }
-                    onChanged();
-                } else {
-                    httpStopBuilder_.mergeFrom(value);
-                }
-                bitField0_ |= 0x00000100;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            public Builder clearHttpStop() {
-                if (httpStopBuilder_ == null) {
-                    httpStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance();
-                    onChanged();
-                } else {
-                    httpStopBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000100);
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder getHttpStopBuilder() {
-                bitField0_ |= 0x00000100;
-                onChanged();
-                return getHttpStopFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder getHttpStopOrBuilder() {
-                if (httpStopBuilder_ != null) {
-                    return httpStopBuilder_.getMessageOrBuilder();
-                } else {
-                    return httpStop_;
-                }
-            }
-
-            /**
-             * <code>optional .events.HttpStop httpStop = 5;</code>
-             */
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder>
-            getHttpStopFieldBuilder() {
-                if (httpStopBuilder_ == null) {
-                    httpStopBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                            org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder>(
-                            getHttpStop(),
-                            getParentForChildren(),
-                            isClean());
-                    httpStop_ = null;
-                }
-                return httpStopBuilder_;
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            public boolean hasHttpStartStop() {
-                return ((bitField0_ & 0x00000200) == 0x00000200);
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop getHttpStartStop() {
-                if (httpStartStopBuilder_ == null) {
-                    return httpStartStop_;
-                } else {
-                    return httpStartStopBuilder_.getMessage();
-                }
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            public Builder setHttpStartStop(
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder builderForValue) {
-                if (httpStartStopBuilder_ == null) {
-                    httpStartStop_ = builderForValue.build();
-                    onChanged();
-                } else {
-                    httpStartStopBuilder_.setMessage(builderForValue.build());
-                }
-                bitField0_ |= 0x00000200;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            public Builder setHttpStartStop(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop value) {
-                if (httpStartStopBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    httpStartStop_ = value;
-                    onChanged();
-                } else {
-                    httpStartStopBuilder_.setMessage(value);
-                }
-                bitField0_ |= 0x00000200;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            public Builder mergeHttpStartStop(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop value) {
-                if (httpStartStopBuilder_ == null) {
-                    if (((bitField0_ & 0x00000200) == 0x00000200) &&
-                            httpStartStop_ != org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance()) {
-                        httpStartStop_ =
-                                org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.newBuilder(httpStartStop_).mergeFrom(value).buildPartial();
-                    } else {
-                        httpStartStop_ = value;
-                    }
-                    onChanged();
-                } else {
-                    httpStartStopBuilder_.mergeFrom(value);
-                }
-                bitField0_ |= 0x00000200;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            public Builder clearHttpStartStop() {
-                if (httpStartStopBuilder_ == null) {
-                    httpStartStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance();
-                    onChanged();
-                } else {
-                    httpStartStopBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000200);
-                return this;
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder getHttpStartStopBuilder() {
-                bitField0_ |= 0x00000200;
-                onChanged();
-                return getHttpStartStopFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder getHttpStartStopOrBuilder() {
-                if (httpStartStopBuilder_ != null) {
-                    return httpStartStopBuilder_.getMessageOrBuilder();
-                } else {
-                    return httpStartStop_;
-                }
-            }
-
-            /**
-             * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
-             */
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder>
-            getHttpStartStopFieldBuilder() {
-                if (httpStartStopBuilder_ == null) {
-                    httpStartStopBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                            org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder>(
-                            getHttpStartStop(),
-                            getParentForChildren(),
-                            isClean());
-                    httpStartStop_ = null;
-                }
-                return httpStartStopBuilder_;
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            public boolean hasLogMessage() {
-                return ((bitField0_ & 0x00000400) == 0x00000400);
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage getLogMessage() {
-                if (logMessageBuilder_ == null) {
-                    return logMessage_;
-                } else {
-                    return logMessageBuilder_.getMessage();
-                }
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            public Builder setLogMessage(
-                    org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder builderForValue) {
-                if (logMessageBuilder_ == null) {
-                    logMessage_ = builderForValue.build();
-                    onChanged();
-                } else {
-                    logMessageBuilder_.setMessage(builderForValue.build());
-                }
-                bitField0_ |= 0x00000400;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            public Builder setLogMessage(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage value) {
-                if (logMessageBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    logMessage_ = value;
-                    onChanged();
-                } else {
-                    logMessageBuilder_.setMessage(value);
-                }
-                bitField0_ |= 0x00000400;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            public Builder mergeLogMessage(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage value) {
-                if (logMessageBuilder_ == null) {
-                    if (((bitField0_ & 0x00000400) == 0x00000400) &&
-                            logMessage_ != org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance()) {
-                        logMessage_ =
-                                org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.newBuilder(logMessage_).mergeFrom(value).buildPartial();
-                    } else {
-                        logMessage_ = value;
-                    }
-                    onChanged();
-                } else {
-                    logMessageBuilder_.mergeFrom(value);
-                }
-                bitField0_ |= 0x00000400;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            public Builder clearLogMessage() {
-                if (logMessageBuilder_ == null) {
-                    logMessage_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
-                    onChanged();
-                } else {
-                    logMessageBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000400);
-                return this;
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder getLogMessageBuilder() {
-                bitField0_ |= 0x00000400;
-                onChanged();
-                return getLogMessageFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder getLogMessageOrBuilder() {
-                if (logMessageBuilder_ != null) {
-                    return logMessageBuilder_.getMessageOrBuilder();
-                } else {
-                    return logMessage_;
-                }
-            }
-
-            /**
-             * <code>optional .events.LogMessage logMessage = 8;</code>
-             */
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.LogFactory.LogMessage, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder, org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder>
-            getLogMessageFieldBuilder() {
-                if (logMessageBuilder_ == null) {
-                    logMessageBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                            org.cloudfoundry.dropsonde.events.LogFactory.LogMessage, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder, org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder>(
-                            getLogMessage(),
-                            getParentForChildren(),
-                            isClean());
-                    logMessage_ = null;
-                }
-                return logMessageBuilder_;
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            public boolean hasValueMetric() {
-                return ((bitField0_ & 0x00000800) == 0x00000800);
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric getValueMetric() {
-                if (valueMetricBuilder_ == null) {
-                    return valueMetric_;
-                } else {
-                    return valueMetricBuilder_.getMessage();
-                }
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            public Builder setValueMetric(
-                    org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder builderForValue) {
-                if (valueMetricBuilder_ == null) {
-                    valueMetric_ = builderForValue.build();
-                    onChanged();
-                } else {
-                    valueMetricBuilder_.setMessage(builderForValue.build());
-                }
-                bitField0_ |= 0x00000800;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            public Builder setValueMetric(org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric value) {
-                if (valueMetricBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    valueMetric_ = value;
-                    onChanged();
-                } else {
-                    valueMetricBuilder_.setMessage(value);
-                }
-                bitField0_ |= 0x00000800;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            public Builder mergeValueMetric(org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric value) {
-                if (valueMetricBuilder_ == null) {
-                    if (((bitField0_ & 0x00000800) == 0x00000800) &&
-                            valueMetric_ != org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance()) {
-                        valueMetric_ =
-                                org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.newBuilder(valueMetric_).mergeFrom(value).buildPartial();
-                    } else {
-                        valueMetric_ = value;
-                    }
-                    onChanged();
-                } else {
-                    valueMetricBuilder_.mergeFrom(value);
-                }
-                bitField0_ |= 0x00000800;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            public Builder clearValueMetric() {
-                if (valueMetricBuilder_ == null) {
-                    valueMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance();
-                    onChanged();
-                } else {
-                    valueMetricBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00000800);
-                return this;
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder getValueMetricBuilder() {
-                bitField0_ |= 0x00000800;
-                onChanged();
-                return getValueMetricFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder getValueMetricOrBuilder() {
-                if (valueMetricBuilder_ != null) {
-                    return valueMetricBuilder_.getMessageOrBuilder();
-                } else {
-                    return valueMetric_;
-                }
-            }
-
-            /**
-             * <code>optional .events.ValueMetric valueMetric = 9;</code>
-             */
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder>
-            getValueMetricFieldBuilder() {
-                if (valueMetricBuilder_ == null) {
-                    valueMetricBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                            org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder>(
-                            getValueMetric(),
-                            getParentForChildren(),
-                            isClean());
-                    valueMetric_ = null;
-                }
-                return valueMetricBuilder_;
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            public boolean hasCounterEvent() {
-                return ((bitField0_ & 0x00001000) == 0x00001000);
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent getCounterEvent() {
-                if (counterEventBuilder_ == null) {
-                    return counterEvent_;
-                } else {
-                    return counterEventBuilder_.getMessage();
-                }
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            public Builder setCounterEvent(
-                    org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder builderForValue) {
-                if (counterEventBuilder_ == null) {
-                    counterEvent_ = builderForValue.build();
-                    onChanged();
-                } else {
-                    counterEventBuilder_.setMessage(builderForValue.build());
-                }
-                bitField0_ |= 0x00001000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            public Builder setCounterEvent(org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent value) {
-                if (counterEventBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    counterEvent_ = value;
-                    onChanged();
-                } else {
-                    counterEventBuilder_.setMessage(value);
-                }
-                bitField0_ |= 0x00001000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            public Builder mergeCounterEvent(org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent value) {
-                if (counterEventBuilder_ == null) {
-                    if (((bitField0_ & 0x00001000) == 0x00001000) &&
-                            counterEvent_ != org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance()) {
-                        counterEvent_ =
-                                org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.newBuilder(counterEvent_).mergeFrom(value).buildPartial();
-                    } else {
-                        counterEvent_ = value;
-                    }
-                    onChanged();
-                } else {
-                    counterEventBuilder_.mergeFrom(value);
-                }
-                bitField0_ |= 0x00001000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            public Builder clearCounterEvent() {
-                if (counterEventBuilder_ == null) {
-                    counterEvent_ = org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance();
-                    onChanged();
-                } else {
-                    counterEventBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00001000);
-                return this;
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder getCounterEventBuilder() {
-                bitField0_ |= 0x00001000;
-                onChanged();
-                return getCounterEventFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder getCounterEventOrBuilder() {
-                if (counterEventBuilder_ != null) {
-                    return counterEventBuilder_.getMessageOrBuilder();
-                } else {
-                    return counterEvent_;
-                }
-            }
-
-            /**
-             * <code>optional .events.CounterEvent counterEvent = 10;</code>
-             */
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder>
-            getCounterEventFieldBuilder() {
-                if (counterEventBuilder_ == null) {
-                    counterEventBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                            org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder>(
-                            getCounterEvent(),
-                            getParentForChildren(),
-                            isClean());
-                    counterEvent_ = null;
-                }
-                return counterEventBuilder_;
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            public boolean hasError() {
-                return ((bitField0_ & 0x00002000) == 0x00002000);
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.ErrorFactory.Error getError() {
-                if (errorBuilder_ == null) {
-                    return error_;
-                } else {
-                    return errorBuilder_.getMessage();
-                }
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            public Builder setError(
-                    org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder builderForValue) {
-                if (errorBuilder_ == null) {
-                    error_ = builderForValue.build();
-                    onChanged();
-                } else {
-                    errorBuilder_.setMessage(builderForValue.build());
-                }
-                bitField0_ |= 0x00002000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            public Builder setError(org.cloudfoundry.dropsonde.events.ErrorFactory.Error value) {
-                if (errorBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    error_ = value;
-                    onChanged();
-                } else {
-                    errorBuilder_.setMessage(value);
-                }
-                bitField0_ |= 0x00002000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            public Builder mergeError(org.cloudfoundry.dropsonde.events.ErrorFactory.Error value) {
-                if (errorBuilder_ == null) {
-                    if (((bitField0_ & 0x00002000) == 0x00002000) &&
-                            error_ != org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance()) {
-                        error_ =
-                                org.cloudfoundry.dropsonde.events.ErrorFactory.Error.newBuilder(error_).mergeFrom(value).buildPartial();
-                    } else {
-                        error_ = value;
-                    }
-                    onChanged();
-                } else {
-                    errorBuilder_.mergeFrom(value);
-                }
-                bitField0_ |= 0x00002000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            public Builder clearError() {
-                if (errorBuilder_ == null) {
-                    error_ = org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance();
-                    onChanged();
-                } else {
-                    errorBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00002000);
-                return this;
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder getErrorBuilder() {
-                bitField0_ |= 0x00002000;
-                onChanged();
-                return getErrorFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder getErrorOrBuilder() {
-                if (errorBuilder_ != null) {
-                    return errorBuilder_.getMessageOrBuilder();
-                } else {
-                    return error_;
-                }
-            }
-
-            /**
-             * <code>optional .events.Error error = 11;</code>
-             */
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.ErrorFactory.Error, org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder, org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder>
-            getErrorFieldBuilder() {
-                if (errorBuilder_ == null) {
-                    errorBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                            org.cloudfoundry.dropsonde.events.ErrorFactory.Error, org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder, org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder>(
-                            getError(),
-                            getParentForChildren(),
-                            isClean());
-                    error_ = null;
-                }
-                return errorBuilder_;
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            public boolean hasContainerMetric() {
-                return ((bitField0_ & 0x00004000) == 0x00004000);
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric getContainerMetric() {
-                if (containerMetricBuilder_ == null) {
-                    return containerMetric_;
-                } else {
-                    return containerMetricBuilder_.getMessage();
-                }
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            public Builder setContainerMetric(
-                    org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder builderForValue) {
-                if (containerMetricBuilder_ == null) {
-                    containerMetric_ = builderForValue.build();
-                    onChanged();
-                } else {
-                    containerMetricBuilder_.setMessage(builderForValue.build());
-                }
-                bitField0_ |= 0x00004000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            public Builder setContainerMetric(org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric value) {
-                if (containerMetricBuilder_ == null) {
-                    if (value == null) {
-                        throw new NullPointerException();
-                    }
-                    containerMetric_ = value;
-                    onChanged();
-                } else {
-                    containerMetricBuilder_.setMessage(value);
-                }
-                bitField0_ |= 0x00004000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            public Builder mergeContainerMetric(org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric value) {
-                if (containerMetricBuilder_ == null) {
-                    if (((bitField0_ & 0x00004000) == 0x00004000) &&
-                            containerMetric_ != org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance()) {
-                        containerMetric_ =
-                                org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.newBuilder(containerMetric_).mergeFrom(value).buildPartial();
-                    } else {
-                        containerMetric_ = value;
-                    }
-                    onChanged();
-                } else {
-                    containerMetricBuilder_.mergeFrom(value);
-                }
-                bitField0_ |= 0x00004000;
-                return this;
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            public Builder clearContainerMetric() {
-                if (containerMetricBuilder_ == null) {
-                    containerMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance();
-                    onChanged();
-                } else {
-                    containerMetricBuilder_.clear();
-                }
-                bitField0_ = (bitField0_ & ~0x00004000);
-                return this;
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder getContainerMetricBuilder() {
-                bitField0_ |= 0x00004000;
-                onChanged();
-                return getContainerMetricFieldBuilder().getBuilder();
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder getContainerMetricOrBuilder() {
-                if (containerMetricBuilder_ != null) {
-                    return containerMetricBuilder_.getMessageOrBuilder();
-                } else {
-                    return containerMetric_;
-                }
-            }
-
-            /**
-             * <code>optional .events.ContainerMetric containerMetric = 12;</code>
-             */
-            private com.google.protobuf.SingleFieldBuilder<
-                    org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder>
-            getContainerMetricFieldBuilder() {
-                if (containerMetricBuilder_ == null) {
-                    containerMetricBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-                            org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder>(
-                            getContainerMetric(),
-                            getParentForChildren(),
-                            isClean());
-                    containerMetric_ = null;
-                }
-                return containerMetricBuilder_;
-            }
-
-            // @@protoc_insertion_point(builder_scope:events.Envelope)
-        }
-
-        // @@protoc_insertion_point(class_scope:events.Envelope)
-    }
-
-    // @@protoc_insertion_point(outer_class_scope)
+	private static final com.google.protobuf.Descriptors.Descriptor
+			internal_static_events_Envelope_descriptor;
+
+	private static
+	com.google.protobuf.GeneratedMessage.FieldAccessorTable
+			internal_static_events_Envelope_fieldAccessorTable;
+
+	private static com.google.protobuf.Descriptors.FileDescriptor
+			descriptor;
+
+	static {
+		java.lang.String[] descriptorData = {
+				"\n\016envelope.proto\022\006events\032\nhttp.proto\032\tlo" +
+						"g.proto\032\014metric.proto\032\013error.proto\"\357\004\n\010E" +
+						"nvelope\022\016\n\006origin\030\001 \002(\t\022-\n\teventType\030\002 \002" +
+						"(\0162\032.events.Envelope.EventType\022\021\n\ttimest" +
+						"amp\030\006 \001(\003\022\022\n\ndeployment\030\r \001(\t\022\013\n\003job\030\016 \001" +
+						"(\t\022\r\n\005index\030\017 \001(\t\022\n\n\002ip\030\020 \001(\t\022$\n\thttpSta" +
+						"rt\030\004 \001(\0132\021.events.HttpStart\022\"\n\010httpStop\030" +
+						"\005 \001(\0132\020.events.HttpStop\022,\n\rhttpStartStop" +
+						"\030\007 \001(\0132\025.events.HttpStartStop\022&\n\nlogMess" +
+						"age\030\010 \001(\0132\022.events.LogMessage\022(\n\013valueMe",
+				"tric\030\t \001(\0132\023.events.ValueMetric\022*\n\014count" +
+						"erEvent\030\n \001(\0132\024.events.CounterEvent\022\034\n\005e" +
+						"rror\030\013 \001(\0132\r.events.Error\0220\n\017containerMe" +
+						"tric\030\014 \001(\0132\027.events.ContainerMetric\"\216\001\n\t" +
+						"EventType\022\r\n\tHttpStart\020\002\022\014\n\010HttpStop\020\003\022\021" +
+						"\n\rHttpStartStop\020\004\022\016\n\nLogMessage\020\005\022\017\n\013Val" +
+						"ueMetric\020\006\022\020\n\014CounterEvent\020\007\022\t\n\005Error\020\010\022" +
+						"\023\n\017ContainerMetric\020\tB1\n!org.cloudfoundry" +
+						".dropsonde.eventsB\014EventFactory"
+		};
+		com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
+				new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+					public com.google.protobuf.ExtensionRegistry assignDescriptors(
+							com.google.protobuf.Descriptors.FileDescriptor root) {
+						descriptor = root;
+						return null;
+					}
+				};
+		com.google.protobuf.Descriptors.FileDescriptor
+				.internalBuildGeneratedFileFrom(descriptorData,
+						new com.google.protobuf.Descriptors.FileDescriptor[] {
+								org.cloudfoundry.dropsonde.events.HttpFactory.getDescriptor(),
+								org.cloudfoundry.dropsonde.events.LogFactory.getDescriptor(),
+								org.cloudfoundry.dropsonde.events.MetricFactory.getDescriptor(),
+								org.cloudfoundry.dropsonde.events.ErrorFactory.getDescriptor(),
+						}, assigner);
+		internal_static_events_Envelope_descriptor =
+				getDescriptor().getMessageTypes().get(0);
+		internal_static_events_Envelope_fieldAccessorTable = new
+				com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+				internal_static_events_Envelope_descriptor,
+				new java.lang.String[] {"Origin", "EventType", "Timestamp", "Deployment", "Job", "Index", "Ip", "HttpStart", "HttpStop", "HttpStartStop", "LogMessage", "ValueMetric", "CounterEvent", "Error", "ContainerMetric",});
+		org.cloudfoundry.dropsonde.events.HttpFactory.getDescriptor();
+		org.cloudfoundry.dropsonde.events.LogFactory.getDescriptor();
+		org.cloudfoundry.dropsonde.events.MetricFactory.getDescriptor();
+		org.cloudfoundry.dropsonde.events.ErrorFactory.getDescriptor();
+	}
+
+	private EventFactory() {
+	}
+
+	public static void registerAllExtensions(
+			com.google.protobuf.ExtensionRegistry registry) {
+	}
+
+	public static com.google.protobuf.Descriptors.FileDescriptor
+	getDescriptor() {
+		return descriptor;
+	}
+
+	public interface EnvelopeOrBuilder extends
+			// @@protoc_insertion_point(interface_extends:events.Envelope)
+			com.google.protobuf.MessageOrBuilder {
+
+		/**
+		 * <code>required string origin = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Unique description of the origin of this event.
+		 * </pre>
+		 */
+		boolean hasOrigin();
+
+		/**
+		 * <code>required string origin = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Unique description of the origin of this event.
+		 * </pre>
+		 */
+		java.lang.String getOrigin();
+
+		/**
+		 * <code>required string origin = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Unique description of the origin of this event.
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString
+		getOriginBytes();
+
+		/**
+		 * <code>required .events.Envelope.EventType eventType = 2;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
+		 * </pre>
+		 */
+		boolean hasEventType();
+
+		/**
+		 * <code>required .events.Envelope.EventType eventType = 2;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
+		 * </pre>
+		 */
+		org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType getEventType();
+
+		/**
+		 * <code>optional int64 timestamp = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
+		 * </pre>
+		 */
+		boolean hasTimestamp();
+
+		/**
+		 * <code>optional int64 timestamp = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
+		 * </pre>
+		 */
+		long getTimestamp();
+
+		/**
+		 * <code>optional string deployment = 13;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Deployment name (used to uniquely identify source).
+		 * </pre>
+		 */
+		boolean hasDeployment();
+
+		/**
+		 * <code>optional string deployment = 13;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Deployment name (used to uniquely identify source).
+		 * </pre>
+		 */
+		java.lang.String getDeployment();
+
+		/**
+		 * <code>optional string deployment = 13;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Deployment name (used to uniquely identify source).
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString
+		getDeploymentBytes();
+
+		/**
+		 * <code>optional string job = 14;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Job name (used to uniquely identify source).
+		 * </pre>
+		 */
+		boolean hasJob();
+
+		/**
+		 * <code>optional string job = 14;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Job name (used to uniquely identify source).
+		 * </pre>
+		 */
+		java.lang.String getJob();
+
+		/**
+		 * <code>optional string job = 14;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Job name (used to uniquely identify source).
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString
+		getJobBytes();
+
+		/**
+		 * <code>optional string index = 15;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Index of job (used to uniquely identify source).
+		 * </pre>
+		 */
+		boolean hasIndex();
+
+		/**
+		 * <code>optional string index = 15;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Index of job (used to uniquely identify source).
+		 * </pre>
+		 */
+		java.lang.String getIndex();
+
+		/**
+		 * <code>optional string index = 15;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Index of job (used to uniquely identify source).
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString
+		getIndexBytes();
+
+		/**
+		 * <code>optional string ip = 16;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; IP address (used to uniquely identify source).
+		 * </pre>
+		 */
+		boolean hasIp();
+
+		/**
+		 * <code>optional string ip = 16;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; IP address (used to uniquely identify source).
+		 * </pre>
+		 */
+		java.lang.String getIp();
+
+		/**
+		 * <code>optional string ip = 16;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; IP address (used to uniquely identify source).
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString
+		getIpBytes();
+
+		/**
+		 * <code>optional .events.HttpStart httpStart = 4;</code>
+		 * <p>
+		 * <pre>
+		 * Removed Heartbeat at position 3
+		 * </pre>
+		 */
+		boolean hasHttpStart();
+
+		/**
+		 * <code>optional .events.HttpStart httpStart = 4;</code>
+		 * <p>
+		 * <pre>
+		 * Removed Heartbeat at position 3
+		 * </pre>
+		 */
+		org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart getHttpStart();
+
+		/**
+		 * <code>optional .events.HttpStart httpStart = 4;</code>
+		 * <p>
+		 * <pre>
+		 * Removed Heartbeat at position 3
+		 * </pre>
+		 */
+		org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder getHttpStartOrBuilder();
+
+		/**
+		 * <code>optional .events.HttpStop httpStop = 5;</code>
+		 */
+		boolean hasHttpStop();
+
+		/**
+		 * <code>optional .events.HttpStop httpStop = 5;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop getHttpStop();
+
+		/**
+		 * <code>optional .events.HttpStop httpStop = 5;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder getHttpStopOrBuilder();
+
+		/**
+		 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+		 */
+		boolean hasHttpStartStop();
+
+		/**
+		 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop getHttpStartStop();
+
+		/**
+		 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder getHttpStartStopOrBuilder();
+
+		/**
+		 * <code>optional .events.LogMessage logMessage = 8;</code>
+		 */
+		boolean hasLogMessage();
+
+		/**
+		 * <code>optional .events.LogMessage logMessage = 8;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.LogFactory.LogMessage getLogMessage();
+
+		/**
+		 * <code>optional .events.LogMessage logMessage = 8;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder getLogMessageOrBuilder();
+
+		/**
+		 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+		 */
+		boolean hasValueMetric();
+
+		/**
+		 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric getValueMetric();
+
+		/**
+		 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder getValueMetricOrBuilder();
+
+		/**
+		 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+		 */
+		boolean hasCounterEvent();
+
+		/**
+		 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent getCounterEvent();
+
+		/**
+		 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder getCounterEventOrBuilder();
+
+		/**
+		 * <code>optional .events.Error error = 11;</code>
+		 */
+		boolean hasError();
+
+		/**
+		 * <code>optional .events.Error error = 11;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.ErrorFactory.Error getError();
+
+		/**
+		 * <code>optional .events.Error error = 11;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder getErrorOrBuilder();
+
+		/**
+		 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+		 */
+		boolean hasContainerMetric();
+
+		/**
+		 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric getContainerMetric();
+
+		/**
+		 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+		 */
+		org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder getContainerMetricOrBuilder();
+	}
+
+	/**
+	 * Protobuf type {@code events.Envelope}
+	 * <p>
+	 * <pre>
+	 * &#47; Envelope wraps an Event and adds metadata.
+	 * </pre>
+	 */
+	public static final class Envelope extends
+			com.google.protobuf.GeneratedMessage implements
+			// @@protoc_insertion_point(message_implements:events.Envelope)
+			EnvelopeOrBuilder {
+		public static final int ORIGIN_FIELD_NUMBER = 1;
+
+		public static final int EVENTTYPE_FIELD_NUMBER = 2;
+
+		public static final int TIMESTAMP_FIELD_NUMBER = 6;
+
+		public static final int DEPLOYMENT_FIELD_NUMBER = 13;
+
+		public static final int JOB_FIELD_NUMBER = 14;
+
+		public static final int INDEX_FIELD_NUMBER = 15;
+
+		public static final int IP_FIELD_NUMBER = 16;
+
+		public static final int HTTPSTART_FIELD_NUMBER = 4;
+
+		public static final int HTTPSTOP_FIELD_NUMBER = 5;
+
+		public static final int HTTPSTARTSTOP_FIELD_NUMBER = 7;
+
+		public static final int LOGMESSAGE_FIELD_NUMBER = 8;
+
+		public static final int VALUEMETRIC_FIELD_NUMBER = 9;
+
+		public static final int COUNTEREVENT_FIELD_NUMBER = 10;
+
+		public static final int ERROR_FIELD_NUMBER = 11;
+
+		public static final int CONTAINERMETRIC_FIELD_NUMBER = 12;
+
+		private static final Envelope defaultInstance;
+
+		private static final long serialVersionUID = 0L;
+
+		public static com.google.protobuf.Parser<Envelope> PARSER =
+				new com.google.protobuf.AbstractParser<Envelope>() {
+					public Envelope parsePartialFrom(
+							com.google.protobuf.CodedInputStream input,
+							com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+							throws com.google.protobuf.InvalidProtocolBufferException {
+						return new Envelope(input, extensionRegistry);
+					}
+				};
+
+		static {
+			defaultInstance = new Envelope(true);
+			defaultInstance.initFields();
+		}
+
+		private final com.google.protobuf.UnknownFieldSet unknownFields;
+
+		private int bitField0_;
+
+		private java.lang.Object origin_;
+
+		private org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType eventType_;
+
+		private long timestamp_;
+
+		private java.lang.Object deployment_;
+
+		private java.lang.Object job_;
+
+		private java.lang.Object index_;
+
+		private java.lang.Object ip_;
+
+		private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart httpStart_;
+
+		private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop httpStop_;
+
+		private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop httpStartStop_;
+
+		private org.cloudfoundry.dropsonde.events.LogFactory.LogMessage logMessage_;
+
+		private org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric valueMetric_;
+
+		private org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent counterEvent_;
+
+		private org.cloudfoundry.dropsonde.events.ErrorFactory.Error error_;
+
+		private org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric containerMetric_;
+
+		private byte memoizedIsInitialized = -1;
+
+		private int memoizedSerializedSize = -1;
+
+		// Use Envelope.newBuilder() to construct.
+		private Envelope(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+			super(builder);
+			this.unknownFields = builder.getUnknownFields();
+		}
+
+		private Envelope(boolean noInit) {
+			this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+		}
+
+		private Envelope(
+				com.google.protobuf.CodedInputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			initFields();
+			int mutable_bitField0_ = 0;
+			com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+					com.google.protobuf.UnknownFieldSet.newBuilder();
+			try {
+				boolean done = false;
+				while (!done) {
+					int tag = input.readTag();
+					switch (tag) {
+						case 0:
+							done = true;
+							break;
+						default: {
+							if (!parseUnknownField(input, unknownFields,
+									extensionRegistry, tag)) {
+								done = true;
+							}
+							break;
+						}
+						case 10: {
+							com.google.protobuf.ByteString bs = input.readBytes();
+							bitField0_ |= 0x00000001;
+							origin_ = bs;
+							break;
+						}
+						case 16: {
+							int rawValue = input.readEnum();
+							org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType value = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.valueOf(rawValue);
+							if (value == null) {
+								unknownFields.mergeVarintField(2, rawValue);
+							}
+							else {
+								bitField0_ |= 0x00000002;
+								eventType_ = value;
+							}
+							break;
+						}
+						case 34: {
+							org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder subBuilder = null;
+							if (((bitField0_ & 0x00000080) == 0x00000080)) {
+								subBuilder = httpStart_.toBuilder();
+							}
+							httpStart_ = input.readMessage(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.PARSER, extensionRegistry);
+							if (subBuilder != null) {
+								subBuilder.mergeFrom(httpStart_);
+								httpStart_ = subBuilder.buildPartial();
+							}
+							bitField0_ |= 0x00000080;
+							break;
+						}
+						case 42: {
+							org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder subBuilder = null;
+							if (((bitField0_ & 0x00000100) == 0x00000100)) {
+								subBuilder = httpStop_.toBuilder();
+							}
+							httpStop_ = input.readMessage(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.PARSER, extensionRegistry);
+							if (subBuilder != null) {
+								subBuilder.mergeFrom(httpStop_);
+								httpStop_ = subBuilder.buildPartial();
+							}
+							bitField0_ |= 0x00000100;
+							break;
+						}
+						case 48: {
+							bitField0_ |= 0x00000004;
+							timestamp_ = input.readInt64();
+							break;
+						}
+						case 58: {
+							org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder subBuilder = null;
+							if (((bitField0_ & 0x00000200) == 0x00000200)) {
+								subBuilder = httpStartStop_.toBuilder();
+							}
+							httpStartStop_ = input.readMessage(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.PARSER, extensionRegistry);
+							if (subBuilder != null) {
+								subBuilder.mergeFrom(httpStartStop_);
+								httpStartStop_ = subBuilder.buildPartial();
+							}
+							bitField0_ |= 0x00000200;
+							break;
+						}
+						case 66: {
+							org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder subBuilder = null;
+							if (((bitField0_ & 0x00000400) == 0x00000400)) {
+								subBuilder = logMessage_.toBuilder();
+							}
+							logMessage_ = input.readMessage(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.PARSER, extensionRegistry);
+							if (subBuilder != null) {
+								subBuilder.mergeFrom(logMessage_);
+								logMessage_ = subBuilder.buildPartial();
+							}
+							bitField0_ |= 0x00000400;
+							break;
+						}
+						case 74: {
+							org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder subBuilder = null;
+							if (((bitField0_ & 0x00000800) == 0x00000800)) {
+								subBuilder = valueMetric_.toBuilder();
+							}
+							valueMetric_ = input.readMessage(org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.PARSER, extensionRegistry);
+							if (subBuilder != null) {
+								subBuilder.mergeFrom(valueMetric_);
+								valueMetric_ = subBuilder.buildPartial();
+							}
+							bitField0_ |= 0x00000800;
+							break;
+						}
+						case 82: {
+							org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder subBuilder = null;
+							if (((bitField0_ & 0x00001000) == 0x00001000)) {
+								subBuilder = counterEvent_.toBuilder();
+							}
+							counterEvent_ = input.readMessage(org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.PARSER, extensionRegistry);
+							if (subBuilder != null) {
+								subBuilder.mergeFrom(counterEvent_);
+								counterEvent_ = subBuilder.buildPartial();
+							}
+							bitField0_ |= 0x00001000;
+							break;
+						}
+						case 90: {
+							org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder subBuilder = null;
+							if (((bitField0_ & 0x00002000) == 0x00002000)) {
+								subBuilder = error_.toBuilder();
+							}
+							error_ = input.readMessage(org.cloudfoundry.dropsonde.events.ErrorFactory.Error.PARSER, extensionRegistry);
+							if (subBuilder != null) {
+								subBuilder.mergeFrom(error_);
+								error_ = subBuilder.buildPartial();
+							}
+							bitField0_ |= 0x00002000;
+							break;
+						}
+						case 98: {
+							org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder subBuilder = null;
+							if (((bitField0_ & 0x00004000) == 0x00004000)) {
+								subBuilder = containerMetric_.toBuilder();
+							}
+							containerMetric_ = input.readMessage(org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.PARSER, extensionRegistry);
+							if (subBuilder != null) {
+								subBuilder.mergeFrom(containerMetric_);
+								containerMetric_ = subBuilder.buildPartial();
+							}
+							bitField0_ |= 0x00004000;
+							break;
+						}
+						case 106: {
+							com.google.protobuf.ByteString bs = input.readBytes();
+							bitField0_ |= 0x00000008;
+							deployment_ = bs;
+							break;
+						}
+						case 114: {
+							com.google.protobuf.ByteString bs = input.readBytes();
+							bitField0_ |= 0x00000010;
+							job_ = bs;
+							break;
+						}
+						case 122: {
+							com.google.protobuf.ByteString bs = input.readBytes();
+							bitField0_ |= 0x00000020;
+							index_ = bs;
+							break;
+						}
+						case 130: {
+							com.google.protobuf.ByteString bs = input.readBytes();
+							bitField0_ |= 0x00000040;
+							ip_ = bs;
+							break;
+						}
+					}
+				}
+			}
+			catch (com.google.protobuf.InvalidProtocolBufferException e) {
+				throw e.setUnfinishedMessage(this);
+			}
+			catch (java.io.IOException e) {
+				throw new com.google.protobuf.InvalidProtocolBufferException(
+						e.getMessage()).setUnfinishedMessage(this);
+			}
+			finally {
+				this.unknownFields = unknownFields.build();
+				makeExtensionsImmutable();
+			}
+		}
+
+		public static Envelope getDefaultInstance() {
+			return defaultInstance;
+		}
+
+		public static final com.google.protobuf.Descriptors.Descriptor
+		getDescriptor() {
+			return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_descriptor;
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
+				com.google.protobuf.ByteString data)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			return PARSER.parseFrom(data);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
+				com.google.protobuf.ByteString data,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			return PARSER.parseFrom(data, extensionRegistry);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(byte[] data)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			return PARSER.parseFrom(data);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
+				byte[] data,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			return PARSER.parseFrom(data, extensionRegistry);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(java.io.InputStream input)
+				throws java.io.IOException {
+			return PARSER.parseFrom(input);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
+				java.io.InputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws java.io.IOException {
+			return PARSER.parseFrom(input, extensionRegistry);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseDelimitedFrom(java.io.InputStream input)
+				throws java.io.IOException {
+			return PARSER.parseDelimitedFrom(input);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseDelimitedFrom(
+				java.io.InputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws java.io.IOException {
+			return PARSER.parseDelimitedFrom(input, extensionRegistry);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
+				com.google.protobuf.CodedInputStream input)
+				throws java.io.IOException {
+			return PARSER.parseFrom(input);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.EventFactory.Envelope parseFrom(
+				com.google.protobuf.CodedInputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws java.io.IOException {
+			return PARSER.parseFrom(input, extensionRegistry);
+		}
+
+		public static Builder newBuilder() {
+			return Builder.create();
+		}
+
+		public static Builder newBuilder(org.cloudfoundry.dropsonde.events.EventFactory.Envelope prototype) {
+			return newBuilder().mergeFrom(prototype);
+		}
+
+		public Envelope getDefaultInstanceForType() {
+			return defaultInstance;
+		}
+
+		@java.lang.Override
+		public final com.google.protobuf.UnknownFieldSet
+		getUnknownFields() {
+			return this.unknownFields;
+		}
+
+		protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+		internalGetFieldAccessorTable() {
+			return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_fieldAccessorTable
+					.ensureFieldAccessorsInitialized(
+							org.cloudfoundry.dropsonde.events.EventFactory.Envelope.class, org.cloudfoundry.dropsonde.events.EventFactory.Envelope.Builder.class);
+		}
+
+		@java.lang.Override
+		public com.google.protobuf.Parser<Envelope> getParserForType() {
+			return PARSER;
+		}
+
+		/**
+		 * <code>required string origin = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Unique description of the origin of this event.
+		 * </pre>
+		 */
+		public boolean hasOrigin() {
+			return ((bitField0_ & 0x00000001) == 0x00000001);
+		}
+
+		/**
+		 * <code>required string origin = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Unique description of the origin of this event.
+		 * </pre>
+		 */
+		public java.lang.String getOrigin() {
+			java.lang.Object ref = origin_;
+			if (ref instanceof java.lang.String) {
+				return (java.lang.String) ref;
+			}
+			else {
+				com.google.protobuf.ByteString bs =
+						(com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				if (bs.isValidUtf8()) {
+					origin_ = s;
+				}
+				return s;
+			}
+		}
+
+		/**
+		 * <code>required string origin = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Unique description of the origin of this event.
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString
+		getOriginBytes() {
+			java.lang.Object ref = origin_;
+			if (ref instanceof java.lang.String) {
+				com.google.protobuf.ByteString b =
+						com.google.protobuf.ByteString.copyFromUtf8(
+								(java.lang.String) ref);
+				origin_ = b;
+				return b;
+			}
+			else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <code>required .events.Envelope.EventType eventType = 2;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
+		 * </pre>
+		 */
+		public boolean hasEventType() {
+			return ((bitField0_ & 0x00000002) == 0x00000002);
+		}
+
+		/**
+		 * <code>required .events.Envelope.EventType eventType = 2;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
+		 * </pre>
+		 */
+		public org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType getEventType() {
+			return eventType_;
+		}
+
+		/**
+		 * <code>optional int64 timestamp = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
+		 * </pre>
+		 */
+		public boolean hasTimestamp() {
+			return ((bitField0_ & 0x00000004) == 0x00000004);
+		}
+
+		/**
+		 * <code>optional int64 timestamp = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
+		 * </pre>
+		 */
+		public long getTimestamp() {
+			return timestamp_;
+		}
+
+		/**
+		 * <code>optional string deployment = 13;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Deployment name (used to uniquely identify source).
+		 * </pre>
+		 */
+		public boolean hasDeployment() {
+			return ((bitField0_ & 0x00000008) == 0x00000008);
+		}
+
+		/**
+		 * <code>optional string deployment = 13;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Deployment name (used to uniquely identify source).
+		 * </pre>
+		 */
+		public java.lang.String getDeployment() {
+			java.lang.Object ref = deployment_;
+			if (ref instanceof java.lang.String) {
+				return (java.lang.String) ref;
+			}
+			else {
+				com.google.protobuf.ByteString bs =
+						(com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				if (bs.isValidUtf8()) {
+					deployment_ = s;
+				}
+				return s;
+			}
+		}
+
+		/**
+		 * <code>optional string deployment = 13;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Deployment name (used to uniquely identify source).
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString
+		getDeploymentBytes() {
+			java.lang.Object ref = deployment_;
+			if (ref instanceof java.lang.String) {
+				com.google.protobuf.ByteString b =
+						com.google.protobuf.ByteString.copyFromUtf8(
+								(java.lang.String) ref);
+				deployment_ = b;
+				return b;
+			}
+			else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <code>optional string job = 14;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Job name (used to uniquely identify source).
+		 * </pre>
+		 */
+		public boolean hasJob() {
+			return ((bitField0_ & 0x00000010) == 0x00000010);
+		}
+
+		/**
+		 * <code>optional string job = 14;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Job name (used to uniquely identify source).
+		 * </pre>
+		 */
+		public java.lang.String getJob() {
+			java.lang.Object ref = job_;
+			if (ref instanceof java.lang.String) {
+				return (java.lang.String) ref;
+			}
+			else {
+				com.google.protobuf.ByteString bs =
+						(com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				if (bs.isValidUtf8()) {
+					job_ = s;
+				}
+				return s;
+			}
+		}
+
+		/**
+		 * <code>optional string job = 14;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Job name (used to uniquely identify source).
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString
+		getJobBytes() {
+			java.lang.Object ref = job_;
+			if (ref instanceof java.lang.String) {
+				com.google.protobuf.ByteString b =
+						com.google.protobuf.ByteString.copyFromUtf8(
+								(java.lang.String) ref);
+				job_ = b;
+				return b;
+			}
+			else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <code>optional string index = 15;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Index of job (used to uniquely identify source).
+		 * </pre>
+		 */
+		public boolean hasIndex() {
+			return ((bitField0_ & 0x00000020) == 0x00000020);
+		}
+
+		/**
+		 * <code>optional string index = 15;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Index of job (used to uniquely identify source).
+		 * </pre>
+		 */
+		public java.lang.String getIndex() {
+			java.lang.Object ref = index_;
+			if (ref instanceof java.lang.String) {
+				return (java.lang.String) ref;
+			}
+			else {
+				com.google.protobuf.ByteString bs =
+						(com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				if (bs.isValidUtf8()) {
+					index_ = s;
+				}
+				return s;
+			}
+		}
+
+		/**
+		 * <code>optional string index = 15;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Index of job (used to uniquely identify source).
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString
+		getIndexBytes() {
+			java.lang.Object ref = index_;
+			if (ref instanceof java.lang.String) {
+				com.google.protobuf.ByteString b =
+						com.google.protobuf.ByteString.copyFromUtf8(
+								(java.lang.String) ref);
+				index_ = b;
+				return b;
+			}
+			else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <code>optional string ip = 16;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; IP address (used to uniquely identify source).
+		 * </pre>
+		 */
+		public boolean hasIp() {
+			return ((bitField0_ & 0x00000040) == 0x00000040);
+		}
+
+		/**
+		 * <code>optional string ip = 16;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; IP address (used to uniquely identify source).
+		 * </pre>
+		 */
+		public java.lang.String getIp() {
+			java.lang.Object ref = ip_;
+			if (ref instanceof java.lang.String) {
+				return (java.lang.String) ref;
+			}
+			else {
+				com.google.protobuf.ByteString bs =
+						(com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				if (bs.isValidUtf8()) {
+					ip_ = s;
+				}
+				return s;
+			}
+		}
+
+		/**
+		 * <code>optional string ip = 16;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; IP address (used to uniquely identify source).
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString
+		getIpBytes() {
+			java.lang.Object ref = ip_;
+			if (ref instanceof java.lang.String) {
+				com.google.protobuf.ByteString b =
+						com.google.protobuf.ByteString.copyFromUtf8(
+								(java.lang.String) ref);
+				ip_ = b;
+				return b;
+			}
+			else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <code>optional .events.HttpStart httpStart = 4;</code>
+		 * <p>
+		 * <pre>
+		 * Removed Heartbeat at position 3
+		 * </pre>
+		 */
+		public boolean hasHttpStart() {
+			return ((bitField0_ & 0x00000080) == 0x00000080);
+		}
+
+		/**
+		 * <code>optional .events.HttpStart httpStart = 4;</code>
+		 * <p>
+		 * <pre>
+		 * Removed Heartbeat at position 3
+		 * </pre>
+		 */
+		public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart getHttpStart() {
+			return httpStart_;
+		}
+
+		/**
+		 * <code>optional .events.HttpStart httpStart = 4;</code>
+		 * <p>
+		 * <pre>
+		 * Removed Heartbeat at position 3
+		 * </pre>
+		 */
+		public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder getHttpStartOrBuilder() {
+			return httpStart_;
+		}
+
+		/**
+		 * <code>optional .events.HttpStop httpStop = 5;</code>
+		 */
+		public boolean hasHttpStop() {
+			return ((bitField0_ & 0x00000100) == 0x00000100);
+		}
+
+		/**
+		 * <code>optional .events.HttpStop httpStop = 5;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop getHttpStop() {
+			return httpStop_;
+		}
+
+		/**
+		 * <code>optional .events.HttpStop httpStop = 5;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder getHttpStopOrBuilder() {
+			return httpStop_;
+		}
+
+		/**
+		 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+		 */
+		public boolean hasHttpStartStop() {
+			return ((bitField0_ & 0x00000200) == 0x00000200);
+		}
+
+		/**
+		 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop getHttpStartStop() {
+			return httpStartStop_;
+		}
+
+		/**
+		 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder getHttpStartStopOrBuilder() {
+			return httpStartStop_;
+		}
+
+		/**
+		 * <code>optional .events.LogMessage logMessage = 8;</code>
+		 */
+		public boolean hasLogMessage() {
+			return ((bitField0_ & 0x00000400) == 0x00000400);
+		}
+
+		/**
+		 * <code>optional .events.LogMessage logMessage = 8;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage getLogMessage() {
+			return logMessage_;
+		}
+
+		/**
+		 * <code>optional .events.LogMessage logMessage = 8;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder getLogMessageOrBuilder() {
+			return logMessage_;
+		}
+
+		/**
+		 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+		 */
+		public boolean hasValueMetric() {
+			return ((bitField0_ & 0x00000800) == 0x00000800);
+		}
+
+		/**
+		 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric getValueMetric() {
+			return valueMetric_;
+		}
+
+		/**
+		 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder getValueMetricOrBuilder() {
+			return valueMetric_;
+		}
+
+		/**
+		 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+		 */
+		public boolean hasCounterEvent() {
+			return ((bitField0_ & 0x00001000) == 0x00001000);
+		}
+
+		/**
+		 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent getCounterEvent() {
+			return counterEvent_;
+		}
+
+		/**
+		 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder getCounterEventOrBuilder() {
+			return counterEvent_;
+		}
+
+		/**
+		 * <code>optional .events.Error error = 11;</code>
+		 */
+		public boolean hasError() {
+			return ((bitField0_ & 0x00002000) == 0x00002000);
+		}
+
+		/**
+		 * <code>optional .events.Error error = 11;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.ErrorFactory.Error getError() {
+			return error_;
+		}
+
+		/**
+		 * <code>optional .events.Error error = 11;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder getErrorOrBuilder() {
+			return error_;
+		}
+
+		/**
+		 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+		 */
+		public boolean hasContainerMetric() {
+			return ((bitField0_ & 0x00004000) == 0x00004000);
+		}
+
+		/**
+		 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric getContainerMetric() {
+			return containerMetric_;
+		}
+
+		/**
+		 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+		 */
+		public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder getContainerMetricOrBuilder() {
+			return containerMetric_;
+		}
+
+		private void initFields() {
+			origin_ = "";
+			eventType_ = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.HttpStart;
+			timestamp_ = 0L;
+			deployment_ = "";
+			job_ = "";
+			index_ = "";
+			ip_ = "";
+			httpStart_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance();
+			httpStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance();
+			httpStartStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance();
+			logMessage_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
+			valueMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance();
+			counterEvent_ = org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance();
+			error_ = org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance();
+			containerMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance();
+		}
+
+		public final boolean isInitialized() {
+			byte isInitialized = memoizedIsInitialized;
+			if (isInitialized == 1) return true;
+			if (isInitialized == 0) return false;
+
+			if (!hasOrigin()) {
+				memoizedIsInitialized = 0;
+				return false;
+			}
+			if (!hasEventType()) {
+				memoizedIsInitialized = 0;
+				return false;
+			}
+			if (hasHttpStart()) {
+				if (!getHttpStart().isInitialized()) {
+					memoizedIsInitialized = 0;
+					return false;
+				}
+			}
+			if (hasHttpStop()) {
+				if (!getHttpStop().isInitialized()) {
+					memoizedIsInitialized = 0;
+					return false;
+				}
+			}
+			if (hasHttpStartStop()) {
+				if (!getHttpStartStop().isInitialized()) {
+					memoizedIsInitialized = 0;
+					return false;
+				}
+			}
+			if (hasLogMessage()) {
+				if (!getLogMessage().isInitialized()) {
+					memoizedIsInitialized = 0;
+					return false;
+				}
+			}
+			if (hasValueMetric()) {
+				if (!getValueMetric().isInitialized()) {
+					memoizedIsInitialized = 0;
+					return false;
+				}
+			}
+			if (hasCounterEvent()) {
+				if (!getCounterEvent().isInitialized()) {
+					memoizedIsInitialized = 0;
+					return false;
+				}
+			}
+			if (hasError()) {
+				if (!getError().isInitialized()) {
+					memoizedIsInitialized = 0;
+					return false;
+				}
+			}
+			if (hasContainerMetric()) {
+				if (!getContainerMetric().isInitialized()) {
+					memoizedIsInitialized = 0;
+					return false;
+				}
+			}
+			memoizedIsInitialized = 1;
+			return true;
+		}
+
+		public void writeTo(com.google.protobuf.CodedOutputStream output)
+				throws java.io.IOException {
+			getSerializedSize();
+			if (((bitField0_ & 0x00000001) == 0x00000001)) {
+				output.writeBytes(1, getOriginBytes());
+			}
+			if (((bitField0_ & 0x00000002) == 0x00000002)) {
+				output.writeEnum(2, eventType_.getNumber());
+			}
+			if (((bitField0_ & 0x00000080) == 0x00000080)) {
+				output.writeMessage(4, httpStart_);
+			}
+			if (((bitField0_ & 0x00000100) == 0x00000100)) {
+				output.writeMessage(5, httpStop_);
+			}
+			if (((bitField0_ & 0x00000004) == 0x00000004)) {
+				output.writeInt64(6, timestamp_);
+			}
+			if (((bitField0_ & 0x00000200) == 0x00000200)) {
+				output.writeMessage(7, httpStartStop_);
+			}
+			if (((bitField0_ & 0x00000400) == 0x00000400)) {
+				output.writeMessage(8, logMessage_);
+			}
+			if (((bitField0_ & 0x00000800) == 0x00000800)) {
+				output.writeMessage(9, valueMetric_);
+			}
+			if (((bitField0_ & 0x00001000) == 0x00001000)) {
+				output.writeMessage(10, counterEvent_);
+			}
+			if (((bitField0_ & 0x00002000) == 0x00002000)) {
+				output.writeMessage(11, error_);
+			}
+			if (((bitField0_ & 0x00004000) == 0x00004000)) {
+				output.writeMessage(12, containerMetric_);
+			}
+			if (((bitField0_ & 0x00000008) == 0x00000008)) {
+				output.writeBytes(13, getDeploymentBytes());
+			}
+			if (((bitField0_ & 0x00000010) == 0x00000010)) {
+				output.writeBytes(14, getJobBytes());
+			}
+			if (((bitField0_ & 0x00000020) == 0x00000020)) {
+				output.writeBytes(15, getIndexBytes());
+			}
+			if (((bitField0_ & 0x00000040) == 0x00000040)) {
+				output.writeBytes(16, getIpBytes());
+			}
+			getUnknownFields().writeTo(output);
+		}
+
+		public int getSerializedSize() {
+			int size = memoizedSerializedSize;
+			if (size != -1) return size;
+
+			size = 0;
+			if (((bitField0_ & 0x00000001) == 0x00000001)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(1, getOriginBytes());
+			}
+			if (((bitField0_ & 0x00000002) == 0x00000002)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeEnumSize(2, eventType_.getNumber());
+			}
+			if (((bitField0_ & 0x00000080) == 0x00000080)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeMessageSize(4, httpStart_);
+			}
+			if (((bitField0_ & 0x00000100) == 0x00000100)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeMessageSize(5, httpStop_);
+			}
+			if (((bitField0_ & 0x00000004) == 0x00000004)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeInt64Size(6, timestamp_);
+			}
+			if (((bitField0_ & 0x00000200) == 0x00000200)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeMessageSize(7, httpStartStop_);
+			}
+			if (((bitField0_ & 0x00000400) == 0x00000400)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeMessageSize(8, logMessage_);
+			}
+			if (((bitField0_ & 0x00000800) == 0x00000800)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeMessageSize(9, valueMetric_);
+			}
+			if (((bitField0_ & 0x00001000) == 0x00001000)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeMessageSize(10, counterEvent_);
+			}
+			if (((bitField0_ & 0x00002000) == 0x00002000)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeMessageSize(11, error_);
+			}
+			if (((bitField0_ & 0x00004000) == 0x00004000)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeMessageSize(12, containerMetric_);
+			}
+			if (((bitField0_ & 0x00000008) == 0x00000008)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(13, getDeploymentBytes());
+			}
+			if (((bitField0_ & 0x00000010) == 0x00000010)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(14, getJobBytes());
+			}
+			if (((bitField0_ & 0x00000020) == 0x00000020)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(15, getIndexBytes());
+			}
+			if (((bitField0_ & 0x00000040) == 0x00000040)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(16, getIpBytes());
+			}
+			size += getUnknownFields().getSerializedSize();
+			memoizedSerializedSize = size;
+			return size;
+		}
+
+		@java.lang.Override
+		protected java.lang.Object writeReplace()
+				throws java.io.ObjectStreamException {
+			return super.writeReplace();
+		}
+
+		public Builder newBuilderForType() {
+			return newBuilder();
+		}
+
+		public Builder toBuilder() {
+			return newBuilder(this);
+		}
+
+		@java.lang.Override
+		protected Builder newBuilderForType(
+				com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+			Builder builder = new Builder(parent);
+			return builder;
+		}
+
+		/**
+		 * Protobuf enum {@code events.Envelope.EventType}
+		 * <p>
+		 * <pre>
+		 * &#47; Type of the wrapped event.
+		 * </pre>
+		 */
+		public enum EventType
+				implements com.google.protobuf.ProtocolMessageEnum {
+			/**
+			 * <code>HttpStart = 2;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 1
+			 * </pre>
+			 */
+			HttpStart(0, 2),
+			/**
+			 * <code>HttpStop = 3;</code>
+			 */
+			HttpStop(1, 3),
+			/**
+			 * <code>HttpStartStop = 4;</code>
+			 */
+			HttpStartStop(2, 4),
+			/**
+			 * <code>LogMessage = 5;</code>
+			 */
+			LogMessage(3, 5),
+			/**
+			 * <code>ValueMetric = 6;</code>
+			 */
+			ValueMetric(4, 6),
+			/**
+			 * <code>CounterEvent = 7;</code>
+			 */
+			CounterEvent(5, 7),
+			/**
+			 * <code>Error = 8;</code>
+			 */
+			Error(6, 8),
+			/**
+			 * <code>ContainerMetric = 9;</code>
+			 */
+			ContainerMetric(7, 9),;
+
+			/**
+			 * <code>HttpStart = 2;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 1
+			 * </pre>
+			 */
+			public static final int HttpStart_VALUE = 2;
+
+			/**
+			 * <code>HttpStop = 3;</code>
+			 */
+			public static final int HttpStop_VALUE = 3;
+
+			/**
+			 * <code>HttpStartStop = 4;</code>
+			 */
+			public static final int HttpStartStop_VALUE = 4;
+
+			/**
+			 * <code>LogMessage = 5;</code>
+			 */
+			public static final int LogMessage_VALUE = 5;
+
+			/**
+			 * <code>ValueMetric = 6;</code>
+			 */
+			public static final int ValueMetric_VALUE = 6;
+
+			/**
+			 * <code>CounterEvent = 7;</code>
+			 */
+			public static final int CounterEvent_VALUE = 7;
+
+			/**
+			 * <code>Error = 8;</code>
+			 */
+			public static final int Error_VALUE = 8;
+
+			/**
+			 * <code>ContainerMetric = 9;</code>
+			 */
+			public static final int ContainerMetric_VALUE = 9;
+
+			private static final EventType[] VALUES = values();
+
+			private static com.google.protobuf.Internal.EnumLiteMap<EventType>
+					internalValueMap =
+					new com.google.protobuf.Internal.EnumLiteMap<EventType>() {
+						public EventType findValueByNumber(int number) {
+							return EventType.valueOf(number);
+						}
+					};
+
+			private final int index;
+
+			private final int value;
+
+			private EventType(int index, int value) {
+				this.index = index;
+				this.value = value;
+			}
+
+			public static EventType valueOf(int value) {
+				switch (value) {
+					case 2:
+						return HttpStart;
+					case 3:
+						return HttpStop;
+					case 4:
+						return HttpStartStop;
+					case 5:
+						return LogMessage;
+					case 6:
+						return ValueMetric;
+					case 7:
+						return CounterEvent;
+					case 8:
+						return Error;
+					case 9:
+						return ContainerMetric;
+					default:
+						return null;
+				}
+			}
+
+			public static com.google.protobuf.Internal.EnumLiteMap<EventType>
+			internalGetValueMap() {
+				return internalValueMap;
+			}
+
+			public static final com.google.protobuf.Descriptors.EnumDescriptor
+			getDescriptor() {
+				return org.cloudfoundry.dropsonde.events.EventFactory.Envelope.getDescriptor().getEnumTypes().get(0);
+			}
+
+			public static EventType valueOf(
+					com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+				if (desc.getType() != getDescriptor()) {
+					throw new java.lang.IllegalArgumentException(
+							"EnumValueDescriptor is not for this type.");
+				}
+				return VALUES[desc.getIndex()];
+			}
+
+			public final int getNumber() {
+				return value;
+			}
+
+			public final com.google.protobuf.Descriptors.EnumValueDescriptor
+			getValueDescriptor() {
+				return getDescriptor().getValues().get(index);
+			}
+
+			public final com.google.protobuf.Descriptors.EnumDescriptor
+			getDescriptorForType() {
+				return getDescriptor();
+			}
+
+			// @@protoc_insertion_point(enum_scope:events.Envelope.EventType)
+		}
+
+		/**
+		 * Protobuf type {@code events.Envelope}
+		 * <p>
+		 * <pre>
+		 * &#47; Envelope wraps an Event and adds metadata.
+		 * </pre>
+		 */
+		public static final class Builder extends
+				com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+				// @@protoc_insertion_point(builder_implements:events.Envelope)
+				org.cloudfoundry.dropsonde.events.EventFactory.EnvelopeOrBuilder {
+			private int bitField0_;
+
+			private java.lang.Object origin_ = "";
+
+			private org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType eventType_ = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.HttpStart;
+
+			private long timestamp_;
+
+			private java.lang.Object deployment_ = "";
+
+			private java.lang.Object job_ = "";
+
+			private java.lang.Object index_ = "";
+
+			private java.lang.Object ip_ = "";
+
+			private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart httpStart_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance();
+
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder> httpStartBuilder_;
+
+			private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop httpStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance();
+
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder> httpStopBuilder_;
+
+			private org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop httpStartStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance();
+
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder> httpStartStopBuilder_;
+
+			private org.cloudfoundry.dropsonde.events.LogFactory.LogMessage logMessage_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
+
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.LogFactory.LogMessage, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder, org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder> logMessageBuilder_;
+
+			private org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric valueMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance();
+
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder> valueMetricBuilder_;
+
+			private org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent counterEvent_ = org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance();
+
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder> counterEventBuilder_;
+
+			private org.cloudfoundry.dropsonde.events.ErrorFactory.Error error_ = org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance();
+
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.ErrorFactory.Error, org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder, org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder> errorBuilder_;
+
+			private org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric containerMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance();
+
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder> containerMetricBuilder_;
+
+			// Construct using org.cloudfoundry.dropsonde.events.EventFactory.Envelope.newBuilder()
+			private Builder() {
+				maybeForceBuilderInitialization();
+			}
+
+			private Builder(
+					com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+				super(parent);
+				maybeForceBuilderInitialization();
+			}
+
+			public static final com.google.protobuf.Descriptors.Descriptor
+			getDescriptor() {
+				return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_descriptor;
+			}
+
+			private static Builder create() {
+				return new Builder();
+			}
+
+			protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+			internalGetFieldAccessorTable() {
+				return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_fieldAccessorTable
+						.ensureFieldAccessorsInitialized(
+								org.cloudfoundry.dropsonde.events.EventFactory.Envelope.class, org.cloudfoundry.dropsonde.events.EventFactory.Envelope.Builder.class);
+			}
+
+			private void maybeForceBuilderInitialization() {
+				if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+					getHttpStartFieldBuilder();
+					getHttpStopFieldBuilder();
+					getHttpStartStopFieldBuilder();
+					getLogMessageFieldBuilder();
+					getValueMetricFieldBuilder();
+					getCounterEventFieldBuilder();
+					getErrorFieldBuilder();
+					getContainerMetricFieldBuilder();
+				}
+			}
+
+			public Builder clear() {
+				super.clear();
+				origin_ = "";
+				bitField0_ = (bitField0_ & ~0x00000001);
+				eventType_ = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.HttpStart;
+				bitField0_ = (bitField0_ & ~0x00000002);
+				timestamp_ = 0L;
+				bitField0_ = (bitField0_ & ~0x00000004);
+				deployment_ = "";
+				bitField0_ = (bitField0_ & ~0x00000008);
+				job_ = "";
+				bitField0_ = (bitField0_ & ~0x00000010);
+				index_ = "";
+				bitField0_ = (bitField0_ & ~0x00000020);
+				ip_ = "";
+				bitField0_ = (bitField0_ & ~0x00000040);
+				if (httpStartBuilder_ == null) {
+					httpStart_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance();
+				}
+				else {
+					httpStartBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000080);
+				if (httpStopBuilder_ == null) {
+					httpStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance();
+				}
+				else {
+					httpStopBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000100);
+				if (httpStartStopBuilder_ == null) {
+					httpStartStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance();
+				}
+				else {
+					httpStartStopBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000200);
+				if (logMessageBuilder_ == null) {
+					logMessage_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
+				}
+				else {
+					logMessageBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000400);
+				if (valueMetricBuilder_ == null) {
+					valueMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance();
+				}
+				else {
+					valueMetricBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000800);
+				if (counterEventBuilder_ == null) {
+					counterEvent_ = org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance();
+				}
+				else {
+					counterEventBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00001000);
+				if (errorBuilder_ == null) {
+					error_ = org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance();
+				}
+				else {
+					errorBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00002000);
+				if (containerMetricBuilder_ == null) {
+					containerMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance();
+				}
+				else {
+					containerMetricBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00004000);
+				return this;
+			}
+
+			public Builder clone() {
+				return create().mergeFrom(buildPartial());
+			}
+
+			public com.google.protobuf.Descriptors.Descriptor
+			getDescriptorForType() {
+				return org.cloudfoundry.dropsonde.events.EventFactory.internal_static_events_Envelope_descriptor;
+			}
+
+			public org.cloudfoundry.dropsonde.events.EventFactory.Envelope getDefaultInstanceForType() {
+				return org.cloudfoundry.dropsonde.events.EventFactory.Envelope.getDefaultInstance();
+			}
+
+			public org.cloudfoundry.dropsonde.events.EventFactory.Envelope build() {
+				org.cloudfoundry.dropsonde.events.EventFactory.Envelope result = buildPartial();
+				if (!result.isInitialized()) {
+					throw newUninitializedMessageException(result);
+				}
+				return result;
+			}
+
+			public org.cloudfoundry.dropsonde.events.EventFactory.Envelope buildPartial() {
+				org.cloudfoundry.dropsonde.events.EventFactory.Envelope result = new org.cloudfoundry.dropsonde.events.EventFactory.Envelope(this);
+				int from_bitField0_ = bitField0_;
+				int to_bitField0_ = 0;
+				if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+					to_bitField0_ |= 0x00000001;
+				}
+				result.origin_ = origin_;
+				if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+					to_bitField0_ |= 0x00000002;
+				}
+				result.eventType_ = eventType_;
+				if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+					to_bitField0_ |= 0x00000004;
+				}
+				result.timestamp_ = timestamp_;
+				if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+					to_bitField0_ |= 0x00000008;
+				}
+				result.deployment_ = deployment_;
+				if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+					to_bitField0_ |= 0x00000010;
+				}
+				result.job_ = job_;
+				if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+					to_bitField0_ |= 0x00000020;
+				}
+				result.index_ = index_;
+				if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+					to_bitField0_ |= 0x00000040;
+				}
+				result.ip_ = ip_;
+				if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+					to_bitField0_ |= 0x00000080;
+				}
+				if (httpStartBuilder_ == null) {
+					result.httpStart_ = httpStart_;
+				}
+				else {
+					result.httpStart_ = httpStartBuilder_.build();
+				}
+				if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+					to_bitField0_ |= 0x00000100;
+				}
+				if (httpStopBuilder_ == null) {
+					result.httpStop_ = httpStop_;
+				}
+				else {
+					result.httpStop_ = httpStopBuilder_.build();
+				}
+				if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+					to_bitField0_ |= 0x00000200;
+				}
+				if (httpStartStopBuilder_ == null) {
+					result.httpStartStop_ = httpStartStop_;
+				}
+				else {
+					result.httpStartStop_ = httpStartStopBuilder_.build();
+				}
+				if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+					to_bitField0_ |= 0x00000400;
+				}
+				if (logMessageBuilder_ == null) {
+					result.logMessage_ = logMessage_;
+				}
+				else {
+					result.logMessage_ = logMessageBuilder_.build();
+				}
+				if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+					to_bitField0_ |= 0x00000800;
+				}
+				if (valueMetricBuilder_ == null) {
+					result.valueMetric_ = valueMetric_;
+				}
+				else {
+					result.valueMetric_ = valueMetricBuilder_.build();
+				}
+				if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+					to_bitField0_ |= 0x00001000;
+				}
+				if (counterEventBuilder_ == null) {
+					result.counterEvent_ = counterEvent_;
+				}
+				else {
+					result.counterEvent_ = counterEventBuilder_.build();
+				}
+				if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+					to_bitField0_ |= 0x00002000;
+				}
+				if (errorBuilder_ == null) {
+					result.error_ = error_;
+				}
+				else {
+					result.error_ = errorBuilder_.build();
+				}
+				if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+					to_bitField0_ |= 0x00004000;
+				}
+				if (containerMetricBuilder_ == null) {
+					result.containerMetric_ = containerMetric_;
+				}
+				else {
+					result.containerMetric_ = containerMetricBuilder_.build();
+				}
+				result.bitField0_ = to_bitField0_;
+				onBuilt();
+				return result;
+			}
+
+			public Builder mergeFrom(com.google.protobuf.Message other) {
+				if (other instanceof org.cloudfoundry.dropsonde.events.EventFactory.Envelope) {
+					return mergeFrom((org.cloudfoundry.dropsonde.events.EventFactory.Envelope) other);
+				}
+				else {
+					super.mergeFrom(other);
+					return this;
+				}
+			}
+
+			public Builder mergeFrom(org.cloudfoundry.dropsonde.events.EventFactory.Envelope other) {
+				if (other == org.cloudfoundry.dropsonde.events.EventFactory.Envelope.getDefaultInstance()) return this;
+				if (other.hasOrigin()) {
+					bitField0_ |= 0x00000001;
+					origin_ = other.origin_;
+					onChanged();
+				}
+				if (other.hasEventType()) {
+					setEventType(other.getEventType());
+				}
+				if (other.hasTimestamp()) {
+					setTimestamp(other.getTimestamp());
+				}
+				if (other.hasDeployment()) {
+					bitField0_ |= 0x00000008;
+					deployment_ = other.deployment_;
+					onChanged();
+				}
+				if (other.hasJob()) {
+					bitField0_ |= 0x00000010;
+					job_ = other.job_;
+					onChanged();
+				}
+				if (other.hasIndex()) {
+					bitField0_ |= 0x00000020;
+					index_ = other.index_;
+					onChanged();
+				}
+				if (other.hasIp()) {
+					bitField0_ |= 0x00000040;
+					ip_ = other.ip_;
+					onChanged();
+				}
+				if (other.hasHttpStart()) {
+					mergeHttpStart(other.getHttpStart());
+				}
+				if (other.hasHttpStop()) {
+					mergeHttpStop(other.getHttpStop());
+				}
+				if (other.hasHttpStartStop()) {
+					mergeHttpStartStop(other.getHttpStartStop());
+				}
+				if (other.hasLogMessage()) {
+					mergeLogMessage(other.getLogMessage());
+				}
+				if (other.hasValueMetric()) {
+					mergeValueMetric(other.getValueMetric());
+				}
+				if (other.hasCounterEvent()) {
+					mergeCounterEvent(other.getCounterEvent());
+				}
+				if (other.hasError()) {
+					mergeError(other.getError());
+				}
+				if (other.hasContainerMetric()) {
+					mergeContainerMetric(other.getContainerMetric());
+				}
+				this.mergeUnknownFields(other.getUnknownFields());
+				return this;
+			}
+
+			public final boolean isInitialized() {
+				if (!hasOrigin()) {
+
+					return false;
+				}
+				if (!hasEventType()) {
+
+					return false;
+				}
+				if (hasHttpStart()) {
+					if (!getHttpStart().isInitialized()) {
+
+						return false;
+					}
+				}
+				if (hasHttpStop()) {
+					if (!getHttpStop().isInitialized()) {
+
+						return false;
+					}
+				}
+				if (hasHttpStartStop()) {
+					if (!getHttpStartStop().isInitialized()) {
+
+						return false;
+					}
+				}
+				if (hasLogMessage()) {
+					if (!getLogMessage().isInitialized()) {
+
+						return false;
+					}
+				}
+				if (hasValueMetric()) {
+					if (!getValueMetric().isInitialized()) {
+
+						return false;
+					}
+				}
+				if (hasCounterEvent()) {
+					if (!getCounterEvent().isInitialized()) {
+
+						return false;
+					}
+				}
+				if (hasError()) {
+					if (!getError().isInitialized()) {
+
+						return false;
+					}
+				}
+				if (hasContainerMetric()) {
+					if (!getContainerMetric().isInitialized()) {
+
+						return false;
+					}
+				}
+				return true;
+			}
+
+			public Builder mergeFrom(
+					com.google.protobuf.CodedInputStream input,
+					com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+					throws java.io.IOException {
+				org.cloudfoundry.dropsonde.events.EventFactory.Envelope parsedMessage = null;
+				try {
+					parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+				}
+				catch (com.google.protobuf.InvalidProtocolBufferException e) {
+					parsedMessage = (org.cloudfoundry.dropsonde.events.EventFactory.Envelope) e.getUnfinishedMessage();
+					throw e;
+				}
+				finally {
+					if (parsedMessage != null) {
+						mergeFrom(parsedMessage);
+					}
+				}
+				return this;
+			}
+
+			/**
+			 * <code>required string origin = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Unique description of the origin of this event.
+			 * </pre>
+			 */
+			public boolean hasOrigin() {
+				return ((bitField0_ & 0x00000001) == 0x00000001);
+			}
+
+			/**
+			 * <code>required string origin = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Unique description of the origin of this event.
+			 * </pre>
+			 */
+			public java.lang.String getOrigin() {
+				java.lang.Object ref = origin_;
+				if (!(ref instanceof java.lang.String)) {
+					com.google.protobuf.ByteString bs =
+							(com.google.protobuf.ByteString) ref;
+					java.lang.String s = bs.toStringUtf8();
+					if (bs.isValidUtf8()) {
+						origin_ = s;
+					}
+					return s;
+				}
+				else {
+					return (java.lang.String) ref;
+				}
+			}
+
+			/**
+			 * <code>required string origin = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Unique description of the origin of this event.
+			 * </pre>
+			 */
+			public Builder setOrigin(
+					java.lang.String value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000001;
+				origin_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required string origin = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Unique description of the origin of this event.
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString
+			getOriginBytes() {
+				java.lang.Object ref = origin_;
+				if (ref instanceof String) {
+					com.google.protobuf.ByteString b =
+							com.google.protobuf.ByteString.copyFromUtf8(
+									(java.lang.String) ref);
+					origin_ = b;
+					return b;
+				}
+				else {
+					return (com.google.protobuf.ByteString) ref;
+				}
+			}
+
+			/**
+			 * <code>required string origin = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Unique description of the origin of this event.
+			 * </pre>
+			 */
+			public Builder setOriginBytes(
+					com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000001;
+				origin_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required string origin = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Unique description of the origin of this event.
+			 * </pre>
+			 */
+			public Builder clearOrigin() {
+				bitField0_ = (bitField0_ & ~0x00000001);
+				origin_ = getDefaultInstance().getOrigin();
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required .events.Envelope.EventType eventType = 2;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
+			 * </pre>
+			 */
+			public boolean hasEventType() {
+				return ((bitField0_ & 0x00000002) == 0x00000002);
+			}
+
+			/**
+			 * <code>required .events.Envelope.EventType eventType = 2;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
+			 * </pre>
+			 */
+			public org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType getEventType() {
+				return eventType_;
+			}
+
+			/**
+			 * <code>required .events.Envelope.EventType eventType = 2;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
+			 * </pre>
+			 */
+			public Builder setEventType(org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000002;
+				eventType_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required .events.Envelope.EventType eventType = 2;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Type of wrapped event. Only the optional field corresponding to the value of eventType should be set.
+			 * </pre>
+			 */
+			public Builder clearEventType() {
+				bitField0_ = (bitField0_ & ~0x00000002);
+				eventType_ = org.cloudfoundry.dropsonde.events.EventFactory.Envelope.EventType.HttpStart;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional int64 timestamp = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
+			 * </pre>
+			 */
+			public boolean hasTimestamp() {
+				return ((bitField0_ & 0x00000004) == 0x00000004);
+			}
+
+			/**
+			 * <code>optional int64 timestamp = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
+			 * </pre>
+			 */
+			public long getTimestamp() {
+				return timestamp_;
+			}
+
+			/**
+			 * <code>optional int64 timestamp = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
+			 * </pre>
+			 */
+			public Builder setTimestamp(long value) {
+				bitField0_ |= 0x00000004;
+				timestamp_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional int64 timestamp = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; UNIX timestamp (in nanoseconds) event was wrapped in this Envelope.
+			 * </pre>
+			 */
+			public Builder clearTimestamp() {
+				bitField0_ = (bitField0_ & ~0x00000004);
+				timestamp_ = 0L;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string deployment = 13;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Deployment name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public boolean hasDeployment() {
+				return ((bitField0_ & 0x00000008) == 0x00000008);
+			}
+
+			/**
+			 * <code>optional string deployment = 13;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Deployment name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public java.lang.String getDeployment() {
+				java.lang.Object ref = deployment_;
+				if (!(ref instanceof java.lang.String)) {
+					com.google.protobuf.ByteString bs =
+							(com.google.protobuf.ByteString) ref;
+					java.lang.String s = bs.toStringUtf8();
+					if (bs.isValidUtf8()) {
+						deployment_ = s;
+					}
+					return s;
+				}
+				else {
+					return (java.lang.String) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string deployment = 13;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Deployment name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder setDeployment(
+					java.lang.String value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000008;
+				deployment_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string deployment = 13;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Deployment name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString
+			getDeploymentBytes() {
+				java.lang.Object ref = deployment_;
+				if (ref instanceof String) {
+					com.google.protobuf.ByteString b =
+							com.google.protobuf.ByteString.copyFromUtf8(
+									(java.lang.String) ref);
+					deployment_ = b;
+					return b;
+				}
+				else {
+					return (com.google.protobuf.ByteString) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string deployment = 13;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Deployment name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder setDeploymentBytes(
+					com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000008;
+				deployment_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string deployment = 13;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Deployment name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder clearDeployment() {
+				bitField0_ = (bitField0_ & ~0x00000008);
+				deployment_ = getDefaultInstance().getDeployment();
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string job = 14;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Job name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public boolean hasJob() {
+				return ((bitField0_ & 0x00000010) == 0x00000010);
+			}
+
+			/**
+			 * <code>optional string job = 14;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Job name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public java.lang.String getJob() {
+				java.lang.Object ref = job_;
+				if (!(ref instanceof java.lang.String)) {
+					com.google.protobuf.ByteString bs =
+							(com.google.protobuf.ByteString) ref;
+					java.lang.String s = bs.toStringUtf8();
+					if (bs.isValidUtf8()) {
+						job_ = s;
+					}
+					return s;
+				}
+				else {
+					return (java.lang.String) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string job = 14;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Job name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder setJob(
+					java.lang.String value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000010;
+				job_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string job = 14;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Job name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString
+			getJobBytes() {
+				java.lang.Object ref = job_;
+				if (ref instanceof String) {
+					com.google.protobuf.ByteString b =
+							com.google.protobuf.ByteString.copyFromUtf8(
+									(java.lang.String) ref);
+					job_ = b;
+					return b;
+				}
+				else {
+					return (com.google.protobuf.ByteString) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string job = 14;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Job name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder setJobBytes(
+					com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000010;
+				job_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string job = 14;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Job name (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder clearJob() {
+				bitField0_ = (bitField0_ & ~0x00000010);
+				job_ = getDefaultInstance().getJob();
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string index = 15;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Index of job (used to uniquely identify source).
+			 * </pre>
+			 */
+			public boolean hasIndex() {
+				return ((bitField0_ & 0x00000020) == 0x00000020);
+			}
+
+			/**
+			 * <code>optional string index = 15;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Index of job (used to uniquely identify source).
+			 * </pre>
+			 */
+			public java.lang.String getIndex() {
+				java.lang.Object ref = index_;
+				if (!(ref instanceof java.lang.String)) {
+					com.google.protobuf.ByteString bs =
+							(com.google.protobuf.ByteString) ref;
+					java.lang.String s = bs.toStringUtf8();
+					if (bs.isValidUtf8()) {
+						index_ = s;
+					}
+					return s;
+				}
+				else {
+					return (java.lang.String) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string index = 15;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Index of job (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder setIndex(
+					java.lang.String value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000020;
+				index_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string index = 15;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Index of job (used to uniquely identify source).
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString
+			getIndexBytes() {
+				java.lang.Object ref = index_;
+				if (ref instanceof String) {
+					com.google.protobuf.ByteString b =
+							com.google.protobuf.ByteString.copyFromUtf8(
+									(java.lang.String) ref);
+					index_ = b;
+					return b;
+				}
+				else {
+					return (com.google.protobuf.ByteString) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string index = 15;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Index of job (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder setIndexBytes(
+					com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000020;
+				index_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string index = 15;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Index of job (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder clearIndex() {
+				bitField0_ = (bitField0_ & ~0x00000020);
+				index_ = getDefaultInstance().getIndex();
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string ip = 16;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; IP address (used to uniquely identify source).
+			 * </pre>
+			 */
+			public boolean hasIp() {
+				return ((bitField0_ & 0x00000040) == 0x00000040);
+			}
+
+			/**
+			 * <code>optional string ip = 16;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; IP address (used to uniquely identify source).
+			 * </pre>
+			 */
+			public java.lang.String getIp() {
+				java.lang.Object ref = ip_;
+				if (!(ref instanceof java.lang.String)) {
+					com.google.protobuf.ByteString bs =
+							(com.google.protobuf.ByteString) ref;
+					java.lang.String s = bs.toStringUtf8();
+					if (bs.isValidUtf8()) {
+						ip_ = s;
+					}
+					return s;
+				}
+				else {
+					return (java.lang.String) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string ip = 16;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; IP address (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder setIp(
+					java.lang.String value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000040;
+				ip_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string ip = 16;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; IP address (used to uniquely identify source).
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString
+			getIpBytes() {
+				java.lang.Object ref = ip_;
+				if (ref instanceof String) {
+					com.google.protobuf.ByteString b =
+							com.google.protobuf.ByteString.copyFromUtf8(
+									(java.lang.String) ref);
+					ip_ = b;
+					return b;
+				}
+				else {
+					return (com.google.protobuf.ByteString) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string ip = 16;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; IP address (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder setIpBytes(
+					com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000040;
+				ip_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string ip = 16;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; IP address (used to uniquely identify source).
+			 * </pre>
+			 */
+			public Builder clearIp() {
+				bitField0_ = (bitField0_ & ~0x00000040);
+				ip_ = getDefaultInstance().getIp();
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			public boolean hasHttpStart() {
+				return ((bitField0_ & 0x00000080) == 0x00000080);
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart getHttpStart() {
+				if (httpStartBuilder_ == null) {
+					return httpStart_;
+				}
+				else {
+					return httpStartBuilder_.getMessage();
+				}
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			public Builder setHttpStart(
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder builderForValue) {
+				if (httpStartBuilder_ == null) {
+					httpStart_ = builderForValue.build();
+					onChanged();
+				}
+				else {
+					httpStartBuilder_.setMessage(builderForValue.build());
+				}
+				bitField0_ |= 0x00000080;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			public Builder setHttpStart(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart value) {
+				if (httpStartBuilder_ == null) {
+					if (value == null) {
+						throw new NullPointerException();
+					}
+					httpStart_ = value;
+					onChanged();
+				}
+				else {
+					httpStartBuilder_.setMessage(value);
+				}
+				bitField0_ |= 0x00000080;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			public Builder mergeHttpStart(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart value) {
+				if (httpStartBuilder_ == null) {
+					if (((bitField0_ & 0x00000080) == 0x00000080) &&
+							httpStart_ != org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance()) {
+						httpStart_ =
+								org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.newBuilder(httpStart_).mergeFrom(value).buildPartial();
+					}
+					else {
+						httpStart_ = value;
+					}
+					onChanged();
+				}
+				else {
+					httpStartBuilder_.mergeFrom(value);
+				}
+				bitField0_ |= 0x00000080;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			public Builder clearHttpStart() {
+				if (httpStartBuilder_ == null) {
+					httpStart_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.getDefaultInstance();
+					onChanged();
+				}
+				else {
+					httpStartBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000080);
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder getHttpStartBuilder() {
+				bitField0_ |= 0x00000080;
+				onChanged();
+				return getHttpStartFieldBuilder().getBuilder();
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder getHttpStartOrBuilder() {
+				if (httpStartBuilder_ != null) {
+					return httpStartBuilder_.getMessageOrBuilder();
+				}
+				else {
+					return httpStart_;
+				}
+			}
+
+			/**
+			 * <code>optional .events.HttpStart httpStart = 4;</code>
+			 * <p>
+			 * <pre>
+			 * Removed Heartbeat at position 3
+			 * </pre>
+			 */
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder>
+			getHttpStartFieldBuilder() {
+				if (httpStartBuilder_ == null) {
+					httpStartBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+							org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStart.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartOrBuilder>(
+							getHttpStart(),
+							getParentForChildren(),
+							isClean());
+					httpStart_ = null;
+				}
+				return httpStartBuilder_;
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			public boolean hasHttpStop() {
+				return ((bitField0_ & 0x00000100) == 0x00000100);
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop getHttpStop() {
+				if (httpStopBuilder_ == null) {
+					return httpStop_;
+				}
+				else {
+					return httpStopBuilder_.getMessage();
+				}
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			public Builder setHttpStop(
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder builderForValue) {
+				if (httpStopBuilder_ == null) {
+					httpStop_ = builderForValue.build();
+					onChanged();
+				}
+				else {
+					httpStopBuilder_.setMessage(builderForValue.build());
+				}
+				bitField0_ |= 0x00000100;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			public Builder setHttpStop(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop value) {
+				if (httpStopBuilder_ == null) {
+					if (value == null) {
+						throw new NullPointerException();
+					}
+					httpStop_ = value;
+					onChanged();
+				}
+				else {
+					httpStopBuilder_.setMessage(value);
+				}
+				bitField0_ |= 0x00000100;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			public Builder mergeHttpStop(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop value) {
+				if (httpStopBuilder_ == null) {
+					if (((bitField0_ & 0x00000100) == 0x00000100) &&
+							httpStop_ != org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance()) {
+						httpStop_ =
+								org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.newBuilder(httpStop_).mergeFrom(value).buildPartial();
+					}
+					else {
+						httpStop_ = value;
+					}
+					onChanged();
+				}
+				else {
+					httpStopBuilder_.mergeFrom(value);
+				}
+				bitField0_ |= 0x00000100;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			public Builder clearHttpStop() {
+				if (httpStopBuilder_ == null) {
+					httpStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.getDefaultInstance();
+					onChanged();
+				}
+				else {
+					httpStopBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000100);
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder getHttpStopBuilder() {
+				bitField0_ |= 0x00000100;
+				onChanged();
+				return getHttpStopFieldBuilder().getBuilder();
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder getHttpStopOrBuilder() {
+				if (httpStopBuilder_ != null) {
+					return httpStopBuilder_.getMessageOrBuilder();
+				}
+				else {
+					return httpStop_;
+				}
+			}
+
+			/**
+			 * <code>optional .events.HttpStop httpStop = 5;</code>
+			 */
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder>
+			getHttpStopFieldBuilder() {
+				if (httpStopBuilder_ == null) {
+					httpStopBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+							org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStopOrBuilder>(
+							getHttpStop(),
+							getParentForChildren(),
+							isClean());
+					httpStop_ = null;
+				}
+				return httpStopBuilder_;
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			public boolean hasHttpStartStop() {
+				return ((bitField0_ & 0x00000200) == 0x00000200);
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop getHttpStartStop() {
+				if (httpStartStopBuilder_ == null) {
+					return httpStartStop_;
+				}
+				else {
+					return httpStartStopBuilder_.getMessage();
+				}
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			public Builder setHttpStartStop(
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder builderForValue) {
+				if (httpStartStopBuilder_ == null) {
+					httpStartStop_ = builderForValue.build();
+					onChanged();
+				}
+				else {
+					httpStartStopBuilder_.setMessage(builderForValue.build());
+				}
+				bitField0_ |= 0x00000200;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			public Builder setHttpStartStop(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop value) {
+				if (httpStartStopBuilder_ == null) {
+					if (value == null) {
+						throw new NullPointerException();
+					}
+					httpStartStop_ = value;
+					onChanged();
+				}
+				else {
+					httpStartStopBuilder_.setMessage(value);
+				}
+				bitField0_ |= 0x00000200;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			public Builder mergeHttpStartStop(org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop value) {
+				if (httpStartStopBuilder_ == null) {
+					if (((bitField0_ & 0x00000200) == 0x00000200) &&
+							httpStartStop_ != org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance()) {
+						httpStartStop_ =
+								org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.newBuilder(httpStartStop_).mergeFrom(value).buildPartial();
+					}
+					else {
+						httpStartStop_ = value;
+					}
+					onChanged();
+				}
+				else {
+					httpStartStopBuilder_.mergeFrom(value);
+				}
+				bitField0_ |= 0x00000200;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			public Builder clearHttpStartStop() {
+				if (httpStartStopBuilder_ == null) {
+					httpStartStop_ = org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.getDefaultInstance();
+					onChanged();
+				}
+				else {
+					httpStartStopBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000200);
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder getHttpStartStopBuilder() {
+				bitField0_ |= 0x00000200;
+				onChanged();
+				return getHttpStartStopFieldBuilder().getBuilder();
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder getHttpStartStopOrBuilder() {
+				if (httpStartStopBuilder_ != null) {
+					return httpStartStopBuilder_.getMessageOrBuilder();
+				}
+				else {
+					return httpStartStop_;
+				}
+			}
+
+			/**
+			 * <code>optional .events.HttpStartStop httpStartStop = 7;</code>
+			 */
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder>
+			getHttpStartStopFieldBuilder() {
+				if (httpStartStopBuilder_ == null) {
+					httpStartStopBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+							org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStop.Builder, org.cloudfoundry.dropsonde.events.HttpFactory.HttpStartStopOrBuilder>(
+							getHttpStartStop(),
+							getParentForChildren(),
+							isClean());
+					httpStartStop_ = null;
+				}
+				return httpStartStopBuilder_;
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			public boolean hasLogMessage() {
+				return ((bitField0_ & 0x00000400) == 0x00000400);
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage getLogMessage() {
+				if (logMessageBuilder_ == null) {
+					return logMessage_;
+				}
+				else {
+					return logMessageBuilder_.getMessage();
+				}
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			public Builder setLogMessage(
+					org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder builderForValue) {
+				if (logMessageBuilder_ == null) {
+					logMessage_ = builderForValue.build();
+					onChanged();
+				}
+				else {
+					logMessageBuilder_.setMessage(builderForValue.build());
+				}
+				bitField0_ |= 0x00000400;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			public Builder setLogMessage(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage value) {
+				if (logMessageBuilder_ == null) {
+					if (value == null) {
+						throw new NullPointerException();
+					}
+					logMessage_ = value;
+					onChanged();
+				}
+				else {
+					logMessageBuilder_.setMessage(value);
+				}
+				bitField0_ |= 0x00000400;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			public Builder mergeLogMessage(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage value) {
+				if (logMessageBuilder_ == null) {
+					if (((bitField0_ & 0x00000400) == 0x00000400) &&
+							logMessage_ != org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance()) {
+						logMessage_ =
+								org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.newBuilder(logMessage_).mergeFrom(value).buildPartial();
+					}
+					else {
+						logMessage_ = value;
+					}
+					onChanged();
+				}
+				else {
+					logMessageBuilder_.mergeFrom(value);
+				}
+				bitField0_ |= 0x00000400;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			public Builder clearLogMessage() {
+				if (logMessageBuilder_ == null) {
+					logMessage_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
+					onChanged();
+				}
+				else {
+					logMessageBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000400);
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder getLogMessageBuilder() {
+				bitField0_ |= 0x00000400;
+				onChanged();
+				return getLogMessageFieldBuilder().getBuilder();
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder getLogMessageOrBuilder() {
+				if (logMessageBuilder_ != null) {
+					return logMessageBuilder_.getMessageOrBuilder();
+				}
+				else {
+					return logMessage_;
+				}
+			}
+
+			/**
+			 * <code>optional .events.LogMessage logMessage = 8;</code>
+			 */
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.LogFactory.LogMessage, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder, org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder>
+			getLogMessageFieldBuilder() {
+				if (logMessageBuilder_ == null) {
+					logMessageBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+							org.cloudfoundry.dropsonde.events.LogFactory.LogMessage, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder, org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder>(
+							getLogMessage(),
+							getParentForChildren(),
+							isClean());
+					logMessage_ = null;
+				}
+				return logMessageBuilder_;
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			public boolean hasValueMetric() {
+				return ((bitField0_ & 0x00000800) == 0x00000800);
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric getValueMetric() {
+				if (valueMetricBuilder_ == null) {
+					return valueMetric_;
+				}
+				else {
+					return valueMetricBuilder_.getMessage();
+				}
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			public Builder setValueMetric(
+					org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder builderForValue) {
+				if (valueMetricBuilder_ == null) {
+					valueMetric_ = builderForValue.build();
+					onChanged();
+				}
+				else {
+					valueMetricBuilder_.setMessage(builderForValue.build());
+				}
+				bitField0_ |= 0x00000800;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			public Builder setValueMetric(org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric value) {
+				if (valueMetricBuilder_ == null) {
+					if (value == null) {
+						throw new NullPointerException();
+					}
+					valueMetric_ = value;
+					onChanged();
+				}
+				else {
+					valueMetricBuilder_.setMessage(value);
+				}
+				bitField0_ |= 0x00000800;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			public Builder mergeValueMetric(org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric value) {
+				if (valueMetricBuilder_ == null) {
+					if (((bitField0_ & 0x00000800) == 0x00000800) &&
+							valueMetric_ != org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance()) {
+						valueMetric_ =
+								org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.newBuilder(valueMetric_).mergeFrom(value).buildPartial();
+					}
+					else {
+						valueMetric_ = value;
+					}
+					onChanged();
+				}
+				else {
+					valueMetricBuilder_.mergeFrom(value);
+				}
+				bitField0_ |= 0x00000800;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			public Builder clearValueMetric() {
+				if (valueMetricBuilder_ == null) {
+					valueMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.getDefaultInstance();
+					onChanged();
+				}
+				else {
+					valueMetricBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00000800);
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder getValueMetricBuilder() {
+				bitField0_ |= 0x00000800;
+				onChanged();
+				return getValueMetricFieldBuilder().getBuilder();
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder getValueMetricOrBuilder() {
+				if (valueMetricBuilder_ != null) {
+					return valueMetricBuilder_.getMessageOrBuilder();
+				}
+				else {
+					return valueMetric_;
+				}
+			}
+
+			/**
+			 * <code>optional .events.ValueMetric valueMetric = 9;</code>
+			 */
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder>
+			getValueMetricFieldBuilder() {
+				if (valueMetricBuilder_ == null) {
+					valueMetricBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+							org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ValueMetricOrBuilder>(
+							getValueMetric(),
+							getParentForChildren(),
+							isClean());
+					valueMetric_ = null;
+				}
+				return valueMetricBuilder_;
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			public boolean hasCounterEvent() {
+				return ((bitField0_ & 0x00001000) == 0x00001000);
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent getCounterEvent() {
+				if (counterEventBuilder_ == null) {
+					return counterEvent_;
+				}
+				else {
+					return counterEventBuilder_.getMessage();
+				}
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			public Builder setCounterEvent(
+					org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder builderForValue) {
+				if (counterEventBuilder_ == null) {
+					counterEvent_ = builderForValue.build();
+					onChanged();
+				}
+				else {
+					counterEventBuilder_.setMessage(builderForValue.build());
+				}
+				bitField0_ |= 0x00001000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			public Builder setCounterEvent(org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent value) {
+				if (counterEventBuilder_ == null) {
+					if (value == null) {
+						throw new NullPointerException();
+					}
+					counterEvent_ = value;
+					onChanged();
+				}
+				else {
+					counterEventBuilder_.setMessage(value);
+				}
+				bitField0_ |= 0x00001000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			public Builder mergeCounterEvent(org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent value) {
+				if (counterEventBuilder_ == null) {
+					if (((bitField0_ & 0x00001000) == 0x00001000) &&
+							counterEvent_ != org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance()) {
+						counterEvent_ =
+								org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.newBuilder(counterEvent_).mergeFrom(value).buildPartial();
+					}
+					else {
+						counterEvent_ = value;
+					}
+					onChanged();
+				}
+				else {
+					counterEventBuilder_.mergeFrom(value);
+				}
+				bitField0_ |= 0x00001000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			public Builder clearCounterEvent() {
+				if (counterEventBuilder_ == null) {
+					counterEvent_ = org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.getDefaultInstance();
+					onChanged();
+				}
+				else {
+					counterEventBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00001000);
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder getCounterEventBuilder() {
+				bitField0_ |= 0x00001000;
+				onChanged();
+				return getCounterEventFieldBuilder().getBuilder();
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder getCounterEventOrBuilder() {
+				if (counterEventBuilder_ != null) {
+					return counterEventBuilder_.getMessageOrBuilder();
+				}
+				else {
+					return counterEvent_;
+				}
+			}
+
+			/**
+			 * <code>optional .events.CounterEvent counterEvent = 10;</code>
+			 */
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder>
+			getCounterEventFieldBuilder() {
+				if (counterEventBuilder_ == null) {
+					counterEventBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+							org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEvent.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.CounterEventOrBuilder>(
+							getCounterEvent(),
+							getParentForChildren(),
+							isClean());
+					counterEvent_ = null;
+				}
+				return counterEventBuilder_;
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			public boolean hasError() {
+				return ((bitField0_ & 0x00002000) == 0x00002000);
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.ErrorFactory.Error getError() {
+				if (errorBuilder_ == null) {
+					return error_;
+				}
+				else {
+					return errorBuilder_.getMessage();
+				}
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			public Builder setError(
+					org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder builderForValue) {
+				if (errorBuilder_ == null) {
+					error_ = builderForValue.build();
+					onChanged();
+				}
+				else {
+					errorBuilder_.setMessage(builderForValue.build());
+				}
+				bitField0_ |= 0x00002000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			public Builder setError(org.cloudfoundry.dropsonde.events.ErrorFactory.Error value) {
+				if (errorBuilder_ == null) {
+					if (value == null) {
+						throw new NullPointerException();
+					}
+					error_ = value;
+					onChanged();
+				}
+				else {
+					errorBuilder_.setMessage(value);
+				}
+				bitField0_ |= 0x00002000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			public Builder mergeError(org.cloudfoundry.dropsonde.events.ErrorFactory.Error value) {
+				if (errorBuilder_ == null) {
+					if (((bitField0_ & 0x00002000) == 0x00002000) &&
+							error_ != org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance()) {
+						error_ =
+								org.cloudfoundry.dropsonde.events.ErrorFactory.Error.newBuilder(error_).mergeFrom(value).buildPartial();
+					}
+					else {
+						error_ = value;
+					}
+					onChanged();
+				}
+				else {
+					errorBuilder_.mergeFrom(value);
+				}
+				bitField0_ |= 0x00002000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			public Builder clearError() {
+				if (errorBuilder_ == null) {
+					error_ = org.cloudfoundry.dropsonde.events.ErrorFactory.Error.getDefaultInstance();
+					onChanged();
+				}
+				else {
+					errorBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00002000);
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder getErrorBuilder() {
+				bitField0_ |= 0x00002000;
+				onChanged();
+				return getErrorFieldBuilder().getBuilder();
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder getErrorOrBuilder() {
+				if (errorBuilder_ != null) {
+					return errorBuilder_.getMessageOrBuilder();
+				}
+				else {
+					return error_;
+				}
+			}
+
+			/**
+			 * <code>optional .events.Error error = 11;</code>
+			 */
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.ErrorFactory.Error, org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder, org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder>
+			getErrorFieldBuilder() {
+				if (errorBuilder_ == null) {
+					errorBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+							org.cloudfoundry.dropsonde.events.ErrorFactory.Error, org.cloudfoundry.dropsonde.events.ErrorFactory.Error.Builder, org.cloudfoundry.dropsonde.events.ErrorFactory.ErrorOrBuilder>(
+							getError(),
+							getParentForChildren(),
+							isClean());
+					error_ = null;
+				}
+				return errorBuilder_;
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			public boolean hasContainerMetric() {
+				return ((bitField0_ & 0x00004000) == 0x00004000);
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric getContainerMetric() {
+				if (containerMetricBuilder_ == null) {
+					return containerMetric_;
+				}
+				else {
+					return containerMetricBuilder_.getMessage();
+				}
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			public Builder setContainerMetric(
+					org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder builderForValue) {
+				if (containerMetricBuilder_ == null) {
+					containerMetric_ = builderForValue.build();
+					onChanged();
+				}
+				else {
+					containerMetricBuilder_.setMessage(builderForValue.build());
+				}
+				bitField0_ |= 0x00004000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			public Builder setContainerMetric(org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric value) {
+				if (containerMetricBuilder_ == null) {
+					if (value == null) {
+						throw new NullPointerException();
+					}
+					containerMetric_ = value;
+					onChanged();
+				}
+				else {
+					containerMetricBuilder_.setMessage(value);
+				}
+				bitField0_ |= 0x00004000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			public Builder mergeContainerMetric(org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric value) {
+				if (containerMetricBuilder_ == null) {
+					if (((bitField0_ & 0x00004000) == 0x00004000) &&
+							containerMetric_ != org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance()) {
+						containerMetric_ =
+								org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.newBuilder(containerMetric_).mergeFrom(value).buildPartial();
+					}
+					else {
+						containerMetric_ = value;
+					}
+					onChanged();
+				}
+				else {
+					containerMetricBuilder_.mergeFrom(value);
+				}
+				bitField0_ |= 0x00004000;
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			public Builder clearContainerMetric() {
+				if (containerMetricBuilder_ == null) {
+					containerMetric_ = org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.getDefaultInstance();
+					onChanged();
+				}
+				else {
+					containerMetricBuilder_.clear();
+				}
+				bitField0_ = (bitField0_ & ~0x00004000);
+				return this;
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder getContainerMetricBuilder() {
+				bitField0_ |= 0x00004000;
+				onChanged();
+				return getContainerMetricFieldBuilder().getBuilder();
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			public org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder getContainerMetricOrBuilder() {
+				if (containerMetricBuilder_ != null) {
+					return containerMetricBuilder_.getMessageOrBuilder();
+				}
+				else {
+					return containerMetric_;
+				}
+			}
+
+			/**
+			 * <code>optional .events.ContainerMetric containerMetric = 12;</code>
+			 */
+			private com.google.protobuf.SingleFieldBuilder<
+					org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder>
+			getContainerMetricFieldBuilder() {
+				if (containerMetricBuilder_ == null) {
+					containerMetricBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+							org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetric.Builder, org.cloudfoundry.dropsonde.events.MetricFactory.ContainerMetricOrBuilder>(
+							getContainerMetric(),
+							getParentForChildren(),
+							isClean());
+					containerMetric_ = null;
+				}
+				return containerMetricBuilder_;
+			}
+
+			// @@protoc_insertion_point(builder_scope:events.Envelope)
+		}
+
+		// @@protoc_insertion_point(class_scope:events.Envelope)
+	}
+
+	// @@protoc_insertion_point(outer_class_scope)
 }

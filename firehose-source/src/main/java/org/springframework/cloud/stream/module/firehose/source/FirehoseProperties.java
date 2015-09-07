@@ -17,7 +17,10 @@
 
 package org.springframework.cloud.stream.module.firehose.source;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Vinicius Carvalho
@@ -25,133 +28,135 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties
 public class FirehoseProperties {
 
-    /**
-     * Doppler URL endpoint usually wss://doppler.{CF_DOMAIN} (required)
-     */
-    private String dopplerUrl;
+	/**
+	 * Doppler URL endpoint. Usually wss://doppler.{CF_DOMAIN}.
+	 */
+	private String dopplerUrl;
 
-    /**
-     * Domain of you CloudFoundry installation. Not required for lattice
-     */
-    private String cfDomain;
+	/**
+	 * Domain of you CloudFoundry installation. Not required for lattice.
+	 */
+	private String cfDomain;
 
-    /**
-     * Authentication endpoint of your CloudFoundry installation. Not required for lattice
-     */
-    private String authenticationUrl;
+	/**
+	 * Authentication endpoint of your Cloud Foundry installation. Not required for lattice.
+	 */
+	private String authenticationUrl;
 
-    /**
-     * Cloudfoundry user that has permission to consume doppler events (optional)
-     */
-    private String username;
-    /**
-     * User password
-     */
-    private String password;
+	/**
+	 * Cloud Foundry user that has permission to consume doppler events.
+	 */
+	private String username;
 
-    /**
-     * Comma separated list of doppler events to consume.
-     * Possible values: HTTP_START, HTTP_STOP, HTTP_START_STOP, LOG_EVENT, COUNTER_EVENT, VALUE_METRIC, CONTAINER_METRIC
-     */
-    private String dopplerEvents;
+	/**
+	 * User password.
+	 */
+	private String password;
 
-    /**
-     * Name of doppler subscription. Creates a websocket session on doppler server. (defaults to 'firehose-a')
-     */
-    private String dopplerSubscription;
+	/**
+	 * Comma separated list of doppler events to consume.
+	 * Possible values: HTTP_START, HTTP_STOP, HTTP_START_STOP, LOG_EVENT, COUNTER_EVENT, VALUE_METRIC, CONTAINER_METRIC
+	 */
+	private String dopplerEvents;
 
-    /**
-     * Output a JSON string or POJO. Defaults to false
-     */
-    private boolean outputJson = false;
+	/**
+	 * Name of doppler subscription. Creates a websocket session on doppler server.
+	 */
+	private String dopplerSubscription = "firehose-a";
 
-    /**
-     * Trust all certs. Defaults to false
-     */
-    private boolean trustSelfCerts = false;
+	/**
+	 * Output a JSON string or POJO.
+	 */
+	private boolean outputJson = false;
 
-    /**
-     * WebSocket origin, defaults to "http://localhost"
-     */
-    private String origin = "http://localhost";
+	/**
+	 * Trust all certs.
+	 */
+	private boolean trustSelfCerts = false;
 
-    public String getOrigin() {
-        return origin;
-    }
+	/**
+	 * WebSocket origin.
+	 */
+	private String origin = "http://localhost";
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
+	public String getOrigin() {
+		return origin;
+	}
 
-    public String getDopplerUrl() {
-        return dopplerUrl;
-    }
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
 
-    public void setDopplerUrl(String dopplerUrl) {
-        this.dopplerUrl = dopplerUrl;
-    }
+	@NotBlank
+	public String getDopplerUrl() {
+		return StringUtils.isEmpty(dopplerUrl) ? "wss://doppler." + cfDomain : dopplerUrl;
+	}
 
-    public String getCfDomain() {
-        return cfDomain;
-    }
+	public void setDopplerUrl(String dopplerUrl) {
+		this.dopplerUrl = dopplerUrl;
+	}
 
-    public void setCfDomain(String cfDomain) {
-        this.cfDomain = cfDomain;
-    }
+	public String getCfDomain() {
+		return cfDomain;
+	}
 
-    public String getAuthenticationUrl() {
-        return authenticationUrl;
-    }
+	public void setCfDomain(String cfDomain) {
+		this.cfDomain = cfDomain;
+	}
 
-    public void setAuthenticationUrl(String authenticationUrl) {
-        this.authenticationUrl = authenticationUrl;
-    }
+	public String getAuthenticationUrl() {
+		return authenticationUrl;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setAuthenticationUrl(String authenticationUrl) {
+		this.authenticationUrl = authenticationUrl;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getDopplerEvents() {
-        return dopplerEvents;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setDopplerEvents(String dopplerEvents) {
-        this.dopplerEvents = dopplerEvents;
-    }
+	public String getDopplerEvents() {
+		return dopplerEvents;
+	}
 
-    public String getDopplerSubscription() {
-        return dopplerSubscription;
-    }
+	public void setDopplerEvents(String dopplerEvents) {
+		this.dopplerEvents = dopplerEvents;
+	}
 
-    public void setDopplerSubscription(String dopplerSubscription) {
-        this.dopplerSubscription = dopplerSubscription;
-    }
+	public String getDopplerSubscription() {
+		return dopplerSubscription;
+	}
 
-    public boolean isOutputJson() {
-        return outputJson;
-    }
+	public void setDopplerSubscription(String dopplerSubscription) {
+		this.dopplerSubscription = dopplerSubscription;
+	}
 
-    public void setOutputJson(boolean outputJson) {
-        this.outputJson = outputJson;
-    }
+	public boolean isOutputJson() {
+		return outputJson;
+	}
 
-    public boolean isTrustSelfCerts() {
-        return trustSelfCerts;
-    }
+	public void setOutputJson(boolean outputJson) {
+		this.outputJson = outputJson;
+	}
 
-    public void setTrustSelfCerts(boolean trustSelfCerts) {
-        this.trustSelfCerts = trustSelfCerts;
-    }
+	public boolean isTrustSelfCerts() {
+		return trustSelfCerts;
+	}
+
+	public void setTrustSelfCerts(boolean trustSelfCerts) {
+		this.trustSelfCerts = trustSelfCerts;
+	}
 }

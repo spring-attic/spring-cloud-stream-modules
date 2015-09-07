@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class FirehoseApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(FirehoseApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(FirehoseApplication.class, args);
+	}
 }

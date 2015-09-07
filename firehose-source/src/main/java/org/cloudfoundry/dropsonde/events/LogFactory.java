@@ -4,1524 +4,1573 @@
 package org.cloudfoundry.dropsonde.events;
 
 public final class LogFactory {
-    private static final com.google.protobuf.Descriptors.Descriptor
-            internal_static_events_LogMessage_descriptor;
-    private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-            internal_static_events_LogMessage_fieldAccessorTable;
-    private static com.google.protobuf.Descriptors.FileDescriptor
-            descriptor;
-
-    static {
-        java.lang.String[] descriptorData = {
-                "\n\tlog.proto\022\006events\"\305\001\n\nLogMessage\022\017\n\007me" +
-                        "ssage\030\001 \002(\014\0224\n\014message_type\030\002 \002(\0162\036.even" +
-                        "ts.LogMessage.MessageType\022\021\n\ttimestamp\030\003" +
-                        " \002(\003\022\016\n\006app_id\030\004 \001(\t\022\023\n\013source_type\030\005 \001(" +
-                        "\t\022\027\n\017source_instance\030\006 \001(\t\"\037\n\013MessageTyp" +
-                        "e\022\007\n\003OUT\020\001\022\007\n\003ERR\020\002B/\n!org.cloudfoundry." +
-                        "dropsonde.eventsB\nLogFactory"
-        };
-        com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-                new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-                    public com.google.protobuf.ExtensionRegistry assignDescriptors(
-                            com.google.protobuf.Descriptors.FileDescriptor root) {
-                        descriptor = root;
-                        return null;
-                    }
-                };
-        com.google.protobuf.Descriptors.FileDescriptor
-                .internalBuildGeneratedFileFrom(descriptorData,
-                        new com.google.protobuf.Descriptors.FileDescriptor[]{
-                        }, assigner);
-        internal_static_events_LogMessage_descriptor =
-                getDescriptor().getMessageTypes().get(0);
-        internal_static_events_LogMessage_fieldAccessorTable = new
-                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-                internal_static_events_LogMessage_descriptor,
-                new java.lang.String[]{"Message", "MessageType", "Timestamp", "AppId", "SourceType", "SourceInstance",});
-    }
-
-    private LogFactory() {
-    }
-
-    public static void registerAllExtensions(
-            com.google.protobuf.ExtensionRegistry registry) {
-    }
-
-    public static com.google.protobuf.Descriptors.FileDescriptor
-    getDescriptor() {
-        return descriptor;
-    }
-
-    public interface LogMessageOrBuilder extends
-            // @@protoc_insertion_point(interface_extends:events.LogMessage)
-            com.google.protobuf.MessageOrBuilder {
-
-        /**
-         * <code>required bytes message = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
-         * </pre>
-         */
-        boolean hasMessage();
-
-        /**
-         * <code>required bytes message = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
-         * </pre>
-         */
-        com.google.protobuf.ByteString getMessage();
-
-        /**
-         * <code>required .events.LogMessage.MessageType message_type = 2;</code>
-         * <p>
-         * <pre>
-         * &#47; Type of the message (OUT or ERR).
-         * </pre>
-         */
-        boolean hasMessageType();
-
-        /**
-         * <code>required .events.LogMessage.MessageType message_type = 2;</code>
-         * <p>
-         * <pre>
-         * &#47; Type of the message (OUT or ERR).
-         * </pre>
-         */
-        org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType getMessageType();
-
-        /**
-         * <code>required int64 timestamp = 3;</code>
-         * <p>
-         * <pre>
-         * &#47; UNIX timestamp (in nanoseconds) when the log was written.
-         * </pre>
-         */
-        boolean hasTimestamp();
-
-        /**
-         * <code>required int64 timestamp = 3;</code>
-         * <p>
-         * <pre>
-         * &#47; UNIX timestamp (in nanoseconds) when the log was written.
-         * </pre>
-         */
-        long getTimestamp();
-
-        /**
-         * <code>optional string app_id = 4;</code>
-         * <p>
-         * <pre>
-         * &#47; Application that emitted the message (or to which the application is related).
-         * </pre>
-         */
-        boolean hasAppId();
-
-        /**
-         * <code>optional string app_id = 4;</code>
-         * <p>
-         * <pre>
-         * &#47; Application that emitted the message (or to which the application is related).
-         * </pre>
-         */
-        java.lang.String getAppId();
-
-        /**
-         * <code>optional string app_id = 4;</code>
-         * <p>
-         * <pre>
-         * &#47; Application that emitted the message (or to which the application is related).
-         * </pre>
-         */
-        com.google.protobuf.ByteString
-        getAppIdBytes();
-
-        /**
-         * <code>optional string source_type = 5;</code>
-         * <p>
-         * <pre>
-         * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-         * </pre>
-         */
-        boolean hasSourceType();
-
-        /**
-         * <code>optional string source_type = 5;</code>
-         * <p>
-         * <pre>
-         * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-         * </pre>
-         */
-        java.lang.String getSourceType();
-
-        /**
-         * <code>optional string source_type = 5;</code>
-         * <p>
-         * <pre>
-         * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-         * </pre>
-         */
-        com.google.protobuf.ByteString
-        getSourceTypeBytes();
-
-        /**
-         * <code>optional string source_instance = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; Instance that emitted the message.
-         * </pre>
-         */
-        boolean hasSourceInstance();
-
-        /**
-         * <code>optional string source_instance = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; Instance that emitted the message.
-         * </pre>
-         */
-        java.lang.String getSourceInstance();
-
-        /**
-         * <code>optional string source_instance = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; Instance that emitted the message.
-         * </pre>
-         */
-        com.google.protobuf.ByteString
-        getSourceInstanceBytes();
-    }
-
-    /**
-     * Protobuf type {@code events.LogMessage}
-     * <p>
-     * <pre>
-     * &#47; A LogMessage contains a "log line" and associated metadata.
-     * </pre>
-     */
-    public static final class LogMessage extends
-            com.google.protobuf.GeneratedMessage implements
-            // @@protoc_insertion_point(message_implements:events.LogMessage)
-            LogMessageOrBuilder {
-        public static final int MESSAGE_FIELD_NUMBER = 1;
-        public static final int MESSAGE_TYPE_FIELD_NUMBER = 2;
-        public static final int TIMESTAMP_FIELD_NUMBER = 3;
-        public static final int APP_ID_FIELD_NUMBER = 4;
-        public static final int SOURCE_TYPE_FIELD_NUMBER = 5;
-        public static final int SOURCE_INSTANCE_FIELD_NUMBER = 6;
-        private static final LogMessage defaultInstance;
-        private static final long serialVersionUID = 0L;
-        public static com.google.protobuf.Parser<LogMessage> PARSER =
-                new com.google.protobuf.AbstractParser<LogMessage>() {
-                    public LogMessage parsePartialFrom(
-                            com.google.protobuf.CodedInputStream input,
-                            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                            throws com.google.protobuf.InvalidProtocolBufferException {
-                        return new LogMessage(input, extensionRegistry);
-                    }
-                };
-
-        static {
-            defaultInstance = new LogMessage(true);
-            defaultInstance.initFields();
-        }
-
-        private final com.google.protobuf.UnknownFieldSet unknownFields;
-        private int bitField0_;
-        private com.google.protobuf.ByteString message_;
-        private org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType messageType_;
-        private long timestamp_;
-        private java.lang.Object appId_;
-        private java.lang.Object sourceType_;
-        private java.lang.Object sourceInstance_;
-        private byte memoizedIsInitialized = -1;
-        private int memoizedSerializedSize = -1;
-
-        // Use LogMessage.newBuilder() to construct.
-        private LogMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-            super(builder);
-            this.unknownFields = builder.getUnknownFields();
-        }
-
-        private LogMessage(boolean noInit) {
-            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
-        }
-
-        private LogMessage(
-                com.google.protobuf.CodedInputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            initFields();
-            int mutable_bitField0_ = 0;
-            com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-                    com.google.protobuf.UnknownFieldSet.newBuilder();
-            try {
-                boolean done = false;
-                while (!done) {
-                    int tag = input.readTag();
-                    switch (tag) {
-                        case 0:
-                            done = true;
-                            break;
-                        default: {
-                            if (!parseUnknownField(input, unknownFields,
-                                    extensionRegistry, tag)) {
-                                done = true;
-                            }
-                            break;
-                        }
-                        case 10: {
-                            bitField0_ |= 0x00000001;
-                            message_ = input.readBytes();
-                            break;
-                        }
-                        case 16: {
-                            int rawValue = input.readEnum();
-                            org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType value = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.valueOf(rawValue);
-                            if (value == null) {
-                                unknownFields.mergeVarintField(2, rawValue);
-                            } else {
-                                bitField0_ |= 0x00000002;
-                                messageType_ = value;
-                            }
-                            break;
-                        }
-                        case 24: {
-                            bitField0_ |= 0x00000004;
-                            timestamp_ = input.readInt64();
-                            break;
-                        }
-                        case 34: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000008;
-                            appId_ = bs;
-                            break;
-                        }
-                        case 42: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000010;
-                            sourceType_ = bs;
-                            break;
-                        }
-                        case 50: {
-                            com.google.protobuf.ByteString bs = input.readBytes();
-                            bitField0_ |= 0x00000020;
-                            sourceInstance_ = bs;
-                            break;
-                        }
-                    }
-                }
-            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                throw e.setUnfinishedMessage(this);
-            } catch (java.io.IOException e) {
-                throw new com.google.protobuf.InvalidProtocolBufferException(
-                        e.getMessage()).setUnfinishedMessage(this);
-            } finally {
-                this.unknownFields = unknownFields.build();
-                makeExtensionsImmutable();
-            }
-        }
-
-        public static LogMessage getDefaultInstance() {
-            return defaultInstance;
-        }
-
-        public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-            return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_descriptor;
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
-                com.google.protobuf.ByteString data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
-                com.google.protobuf.ByteString data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(byte[] data)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
-                byte[] data,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws com.google.protobuf.InvalidProtocolBufferException {
-            return PARSER.parseFrom(data, extensionRegistry);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(java.io.InputStream input)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
-                java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseDelimitedFrom(java.io.InputStream input)
-                throws java.io.IOException {
-            return PARSER.parseDelimitedFrom(input);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseDelimitedFrom(
-                java.io.InputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws java.io.IOException {
-            return PARSER.parseDelimitedFrom(input, extensionRegistry);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
-                com.google.protobuf.CodedInputStream input)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input);
-        }
-
-        public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
-                com.google.protobuf.CodedInputStream input,
-                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                throws java.io.IOException {
-            return PARSER.parseFrom(input, extensionRegistry);
-        }
-
-        public static Builder newBuilder() {
-            return Builder.create();
-        }
-
-        public static Builder newBuilder(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage prototype) {
-            return newBuilder().mergeFrom(prototype);
-        }
-
-        public LogMessage getDefaultInstanceForType() {
-            return defaultInstance;
-        }
-
-        @java.lang.Override
-        public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-            return this.unknownFields;
-        }
-
-        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-            return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_fieldAccessorTable
-                    .ensureFieldAccessorsInitialized(
-                            org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.class, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder.class);
-        }
-
-        @java.lang.Override
-        public com.google.protobuf.Parser<LogMessage> getParserForType() {
-            return PARSER;
-        }
-
-        /**
-         * <code>required bytes message = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
-         * </pre>
-         */
-        public boolean hasMessage() {
-            return ((bitField0_ & 0x00000001) == 0x00000001);
-        }
-
-        /**
-         * <code>required bytes message = 1;</code>
-         * <p>
-         * <pre>
-         * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
-         * </pre>
-         */
-        public com.google.protobuf.ByteString getMessage() {
-            return message_;
-        }
-
-        /**
-         * <code>required .events.LogMessage.MessageType message_type = 2;</code>
-         * <p>
-         * <pre>
-         * &#47; Type of the message (OUT or ERR).
-         * </pre>
-         */
-        public boolean hasMessageType() {
-            return ((bitField0_ & 0x00000002) == 0x00000002);
-        }
-
-        /**
-         * <code>required .events.LogMessage.MessageType message_type = 2;</code>
-         * <p>
-         * <pre>
-         * &#47; Type of the message (OUT or ERR).
-         * </pre>
-         */
-        public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType getMessageType() {
-            return messageType_;
-        }
-
-        /**
-         * <code>required int64 timestamp = 3;</code>
-         * <p>
-         * <pre>
-         * &#47; UNIX timestamp (in nanoseconds) when the log was written.
-         * </pre>
-         */
-        public boolean hasTimestamp() {
-            return ((bitField0_ & 0x00000004) == 0x00000004);
-        }
-
-        /**
-         * <code>required int64 timestamp = 3;</code>
-         * <p>
-         * <pre>
-         * &#47; UNIX timestamp (in nanoseconds) when the log was written.
-         * </pre>
-         */
-        public long getTimestamp() {
-            return timestamp_;
-        }
-
-        /**
-         * <code>optional string app_id = 4;</code>
-         * <p>
-         * <pre>
-         * &#47; Application that emitted the message (or to which the application is related).
-         * </pre>
-         */
-        public boolean hasAppId() {
-            return ((bitField0_ & 0x00000008) == 0x00000008);
-        }
-
-        /**
-         * <code>optional string app_id = 4;</code>
-         * <p>
-         * <pre>
-         * &#47; Application that emitted the message (or to which the application is related).
-         * </pre>
-         */
-        public java.lang.String getAppId() {
-            java.lang.Object ref = appId_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    appId_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string app_id = 4;</code>
-         * <p>
-         * <pre>
-         * &#47; Application that emitted the message (or to which the application is related).
-         * </pre>
-         */
-        public com.google.protobuf.ByteString
-        getAppIdBytes() {
-            java.lang.Object ref = appId_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b =
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                                (java.lang.String) ref);
-                appId_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        /**
-         * <code>optional string source_type = 5;</code>
-         * <p>
-         * <pre>
-         * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-         * </pre>
-         */
-        public boolean hasSourceType() {
-            return ((bitField0_ & 0x00000010) == 0x00000010);
-        }
-
-        /**
-         * <code>optional string source_type = 5;</code>
-         * <p>
-         * <pre>
-         * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-         * </pre>
-         */
-        public java.lang.String getSourceType() {
-            java.lang.Object ref = sourceType_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    sourceType_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string source_type = 5;</code>
-         * <p>
-         * <pre>
-         * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-         * </pre>
-         */
-        public com.google.protobuf.ByteString
-        getSourceTypeBytes() {
-            java.lang.Object ref = sourceType_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b =
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                                (java.lang.String) ref);
-                sourceType_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        /**
-         * <code>optional string source_instance = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; Instance that emitted the message.
-         * </pre>
-         */
-        public boolean hasSourceInstance() {
-            return ((bitField0_ & 0x00000020) == 0x00000020);
-        }
-
-        /**
-         * <code>optional string source_instance = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; Instance that emitted the message.
-         * </pre>
-         */
-        public java.lang.String getSourceInstance() {
-            java.lang.Object ref = sourceInstance_;
-            if (ref instanceof java.lang.String) {
-                return (java.lang.String) ref;
-            } else {
-                com.google.protobuf.ByteString bs =
-                        (com.google.protobuf.ByteString) ref;
-                java.lang.String s = bs.toStringUtf8();
-                if (bs.isValidUtf8()) {
-                    sourceInstance_ = s;
-                }
-                return s;
-            }
-        }
-
-        /**
-         * <code>optional string source_instance = 6;</code>
-         * <p>
-         * <pre>
-         * &#47; Instance that emitted the message.
-         * </pre>
-         */
-        public com.google.protobuf.ByteString
-        getSourceInstanceBytes() {
-            java.lang.Object ref = sourceInstance_;
-            if (ref instanceof java.lang.String) {
-                com.google.protobuf.ByteString b =
-                        com.google.protobuf.ByteString.copyFromUtf8(
-                                (java.lang.String) ref);
-                sourceInstance_ = b;
-                return b;
-            } else {
-                return (com.google.protobuf.ByteString) ref;
-            }
-        }
-
-        private void initFields() {
-            message_ = com.google.protobuf.ByteString.EMPTY;
-            messageType_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.OUT;
-            timestamp_ = 0L;
-            appId_ = "";
-            sourceType_ = "";
-            sourceInstance_ = "";
-        }
-
-        public final boolean isInitialized() {
-            byte isInitialized = memoizedIsInitialized;
-            if (isInitialized == 1) return true;
-            if (isInitialized == 0) return false;
-
-            if (!hasMessage()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasMessageType()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            if (!hasTimestamp()) {
-                memoizedIsInitialized = 0;
-                return false;
-            }
-            memoizedIsInitialized = 1;
-            return true;
-        }
-
-        public void writeTo(com.google.protobuf.CodedOutputStream output)
-                throws java.io.IOException {
-            getSerializedSize();
-            if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                output.writeBytes(1, message_);
-            }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                output.writeEnum(2, messageType_.getNumber());
-            }
-            if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                output.writeInt64(3, timestamp_);
-            }
-            if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                output.writeBytes(4, getAppIdBytes());
-            }
-            if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                output.writeBytes(5, getSourceTypeBytes());
-            }
-            if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                output.writeBytes(6, getSourceInstanceBytes());
-            }
-            getUnknownFields().writeTo(output);
-        }
-
-        public int getSerializedSize() {
-            int size = memoizedSerializedSize;
-            if (size != -1) return size;
-
-            size = 0;
-            if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(1, message_);
-            }
-            if (((bitField0_ & 0x00000002) == 0x00000002)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeEnumSize(2, messageType_.getNumber());
-            }
-            if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeInt64Size(3, timestamp_);
-            }
-            if (((bitField0_ & 0x00000008) == 0x00000008)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(4, getAppIdBytes());
-            }
-            if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(5, getSourceTypeBytes());
-            }
-            if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                size += com.google.protobuf.CodedOutputStream
-                        .computeBytesSize(6, getSourceInstanceBytes());
-            }
-            size += getUnknownFields().getSerializedSize();
-            memoizedSerializedSize = size;
-            return size;
-        }
-
-        @java.lang.Override
-        protected java.lang.Object writeReplace()
-                throws java.io.ObjectStreamException {
-            return super.writeReplace();
-        }
-
-        public Builder newBuilderForType() {
-            return newBuilder();
-        }
-
-        public Builder toBuilder() {
-            return newBuilder(this);
-        }
-
-        @java.lang.Override
-        protected Builder newBuilderForType(
-                com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-            Builder builder = new Builder(parent);
-            return builder;
-        }
-
-        /**
-         * Protobuf enum {@code events.LogMessage.MessageType}
-         * <p>
-         * <pre>
-         * &#47; MessageType stores the destination of the message (corresponding to STDOUT or STDERR).
-         * </pre>
-         */
-        public enum MessageType
-                implements com.google.protobuf.ProtocolMessageEnum {
-            /**
-             * <code>OUT = 1;</code>
-             */
-            OUT(0, 1),
-            /**
-             * <code>ERR = 2;</code>
-             */
-            ERR(1, 2),;
-
-            /**
-             * <code>OUT = 1;</code>
-             */
-            public static final int OUT_VALUE = 1;
-            /**
-             * <code>ERR = 2;</code>
-             */
-            public static final int ERR_VALUE = 2;
-            private static final MessageType[] VALUES = values();
-            private static com.google.protobuf.Internal.EnumLiteMap<MessageType>
-                    internalValueMap =
-                    new com.google.protobuf.Internal.EnumLiteMap<MessageType>() {
-                        public MessageType findValueByNumber(int number) {
-                            return MessageType.valueOf(number);
-                        }
-                    };
-            private final int index;
-            private final int value;
-
-            private MessageType(int index, int value) {
-                this.index = index;
-                this.value = value;
-            }
-
-            public static MessageType valueOf(int value) {
-                switch (value) {
-                    case 1:
-                        return OUT;
-                    case 2:
-                        return ERR;
-                    default:
-                        return null;
-                }
-            }
-
-            public static com.google.protobuf.Internal.EnumLiteMap<MessageType>
-            internalGetValueMap() {
-                return internalValueMap;
-            }
-
-            public static final com.google.protobuf.Descriptors.EnumDescriptor
-            getDescriptor() {
-                return org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDescriptor().getEnumTypes().get(0);
-            }
-
-            public static MessageType valueOf(
-                    com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-                if (desc.getType() != getDescriptor()) {
-                    throw new java.lang.IllegalArgumentException(
-                            "EnumValueDescriptor is not for this type.");
-                }
-                return VALUES[desc.getIndex()];
-            }
-
-            public final int getNumber() {
-                return value;
-            }
-
-            public final com.google.protobuf.Descriptors.EnumValueDescriptor
-            getValueDescriptor() {
-                return getDescriptor().getValues().get(index);
-            }
-
-            public final com.google.protobuf.Descriptors.EnumDescriptor
-            getDescriptorForType() {
-                return getDescriptor();
-            }
-
-            // @@protoc_insertion_point(enum_scope:events.LogMessage.MessageType)
-        }
-
-        /**
-         * Protobuf type {@code events.LogMessage}
-         * <p>
-         * <pre>
-         * &#47; A LogMessage contains a "log line" and associated metadata.
-         * </pre>
-         */
-        public static final class Builder extends
-                com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-                // @@protoc_insertion_point(builder_implements:events.LogMessage)
-                org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder {
-            private int bitField0_;
-            private com.google.protobuf.ByteString message_ = com.google.protobuf.ByteString.EMPTY;
-            private org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType messageType_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.OUT;
-            private long timestamp_;
-            private java.lang.Object appId_ = "";
-            private java.lang.Object sourceType_ = "";
-            private java.lang.Object sourceInstance_ = "";
-
-            // Construct using org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.newBuilder()
-            private Builder() {
-                maybeForceBuilderInitialization();
-            }
-
-            private Builder(
-                    com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-                super(parent);
-                maybeForceBuilderInitialization();
-            }
-
-            public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-                return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_descriptor;
-            }
-
-            private static Builder create() {
-                return new Builder();
-            }
-
-            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-            internalGetFieldAccessorTable() {
-                return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_fieldAccessorTable
-                        .ensureFieldAccessorsInitialized(
-                                org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.class, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder.class);
-            }
-
-            private void maybeForceBuilderInitialization() {
-                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-                }
-            }
-
-            public Builder clear() {
-                super.clear();
-                message_ = com.google.protobuf.ByteString.EMPTY;
-                bitField0_ = (bitField0_ & ~0x00000001);
-                messageType_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.OUT;
-                bitField0_ = (bitField0_ & ~0x00000002);
-                timestamp_ = 0L;
-                bitField0_ = (bitField0_ & ~0x00000004);
-                appId_ = "";
-                bitField0_ = (bitField0_ & ~0x00000008);
-                sourceType_ = "";
-                bitField0_ = (bitField0_ & ~0x00000010);
-                sourceInstance_ = "";
-                bitField0_ = (bitField0_ & ~0x00000020);
-                return this;
-            }
-
-            public Builder clone() {
-                return create().mergeFrom(buildPartial());
-            }
-
-            public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-                return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_descriptor;
-            }
-
-            public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage getDefaultInstanceForType() {
-                return org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
-            }
-
-            public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage build() {
-                org.cloudfoundry.dropsonde.events.LogFactory.LogMessage result = buildPartial();
-                if (!result.isInitialized()) {
-                    throw newUninitializedMessageException(result);
-                }
-                return result;
-            }
-
-            public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage buildPartial() {
-                org.cloudfoundry.dropsonde.events.LogFactory.LogMessage result = new org.cloudfoundry.dropsonde.events.LogFactory.LogMessage(this);
-                int from_bitField0_ = bitField0_;
-                int to_bitField0_ = 0;
-                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-                    to_bitField0_ |= 0x00000001;
-                }
-                result.message_ = message_;
-                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-                    to_bitField0_ |= 0x00000002;
-                }
-                result.messageType_ = messageType_;
-                if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-                    to_bitField0_ |= 0x00000004;
-                }
-                result.timestamp_ = timestamp_;
-                if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-                    to_bitField0_ |= 0x00000008;
-                }
-                result.appId_ = appId_;
-                if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-                    to_bitField0_ |= 0x00000010;
-                }
-                result.sourceType_ = sourceType_;
-                if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-                    to_bitField0_ |= 0x00000020;
-                }
-                result.sourceInstance_ = sourceInstance_;
-                result.bitField0_ = to_bitField0_;
-                onBuilt();
-                return result;
-            }
-
-            public Builder mergeFrom(com.google.protobuf.Message other) {
-                if (other instanceof org.cloudfoundry.dropsonde.events.LogFactory.LogMessage) {
-                    return mergeFrom((org.cloudfoundry.dropsonde.events.LogFactory.LogMessage) other);
-                } else {
-                    super.mergeFrom(other);
-                    return this;
-                }
-            }
-
-            public Builder mergeFrom(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage other) {
-                if (other == org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance()) return this;
-                if (other.hasMessage()) {
-                    setMessage(other.getMessage());
-                }
-                if (other.hasMessageType()) {
-                    setMessageType(other.getMessageType());
-                }
-                if (other.hasTimestamp()) {
-                    setTimestamp(other.getTimestamp());
-                }
-                if (other.hasAppId()) {
-                    bitField0_ |= 0x00000008;
-                    appId_ = other.appId_;
-                    onChanged();
-                }
-                if (other.hasSourceType()) {
-                    bitField0_ |= 0x00000010;
-                    sourceType_ = other.sourceType_;
-                    onChanged();
-                }
-                if (other.hasSourceInstance()) {
-                    bitField0_ |= 0x00000020;
-                    sourceInstance_ = other.sourceInstance_;
-                    onChanged();
-                }
-                this.mergeUnknownFields(other.getUnknownFields());
-                return this;
-            }
-
-            public final boolean isInitialized() {
-                if (!hasMessage()) {
-
-                    return false;
-                }
-                if (!hasMessageType()) {
-
-                    return false;
-                }
-                if (!hasTimestamp()) {
-
-                    return false;
-                }
-                return true;
-            }
-
-            public Builder mergeFrom(
-                    com.google.protobuf.CodedInputStream input,
-                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-                    throws java.io.IOException {
-                org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parsedMessage = null;
-                try {
-                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-                    parsedMessage = (org.cloudfoundry.dropsonde.events.LogFactory.LogMessage) e.getUnfinishedMessage();
-                    throw e;
-                } finally {
-                    if (parsedMessage != null) {
-                        mergeFrom(parsedMessage);
-                    }
-                }
-                return this;
-            }
-
-            /**
-             * <code>required bytes message = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
-             * </pre>
-             */
-            public boolean hasMessage() {
-                return ((bitField0_ & 0x00000001) == 0x00000001);
-            }
-
-            /**
-             * <code>required bytes message = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
-             * </pre>
-             */
-            public com.google.protobuf.ByteString getMessage() {
-                return message_;
-            }
-
-            /**
-             * <code>required bytes message = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
-             * </pre>
-             */
-            public Builder setMessage(com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000001;
-                message_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required bytes message = 1;</code>
-             * <p>
-             * <pre>
-             * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
-             * </pre>
-             */
-            public Builder clearMessage() {
-                bitField0_ = (bitField0_ & ~0x00000001);
-                message_ = getDefaultInstance().getMessage();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required .events.LogMessage.MessageType message_type = 2;</code>
-             * <p>
-             * <pre>
-             * &#47; Type of the message (OUT or ERR).
-             * </pre>
-             */
-            public boolean hasMessageType() {
-                return ((bitField0_ & 0x00000002) == 0x00000002);
-            }
-
-            /**
-             * <code>required .events.LogMessage.MessageType message_type = 2;</code>
-             * <p>
-             * <pre>
-             * &#47; Type of the message (OUT or ERR).
-             * </pre>
-             */
-            public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType getMessageType() {
-                return messageType_;
-            }
-
-            /**
-             * <code>required .events.LogMessage.MessageType message_type = 2;</code>
-             * <p>
-             * <pre>
-             * &#47; Type of the message (OUT or ERR).
-             * </pre>
-             */
-            public Builder setMessageType(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000002;
-                messageType_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required .events.LogMessage.MessageType message_type = 2;</code>
-             * <p>
-             * <pre>
-             * &#47; Type of the message (OUT or ERR).
-             * </pre>
-             */
-            public Builder clearMessageType() {
-                bitField0_ = (bitField0_ & ~0x00000002);
-                messageType_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.OUT;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required int64 timestamp = 3;</code>
-             * <p>
-             * <pre>
-             * &#47; UNIX timestamp (in nanoseconds) when the log was written.
-             * </pre>
-             */
-            public boolean hasTimestamp() {
-                return ((bitField0_ & 0x00000004) == 0x00000004);
-            }
-
-            /**
-             * <code>required int64 timestamp = 3;</code>
-             * <p>
-             * <pre>
-             * &#47; UNIX timestamp (in nanoseconds) when the log was written.
-             * </pre>
-             */
-            public long getTimestamp() {
-                return timestamp_;
-            }
-
-            /**
-             * <code>required int64 timestamp = 3;</code>
-             * <p>
-             * <pre>
-             * &#47; UNIX timestamp (in nanoseconds) when the log was written.
-             * </pre>
-             */
-            public Builder setTimestamp(long value) {
-                bitField0_ |= 0x00000004;
-                timestamp_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>required int64 timestamp = 3;</code>
-             * <p>
-             * <pre>
-             * &#47; UNIX timestamp (in nanoseconds) when the log was written.
-             * </pre>
-             */
-            public Builder clearTimestamp() {
-                bitField0_ = (bitField0_ & ~0x00000004);
-                timestamp_ = 0L;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string app_id = 4;</code>
-             * <p>
-             * <pre>
-             * &#47; Application that emitted the message (or to which the application is related).
-             * </pre>
-             */
-            public boolean hasAppId() {
-                return ((bitField0_ & 0x00000008) == 0x00000008);
-            }
-
-            /**
-             * <code>optional string app_id = 4;</code>
-             * <p>
-             * <pre>
-             * &#47; Application that emitted the message (or to which the application is related).
-             * </pre>
-             */
-            public java.lang.String getAppId() {
-                java.lang.Object ref = appId_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                            (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        appId_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string app_id = 4;</code>
-             * <p>
-             * <pre>
-             * &#47; Application that emitted the message (or to which the application is related).
-             * </pre>
-             */
-            public Builder setAppId(
-                    java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000008;
-                appId_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string app_id = 4;</code>
-             * <p>
-             * <pre>
-             * &#47; Application that emitted the message (or to which the application is related).
-             * </pre>
-             */
-            public com.google.protobuf.ByteString
-            getAppIdBytes() {
-                java.lang.Object ref = appId_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b =
-                            com.google.protobuf.ByteString.copyFromUtf8(
-                                    (java.lang.String) ref);
-                    appId_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string app_id = 4;</code>
-             * <p>
-             * <pre>
-             * &#47; Application that emitted the message (or to which the application is related).
-             * </pre>
-             */
-            public Builder setAppIdBytes(
-                    com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000008;
-                appId_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string app_id = 4;</code>
-             * <p>
-             * <pre>
-             * &#47; Application that emitted the message (or to which the application is related).
-             * </pre>
-             */
-            public Builder clearAppId() {
-                bitField0_ = (bitField0_ & ~0x00000008);
-                appId_ = getDefaultInstance().getAppId();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string source_type = 5;</code>
-             * <p>
-             * <pre>
-             * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-             * </pre>
-             */
-            public boolean hasSourceType() {
-                return ((bitField0_ & 0x00000010) == 0x00000010);
-            }
-
-            /**
-             * <code>optional string source_type = 5;</code>
-             * <p>
-             * <pre>
-             * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-             * </pre>
-             */
-            public java.lang.String getSourceType() {
-                java.lang.Object ref = sourceType_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                            (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        sourceType_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string source_type = 5;</code>
-             * <p>
-             * <pre>
-             * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-             * </pre>
-             */
-            public Builder setSourceType(
-                    java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000010;
-                sourceType_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string source_type = 5;</code>
-             * <p>
-             * <pre>
-             * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-             * </pre>
-             */
-            public com.google.protobuf.ByteString
-            getSourceTypeBytes() {
-                java.lang.Object ref = sourceType_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b =
-                            com.google.protobuf.ByteString.copyFromUtf8(
-                                    (java.lang.String) ref);
-                    sourceType_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string source_type = 5;</code>
-             * <p>
-             * <pre>
-             * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-             * </pre>
-             */
-            public Builder setSourceTypeBytes(
-                    com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000010;
-                sourceType_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string source_type = 5;</code>
-             * <p>
-             * <pre>
-             * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
-             * </pre>
-             */
-            public Builder clearSourceType() {
-                bitField0_ = (bitField0_ & ~0x00000010);
-                sourceType_ = getDefaultInstance().getSourceType();
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string source_instance = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; Instance that emitted the message.
-             * </pre>
-             */
-            public boolean hasSourceInstance() {
-                return ((bitField0_ & 0x00000020) == 0x00000020);
-            }
-
-            /**
-             * <code>optional string source_instance = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; Instance that emitted the message.
-             * </pre>
-             */
-            public java.lang.String getSourceInstance() {
-                java.lang.Object ref = sourceInstance_;
-                if (!(ref instanceof java.lang.String)) {
-                    com.google.protobuf.ByteString bs =
-                            (com.google.protobuf.ByteString) ref;
-                    java.lang.String s = bs.toStringUtf8();
-                    if (bs.isValidUtf8()) {
-                        sourceInstance_ = s;
-                    }
-                    return s;
-                } else {
-                    return (java.lang.String) ref;
-                }
-            }
-
-            /**
-             * <code>optional string source_instance = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; Instance that emitted the message.
-             * </pre>
-             */
-            public Builder setSourceInstance(
-                    java.lang.String value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000020;
-                sourceInstance_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string source_instance = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; Instance that emitted the message.
-             * </pre>
-             */
-            public com.google.protobuf.ByteString
-            getSourceInstanceBytes() {
-                java.lang.Object ref = sourceInstance_;
-                if (ref instanceof String) {
-                    com.google.protobuf.ByteString b =
-                            com.google.protobuf.ByteString.copyFromUtf8(
-                                    (java.lang.String) ref);
-                    sourceInstance_ = b;
-                    return b;
-                } else {
-                    return (com.google.protobuf.ByteString) ref;
-                }
-            }
-
-            /**
-             * <code>optional string source_instance = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; Instance that emitted the message.
-             * </pre>
-             */
-            public Builder setSourceInstanceBytes(
-                    com.google.protobuf.ByteString value) {
-                if (value == null) {
-                    throw new NullPointerException();
-                }
-                bitField0_ |= 0x00000020;
-                sourceInstance_ = value;
-                onChanged();
-                return this;
-            }
-
-            /**
-             * <code>optional string source_instance = 6;</code>
-             * <p>
-             * <pre>
-             * &#47; Instance that emitted the message.
-             * </pre>
-             */
-            public Builder clearSourceInstance() {
-                bitField0_ = (bitField0_ & ~0x00000020);
-                sourceInstance_ = getDefaultInstance().getSourceInstance();
-                onChanged();
-                return this;
-            }
-
-            // @@protoc_insertion_point(builder_scope:events.LogMessage)
-        }
-
-        // @@protoc_insertion_point(class_scope:events.LogMessage)
-    }
-
-    // @@protoc_insertion_point(outer_class_scope)
+	private static final com.google.protobuf.Descriptors.Descriptor
+			internal_static_events_LogMessage_descriptor;
+
+	private static
+	com.google.protobuf.GeneratedMessage.FieldAccessorTable
+			internal_static_events_LogMessage_fieldAccessorTable;
+
+	private static com.google.protobuf.Descriptors.FileDescriptor
+			descriptor;
+
+	static {
+		java.lang.String[] descriptorData = {
+				"\n\tlog.proto\022\006events\"\305\001\n\nLogMessage\022\017\n\007me" +
+						"ssage\030\001 \002(\014\0224\n\014message_type\030\002 \002(\0162\036.even" +
+						"ts.LogMessage.MessageType\022\021\n\ttimestamp\030\003" +
+						" \002(\003\022\016\n\006app_id\030\004 \001(\t\022\023\n\013source_type\030\005 \001(" +
+						"\t\022\027\n\017source_instance\030\006 \001(\t\"\037\n\013MessageTyp" +
+						"e\022\007\n\003OUT\020\001\022\007\n\003ERR\020\002B/\n!org.cloudfoundry." +
+						"dropsonde.eventsB\nLogFactory"
+		};
+		com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
+				new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
+					public com.google.protobuf.ExtensionRegistry assignDescriptors(
+							com.google.protobuf.Descriptors.FileDescriptor root) {
+						descriptor = root;
+						return null;
+					}
+				};
+		com.google.protobuf.Descriptors.FileDescriptor
+				.internalBuildGeneratedFileFrom(descriptorData,
+						new com.google.protobuf.Descriptors.FileDescriptor[] {
+						}, assigner);
+		internal_static_events_LogMessage_descriptor =
+				getDescriptor().getMessageTypes().get(0);
+		internal_static_events_LogMessage_fieldAccessorTable = new
+				com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+				internal_static_events_LogMessage_descriptor,
+				new java.lang.String[] {"Message", "MessageType", "Timestamp", "AppId", "SourceType", "SourceInstance",});
+	}
+
+	private LogFactory() {
+	}
+
+	public static void registerAllExtensions(
+			com.google.protobuf.ExtensionRegistry registry) {
+	}
+
+	public static com.google.protobuf.Descriptors.FileDescriptor
+	getDescriptor() {
+		return descriptor;
+	}
+
+	public interface LogMessageOrBuilder extends
+			// @@protoc_insertion_point(interface_extends:events.LogMessage)
+			com.google.protobuf.MessageOrBuilder {
+
+		/**
+		 * <code>required bytes message = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
+		 * </pre>
+		 */
+		boolean hasMessage();
+
+		/**
+		 * <code>required bytes message = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString getMessage();
+
+		/**
+		 * <code>required .events.LogMessage.MessageType message_type = 2;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Type of the message (OUT or ERR).
+		 * </pre>
+		 */
+		boolean hasMessageType();
+
+		/**
+		 * <code>required .events.LogMessage.MessageType message_type = 2;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Type of the message (OUT or ERR).
+		 * </pre>
+		 */
+		org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType getMessageType();
+
+		/**
+		 * <code>required int64 timestamp = 3;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; UNIX timestamp (in nanoseconds) when the log was written.
+		 * </pre>
+		 */
+		boolean hasTimestamp();
+
+		/**
+		 * <code>required int64 timestamp = 3;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; UNIX timestamp (in nanoseconds) when the log was written.
+		 * </pre>
+		 */
+		long getTimestamp();
+
+		/**
+		 * <code>optional string app_id = 4;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Application that emitted the message (or to which the application is related).
+		 * </pre>
+		 */
+		boolean hasAppId();
+
+		/**
+		 * <code>optional string app_id = 4;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Application that emitted the message (or to which the application is related).
+		 * </pre>
+		 */
+		java.lang.String getAppId();
+
+		/**
+		 * <code>optional string app_id = 4;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Application that emitted the message (or to which the application is related).
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString
+		getAppIdBytes();
+
+		/**
+		 * <code>optional string source_type = 5;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+		 * </pre>
+		 */
+		boolean hasSourceType();
+
+		/**
+		 * <code>optional string source_type = 5;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+		 * </pre>
+		 */
+		java.lang.String getSourceType();
+
+		/**
+		 * <code>optional string source_type = 5;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString
+		getSourceTypeBytes();
+
+		/**
+		 * <code>optional string source_instance = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Instance that emitted the message.
+		 * </pre>
+		 */
+		boolean hasSourceInstance();
+
+		/**
+		 * <code>optional string source_instance = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Instance that emitted the message.
+		 * </pre>
+		 */
+		java.lang.String getSourceInstance();
+
+		/**
+		 * <code>optional string source_instance = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Instance that emitted the message.
+		 * </pre>
+		 */
+		com.google.protobuf.ByteString
+		getSourceInstanceBytes();
+	}
+
+	/**
+	 * Protobuf type {@code events.LogMessage}
+	 * <p>
+	 * <pre>
+	 * &#47; A LogMessage contains a "log line" and associated metadata.
+	 * </pre>
+	 */
+	public static final class LogMessage extends
+			com.google.protobuf.GeneratedMessage implements
+			// @@protoc_insertion_point(message_implements:events.LogMessage)
+			LogMessageOrBuilder {
+		public static final int MESSAGE_FIELD_NUMBER = 1;
+
+		public static final int MESSAGE_TYPE_FIELD_NUMBER = 2;
+
+		public static final int TIMESTAMP_FIELD_NUMBER = 3;
+
+		public static final int APP_ID_FIELD_NUMBER = 4;
+
+		public static final int SOURCE_TYPE_FIELD_NUMBER = 5;
+
+		public static final int SOURCE_INSTANCE_FIELD_NUMBER = 6;
+
+		private static final LogMessage defaultInstance;
+
+		private static final long serialVersionUID = 0L;
+
+		public static com.google.protobuf.Parser<LogMessage> PARSER =
+				new com.google.protobuf.AbstractParser<LogMessage>() {
+					public LogMessage parsePartialFrom(
+							com.google.protobuf.CodedInputStream input,
+							com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+							throws com.google.protobuf.InvalidProtocolBufferException {
+						return new LogMessage(input, extensionRegistry);
+					}
+				};
+
+		static {
+			defaultInstance = new LogMessage(true);
+			defaultInstance.initFields();
+		}
+
+		private final com.google.protobuf.UnknownFieldSet unknownFields;
+
+		private int bitField0_;
+
+		private com.google.protobuf.ByteString message_;
+
+		private org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType messageType_;
+
+		private long timestamp_;
+
+		private java.lang.Object appId_;
+
+		private java.lang.Object sourceType_;
+
+		private java.lang.Object sourceInstance_;
+
+		private byte memoizedIsInitialized = -1;
+
+		private int memoizedSerializedSize = -1;
+
+		// Use LogMessage.newBuilder() to construct.
+		private LogMessage(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+			super(builder);
+			this.unknownFields = builder.getUnknownFields();
+		}
+
+		private LogMessage(boolean noInit) {
+			this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+		}
+
+		private LogMessage(
+				com.google.protobuf.CodedInputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			initFields();
+			int mutable_bitField0_ = 0;
+			com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+					com.google.protobuf.UnknownFieldSet.newBuilder();
+			try {
+				boolean done = false;
+				while (!done) {
+					int tag = input.readTag();
+					switch (tag) {
+						case 0:
+							done = true;
+							break;
+						default: {
+							if (!parseUnknownField(input, unknownFields,
+									extensionRegistry, tag)) {
+								done = true;
+							}
+							break;
+						}
+						case 10: {
+							bitField0_ |= 0x00000001;
+							message_ = input.readBytes();
+							break;
+						}
+						case 16: {
+							int rawValue = input.readEnum();
+							org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType value = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.valueOf(rawValue);
+							if (value == null) {
+								unknownFields.mergeVarintField(2, rawValue);
+							}
+							else {
+								bitField0_ |= 0x00000002;
+								messageType_ = value;
+							}
+							break;
+						}
+						case 24: {
+							bitField0_ |= 0x00000004;
+							timestamp_ = input.readInt64();
+							break;
+						}
+						case 34: {
+							com.google.protobuf.ByteString bs = input.readBytes();
+							bitField0_ |= 0x00000008;
+							appId_ = bs;
+							break;
+						}
+						case 42: {
+							com.google.protobuf.ByteString bs = input.readBytes();
+							bitField0_ |= 0x00000010;
+							sourceType_ = bs;
+							break;
+						}
+						case 50: {
+							com.google.protobuf.ByteString bs = input.readBytes();
+							bitField0_ |= 0x00000020;
+							sourceInstance_ = bs;
+							break;
+						}
+					}
+				}
+			}
+			catch (com.google.protobuf.InvalidProtocolBufferException e) {
+				throw e.setUnfinishedMessage(this);
+			}
+			catch (java.io.IOException e) {
+				throw new com.google.protobuf.InvalidProtocolBufferException(
+						e.getMessage()).setUnfinishedMessage(this);
+			}
+			finally {
+				this.unknownFields = unknownFields.build();
+				makeExtensionsImmutable();
+			}
+		}
+
+		public static LogMessage getDefaultInstance() {
+			return defaultInstance;
+		}
+
+		public static final com.google.protobuf.Descriptors.Descriptor
+		getDescriptor() {
+			return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_descriptor;
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
+				com.google.protobuf.ByteString data)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			return PARSER.parseFrom(data);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
+				com.google.protobuf.ByteString data,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			return PARSER.parseFrom(data, extensionRegistry);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(byte[] data)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			return PARSER.parseFrom(data);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
+				byte[] data,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws com.google.protobuf.InvalidProtocolBufferException {
+			return PARSER.parseFrom(data, extensionRegistry);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(java.io.InputStream input)
+				throws java.io.IOException {
+			return PARSER.parseFrom(input);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
+				java.io.InputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws java.io.IOException {
+			return PARSER.parseFrom(input, extensionRegistry);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseDelimitedFrom(java.io.InputStream input)
+				throws java.io.IOException {
+			return PARSER.parseDelimitedFrom(input);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseDelimitedFrom(
+				java.io.InputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws java.io.IOException {
+			return PARSER.parseDelimitedFrom(input, extensionRegistry);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
+				com.google.protobuf.CodedInputStream input)
+				throws java.io.IOException {
+			return PARSER.parseFrom(input);
+		}
+
+		public static org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parseFrom(
+				com.google.protobuf.CodedInputStream input,
+				com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+				throws java.io.IOException {
+			return PARSER.parseFrom(input, extensionRegistry);
+		}
+
+		public static Builder newBuilder() {
+			return Builder.create();
+		}
+
+		public static Builder newBuilder(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage prototype) {
+			return newBuilder().mergeFrom(prototype);
+		}
+
+		public LogMessage getDefaultInstanceForType() {
+			return defaultInstance;
+		}
+
+		@java.lang.Override
+		public final com.google.protobuf.UnknownFieldSet
+		getUnknownFields() {
+			return this.unknownFields;
+		}
+
+		protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+		internalGetFieldAccessorTable() {
+			return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_fieldAccessorTable
+					.ensureFieldAccessorsInitialized(
+							org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.class, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder.class);
+		}
+
+		@java.lang.Override
+		public com.google.protobuf.Parser<LogMessage> getParserForType() {
+			return PARSER;
+		}
+
+		/**
+		 * <code>required bytes message = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
+		 * </pre>
+		 */
+		public boolean hasMessage() {
+			return ((bitField0_ & 0x00000001) == 0x00000001);
+		}
+
+		/**
+		 * <code>required bytes message = 1;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString getMessage() {
+			return message_;
+		}
+
+		/**
+		 * <code>required .events.LogMessage.MessageType message_type = 2;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Type of the message (OUT or ERR).
+		 * </pre>
+		 */
+		public boolean hasMessageType() {
+			return ((bitField0_ & 0x00000002) == 0x00000002);
+		}
+
+		/**
+		 * <code>required .events.LogMessage.MessageType message_type = 2;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Type of the message (OUT or ERR).
+		 * </pre>
+		 */
+		public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType getMessageType() {
+			return messageType_;
+		}
+
+		/**
+		 * <code>required int64 timestamp = 3;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; UNIX timestamp (in nanoseconds) when the log was written.
+		 * </pre>
+		 */
+		public boolean hasTimestamp() {
+			return ((bitField0_ & 0x00000004) == 0x00000004);
+		}
+
+		/**
+		 * <code>required int64 timestamp = 3;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; UNIX timestamp (in nanoseconds) when the log was written.
+		 * </pre>
+		 */
+		public long getTimestamp() {
+			return timestamp_;
+		}
+
+		/**
+		 * <code>optional string app_id = 4;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Application that emitted the message (or to which the application is related).
+		 * </pre>
+		 */
+		public boolean hasAppId() {
+			return ((bitField0_ & 0x00000008) == 0x00000008);
+		}
+
+		/**
+		 * <code>optional string app_id = 4;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Application that emitted the message (or to which the application is related).
+		 * </pre>
+		 */
+		public java.lang.String getAppId() {
+			java.lang.Object ref = appId_;
+			if (ref instanceof java.lang.String) {
+				return (java.lang.String) ref;
+			}
+			else {
+				com.google.protobuf.ByteString bs =
+						(com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				if (bs.isValidUtf8()) {
+					appId_ = s;
+				}
+				return s;
+			}
+		}
+
+		/**
+		 * <code>optional string app_id = 4;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Application that emitted the message (or to which the application is related).
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString
+		getAppIdBytes() {
+			java.lang.Object ref = appId_;
+			if (ref instanceof java.lang.String) {
+				com.google.protobuf.ByteString b =
+						com.google.protobuf.ByteString.copyFromUtf8(
+								(java.lang.String) ref);
+				appId_ = b;
+				return b;
+			}
+			else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <code>optional string source_type = 5;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+		 * </pre>
+		 */
+		public boolean hasSourceType() {
+			return ((bitField0_ & 0x00000010) == 0x00000010);
+		}
+
+		/**
+		 * <code>optional string source_type = 5;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+		 * </pre>
+		 */
+		public java.lang.String getSourceType() {
+			java.lang.Object ref = sourceType_;
+			if (ref instanceof java.lang.String) {
+				return (java.lang.String) ref;
+			}
+			else {
+				com.google.protobuf.ByteString bs =
+						(com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				if (bs.isValidUtf8()) {
+					sourceType_ = s;
+				}
+				return s;
+			}
+		}
+
+		/**
+		 * <code>optional string source_type = 5;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString
+		getSourceTypeBytes() {
+			java.lang.Object ref = sourceType_;
+			if (ref instanceof java.lang.String) {
+				com.google.protobuf.ByteString b =
+						com.google.protobuf.ByteString.copyFromUtf8(
+								(java.lang.String) ref);
+				sourceType_ = b;
+				return b;
+			}
+			else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		/**
+		 * <code>optional string source_instance = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Instance that emitted the message.
+		 * </pre>
+		 */
+		public boolean hasSourceInstance() {
+			return ((bitField0_ & 0x00000020) == 0x00000020);
+		}
+
+		/**
+		 * <code>optional string source_instance = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Instance that emitted the message.
+		 * </pre>
+		 */
+		public java.lang.String getSourceInstance() {
+			java.lang.Object ref = sourceInstance_;
+			if (ref instanceof java.lang.String) {
+				return (java.lang.String) ref;
+			}
+			else {
+				com.google.protobuf.ByteString bs =
+						(com.google.protobuf.ByteString) ref;
+				java.lang.String s = bs.toStringUtf8();
+				if (bs.isValidUtf8()) {
+					sourceInstance_ = s;
+				}
+				return s;
+			}
+		}
+
+		/**
+		 * <code>optional string source_instance = 6;</code>
+		 * <p>
+		 * <pre>
+		 * &#47; Instance that emitted the message.
+		 * </pre>
+		 */
+		public com.google.protobuf.ByteString
+		getSourceInstanceBytes() {
+			java.lang.Object ref = sourceInstance_;
+			if (ref instanceof java.lang.String) {
+				com.google.protobuf.ByteString b =
+						com.google.protobuf.ByteString.copyFromUtf8(
+								(java.lang.String) ref);
+				sourceInstance_ = b;
+				return b;
+			}
+			else {
+				return (com.google.protobuf.ByteString) ref;
+			}
+		}
+
+		private void initFields() {
+			message_ = com.google.protobuf.ByteString.EMPTY;
+			messageType_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.OUT;
+			timestamp_ = 0L;
+			appId_ = "";
+			sourceType_ = "";
+			sourceInstance_ = "";
+		}
+
+		public final boolean isInitialized() {
+			byte isInitialized = memoizedIsInitialized;
+			if (isInitialized == 1) return true;
+			if (isInitialized == 0) return false;
+
+			if (!hasMessage()) {
+				memoizedIsInitialized = 0;
+				return false;
+			}
+			if (!hasMessageType()) {
+				memoizedIsInitialized = 0;
+				return false;
+			}
+			if (!hasTimestamp()) {
+				memoizedIsInitialized = 0;
+				return false;
+			}
+			memoizedIsInitialized = 1;
+			return true;
+		}
+
+		public void writeTo(com.google.protobuf.CodedOutputStream output)
+				throws java.io.IOException {
+			getSerializedSize();
+			if (((bitField0_ & 0x00000001) == 0x00000001)) {
+				output.writeBytes(1, message_);
+			}
+			if (((bitField0_ & 0x00000002) == 0x00000002)) {
+				output.writeEnum(2, messageType_.getNumber());
+			}
+			if (((bitField0_ & 0x00000004) == 0x00000004)) {
+				output.writeInt64(3, timestamp_);
+			}
+			if (((bitField0_ & 0x00000008) == 0x00000008)) {
+				output.writeBytes(4, getAppIdBytes());
+			}
+			if (((bitField0_ & 0x00000010) == 0x00000010)) {
+				output.writeBytes(5, getSourceTypeBytes());
+			}
+			if (((bitField0_ & 0x00000020) == 0x00000020)) {
+				output.writeBytes(6, getSourceInstanceBytes());
+			}
+			getUnknownFields().writeTo(output);
+		}
+
+		public int getSerializedSize() {
+			int size = memoizedSerializedSize;
+			if (size != -1) return size;
+
+			size = 0;
+			if (((bitField0_ & 0x00000001) == 0x00000001)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(1, message_);
+			}
+			if (((bitField0_ & 0x00000002) == 0x00000002)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeEnumSize(2, messageType_.getNumber());
+			}
+			if (((bitField0_ & 0x00000004) == 0x00000004)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeInt64Size(3, timestamp_);
+			}
+			if (((bitField0_ & 0x00000008) == 0x00000008)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(4, getAppIdBytes());
+			}
+			if (((bitField0_ & 0x00000010) == 0x00000010)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(5, getSourceTypeBytes());
+			}
+			if (((bitField0_ & 0x00000020) == 0x00000020)) {
+				size += com.google.protobuf.CodedOutputStream
+						.computeBytesSize(6, getSourceInstanceBytes());
+			}
+			size += getUnknownFields().getSerializedSize();
+			memoizedSerializedSize = size;
+			return size;
+		}
+
+		@java.lang.Override
+		protected java.lang.Object writeReplace()
+				throws java.io.ObjectStreamException {
+			return super.writeReplace();
+		}
+
+		public Builder newBuilderForType() {
+			return newBuilder();
+		}
+
+		public Builder toBuilder() {
+			return newBuilder(this);
+		}
+
+		@java.lang.Override
+		protected Builder newBuilderForType(
+				com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+			Builder builder = new Builder(parent);
+			return builder;
+		}
+
+		/**
+		 * Protobuf enum {@code events.LogMessage.MessageType}
+		 * <p>
+		 * <pre>
+		 * &#47; MessageType stores the destination of the message (corresponding to STDOUT or STDERR).
+		 * </pre>
+		 */
+		public enum MessageType
+				implements com.google.protobuf.ProtocolMessageEnum {
+			/**
+			 * <code>OUT = 1;</code>
+			 */
+			OUT(0, 1),
+			/**
+			 * <code>ERR = 2;</code>
+			 */
+			ERR(1, 2),;
+
+			/**
+			 * <code>OUT = 1;</code>
+			 */
+			public static final int OUT_VALUE = 1;
+
+			/**
+			 * <code>ERR = 2;</code>
+			 */
+			public static final int ERR_VALUE = 2;
+
+			private static final MessageType[] VALUES = values();
+
+			private static com.google.protobuf.Internal.EnumLiteMap<MessageType>
+					internalValueMap =
+					new com.google.protobuf.Internal.EnumLiteMap<MessageType>() {
+						public MessageType findValueByNumber(int number) {
+							return MessageType.valueOf(number);
+						}
+					};
+
+			private final int index;
+
+			private final int value;
+
+			private MessageType(int index, int value) {
+				this.index = index;
+				this.value = value;
+			}
+
+			public static MessageType valueOf(int value) {
+				switch (value) {
+					case 1:
+						return OUT;
+					case 2:
+						return ERR;
+					default:
+						return null;
+				}
+			}
+
+			public static com.google.protobuf.Internal.EnumLiteMap<MessageType>
+			internalGetValueMap() {
+				return internalValueMap;
+			}
+
+			public static final com.google.protobuf.Descriptors.EnumDescriptor
+			getDescriptor() {
+				return org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDescriptor().getEnumTypes().get(0);
+			}
+
+			public static MessageType valueOf(
+					com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+				if (desc.getType() != getDescriptor()) {
+					throw new java.lang.IllegalArgumentException(
+							"EnumValueDescriptor is not for this type.");
+				}
+				return VALUES[desc.getIndex()];
+			}
+
+			public final int getNumber() {
+				return value;
+			}
+
+			public final com.google.protobuf.Descriptors.EnumValueDescriptor
+			getValueDescriptor() {
+				return getDescriptor().getValues().get(index);
+			}
+
+			public final com.google.protobuf.Descriptors.EnumDescriptor
+			getDescriptorForType() {
+				return getDescriptor();
+			}
+
+			// @@protoc_insertion_point(enum_scope:events.LogMessage.MessageType)
+		}
+
+		/**
+		 * Protobuf type {@code events.LogMessage}
+		 * <p>
+		 * <pre>
+		 * &#47; A LogMessage contains a "log line" and associated metadata.
+		 * </pre>
+		 */
+		public static final class Builder extends
+				com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+				// @@protoc_insertion_point(builder_implements:events.LogMessage)
+				org.cloudfoundry.dropsonde.events.LogFactory.LogMessageOrBuilder {
+			private int bitField0_;
+
+			private com.google.protobuf.ByteString message_ = com.google.protobuf.ByteString.EMPTY;
+
+			private org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType messageType_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.OUT;
+
+			private long timestamp_;
+
+			private java.lang.Object appId_ = "";
+
+			private java.lang.Object sourceType_ = "";
+
+			private java.lang.Object sourceInstance_ = "";
+
+			// Construct using org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.newBuilder()
+			private Builder() {
+				maybeForceBuilderInitialization();
+			}
+
+			private Builder(
+					com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+				super(parent);
+				maybeForceBuilderInitialization();
+			}
+
+			public static final com.google.protobuf.Descriptors.Descriptor
+			getDescriptor() {
+				return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_descriptor;
+			}
+
+			private static Builder create() {
+				return new Builder();
+			}
+
+			protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+			internalGetFieldAccessorTable() {
+				return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_fieldAccessorTable
+						.ensureFieldAccessorsInitialized(
+								org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.class, org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.Builder.class);
+			}
+
+			private void maybeForceBuilderInitialization() {
+				if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+				}
+			}
+
+			public Builder clear() {
+				super.clear();
+				message_ = com.google.protobuf.ByteString.EMPTY;
+				bitField0_ = (bitField0_ & ~0x00000001);
+				messageType_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.OUT;
+				bitField0_ = (bitField0_ & ~0x00000002);
+				timestamp_ = 0L;
+				bitField0_ = (bitField0_ & ~0x00000004);
+				appId_ = "";
+				bitField0_ = (bitField0_ & ~0x00000008);
+				sourceType_ = "";
+				bitField0_ = (bitField0_ & ~0x00000010);
+				sourceInstance_ = "";
+				bitField0_ = (bitField0_ & ~0x00000020);
+				return this;
+			}
+
+			public Builder clone() {
+				return create().mergeFrom(buildPartial());
+			}
+
+			public com.google.protobuf.Descriptors.Descriptor
+			getDescriptorForType() {
+				return org.cloudfoundry.dropsonde.events.LogFactory.internal_static_events_LogMessage_descriptor;
+			}
+
+			public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage getDefaultInstanceForType() {
+				return org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance();
+			}
+
+			public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage build() {
+				org.cloudfoundry.dropsonde.events.LogFactory.LogMessage result = buildPartial();
+				if (!result.isInitialized()) {
+					throw newUninitializedMessageException(result);
+				}
+				return result;
+			}
+
+			public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage buildPartial() {
+				org.cloudfoundry.dropsonde.events.LogFactory.LogMessage result = new org.cloudfoundry.dropsonde.events.LogFactory.LogMessage(this);
+				int from_bitField0_ = bitField0_;
+				int to_bitField0_ = 0;
+				if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+					to_bitField0_ |= 0x00000001;
+				}
+				result.message_ = message_;
+				if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+					to_bitField0_ |= 0x00000002;
+				}
+				result.messageType_ = messageType_;
+				if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+					to_bitField0_ |= 0x00000004;
+				}
+				result.timestamp_ = timestamp_;
+				if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+					to_bitField0_ |= 0x00000008;
+				}
+				result.appId_ = appId_;
+				if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+					to_bitField0_ |= 0x00000010;
+				}
+				result.sourceType_ = sourceType_;
+				if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+					to_bitField0_ |= 0x00000020;
+				}
+				result.sourceInstance_ = sourceInstance_;
+				result.bitField0_ = to_bitField0_;
+				onBuilt();
+				return result;
+			}
+
+			public Builder mergeFrom(com.google.protobuf.Message other) {
+				if (other instanceof org.cloudfoundry.dropsonde.events.LogFactory.LogMessage) {
+					return mergeFrom((org.cloudfoundry.dropsonde.events.LogFactory.LogMessage) other);
+				}
+				else {
+					super.mergeFrom(other);
+					return this;
+				}
+			}
+
+			public Builder mergeFrom(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage other) {
+				if (other == org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.getDefaultInstance()) return this;
+				if (other.hasMessage()) {
+					setMessage(other.getMessage());
+				}
+				if (other.hasMessageType()) {
+					setMessageType(other.getMessageType());
+				}
+				if (other.hasTimestamp()) {
+					setTimestamp(other.getTimestamp());
+				}
+				if (other.hasAppId()) {
+					bitField0_ |= 0x00000008;
+					appId_ = other.appId_;
+					onChanged();
+				}
+				if (other.hasSourceType()) {
+					bitField0_ |= 0x00000010;
+					sourceType_ = other.sourceType_;
+					onChanged();
+				}
+				if (other.hasSourceInstance()) {
+					bitField0_ |= 0x00000020;
+					sourceInstance_ = other.sourceInstance_;
+					onChanged();
+				}
+				this.mergeUnknownFields(other.getUnknownFields());
+				return this;
+			}
+
+			public final boolean isInitialized() {
+				if (!hasMessage()) {
+
+					return false;
+				}
+				if (!hasMessageType()) {
+
+					return false;
+				}
+				if (!hasTimestamp()) {
+
+					return false;
+				}
+				return true;
+			}
+
+			public Builder mergeFrom(
+					com.google.protobuf.CodedInputStream input,
+					com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+					throws java.io.IOException {
+				org.cloudfoundry.dropsonde.events.LogFactory.LogMessage parsedMessage = null;
+				try {
+					parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+				}
+				catch (com.google.protobuf.InvalidProtocolBufferException e) {
+					parsedMessage = (org.cloudfoundry.dropsonde.events.LogFactory.LogMessage) e.getUnfinishedMessage();
+					throw e;
+				}
+				finally {
+					if (parsedMessage != null) {
+						mergeFrom(parsedMessage);
+					}
+				}
+				return this;
+			}
+
+			/**
+			 * <code>required bytes message = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
+			 * </pre>
+			 */
+			public boolean hasMessage() {
+				return ((bitField0_ & 0x00000001) == 0x00000001);
+			}
+
+			/**
+			 * <code>required bytes message = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString getMessage() {
+				return message_;
+			}
+
+			/**
+			 * <code>required bytes message = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
+			 * </pre>
+			 */
+			public Builder setMessage(com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000001;
+				message_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required bytes message = 1;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Bytes of the log message. (Note that it is not required to be a single line.)
+			 * </pre>
+			 */
+			public Builder clearMessage() {
+				bitField0_ = (bitField0_ & ~0x00000001);
+				message_ = getDefaultInstance().getMessage();
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required .events.LogMessage.MessageType message_type = 2;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Type of the message (OUT or ERR).
+			 * </pre>
+			 */
+			public boolean hasMessageType() {
+				return ((bitField0_ & 0x00000002) == 0x00000002);
+			}
+
+			/**
+			 * <code>required .events.LogMessage.MessageType message_type = 2;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Type of the message (OUT or ERR).
+			 * </pre>
+			 */
+			public org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType getMessageType() {
+				return messageType_;
+			}
+
+			/**
+			 * <code>required .events.LogMessage.MessageType message_type = 2;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Type of the message (OUT or ERR).
+			 * </pre>
+			 */
+			public Builder setMessageType(org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000002;
+				messageType_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required .events.LogMessage.MessageType message_type = 2;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Type of the message (OUT or ERR).
+			 * </pre>
+			 */
+			public Builder clearMessageType() {
+				bitField0_ = (bitField0_ & ~0x00000002);
+				messageType_ = org.cloudfoundry.dropsonde.events.LogFactory.LogMessage.MessageType.OUT;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required int64 timestamp = 3;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; UNIX timestamp (in nanoseconds) when the log was written.
+			 * </pre>
+			 */
+			public boolean hasTimestamp() {
+				return ((bitField0_ & 0x00000004) == 0x00000004);
+			}
+
+			/**
+			 * <code>required int64 timestamp = 3;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; UNIX timestamp (in nanoseconds) when the log was written.
+			 * </pre>
+			 */
+			public long getTimestamp() {
+				return timestamp_;
+			}
+
+			/**
+			 * <code>required int64 timestamp = 3;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; UNIX timestamp (in nanoseconds) when the log was written.
+			 * </pre>
+			 */
+			public Builder setTimestamp(long value) {
+				bitField0_ |= 0x00000004;
+				timestamp_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>required int64 timestamp = 3;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; UNIX timestamp (in nanoseconds) when the log was written.
+			 * </pre>
+			 */
+			public Builder clearTimestamp() {
+				bitField0_ = (bitField0_ & ~0x00000004);
+				timestamp_ = 0L;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string app_id = 4;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Application that emitted the message (or to which the application is related).
+			 * </pre>
+			 */
+			public boolean hasAppId() {
+				return ((bitField0_ & 0x00000008) == 0x00000008);
+			}
+
+			/**
+			 * <code>optional string app_id = 4;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Application that emitted the message (or to which the application is related).
+			 * </pre>
+			 */
+			public java.lang.String getAppId() {
+				java.lang.Object ref = appId_;
+				if (!(ref instanceof java.lang.String)) {
+					com.google.protobuf.ByteString bs =
+							(com.google.protobuf.ByteString) ref;
+					java.lang.String s = bs.toStringUtf8();
+					if (bs.isValidUtf8()) {
+						appId_ = s;
+					}
+					return s;
+				}
+				else {
+					return (java.lang.String) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string app_id = 4;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Application that emitted the message (or to which the application is related).
+			 * </pre>
+			 */
+			public Builder setAppId(
+					java.lang.String value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000008;
+				appId_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string app_id = 4;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Application that emitted the message (or to which the application is related).
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString
+			getAppIdBytes() {
+				java.lang.Object ref = appId_;
+				if (ref instanceof String) {
+					com.google.protobuf.ByteString b =
+							com.google.protobuf.ByteString.copyFromUtf8(
+									(java.lang.String) ref);
+					appId_ = b;
+					return b;
+				}
+				else {
+					return (com.google.protobuf.ByteString) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string app_id = 4;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Application that emitted the message (or to which the application is related).
+			 * </pre>
+			 */
+			public Builder setAppIdBytes(
+					com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000008;
+				appId_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string app_id = 4;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Application that emitted the message (or to which the application is related).
+			 * </pre>
+			 */
+			public Builder clearAppId() {
+				bitField0_ = (bitField0_ & ~0x00000008);
+				appId_ = getDefaultInstance().getAppId();
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string source_type = 5;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+			 * </pre>
+			 */
+			public boolean hasSourceType() {
+				return ((bitField0_ & 0x00000010) == 0x00000010);
+			}
+
+			/**
+			 * <code>optional string source_type = 5;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+			 * </pre>
+			 */
+			public java.lang.String getSourceType() {
+				java.lang.Object ref = sourceType_;
+				if (!(ref instanceof java.lang.String)) {
+					com.google.protobuf.ByteString bs =
+							(com.google.protobuf.ByteString) ref;
+					java.lang.String s = bs.toStringUtf8();
+					if (bs.isValidUtf8()) {
+						sourceType_ = s;
+					}
+					return s;
+				}
+				else {
+					return (java.lang.String) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string source_type = 5;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+			 * </pre>
+			 */
+			public Builder setSourceType(
+					java.lang.String value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000010;
+				sourceType_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string source_type = 5;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString
+			getSourceTypeBytes() {
+				java.lang.Object ref = sourceType_;
+				if (ref instanceof String) {
+					com.google.protobuf.ByteString b =
+							com.google.protobuf.ByteString.copyFromUtf8(
+									(java.lang.String) ref);
+					sourceType_ = b;
+					return b;
+				}
+				else {
+					return (com.google.protobuf.ByteString) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string source_type = 5;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+			 * </pre>
+			 */
+			public Builder setSourceTypeBytes(
+					com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000010;
+				sourceType_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string source_type = 5;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Source of the message. For Cloud Foundry, this can be "APP", "RTR", "DEA", "STG", etc.
+			 * </pre>
+			 */
+			public Builder clearSourceType() {
+				bitField0_ = (bitField0_ & ~0x00000010);
+				sourceType_ = getDefaultInstance().getSourceType();
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string source_instance = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Instance that emitted the message.
+			 * </pre>
+			 */
+			public boolean hasSourceInstance() {
+				return ((bitField0_ & 0x00000020) == 0x00000020);
+			}
+
+			/**
+			 * <code>optional string source_instance = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Instance that emitted the message.
+			 * </pre>
+			 */
+			public java.lang.String getSourceInstance() {
+				java.lang.Object ref = sourceInstance_;
+				if (!(ref instanceof java.lang.String)) {
+					com.google.protobuf.ByteString bs =
+							(com.google.protobuf.ByteString) ref;
+					java.lang.String s = bs.toStringUtf8();
+					if (bs.isValidUtf8()) {
+						sourceInstance_ = s;
+					}
+					return s;
+				}
+				else {
+					return (java.lang.String) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string source_instance = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Instance that emitted the message.
+			 * </pre>
+			 */
+			public Builder setSourceInstance(
+					java.lang.String value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000020;
+				sourceInstance_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string source_instance = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Instance that emitted the message.
+			 * </pre>
+			 */
+			public com.google.protobuf.ByteString
+			getSourceInstanceBytes() {
+				java.lang.Object ref = sourceInstance_;
+				if (ref instanceof String) {
+					com.google.protobuf.ByteString b =
+							com.google.protobuf.ByteString.copyFromUtf8(
+									(java.lang.String) ref);
+					sourceInstance_ = b;
+					return b;
+				}
+				else {
+					return (com.google.protobuf.ByteString) ref;
+				}
+			}
+
+			/**
+			 * <code>optional string source_instance = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Instance that emitted the message.
+			 * </pre>
+			 */
+			public Builder setSourceInstanceBytes(
+					com.google.protobuf.ByteString value) {
+				if (value == null) {
+					throw new NullPointerException();
+				}
+				bitField0_ |= 0x00000020;
+				sourceInstance_ = value;
+				onChanged();
+				return this;
+			}
+
+			/**
+			 * <code>optional string source_instance = 6;</code>
+			 * <p>
+			 * <pre>
+			 * &#47; Instance that emitted the message.
+			 * </pre>
+			 */
+			public Builder clearSourceInstance() {
+				bitField0_ = (bitField0_ & ~0x00000020);
+				sourceInstance_ = getDefaultInstance().getSourceInstance();
+				onChanged();
+				return this;
+			}
+
+			// @@protoc_insertion_point(builder_scope:events.LogMessage)
+		}
+
+		// @@protoc_insertion_point(class_scope:events.LogMessage)
+	}
+
+	// @@protoc_insertion_point(outer_class_scope)
 }

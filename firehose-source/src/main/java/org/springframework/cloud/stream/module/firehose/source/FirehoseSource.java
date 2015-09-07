@@ -53,80 +53,81 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 @EnableConfigurationProperties(FirehoseProperties.class)
 public class FirehoseSource implements InitializingBean {
 
-    @Autowired
-    private FirehoseProperties metadata;
+	@Autowired
+	private FirehoseProperties properties;
 
-    @Autowired
-    private Source channels;
+	@Autowired
+	private Source channels;
 
-    @Autowired
-    private ByteBufferMessageConverter converter;
+	@Autowired
+	private ByteBufferMessageConverter converter;
 
-    @Bean
-    public WebSocketInboundChannelAdapter webSocketInboundChannelAdapter() {
-        WebSocketInboundChannelAdapter adapter = new WebSocketInboundChannelAdapter(webSocketContainer());
-        adapter.setMessageConverters(Collections.<MessageConverter>singletonList(this.converter));
-        adapter.setOutputChannel(channels.output());
-        adapter.setPayloadType(ByteBuffer.class);
-        return adapter;
-    }
+	@Bean
+	public WebSocketInboundChannelAdapter webSocketInboundChannelAdapter() {
+		WebSocketInboundChannelAdapter adapter = new WebSocketInboundChannelAdapter(webSocketContainer());
+		adapter.setMessageConverters(Collections.<MessageConverter>singletonList(this.converter));
+		adapter.setOutputChannel(channels.output());
+		adapter.setPayloadType(ByteBuffer.class);
+		return adapter;
+	}
 
-    @Bean
-    public WebSocketClient wsClient() {
-        StandardWebSocketClient wsClient = new StandardWebSocketClient();
-        if (metadata.isTrustSelfCerts()) {
-            SSLContext context = buildSslContext();
-            wsClient.setUserProperties(Collections.<String, Object>singletonMap(WsWebSocketContainer.SSL_CONTEXT_PROPERTY, context));
-        }
-        return wsClient;
-    }
+	@Bean
+	public WebSocketClient wsClient() {
+		StandardWebSocketClient wsClient = new StandardWebSocketClient();
+		if (properties.isTrustSelfCerts()) {
+			SSLContext context = buildSslContext();
+			wsClient.setUserProperties(Collections.<String, Object>singletonMap(WsWebSocketContainer.SSL_CONTEXT_PROPERTY, context));
+		}
+		return wsClient;
+	}
 
-    @Bean
-    public ClientWebSocketContainer webSocketContainer() {
-        ClientWebSocketContainer container = new ClientWebSocketContainer(wsClient(), getDopplerEndpoint());
-        HttpHeaders headers = new HttpHeaders();
-
-
-        if (!StringUtils.isEmpty(metadata.getUsername())) {
-            OauthClient oauthClient = null;
-            try {
-                oauthClient = new OauthClient(new URL(metadata.getAuthenticationUrl()), new RestUtil().createRestTemplate(null, true));
-                oauthClient.init(new CloudCredentials(metadata.getUsername(), metadata.getPassword()));
-                headers.add("Authorization", "bearer " + oauthClient.getToken().getValue());
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("Malformed URL for authentication endpoint. Check your configuration.");
-            }
-
-        } else {
-            headers.add("Authorization", "");
-        }
-        container.setHeaders(headers);
-        container.setOrigin(metadata.getOrigin());
-        return container;
-    }
+	@Bean
+	public ClientWebSocketContainer webSocketContainer() {
+		ClientWebSocketContainer container = new ClientWebSocketContainer(wsClient(), getDopplerEndpoint());
+		HttpHeaders headers = new HttpHeaders();
 
 
-    private SSLContext buildSslContext() {
-        try {
-            SSLContextBuilder contextBuilder = new SSLContextBuilder().
-                    useProtocol("TLS").
-                    loadTrustMaterial(null, new TrustSelfSignedStrategy());
-            return contextBuilder.build();
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
-    }
+		if (!StringUtils.isEmpty(properties.getUsername())) {
+			OauthClient oauthClient = null;
+			try {
+				oauthClient = new OauthClient(new URL(properties.getAuthenticationUrl()), new RestUtil().createRestTemplate(null, true));
+				oauthClient.init(new CloudCredentials(properties.getUsername(), properties.getPassword()));
+				headers.add("Authorization", "bearer " + oauthClient.getToken().getValue());
+			}
+			catch (MalformedURLException e) {
+				throw new IllegalArgumentException("Malformed URL for authentication endpoint. Check your configuration.");
+			}
+
+		}
+		else {
+			headers.add("Authorization", "");
+		}
+		container.setHeaders(headers);
+		container.setOrigin(properties.getOrigin());
+		return container;
+	}
 
 
-    private String getDopplerEndpoint() {
+	private SSLContext buildSslContext() {
+		try {
+			SSLContextBuilder contextBuilder = new SSLContextBuilder().
+					useProtocol("TLS").
+					loadTrustMaterial(null, new TrustSelfSignedStrategy());
+			return contextBuilder.build();
+		}
+		catch (GeneralSecurityException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-        String url = StringUtils.isEmpty(metadata.getDopplerUrl()) ? "wss://doppler." + metadata.getCfDomain() : metadata.getDopplerUrl();
-        String subscription = StringUtils.isEmpty(metadata.getDopplerSubscription()) ? "firehose-a" : metadata.getDopplerSubscription();
-        return url + "/firehose/" + subscription;
-    }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        webSocketInboundChannelAdapter().start();
-    }
+	private String getDopplerEndpoint() {
+		String url = properties.getDopplerUrl();
+		return url + "/firehose/" + properties.getDopplerSubscription();
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		webSocketInboundChannelAdapter().start();
+	}
 }

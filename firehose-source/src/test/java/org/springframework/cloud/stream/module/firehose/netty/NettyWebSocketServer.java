@@ -17,6 +17,9 @@
 
 package org.springframework.cloud.stream.module.firehose.netty;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -25,47 +28,45 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author Vinicius Carvalho
  */
 public class NettyWebSocketServer {
 
 
-    private Channel serverChannel;
+	private Channel serverChannel;
 
 
-    public void start(WebSocketHandler handler) {
-        final CountDownLatch latch = new CountDownLatch(1);
-        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-        ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(bossGroup, workerGroup)
-                .channel(NioServerSocketChannel.class)
-                .childHandler(new WebsocketInitializer(handler));
-        try {
-            ChannelFuture f = bootstrap.bind(7777).sync();
-            f.addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    latch.countDown();
-                }
-            });
-            serverChannel = f.channel();
-            latch.await(5, TimeUnit.SECONDS);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+	public void start(WebSocketHandler handler) {
+		final CountDownLatch latch = new CountDownLatch(1);
+		EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		ServerBootstrap bootstrap = new ServerBootstrap();
+		bootstrap.group(bossGroup, workerGroup)
+				.channel(NioServerSocketChannel.class)
+				.childHandler(new WebsocketInitializer(handler));
+		try {
+			ChannelFuture f = bootstrap.bind(7777).sync();
+			f.addListener(new ChannelFutureListener() {
+				@Override
+				public void operationComplete(ChannelFuture channelFuture) throws Exception {
+					latch.countDown();
+				}
+			});
+			serverChannel = f.channel();
+			latch.await(5, TimeUnit.SECONDS);
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
-    }
+	}
 
 
-    public void stop() {
-        if (serverChannel != null) {
-            serverChannel.close();
-        }
-    }
+	public void stop() {
+		if (serverChannel != null) {
+			serverChannel.close();
+		}
+	}
 
 }

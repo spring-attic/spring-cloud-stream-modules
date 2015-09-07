@@ -44,90 +44,95 @@ import org.cloudfoundry.dropsonde.events.EventFactory;
  */
 public class WebSocketHandler extends SimpleChannelInboundHandler<Object> {
 
-    private static final String WEBSOCKET_PATH = "/firehose/firehose-a";
-    private WebSocketServerHandshaker handshaker;
-    private ExecutorService pool = Executors.newFixedThreadPool(4);
-    private BlockingQueue<EventFactory.Envelope> messages = new ArrayBlockingQueue(10);
+	private static final String WEBSOCKET_PATH = "/firehose/firehose-a";
 
-    private static String getWebSocketLocation(FullHttpRequest req) {
+	private WebSocketServerHandshaker handshaker;
 
-        String location = req.headers().get(HOST) + WEBSOCKET_PATH;
+	private ExecutorService pool = Executors.newFixedThreadPool(4);
 
-        return "ws://" + location;
-    }
+	private BlockingQueue<EventFactory.Envelope> messages = new ArrayBlockingQueue(10);
 
-    @Override
-    protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof FullHttpRequest) {
-            handleHttpRequest(ctx, (FullHttpRequest) msg);
-        } else if (msg instanceof WebSocketFrame) {
-            handleWebSocketFrame(ctx, (WebSocketFrame) msg);
-        }
-    }
+	private static String getWebSocketLocation(FullHttpRequest req) {
 
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
-    }
+		String location = req.headers().get(HOST) + WEBSOCKET_PATH;
 
-    private void handleHttpRequest(final ChannelHandlerContext ctx, FullHttpRequest req) {
+		return "ws://" + location;
+	}
 
-        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-                getWebSocketLocation(req), null, true);
-        handshaker = wsFactory.newHandshaker(req);
-        if (handshaker == null) {
-            WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
-        } else {
-            handshaker.handshake(ctx.channel(), req).addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                    Worker worker = new Worker(ctx);
-                    pool.submit(worker);
-                }
-            });
-        }
-    }
+	@Override
+	protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
+		if (msg instanceof FullHttpRequest) {
+			handleHttpRequest(ctx, (FullHttpRequest) msg);
+		}
+		else if (msg instanceof WebSocketFrame) {
+			handleWebSocketFrame(ctx, (WebSocketFrame) msg);
+		}
+	}
 
-    private void handleWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		super.channelActive(ctx);
+	}
 
-        if (frame instanceof CloseWebSocketFrame) {
-            System.out.println("Ignoring close frame");
-            handshaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
-            return;
-        }
-        if (frame instanceof PingWebSocketFrame) {
-            ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
-            return;
-        }
+	private void handleHttpRequest(final ChannelHandlerContext ctx, FullHttpRequest req) {
 
+		WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
+				getWebSocketLocation(req), null, true);
+		handshaker = wsFactory.newHandshaker(req);
+		if (handshaker == null) {
+			WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
+		}
+		else {
+			handshaker.handshake(ctx.channel(), req).addListener(new ChannelFutureListener() {
+				@Override
+				public void operationComplete(ChannelFuture channelFuture) throws Exception {
+					Worker worker = new Worker(ctx);
+					pool.submit(worker);
+				}
+			});
+		}
+	}
 
-    }
+	private void handleWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
 
-    public void addMessage(EventFactory.Envelope envelope) {
-        messages.offer(envelope);
-    }
+		if (frame instanceof CloseWebSocketFrame) {
+			System.out.println("Ignoring close frame");
+			handshaker.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
+			return;
+		}
+		if (frame instanceof PingWebSocketFrame) {
+			ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
+			return;
+		}
 
-    class Worker implements Runnable {
-        private ChannelHandlerContext ctx;
+	}
 
-        public Worker(ChannelHandlerContext ctx) {
-            this.ctx = ctx;
-        }
+	public void addMessage(EventFactory.Envelope envelope) {
+		messages.offer(envelope);
+	}
 
-        @Override
-        public void run() {
+	class Worker implements Runnable {
+		private ChannelHandlerContext ctx;
 
-            try {
-                EventFactory.Envelope envelope = null;
-                while ((envelope = WebSocketHandler.this.messages.take()) != null) {
-                    ByteBuf buffer = ctx.alloc().buffer();
-                    buffer.writeBytes(envelope.toByteArray());
-                    ctx.channel().writeAndFlush(new BinaryWebSocketFrame(buffer));
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+		public Worker(ChannelHandlerContext ctx) {
+			this.ctx = ctx;
+		}
+
+		@Override
+		public void run() {
+
+			try {
+				EventFactory.Envelope envelope = null;
+				while ((envelope = WebSocketHandler.this.messages.take()) != null) {
+					ByteBuf buffer = ctx.alloc().buffer();
+					buffer.writeBytes(envelope.toByteArray());
+					ctx.channel().writeAndFlush(new BinaryWebSocketFrame(buffer));
+				}
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

@@ -27,23 +27,23 @@ import org.cloudfoundry.dropsonde.events.UuidFactory;
  */
 public class ProtocolGenerator {
 
-    public static EventFactory.Envelope httpStartStopEvent() {
-        EventFactory.Envelope startStop = EventFactory.Envelope.newBuilder().setOrigin("localhost").setTimestamp(System.currentTimeMillis())
+	public static EventFactory.Envelope httpStartStopEvent() {
+		EventFactory.Envelope startStop = EventFactory.Envelope.newBuilder().setOrigin("localhost").setTimestamp(System.currentTimeMillis())
 
-                .setEventType(EventFactory.Envelope.EventType.HttpStartStop)
-                .setHttpStartStop(HttpFactory.HttpStartStop.newBuilder().setContentLength(200L)
-                        .setStartTimestamp(System.currentTimeMillis())
-                        .setStopTimestamp(System.currentTimeMillis() + 100)
-                        .setPeerType(HttpFactory.PeerType.Server)
-                        .setStatusCode(200)
-                        .setRemoteAddress("localhost")
-                        .setUserAgent("Gecko")
-                        .setRequestId(UuidFactory.UUID.newBuilder().setHigh(1).setLow(1).build())
-                        .setMethod(HttpFactory.Method.GET)
-                        .setUri("http://acme.com/info")
-                        .build())
-                .build();
+				.setEventType(EventFactory.Envelope.EventType.HttpStartStop)
+				.setHttpStartStop(HttpFactory.HttpStartStop.newBuilder().setContentLength(200L)
+						.setStartTimestamp(System.currentTimeMillis())
+						.setStopTimestamp(System.currentTimeMillis() + 100)
+						.setPeerType(HttpFactory.PeerType.Server)
+						.setStatusCode(200)
+						.setRemoteAddress("localhost")
+						.setUserAgent("Gecko")
+						.setRequestId(UuidFactory.UUID.newBuilder().setHigh(1).setLow(1).build())
+						.setMethod(HttpFactory.Method.GET)
+						.setUri("http://acme.com/info")
+						.build())
+				.build();
 
-        return startStop;
-    }
+		return startStop;
+	}
 }
