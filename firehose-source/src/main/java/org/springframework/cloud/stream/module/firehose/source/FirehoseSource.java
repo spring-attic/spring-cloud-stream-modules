@@ -17,36 +17,39 @@
 
 package org.springframework.cloud.stream.module.firehose.source;
 
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.tomcat.websocket.WsWebSocketContainer;
-import org.cloudfoundry.client.lib.CloudCredentials;
-import org.cloudfoundry.client.lib.oauth2.OauthClient;
-import org.cloudfoundry.client.lib.util.RestUtil;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableModule;
-import org.springframework.cloud.stream.annotation.Source;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.integration.websocket.ClientWebSocketContainer;
-import org.springframework.integration.websocket.inbound.WebSocketInboundChannelAdapter;
-import org.springframework.util.StringUtils;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-
-import javax.net.ssl.SSLContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
+import javax.net.ssl.SSLContext;
+
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.tomcat.websocket.WsWebSocketContainer;
+import org.cloudfoundry.client.lib.CloudCredentials;
+import org.cloudfoundry.client.lib.oauth2.OauthClient;
+import org.cloudfoundry.client.lib.util.RestUtil;
+
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.integration.websocket.ClientWebSocketContainer;
+import org.springframework.integration.websocket.inbound.WebSocketInboundChannelAdapter;
+import org.springframework.messaging.converter.MessageConverter;
+import org.springframework.util.StringUtils;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+
 /**
  * @author Vinicius Carvalho
  */
-@EnableModule(Source.class)
+@EnableBinding(Source.class)
 @EnableConfigurationProperties(FirehoseProperties.class)
 public class FirehoseSource implements InitializingBean {
 
@@ -62,7 +65,7 @@ public class FirehoseSource implements InitializingBean {
     @Bean
     public WebSocketInboundChannelAdapter webSocketInboundChannelAdapter() {
         WebSocketInboundChannelAdapter adapter = new WebSocketInboundChannelAdapter(webSocketContainer());
-        adapter.setMessageConverters(Collections.singletonList(this.converter));
+        adapter.setMessageConverters(Collections.<MessageConverter>singletonList(this.converter));
         adapter.setOutputChannel(channels.output());
         adapter.setPayloadType(ByteBuffer.class);
         return adapter;
@@ -73,7 +76,7 @@ public class FirehoseSource implements InitializingBean {
         StandardWebSocketClient wsClient = new StandardWebSocketClient();
         if (metadata.isTrustSelfCerts()) {
             SSLContext context = buildSslContext();
-            wsClient.setUserProperties(Collections.singletonMap(WsWebSocketContainer.SSL_CONTEXT_PROPERTY, context));
+            wsClient.setUserProperties(Collections.<String, Object>singletonMap(WsWebSocketContainer.SSL_CONTEXT_PROPERTY, context));
         }
         return wsClient;
     }

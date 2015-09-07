@@ -17,25 +17,26 @@
 
 package org.springframework.cloud.stream.module.firehose;
 
+import java.util.concurrent.TimeUnit;
+
 import org.cloudfoundry.dropsonde.events.EventFactory;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Source;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.firehose.netty.NettyWebSocketServer;
 import org.springframework.cloud.stream.module.firehose.netty.WebSocketHandler;
 import org.springframework.cloud.stream.module.firehose.source.FirehoseSource;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.Message;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Vinicius Carvalho
@@ -45,12 +46,14 @@ import java.util.concurrent.TimeUnit;
 @WebIntegrationTest({"server.port:0", "dopplerUrl:ws://localhost:7777"})
 public class FirehoseApplicationTests {
 
-
     private static NettyWebSocketServer server;
+
     private static WebSocketHandler handler;
+
     @Autowired
-    @ModuleChannels(FirehoseSource.class)
+    @Bindings(FirehoseSource.class)
     Source firehoseSource;
+
     @Autowired
     private MessageCollector messageCollector;
 
