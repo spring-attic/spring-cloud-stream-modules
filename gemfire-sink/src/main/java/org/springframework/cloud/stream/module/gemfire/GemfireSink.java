@@ -24,9 +24,9 @@ import com.gemstone.gemfire.cache.Region;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableModule;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Sink;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.gemfire.outbound.CacheWritingMessageHandler;
@@ -34,7 +34,7 @@ import org.springframework.integration.gemfire.outbound.CacheWritingMessageHandl
 /**
  * @author David Turanski
  */
-@EnableModule(Sink.class)
+@EnableBinding(Sink.class)
 @Import({GemfirePoolConfiguration.class, GemfireClientRegionConfiguration.class})
 @EnableConfigurationProperties(GemfireSinkProperties.class)
 public class GemfireSink {
@@ -48,7 +48,7 @@ public class GemfireSink {
 	Region<String,?> region;
 
 	@Autowired
-	@ModuleChannels(GemfireSink.class)
+	@Bindings(GemfireSink.class)
 	private Sink gemfireSink;
 
 	@PostConstruct

@@ -33,8 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.Sink;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.modules.test.gemfire.process.ProcessExecutor;
 import org.springframework.cloud.stream.modules.test.gemfire.process.ProcessWrapper;
 import org.springframework.cloud.stream.modules.test.gemfire.process.ServerProcess;
@@ -58,7 +58,7 @@ import static org.junit.Assert.assertTrue;
 public class GemfireSinkIntegrationTests {
 
 	@Autowired
-	@ModuleChannels(GemfireSink.class)
+	@Bindings(GemfireSink.class)
 	protected Sink gemfireSink;
 
 	@Resource(name = "clientRegion")
