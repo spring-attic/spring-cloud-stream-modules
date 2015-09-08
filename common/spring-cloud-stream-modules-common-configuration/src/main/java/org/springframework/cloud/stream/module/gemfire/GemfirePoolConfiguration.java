@@ -18,12 +18,10 @@ package org.springframework.cloud.stream.module.gemfire;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.gemfire.client.PoolFactoryBean;
 import org.springframework.data.gemfire.config.GemfireConstants;
 
@@ -32,6 +30,7 @@ import org.springframework.data.gemfire.config.GemfireConstants;
  */
 @Configuration
 @EnableConfigurationProperties(GemfirePoolProperties.class)
+@Import(InetSocketAddressConverterConfiguration.class)
 public class GemfirePoolConfiguration {
 
 	@Autowired

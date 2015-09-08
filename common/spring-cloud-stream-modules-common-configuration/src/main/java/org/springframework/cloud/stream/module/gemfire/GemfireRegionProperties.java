@@ -15,9 +15,6 @@
 
 package org.springframework.cloud.stream.module.gemfire;
 
-import org.hibernate.validator.constraints.NotBlank;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -28,10 +25,8 @@ public class GemfireRegionProperties {
 	/**
 	 * The region name.
 	 */
-	@Value("${spring.application.name:}")
 	private String regionName;
-	
-	@NotBlank
+
 	public String getRegionName() {
 		return regionName;
 	}

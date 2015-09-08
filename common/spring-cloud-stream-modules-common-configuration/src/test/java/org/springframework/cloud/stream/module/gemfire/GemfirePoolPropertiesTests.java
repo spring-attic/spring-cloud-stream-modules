@@ -23,6 +23,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 
@@ -55,23 +57,12 @@ public class GemfirePoolPropertiesTests {
 		assertThat(properties.getConnectType(), equalTo(GemfirePoolProperties.ConnectType.locator));
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void invalidAddressThrowsException() {
-		try {
-			AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-			EnvironmentTestUtils.addEnvironment(context, "hostAddresses:localhost1235");
-			context.register(Conf.class);
-			context.refresh();
-			fail("should throw exception");
-		}
-		catch (Exception e) {
-			assertThat(e.getCause(), instanceOf(BindException.class));
-			BindException bindException = (BindException) e.getCause();
-			FieldError fieldError = (FieldError) bindException.getAllErrors().get(0);
-			assertThat(fieldError.getArguments()[0].toString(), containsString("hostAddresses"));
-			assertThat(fieldError.getDefaultMessage(), containsString("localhost1235 is not a valid [host]:[port] " +
-					"value"));
-		}
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		EnvironmentTestUtils.addEnvironment(context, "hostAddresses:localhost1235");
+		context.register(Conf.class);
+		context.refresh();
 	}
 
 	@Test
@@ -117,5 +108,6 @@ public class GemfirePoolPropertiesTests {
 
 	@Configuration
 	@EnableConfigurationProperties(GemfirePoolProperties.class)
+	@Import(InetSocketAddressConverterConfiguration.class)
 	static class Conf {}
 }

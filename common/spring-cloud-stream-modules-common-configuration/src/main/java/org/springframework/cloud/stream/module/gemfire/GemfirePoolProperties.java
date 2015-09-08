@@ -29,8 +29,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties
 public class GemfirePoolProperties {
-	private static final Pattern HOST_AND_PORT_PATTERN = Pattern.compile("^\\s*(.*?):(\\d+)\\s*$");
-
 	static enum ConnectType {locator, server};
 	/**
 	 * Specifies one or more Gemfire locator or server addresses formatted as [host]:[port].
@@ -53,19 +51,8 @@ public class GemfirePoolProperties {
 		return hostAddresses;
 	}
 
-	public void setHostAddresses(String[] hostAddresses) {
-		this.hostAddresses = new InetSocketAddress[hostAddresses.length];
-		for (int i = 0; i < hostAddresses.length; i++) {
-			Matcher m = HOST_AND_PORT_PATTERN.matcher(hostAddresses[i]);
-			if (m.matches()) {
-				String host = m.group(1);
-				int port = Integer.parseInt(m.group(2));
-				this.hostAddresses[i] = new InetSocketAddress(host, port);
-			}
-			else {
-				throw new IllegalArgumentException(hostAddresses[i] + " is not a valid [host]:[port] value");
-			}
-		}
+	public void setHostAddresses(InetSocketAddress[] hostAddresses) {
+		this.hostAddresses = hostAddresses;
 	}
 
 	public ConnectType getConnectType() {

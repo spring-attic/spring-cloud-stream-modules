@@ -19,11 +19,13 @@ import com.gemstone.gemfire.cache.DataPolicy;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
 import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
+import org.springframework.util.StringUtils;
 
 /**
  * @author David Turanski
@@ -34,6 +36,9 @@ public class GemfireClientRegionConfiguration {
 
 	@Autowired
 	GemfireRegionProperties config;
+
+	@Value("${spring.application.name:}")
+	String regionName;
 
 	@Bean
 	public ClientCacheFactoryBean clientCache() {
@@ -46,7 +51,8 @@ public class GemfireClientRegionConfiguration {
 	@Bean(name = "clientRegion")
 	public ClientRegionFactoryBean clientRegionFactoryBean() {
 		ClientRegionFactoryBean clientRegionFactoryBean = new ClientRegionFactoryBean();
-		clientRegionFactoryBean.setRegionName(config.getRegionName());
+		clientRegionFactoryBean.setRegionName(StringUtils.hasText(config.getRegionName()) ? config.getRegionName() : 
+				regionName);
 		clientRegionFactoryBean.setDataPolicy(DataPolicy.EMPTY);
 		try {
 			clientRegionFactoryBean.setCache(clientCache().getObject());
