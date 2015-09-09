@@ -17,6 +17,7 @@ package org.springframework.cloud.stream.module.twitter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
@@ -38,9 +39,16 @@ public class TwitterStreamSource {
 	@Autowired
 	TwitterStreamProperties streamProperties;
 
+	@Autowired
+	@Bindings(TwitterStreamSource.class)
+	Source source;
+
 	@Bean
 	public MessageProducer twitterStream(TwitterTemplate twitterTemplate) {
-		return new TwitterStreamMessageProducer(twitterTemplate, streamProperties.getStreamType());
+		TwitterStreamMessageProducer messageProducer =
+				new TwitterStreamMessageProducer(twitterTemplate, streamProperties.getStreamType());
+		messageProducer.setOutputChannel(source.output());
+		return messageProducer;
 	}
 
 	@Bean

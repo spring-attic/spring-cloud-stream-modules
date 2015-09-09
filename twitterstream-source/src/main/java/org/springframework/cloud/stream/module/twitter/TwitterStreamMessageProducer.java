@@ -18,9 +18,7 @@ package org.springframework.cloud.stream.module.twitter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.integration.endpoint.MessageProducerSupport;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.social.twitter.api.StreamDeleteEvent;
 import org.springframework.social.twitter.api.StreamListener;
@@ -88,11 +86,5 @@ class TwitterStreamMessageProducer extends MessageProducerSupport {
 		else {
 			twitterTemplate.streamingOperations().sample(listeners);
 		}
-	}
-
-	@Override
-	public void onInit() {
-		setOutputChannel((MessageChannel) getBeanFactory().getBean(Source.OUTPUT));
-		super.onInit();
 	}
 }
