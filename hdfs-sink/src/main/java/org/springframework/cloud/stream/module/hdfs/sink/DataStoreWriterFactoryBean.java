@@ -125,10 +125,10 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 			writer.setIdleTimeout(properties.getIdleTimeout());
 			writer.setCloseTimeout(properties.getCloseTimeout());
 			if (StringUtils.hasText(properties.getInUsePrefix())) {
-				((TextFileWriter)storeWriter).setInWritingPrefix(properties.getInUsePrefix());
+				writer.setInWritingPrefix(properties.getInUsePrefix());
 			}
 			if (StringUtils.hasText(properties.getInUseSuffix())) {
-				((TextFileWriter)storeWriter).setInWritingSuffix(properties.getInUseSuffix());
+				writer.setInWritingSuffix(properties.getInUseSuffix());
 			}
 			writer.setOverwrite(properties.isOverwrite());
 			writer.setFileNamingStrategy(fileNamingStrategy);
@@ -155,10 +155,10 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 			writer.setIdleTimeout(properties.getIdleTimeout());
 			writer.setCloseTimeout(properties.getCloseTimeout());
 			if (StringUtils.hasText(properties.getInUsePrefix())) {
-				((TextFileWriter)storeWriter).setInWritingPrefix(properties.getInUsePrefix());
+				writer.setInWritingPrefix(properties.getInUsePrefix());
 			}
 			if (StringUtils.hasText(properties.getInUseSuffix())) {
-				((TextFileWriter)storeWriter).setInWritingSuffix(properties.getInUseSuffix());
+				writer.setInWritingSuffix(properties.getInUseSuffix());
 			}
 			writer.setOverwrite(properties.isOverwrite());
 			writer.setFileNamingStrategyFactory(fileNamingStrategy);
