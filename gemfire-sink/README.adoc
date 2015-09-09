@@ -2,7 +2,7 @@
 
 A *Spring Cloud Stream* module that allows one to write message payloads to a Gemfire server.
 
-== Requirements
+## Requirements
 
 * Java 7 or above
 * Gemfire 8.0 or above 
@@ -10,7 +10,7 @@ A *Spring Cloud Stream* module that allows one to write message payloads to a Ge
 Note: This module uses Gemfire v8.0.0. To use with earlier versions of Gemfire, you must change the Gemfire versions in 
 the root pom file and rebuild.
 
-== Code Tour
+## Classes
 
 GemfireSinkApplication:: the Spring Boot Main Application
 GemfireSink:: the actual module code that interacts with the input channel.
@@ -24,13 +24,13 @@ This also uses common Gemfire configuration Properties to configure a Gemfire Cl
   * hostAddresses: a comma separated list of [host]:[port] specifying either locator or server addresses for the client connection pool(default: localhost:10334)
   * connectType: 'server' or 'locator' (default 'locator')
 
-## Building with Maven
+## Build
 
 ```
 $> mvn package
 ```
 
-## Running the Application
+## Run
 
 ```
 $> java -DregionName=${regionName} -DkeyExpression=${keyExpression} -jar target/gemfire-sink-${version}-exec.jar
