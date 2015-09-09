@@ -15,7 +15,7 @@
  */
 package org.springframework.cloud.stream.module.twitter;
 
-import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.AssertFalse;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -32,11 +32,14 @@ public class TwitterStreamProperties {
 
 	protected static final String FIREHOSE = "firehose";
 
+	/**
+	 * Stream type (sample, firehose)
+	 */
 	private String streamType = SAMPLE;
 
-	@AssertTrue(message = "Only `sample` or `firehose` stream operations are supported.")
-	boolean isStreamTypeValid() {
-		return (this.streamType.equalsIgnoreCase(SAMPLE) || this.streamType.equalsIgnoreCase(FIREHOSE));
+	@AssertFalse(message = "Only `sample` and `firehose` stream operations are supported.")
+	boolean isInvalidStreamType() {
+		return !(this.streamType.equalsIgnoreCase(SAMPLE) || this.streamType.equalsIgnoreCase(FIREHOSE));
 	}
 
 	public String getStreamType() {

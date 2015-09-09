@@ -25,12 +25,24 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 //todo: Move these properties into spring-boot's TwitterProperties prefixed with: `spring.social.twitter`
 public class TwitterCredentials {
 
+	/**
+	 * Consumer key
+	 */
 	private String consumerKey;
 
+	/**
+	 * Consumer secret
+	 */
 	private String consumerSecret;
 
+	/**
+	 * Access token
+	 */
 	private String accessToken;
 
+	/**
+	 * Access token secret
+	 */
 	private String accessTokenSecret;
 
 	public String getConsumerKey() {
