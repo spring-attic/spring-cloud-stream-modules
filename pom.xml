@@ -29,6 +29,7 @@
 		<module>ftp-source</module>
 		<module>http-source</module>
 		<module>time-source</module>
+		<module>twitterstream-source</module>
 		<!-- processors in alphabetical order -->
 		<module>filter-processor</module>
 		<module>groovy-filter-processor</module>
