@@ -15,76 +15,50 @@
  */
 package org.springframework.cloud.stream.module.twitter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URI;
 
-import org.springframework.integration.endpoint.MessageProducerSupport;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.social.twitter.api.StreamDeleteEvent;
-import org.springframework.social.twitter.api.StreamListener;
-import org.springframework.social.twitter.api.StreamWarningEvent;
-import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.support.URIBuilder;
 import org.springframework.social.twitter.api.impl.TwitterTemplate;
-import org.springframework.util.Assert;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.util.StringUtils;
 
 /**
  *  {@link org.springframework.integration.core.MessageProducer} implementation to send Twitter stream messages.
  *
  * @author Ilayaperumal Gopinathan
  */
-class TwitterStreamMessageProducer extends MessageProducerSupport {
+class TwitterStreamMessageProducer extends AbstractTwitterInboundChannelAdapter {
 
-	private final TwitterTemplate twitterTemplate;
+	private static final String API_URL_BASE = "https://stream.twitter.com/1.1/statuses/";
 
-	private final TwitterStreamType streamType;
+	private final TwitterStreamProperties twitterStreamProperties;
 
-	private final ObjectMapper objectMapper = new ObjectMapper();
-
-	TwitterStreamMessageProducer(TwitterTemplate twitterTemplate, TwitterStreamType streamType) {
-		Assert.notNull(twitterTemplate, "TwitterTemplate must not be null.");
-		Assert.notNull(streamType, "Stream type must not null.");
-		this.twitterTemplate = twitterTemplate;
-		this.streamType = streamType;
+	TwitterStreamMessageProducer(TwitterTemplate twitterTemplate, TwitterStreamProperties twitterStreamProperties) {
+		super(twitterTemplate);
+		this.twitterStreamProperties = twitterStreamProperties;
 	}
 
-	@Override
-	public void doStart() {
-		List<StreamListener> listeners = new ArrayList<>();
-		listeners.add(new StreamListener() {
-			@Override
-			public void onTweet(Tweet tweet) {
-				try {
-					//todo: Support conversion type; currently the tweet is written as JSON String value.
-					sendMessage(MessageBuilder.withPayload(objectMapper.writeValueAsString(tweet)).build());
-				}
-				catch (JsonProcessingException e) {
-					logger.debug("JSON processing exception while processing the tweet: " + e);
-				}
-			}
+	protected URI buildUri() {
+		String path = this.twitterStreamProperties.getStreamType().equals(TwitterStreamType.FIREHOSE) ?
+				"firehose.json" : "sample.json";
+		URIBuilder b = URIBuilder.fromUri(API_URL_BASE + path);
+		//todo: Support all the available properties
+		if (StringUtils.hasText(this.twitterStreamProperties.getLanguage())) {
+			b.queryParam("language", this.twitterStreamProperties.getLanguage());
+		}
+		return b.build();
+	}
 
-			@Override
-			public void onDelete(StreamDeleteEvent deleteEvent) {
-				//discard
-			}
-
-			@Override
-			public void onLimit(int numberOfLimitedTweets) {
-				logger.info("The stream is being track limited for " + numberOfLimitedTweets + " tweets.");
-			}
-
-			@Override
-			public void onWarning(StreamWarningEvent warningEvent) {
-				logger.error("Streaming source is in the danger of being disconnected.");
-			}
-		});
-		if (this.streamType.equals(TwitterStreamType.FIREHOSE)) {
-			twitterTemplate.streamingOperations().firehose(listeners);
+	protected void doSendLine(String line) {
+		if (line.startsWith("{\"limit")) {
+			logger.info("Twitter stream is being track limited.");
+		} else if (line.startsWith("{\"delete")) {
+			//discard
+		} else if (line.startsWith("{\"warning")) {
+			//discard
 		}
 		else {
-			twitterTemplate.streamingOperations().sample(listeners);
+			sendMessage(org.springframework.integration.support.MessageBuilder.withPayload(line).build());
 		}
 	}
+
 }

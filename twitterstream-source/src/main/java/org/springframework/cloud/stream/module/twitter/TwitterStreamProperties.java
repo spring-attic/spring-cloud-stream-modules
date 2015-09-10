@@ -23,6 +23,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Ilayaperumal Gopinathan
  */
 @ConfigurationProperties
+//todo: support more stream properties such as locations, track etc.,
 public class TwitterStreamProperties {
 
 	/**
@@ -30,11 +31,24 @@ public class TwitterStreamProperties {
 	 */
 	private TwitterStreamType streamType = TwitterStreamType.SAMPLE;
 
+	/**
+	 * The language of the tweet text.
+	 */
+	private String language;
+
 	public TwitterStreamType getStreamType() {
 		return this.streamType;
 	}
 
 	public void setStreamType(TwitterStreamType streamType) {
 		this.streamType = streamType;
+	}
+
+	public String getLanguage() {
+		return this.language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

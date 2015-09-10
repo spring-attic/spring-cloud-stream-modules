@@ -37,7 +37,7 @@ public class TwitterStreamSource {
 	TwitterCredentials credentials;
 
 	@Autowired
-	TwitterStreamProperties streamProperties;
+	TwitterStreamProperties twitterStreamProperties;
 
 	@Autowired
 	@Bindings(TwitterStreamSource.class)
@@ -46,7 +46,7 @@ public class TwitterStreamSource {
 	@Bean
 	public MessageProducer twitterStream(TwitterTemplate twitterTemplate) {
 		TwitterStreamMessageProducer messageProducer =
-				new TwitterStreamMessageProducer(twitterTemplate, streamProperties.getStreamType());
+				new TwitterStreamMessageProducer(twitterTemplate, twitterStreamProperties);
 		messageProducer.setOutputChannel(source.output());
 		return messageProducer;
 	}
