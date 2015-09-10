@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.hdfs.sink;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -44,6 +45,7 @@ public class HdfsSinkConfiguration {
 	}
 
 	@Bean
+	@Primary
 	public TaskExecutor taskExecutor() {
 		return new ThreadPoolTaskExecutor();
 	}
