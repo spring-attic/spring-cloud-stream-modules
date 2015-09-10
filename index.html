@@ -1,6 +1,6 @@
 ---
 # The name of your project
-title: Spring Data JPA
+title: Spring Cloud Stream Modules
 
 badges:
 
@@ -37,12 +37,23 @@ badges:
 
 {% capture billboard_description %}
 
-**PROJECT DESCRIPTION**
-Spring Cloud Stream Modules provide out-of-the-box modules for [Spring Cloud Stream](http://cloud.spring.io/spring-cloud-stream/).
+Spring Boot based enterprise integration applications that supports integration with external systems. Spring Cloud 
+Stream Modules can be used with [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) to create, 
+build, and scale message-driven data microservices.
 
 {% endcapture %}
 
 {% capture main_content %}
+
+Spring Cloud Stream modules are standalone runnable Spring Boot applications. These microservice applications can run 
+independently via *‘java -jar’*, *‘cf push’*, *‘ltc create’*, or *‘docker run’*.
+
+## Features
+
+* Run stand-alone as Spring applications
+* Provide infrastructure to test the modules in isolation
+* Override configuration parameters via command-line arguments or environment variables
+* Host data microservice modules through maven repository
 
 **Available Modules**
 
@@ -57,6 +68,30 @@ Spring Cloud Stream Modules provide out-of-the-box modules for [Spring Cloud Str
 * time (source)
 * transform (processor)
 
+<span id="quick-start"></span>
+## Quick Start
+
+Step 1 - Clone [Spring Cloud Stream Modules](https://github.com/spring-cloud/spring-cloud-stream-modules.git) repository
+
+Step 2 - Build Project
+```
+mvn clean package
+```
+
+Step 3 - Start
+```
+redis-server
+```
+
+Step 4 - Run **Time Source** and Bind to *ticktock* Queue
+java -jar time-source/target/time-source***-exec.jar --spring.cloud.stream.bindings.output=ticktock
+
+Step 5 - Run **Log Sink** and Bind to *ticktock* Queue
+java -jar log-sink/target/log-sink***-exec.jar --spring.cloud.stream.bindings.input=ticktock
+
+Step 6 - Verify *ticktock* Logs in Console
+
+
 {% endcapture %}
 
 {% capture related_resources %}
@@ -64,7 +99,7 @@ Spring Cloud Stream Modules provide out-of-the-box modules for [Spring Cloud Str
 ### Related Projects
 
 * [Spring Cloud Stream]({{site.projects_site_url}}/spring-cloud-stream/)
-* [Spring Cloud Data]({{site.projects_site_url}}/spring-cloud-data/)
+* [Spring Cloud Data Flow]({{site.projects_site_url}}/spring-cloud-dataflow/)
 * [Spring XD]({{site.projects_site_url}}/spring-xd/)
 
 {% endcapture %}
