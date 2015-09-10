@@ -26,7 +26,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class TwitterStreamProperties {
 
 	/**
-	 * Twitter stream type
+	 * Twitter stream type (such as sample, firehose). Default is sample.
 	 */
 	private TwitterStreamType streamType = TwitterStreamType.SAMPLE;
 
