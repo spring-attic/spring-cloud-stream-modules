@@ -19,6 +19,10 @@ package org.springframework.cloud.stream.module.hdfs.sink;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
  * Configuration class for the HdfsSink. Delegates to a {@link DataStoreWriterFactoryBean} for
@@ -33,6 +37,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableConfigurationProperties(HdfsSinkProperties.class)
 public class HdfsSinkConfiguration {
+
+	@Bean
+	public TaskScheduler taskScheduler() {
+		return new ThreadPoolTaskScheduler();
+	}
+
+	@Bean
+	public TaskExecutor taskExecutor() {
+		return new ThreadPoolTaskExecutor();
+	}
 
 	@Bean
 	public DataStoreWriterFactoryBean dataStoreWriter() {

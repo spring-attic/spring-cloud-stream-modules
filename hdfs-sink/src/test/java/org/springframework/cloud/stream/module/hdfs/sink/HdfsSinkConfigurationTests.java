@@ -16,10 +16,6 @@
 
 package org.springframework.cloud.stream.module.hdfs.sink;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.hamcrest.CoreMatchers.equalTo;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -44,6 +40,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 /**
  * @author Thomas Risberg
  */
@@ -51,9 +51,10 @@ import java.nio.file.Paths;
 @SpringApplicationConfiguration(classes = HdfsSinkApplication.class)
 @WebIntegrationTest({"server.port:0",
         "spring.hadoop.fsUri=file:///",
-        "directory=${java.io.tmpdir}/hdfs-sink"})
+        "directory=${java.io.tmpdir}/hdfs-sink",
+        "closeTimeout=100"})
 @DirtiesContext
-public class HdfsSinkIntegrationTests {
+public class HdfsSinkConfigurationTests {
 
     @Autowired
     ConfigurableApplicationContext applicationContext;
@@ -76,8 +77,9 @@ public class HdfsSinkIntegrationTests {
     }
 
     @Test
-    public void testWritingSomething() throws IOException {
+    public void testWritingSomething() throws IOException, InterruptedException {
         sink.input().send(new GenericMessage<>("Foo"));
+        Thread.sleep(150);
         sink.input().send(new GenericMessage<>("Bar"));
         sink.input().send(new GenericMessage<>("Baz"));
     }
@@ -96,14 +98,7 @@ public class HdfsSinkIntegrationTests {
                 return false;
             }
         });
-        assertTrue(files.length > 0);
-        File dataFile = files[0];
-        assertNotNull(dataFile);
-        Assert.assertThat(readFile(dataFile.getPath(), Charset.forName("UTF-8")), equalTo("Foo\nBar\nBaz\n"));
+        assertTrue(files.length > 1);
     }
 
-    private String readFile(String path, Charset encoding) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-    }
 }

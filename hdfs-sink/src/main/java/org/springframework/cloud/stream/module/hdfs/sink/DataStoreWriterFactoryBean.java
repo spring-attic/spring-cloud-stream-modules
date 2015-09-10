@@ -27,6 +27,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.Lifecycle;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.hadoop.store.DataStoreWriter;
 import org.springframework.data.hadoop.store.codec.CodecInfo;
 import org.springframework.data.hadoop.store.codec.Codecs;
@@ -40,6 +41,7 @@ import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.messaging.Message;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -66,6 +68,9 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 
 	private volatile BeanFactory beanFactory;
 
+	private TaskScheduler taskScheduler;
+
+	private TaskExecutor taskExecutor;
 
 	@Override
 	public void destroy() throws Exception {
@@ -139,6 +144,8 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 			if (properties.getFileOpenAttempts() > 0) {
 				writer.setMaxOpenAttempts(properties.getFileOpenAttempts());
 			}
+			writer.setTaskExecutor(taskExecutor);
+			writer.setTaskScheduler(taskScheduler);
 			storeWriter = writer;
 		}
 		else {
@@ -169,6 +176,8 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 			if (properties.getFileOpenAttempts() > 0) {
 				writer.setMaxOpenAttempts(properties.getFileOpenAttempts());
 			}
+			writer.setTaskExecutor(taskExecutor);
+			writer.setTaskScheduler(taskScheduler);
 			storeWriter = writer;
 		}
 		if (storeWriter instanceof InitializingBean) {
@@ -184,6 +193,16 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 	@Autowired
 	public void setProperties(HdfsSinkProperties properties) {
 		this.properties = properties;
+	}
+
+	@Autowired
+	public void setTaskScheduler(TaskScheduler taskScheduler) {
+		this.taskScheduler = taskScheduler;
+	}
+
+	@Autowired
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
 	}
 
 	@Override
