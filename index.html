@@ -55,18 +55,14 @@ independently via *‘java -jar’*, *‘cf push’*, *‘ltc create’*, or *�
 * Override configuration parameters via command-line arguments or environment variables
 * Host data microservice modules through maven repository
 
-**Available Modules**
+## Available Modules
 
-* counter (sink)
-* filter (processor)
-* ftp (source)
-* groovy-filter (processor)
-* groovy-transform (processor)
-* http (source)
-* log (sink)
-* redis (sink)
-* time (source)
-* transform (processor)
+| Source  | Processor | Sink | Task |
+| ------- | --------- | ---- | ---- |
+| ftp | filter | counter | timestamp | 
+| http | groovy-filter | hdfs | |
+| time | groovy-transform | log | | 
+| | transform | redis | | 
 
 <span id="quick-start"></span>
 ## Quick Start
@@ -84,10 +80,14 @@ redis-server
 ```
 
 Step 4 - Run **Time Source** and Bind to *ticktock* Queue
+```
 java -jar time-source/target/time-source***-exec.jar --spring.cloud.stream.bindings.output=ticktock
+```
 
 Step 5 - Run **Log Sink** and Bind to *ticktock* Queue
+```
 java -jar log-sink/target/log-sink***-exec.jar --spring.cloud.stream.bindings.input=ticktock
+```
 
 Step 6 - Verify *ticktock* Logs in Console
 
