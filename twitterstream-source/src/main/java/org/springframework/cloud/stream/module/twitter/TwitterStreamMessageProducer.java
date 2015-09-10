@@ -39,13 +39,13 @@ class TwitterStreamMessageProducer extends MessageProducerSupport {
 
 	private final TwitterTemplate twitterTemplate;
 
-	private final String streamType;
+	private final TwitterStreamType streamType;
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
-	TwitterStreamMessageProducer(TwitterTemplate twitterTemplate, String streamType) {
+	TwitterStreamMessageProducer(TwitterTemplate twitterTemplate, TwitterStreamType streamType) {
 		Assert.notNull(twitterTemplate, "TwitterTemplate must not be null.");
-		Assert.hasText(streamType, "Stream type must not be empty.");
+		Assert.notNull(streamType, "Stream type must not null.");
 		this.twitterTemplate = twitterTemplate;
 		this.streamType = streamType;
 	}
@@ -80,7 +80,7 @@ class TwitterStreamMessageProducer extends MessageProducerSupport {
 				logger.error("Streaming source is in the danger of being disconnected.");
 			}
 		});
-		if (this.streamType.equalsIgnoreCase(TwitterStreamProperties.FIREHOSE)) {
+		if (this.streamType.equals(TwitterStreamType.FIREHOSE)) {
 			twitterTemplate.streamingOperations().firehose(listeners);
 		}
 		else {

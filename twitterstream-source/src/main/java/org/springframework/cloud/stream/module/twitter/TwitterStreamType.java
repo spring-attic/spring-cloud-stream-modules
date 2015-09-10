@@ -15,26 +15,12 @@
  */
 package org.springframework.cloud.stream.module.twitter;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 /**
- * Configuration properties for Twitterstream source.
+ * Twitter stream types.
  *
  * @author Ilayaperumal Gopinathan
  */
-@ConfigurationProperties
-public class TwitterStreamProperties {
-
-	/**
-	 * Twitter stream type
-	 */
-	private TwitterStreamType streamType = TwitterStreamType.SAMPLE;
-
-	public TwitterStreamType getStreamType() {
-		return this.streamType;
-	}
-
-	public void setStreamType(TwitterStreamType streamType) {
-		this.streamType = streamType;
-	}
+public enum TwitterStreamType {
+	//todo: Support more stream types such as `filter`, `search` that TwitterTemplate implementation supports.
+	SAMPLE, FIREHOSE
 }
