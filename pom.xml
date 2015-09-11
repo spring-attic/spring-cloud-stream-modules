@@ -4,6 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.cloud.stream.module</groupId>
 	<artifactId>spring-cloud-stream-modules</artifactId>
+	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://projects.spring.io/spring-xd/</url>
 	<organization>
