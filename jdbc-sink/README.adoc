@@ -1,0 +1,27 @@
+= Spring Cloud Stream Jdbc Sink
+
+A module that writes its incoming payload to an RDBMS using JDBC..
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+JdbcSinkApplication:: the Spring Boot Main Application
+JdbcSink:: the actual module that interacts with message channels
+JdbcSinkProperties:: configuration properties for the module
+
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+To start the module execute the following:
+```
+$> java -jar target/jdbc-sink-${version}-exec.jar
+```

@@ -40,9 +40,10 @@
 		<module>file-sink</module>
 		<module>gemfire-sink</module>
 		<module>hdfs-sink</module>
+		<module>jdbc-sink</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
-	</modules>
+  </modules>
 	<build>
 		<plugins>
 			<plugin>
