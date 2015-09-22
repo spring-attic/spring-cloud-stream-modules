@@ -21,15 +21,15 @@ package ${package};
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.stream.annotation.EnableModule;
-import org.springframework.cloud.stream.annotation.${typeAsInSourceProcessorOrSink};
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.${typeAsInSourceProcessorOrSink};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 /**
  * ${singleLineDescriptionOfTheModule}.
  */
-@EnableModule(${typeAsInSourceProcessorOrSink}.class)
+@EnableBinding(${typeAsInSourceProcessorOrSink}.class)
 @EnableConfigurationProperties(${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}Properties.class)
 // The XXX part is needed to workaround a maven archetype bug. You'll want to perform a rename refactoring.
 public class ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink} {

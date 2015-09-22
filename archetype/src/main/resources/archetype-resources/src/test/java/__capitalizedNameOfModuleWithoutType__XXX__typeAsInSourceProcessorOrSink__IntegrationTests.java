@@ -25,8 +25,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.ModuleChannels;
-import org.springframework.cloud.stream.annotation.${typeAsInSourceProcessorOrSink};
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.${typeAsInSourceProcessorOrSink};
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,7 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class ${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}IntegrationTests {
 
 	@Autowired
-	@ModuleChannels(${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}.class)
+	@Bindings(${capitalizedNameOfModuleWithoutType}XXX${typeAsInSourceProcessorOrSink}.class)
 	protected ${typeAsInSourceProcessorOrSink} channels;
 
 	@Autowired
