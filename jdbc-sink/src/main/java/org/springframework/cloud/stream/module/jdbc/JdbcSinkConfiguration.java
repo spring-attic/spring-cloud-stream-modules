@@ -25,16 +25,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.messaging.Message;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -58,6 +63,9 @@ public class JdbcSinkConfiguration {
 
 	@Autowired
 	private JdbcSink jdbcSink;
+
+	@Autowired
+	private GenericApplicationContext applicationContext;
 
 
 	@ServiceActivator(autoStartup = "false", inputChannel = Sink.INPUT)
@@ -86,6 +94,22 @@ public class JdbcSinkConfiguration {
 			}
 			return new SimpleJdbcSink(jdbcOperations, properties.getTableName(), columnExpressionVariations);
 		}
+	}
+
+	@ConditionalOnProperty("initialize")
+	@Bean
+	public DataSourceInitializer nonBootDataSourceInitializer(DataSource dataSource, ResourceLoader resourceLoader) {
+		DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
+		dataSourceInitializer.setDataSource(dataSource);
+		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+		databasePopulator.setIgnoreFailedDrops(true);
+		dataSourceInitializer.setDatabasePopulator(databasePopulator);
+		if ("true".equals(properties.getInitialize())) {
+			databasePopulator.addScript(new DefaultInitializationScriptResource(properties));
+		} else {
+			databasePopulator.addScript(resourceLoader.getResource(properties.getInitialize()));
+		}
+		return dataSourceInitializer;
 	}
 
 	@Bean

@@ -22,7 +22,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created by ericbottard on 23/09/15.
+ * This annotation, when set on a Map field or setter, instructs the conversion service
+ * to use the special {@link ShorthandMapConverter}.
+ *
+ * @author Eric Bottard
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})

@@ -37,7 +37,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Integration Tests for JdbcSink. Uses H2 as a (real) embedded DB.
+ * Integration Tests for JdbcSink. Uses hsqldb as a (real) embedded DB.
  *
  * @author Eric Bottard
  */
@@ -110,6 +110,29 @@ public abstract class JdbcSinkIntegrationTests {
 					samePropertyValuesAs(c),
 					samePropertyValuesAs(d)
 			));
+		}
+	}
+	@WebIntegrationTest(value = {"tableName=no_script", "initialize=true", "columns=a,b"})
+	public static class ImplicitTableCreationTests extends JdbcSinkIntegrationTests {
+
+		@Test
+		public void testInsertion() {
+			Payload sent = new Payload("hello", 42);
+			channels.input().send(MessageBuilder.withPayload(sent).build());
+			Payload result = jdbcOperations.query("select a, b from no_script", new BeanPropertyRowMapper<>(Payload.class)).get(0);
+			Assert.assertThat(result, Matchers.samePropertyValuesAs(sent));
+		}
+	}
+
+	@WebIntegrationTest(value = {"tableName=foobar", "initialize=classpath:explicit-script.sql", "columns=a,b"})
+	public static class ExlicitTableCreationTests extends JdbcSinkIntegrationTests {
+
+		@Test
+		public void testInsertion() {
+			Payload sent = new Payload("hello", 42);
+			channels.input().send(MessageBuilder.withPayload(sent).build());
+			Payload result = jdbcOperations.query("select a, b from foobar", new BeanPropertyRowMapper<>(Payload.class)).get(0);
+			Assert.assertThat(result, Matchers.samePropertyValuesAs(sent));
 		}
 	}
 

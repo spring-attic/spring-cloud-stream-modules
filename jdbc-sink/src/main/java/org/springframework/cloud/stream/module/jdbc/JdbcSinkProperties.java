@@ -43,9 +43,9 @@ public class JdbcSinkProperties {
 	private Map<String, String> columns = Collections.singletonMap("payload", "payload.toString()");
 
 	/**
-	 * Whether to issue a DDL command to create the table when the module starts.
+	 * 'true', 'false' or the location of a custom initialization script for the table.
 	 */
-	private boolean initializeDatabase = false;
+	private String initialize = "false";
 
 	/**
 	 * If set, then the received payload must be a collection and this tells how
@@ -78,11 +78,11 @@ public class JdbcSinkProperties {
 		this.columns = columns;
 	}
 
-	public boolean isInitializeDatabase() {
-		return initializeDatabase;
+	public String getInitialize() {
+		return initialize;
 	}
 
-	public void setInitializeDatabase(boolean initializeDatabase) {
-		this.initializeDatabase = initializeDatabase;
+	public void setInitialize(String initialize) {
+		this.initialize = initialize;
 	}
 }
