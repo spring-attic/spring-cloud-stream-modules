@@ -21,3 +21,4 @@ _site/
 .factorypath
 spring-xd-samples/*/xd
 dump.rdb
+coverage-error.log
