@@ -26,8 +26,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.EmbeddedDataSourceConfiguration;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -42,8 +43,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Eric Bottard
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {JdbcSinkApplication.class})
-@WebIntegrationTest("server.port=-1")
+@SpringApplicationConfiguration(classes = {JdbcSinkApplication.class, EmbeddedDataSourceConfiguration.class})
+@IntegrationTest({"server.port=-1"})
 @DirtiesContext
 public abstract class JdbcSinkIntegrationTests {
 
@@ -54,7 +55,7 @@ public abstract class JdbcSinkIntegrationTests {
 	@Autowired
 	protected JdbcOperations jdbcOperations;
 
-	@WebIntegrationTest
+	@IntegrationTest
 	public static class DefaultBehavior extends JdbcSinkIntegrationTests {
 
 		@Test
@@ -66,7 +67,7 @@ public abstract class JdbcSinkIntegrationTests {
 		}
 	}
 
-	@WebIntegrationTest(value = "columns=a,b")
+	@IntegrationTest(value = "columns=a,b")
 	public static class SimpleMappingTests extends JdbcSinkIntegrationTests {
 
 		@Test
@@ -79,7 +80,7 @@ public abstract class JdbcSinkIntegrationTests {
 	}
 
 	// annotation below relies on java.util.Properties so backslash needs to be doubled
-	@WebIntegrationTest(value = "columns=a: a.substring(0\\\\, 4), b: b + 624")
+	@IntegrationTest(value = "columns=a: a.substring(0\\\\, 4), b: b + 624")
 	public static class SpELTests extends JdbcSinkIntegrationTests {
 
 		@Test
@@ -93,7 +94,7 @@ public abstract class JdbcSinkIntegrationTests {
 		}
 	}
 
-	@WebIntegrationTest(value = {"batchSize=3", "columns=a,b"})
+	@IntegrationTest(value = {"batchSize=3", "columns=a,b"})
 	public static class BatchingTests extends JdbcSinkIntegrationTests {
 
 		@Test
@@ -112,7 +113,7 @@ public abstract class JdbcSinkIntegrationTests {
 			));
 		}
 	}
-	@WebIntegrationTest(value = {"tableName=no_script", "initialize=true", "columns=a,b"})
+	@IntegrationTest(value = {"tableName=no_script", "initialize=true", "columns=a,b"})
 	public static class ImplicitTableCreationTests extends JdbcSinkIntegrationTests {
 
 		@Test
@@ -124,7 +125,7 @@ public abstract class JdbcSinkIntegrationTests {
 		}
 	}
 
-	@WebIntegrationTest(value = {"tableName=foobar", "initialize=classpath:explicit-script.sql", "columns=a,b"})
+	@IntegrationTest(value = {"tableName=foobar", "initialize=classpath:explicit-script.sql", "columns=a,b"})
 	public static class ExlicitTableCreationTests extends JdbcSinkIntegrationTests {
 
 		@Test
