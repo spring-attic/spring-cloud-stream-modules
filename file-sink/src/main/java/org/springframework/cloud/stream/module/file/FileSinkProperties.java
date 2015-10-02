@@ -33,50 +33,48 @@ import org.springframework.util.StringUtils;
 @ConfigurationProperties
 public class FileSinkProperties {
 
-	private static final String DEFAULT_DIR =
-			File.separator + "tmp" +
-			File.separator + "dataflow" +
-			File.separator + "output";
+	private static final String DEFAULT_DIR = System.getProperty("java.io.tmpdir") +
+			File.separator + "dataflow" + File.separator + "output";
 
 	private static final String DEFAULT_NAME = "file-sink";
 
 	/**
-	 * whether content should be written as bytes
+	 * A flag to indicate whether content should be written as bytes.
 	 */
 	private boolean binary = false;
 
 	/**
-	 * charset to use when writing text content
+	 * The charset to use when writing text content.
 	 */
 	private String charset = "UTF-8";
 
 	/**
-	 * parent directory of the target file
+	 * The parent directory of the target file.
 	 */
-	private String dir = DEFAULT_DIR;
+	private String directory = DEFAULT_DIR;
 
 	/**
-	 * expression to evaluate for the parent directory of the target file
+	 * The expression to evaluate for the parent directory of the target file.
 	 */
-	private Expression dirExpression;
+	private Expression directoryExpression;
 
 	/**
-	 * the FileExistsMode to use if the target file already exists
+	 * The FileExistsMode to use if the target file already exists.
 	 */
 	private FileExistsMode mode = FileExistsMode.APPEND;
 
 	/**
-	 * name of the target file
+	 * The name of the target file.
 	 */
 	private String name = DEFAULT_NAME;
 
 	/**
-	 * expression to evaluate for the name of the target file
+	 * The expression to evaluate for the name of the target file.
 	 */
 	private String nameExpression;
 
 	/**
-	 * suffix to append to file name
+	 * The suffix to append to file name.
 	 */
 	private String suffix = "";
 
@@ -96,20 +94,20 @@ public class FileSinkProperties {
 		this.charset = charset;
 	}
 
-	public String getDir() {
-		return dir;
+	public String getDirectory() {
+		return directory;
 	}
 
-	public void setDir(String dir) {
-		this.dir = dir;
+	public void setDirectory(String directory) {
+		this.directory = directory;
 	}
 
-	public Expression getDirExpression() {
-		return dirExpression;
+	public Expression getDirectoryExpression() {
+		return directoryExpression;
 	}
 
-	public void setDirExpression(Expression dirExpression) {
-		this.dirExpression = dirExpression;
+	public void setDirectoryExpression(Expression directoryExpression) {
+		this.directoryExpression = directoryExpression;
 	}
 
 	public FileExistsMode getMode() {
@@ -151,8 +149,8 @@ public class FileSinkProperties {
 		return DEFAULT_NAME.equals(name) || nameExpression == null;
 	}
 
-	@AssertTrue(message = "Exactly one of 'dir' or 'dirExpression' must be set")
-	public boolean isMutuallyExclusiveDirAndDirExpression() {
-		return DEFAULT_DIR.equals(dir) || dirExpression == null;
+	@AssertTrue(message = "Exactly one of 'directory' or 'directoryExpression' must be set")
+	public boolean isMutuallyExclusiveDirectoryAndDirectoryExpression() {
+		return DEFAULT_DIR.equals(directory) || directoryExpression == null;
 	}
 }

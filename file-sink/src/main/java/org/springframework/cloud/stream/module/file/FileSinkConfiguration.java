@@ -43,9 +43,9 @@ public class FileSinkConfiguration {
 	@Bean
 	@ServiceActivator(inputChannel = Sink.INPUT)
 	public FileWritingMessageHandler fileWritingMessageHandler(FileNameGenerator fileNameGenerator, FileSinkProperties properties) {
-		FileWritingMessageHandler handler = (properties.getDirExpression() != null)
-				? new FileWritingMessageHandler(properties.getDirExpression())
-				: new FileWritingMessageHandler(new File(properties.getDir()));
+		FileWritingMessageHandler handler = (properties.getDirectoryExpression() != null)
+				? new FileWritingMessageHandler(properties.getDirectoryExpression())
+				: new FileWritingMessageHandler(new File(properties.getDirectory()));
 		handler.setAutoCreateDirectory(true);
 		handler.setAppendNewLine(!properties.isBinary());
 		handler.setCharset(properties.getCharset());

@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.stream.module.file;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -43,48 +44,50 @@ import org.springframework.util.FileCopyUtils;
 @DirtiesContext
 public abstract class FileSinkTests {
 
+	private static final String TMPDIR = System.getProperty("java.io.tmpdir");
+
+	private static final String ROOT_DIR = TMPDIR + File.separator + "dataflow-tests";
+
 	@Autowired
 	protected Sink sink;
 
-	@WebIntegrationTest({"name = test", "dir = /tmp/dataflow-tests", "suffix=txt"})
+	@WebIntegrationTest({"name = test", "directory = ${java.io.tmpdir}${file.separator}dataflow-tests", "suffix=txt"})
 	public static class TextTests extends FileSinkTests {
 
 		@Test
 		public void test() throws Exception {
 			sink.input().send(MessageBuilder.withPayload("this is a test").build());
-			File file = new File("/tmp/dataflow-tests/test.txt");
+			File file = new File(ROOT_DIR, "test.txt");
 			file.deleteOnExit();
 			assertTrue("file does not exist", file.exists());
 			assertEquals("this is a test\n", FileCopyUtils.copyToString(new FileReader(file)));
 		}
 	}
 
-	@WebIntegrationTest({"binary = true", "dir = /tmp/dataflow-tests"})
+	@WebIntegrationTest({"binary = true", "directory = ${java.io.tmpdir}${file.separator}dataflow-tests"})
 	public static class BinaryTests extends FileSinkTests {
 
 		@Test
 		public void test() throws Exception {
 			sink.input().send(MessageBuilder.withPayload("foo".getBytes()).build());
-			File file = new File("/tmp/dataflow-tests/file-sink");
+			File file = new File(ROOT_DIR, "file-sink");
 			file.deleteOnExit();
 			assertTrue("file does not exist", file.exists());
 			byte[] results = FileCopyUtils.copyToByteArray(file);
 			assertEquals(3, results.length);
-			assertEquals((byte)'f', results[0]);
-			assertEquals((byte)'o', results[1]);
-			assertEquals((byte)'o', results[2]);
+			assertArrayEquals("foo".getBytes(), results);
 		}
 	}
 
 	@WebIntegrationTest({"nameExpression = payload.substring(0, 4)",
-			"dirExpression = '/tmp/dataflow-tests/'+headers.dir", "suffix=out"})
+			"directoryExpression = '${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}'+headers.dir", "suffix=out"})
 	public static class ExpressionTests extends FileSinkTests {
 
 		@Test
 		public void test() throws Exception {
 			sink.input().send(MessageBuilder.withPayload("this is another test")
 					.setHeader("dir", "expression").build());
-			File file = new File("/tmp/dataflow-tests/expression/this.out");
+			File file = new File(ROOT_DIR + File.separator + "expression", "this.out");
 			file.deleteOnExit();
 			assertTrue("file does not exist", file.exists());
 			assertEquals("this is another test\n", FileCopyUtils.copyToString(new FileReader(file)));
