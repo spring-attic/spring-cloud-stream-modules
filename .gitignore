@@ -22,3 +22,4 @@ _site/
 spring-xd-samples/*/xd
 dump.rdb
 coverage-error.log
+.apt_generated

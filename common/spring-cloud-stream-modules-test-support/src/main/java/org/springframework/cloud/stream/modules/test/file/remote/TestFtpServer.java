@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.modules.test.ftp;
+package org.springframework.cloud.stream.modules.test.file.remote;
 
 import java.io.File;
 import java.util.Arrays;
@@ -40,10 +40,10 @@ import org.springframework.util.Assert;
 
 /**
  * Embedded FTP Server for test cases
- * 
+ *
  * @author Artem Bilan
  * @author Gary Russell
- * @author David Turanski 
+ * @author David Turanski
  */
 public class TestFtpServer {
 
@@ -52,7 +52,7 @@ public class TestFtpServer {
 	private final String rootFolderName;
 
 	protected TemporaryFolder ftpTemporaryFolder;
-	
+
 	protected TemporaryFolder localTemporaryFolder;
 
 	protected volatile File ftpRootFolder;
@@ -67,18 +67,21 @@ public class TestFtpServer {
 
 	private volatile FtpServer server;
 
-	
+
+	public TestFtpServer(String rootFolderName) {
+		this.rootFolderName = rootFolderName;
+	}
+
 	public int getPort() {
 		return this.ftpPort;
 	}
-	
-	public TestFtpServer(String rootFolderName) {
-		this.rootFolderName = rootFolderName;
-		
-	}
 
 	public String getRootFolderName() {
-		return rootFolderName;
+		return this.rootFolderName;
+	}
+
+	public File getRootFolder() {
+		return this.ftpRootFolder;
 	}
 
 	public File getSourceFtpDirectory() {
@@ -141,7 +144,6 @@ public class TestFtpServer {
 	public void before() throws Throwable {
 		Assert.notNull(ftpTemporaryFolder, "'ftpTemporaryFolder cannot be null.");
 		this.ftpTemporaryFolder.create();
-		this.ftpRootFolder = new File(ftpTemporaryFolder.getRoot(), rootFolderName);
 		if (localTemporaryFolder != null) {
 			this.localTemporaryFolder.create();
 		}
@@ -159,14 +161,17 @@ public class TestFtpServer {
 
 
 	@PreDestroy
-	public void after() {
-		this.server.stop();
+	public void after() throws Exception {
+		stopServer();
 		this.ftpTemporaryFolder.delete();
 		if (localTemporaryFolder != null) {
 			this.localTemporaryFolder.delete();
 		}
 	}
 
+	public void stopServer() throws Exception {
+		this.server.stop();
+	}
 
 	public void recursiveDelete(File file) {
 		File[] files = file.listFiles();

@@ -13,18 +13,18 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.ftp;
+package org.springframework.cloud.stream.module.sftp.source;
 
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
+import org.springframework.cloud.stream.module.sftp.SftpSessionFactoryConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -32,75 +32,72 @@ import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
 import org.springframework.integration.dsl.core.Pollers;
-import org.springframework.integration.dsl.ftp.Ftp;
-import org.springframework.integration.dsl.ftp.FtpInboundChannelAdapterSpec;
+import org.springframework.integration.dsl.sftp.Sftp;
+import org.springframework.integration.dsl.sftp.SftpInboundChannelAdapterSpec;
 import org.springframework.integration.dsl.support.Consumer;
 import org.springframework.integration.file.splitter.FileSplitter;
 import org.springframework.integration.file.transformer.FileToByteArrayTransformer;
-import org.springframework.integration.ftp.filters.FtpRegexPatternFileListFilter;
-import org.springframework.integration.ftp.filters.FtpSimplePatternFileListFilter;
-import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 import org.springframework.integration.scheduling.PollerMetadata;
+import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
+import org.springframework.integration.sftp.filters.SftpSimplePatternFileListFilter;
+import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.scheduling.Trigger;
 import org.springframework.util.StringUtils;
 
 /**
- * @author David Turanski
- * @author Marius Bogoevici
+ * @author Gary Russell
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties({FtpSourceProperties.class,
+@EnableConfigurationProperties({SftpSourceProperties.class,
 		FileConsumerProperties.class, MaxMessagesProperties.class})
-@Import({PeriodicTriggerConfiguration.class, FtpSessionFactoryConfiguration.class})
-public class FtpSource {
+@Import({PeriodicTriggerConfiguration.class, SftpSessionFactoryConfiguration.class})
+public class SftpSource {
 
 	@Autowired
-	private FtpSourceProperties config;
+	private SftpSourceProperties properties;
 
 	@Autowired
-	private FileConsumerProperties fileConsumerConfig;
+	private FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
-	MaxMessagesProperties maxMessagesConfig;
+	MaxMessagesProperties maxMessagesProperties;
 
 	@Autowired
-	DefaultFtpSessionFactory ftpSessionFactory;
+	DefaultSftpSessionFactory sftpSessionFactory;
 
 	@Autowired
 	Trigger trigger;
 
 	@Autowired
-	@Bindings(FtpSource.class)
 	Source source;
 
 	@Bean
 	public PollerMetadata poller() {
-		return Pollers.trigger(trigger).maxMessagesPerPoll(maxMessagesConfig.getMaxMessages()).get();
+		return Pollers.trigger(this.trigger).maxMessagesPerPoll(this.maxMessagesProperties.getMaxMessages()).get();
 	}
 
 	@Bean
-	public IntegrationFlow ftpInboundFlow() {
-		FtpInboundChannelAdapterSpec messageSourceBuilder = Ftp.inboundAdapter(FtpSource.this.ftpSessionFactory)
-				.preserveTimestamp(config.isPreserveTimestamp())
-				.remoteDirectory(config.getRemoteDir())
-				.remoteFileSeparator(config.getRemoteFileSeparator())
-				.localDirectory(config.getLocalDir())
-				.autoCreateLocalDirectory(config.isAutoCreateLocalDir())
-				.temporaryFileSuffix(config.getTmpFileSuffix())
-				.deleteRemoteFiles(config.isDeleteRemoteFiles());
+	public IntegrationFlow sftpInboundFlow() {
+		SftpInboundChannelAdapterSpec messageSourceBuilder = Sftp.inboundAdapter(this.sftpSessionFactory)
+				.preserveTimestamp(this.properties.isPreserveTimestamp())
+				.remoteDirectory(this.properties.getRemoteDir())
+				.remoteFileSeparator(this.properties.getRemoteFileSeparator())
+				.localDirectory(this.properties.getLocalDir())
+				.autoCreateLocalDirectory(this.properties.isAutoCreateLocalDir())
+				.temporaryFileSuffix(this.properties.getTmpFileSuffix())
+				.deleteRemoteFiles(this.properties.isDeleteRemoteFiles());
 
-		if (StringUtils.hasText(this.config.getFilenamePattern())) {
-			messageSourceBuilder.filter(new FtpSimplePatternFileListFilter(this.config.getFilenamePattern()));
+		if (StringUtils.hasText(this.properties.getFilenamePattern())) {
+			messageSourceBuilder.filter(new SftpSimplePatternFileListFilter(this.properties.getFilenamePattern()));
 		}
-		else if (this.config.getFilenameRegex() != null) {
+		else if (this.properties.getFilenameRegex() != null) {
 			messageSourceBuilder
-					.filter(new FtpRegexPatternFileListFilter(this.config.getFilenameRegex()));
+					.filter(new SftpRegexPatternFileListFilter(this.properties.getFilenameRegex()));
 		}
 
 		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(messageSourceBuilder
 				, new Consumer<SourcePollingChannelAdapterSpec>() {
-
 
 			@Override
 			public void accept(SourcePollingChannelAdapterSpec sourcePollingChannelAdapterSpec) {
@@ -108,9 +105,10 @@ public class FtpSource {
 						.autoStartup(false)
 						.poller(poller());
 			}
+
 		});
 
-		switch (fileConsumerConfig.getMode()) {
+		switch (this.fileConsumerProperties.getMode()) {
 			case contents:
 				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
 						"application/octet-stream"))
@@ -119,13 +117,14 @@ public class FtpSource {
 			case lines:
 				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
 						"text/plain"))
-						.split(new FileSplitter(true, fileConsumerConfig.getWithMarkers()), null);
+						.split(new FileSplitter(true, this.fileConsumerProperties.getWithMarkers()), null);
 			case ref:
 				break;
 			default:
-				throw new IllegalArgumentException(fileConsumerConfig.getMode().name() +
+				throw new IllegalArgumentException(fileConsumerProperties.getMode().name() +
 						" is not a supported file reading mode.");
 		}
-		return flowBuilder.channel(source.output()).get();
+		return flowBuilder.channel(this.source.output()).get();
 	}
+
 }

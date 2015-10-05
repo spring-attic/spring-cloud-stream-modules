@@ -7,13 +7,13 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>ftp-source</artifactId>
+	<artifactId>sftp-source</artifactId>
 	<packaging>jar</packaging>
-	<name>ftp-source</name>
-	<description>FTP Source stream module</description>
+	<name>sftp-source</name>
+	<description>SFTP Source stream module</description>
 
 	<properties>
-		<start-class>org.springframework.cloud.stream.module.ftp.FtpSourceApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.sftp.source.SftpSourceApplication</start-class>
 	</properties>
 
 	<dependencies>
@@ -23,7 +23,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
-			<artifactId>spring-integration-ftp</artifactId>
+			<artifactId>spring-integration-sftp</artifactId>
 			<version>${spring-integration.version}</version>
 		</dependency>
 		<dependency>

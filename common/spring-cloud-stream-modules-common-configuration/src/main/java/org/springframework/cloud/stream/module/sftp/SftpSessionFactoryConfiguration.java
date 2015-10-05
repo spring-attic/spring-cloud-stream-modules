@@ -13,36 +13,38 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.ftp;
+package org.springframework.cloud.stream.module.sftp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
+import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 
 /**
- * FTP Session factory configuration.
+ * SFTP Session factory configuration.
  *
- * @author David Turanski
  * @author Gary Russell
  */
 @Configuration
-@EnableConfigurationProperties(FtpSessionFactoryProperties.class)
-public class FtpSessionFactoryConfiguration {
+@EnableConfigurationProperties(SftpSessionFactoryProperties.class)
+public class SftpSessionFactoryConfiguration {
 
 	@Autowired
-	private FtpSessionFactoryProperties config;
+	private SftpSessionFactoryProperties config;
 
 	@Bean
-	public DefaultFtpSessionFactory ftpSessionFactory() {
-		DefaultFtpSessionFactory ftpSessionFactory = new DefaultFtpSessionFactory();
-		ftpSessionFactory.setHost(config.getHost());
-		ftpSessionFactory.setPort(config.getPort());
-		ftpSessionFactory.setUsername(config.getUsername());
-		ftpSessionFactory.setPassword(config.getPassword());
-		ftpSessionFactory.setClientMode(config.getClientMode().getMode());
-		return ftpSessionFactory;
+	public DefaultSftpSessionFactory sftpSessionFactory() {
+		DefaultSftpSessionFactory sftpSessionFactory = new DefaultSftpSessionFactory();
+		sftpSessionFactory.setHost(this.config.getHost());
+		sftpSessionFactory.setPort(this.config.getPort());
+		sftpSessionFactory.setUser(this.config.getUsername());
+		sftpSessionFactory.setPassword(this.config.getPassword());
+		sftpSessionFactory.setAllowUnknownKeys(this.config.isAllowUnknownKeys());
+		if (this.config.getKnownHostsExpression() != null) {
+			sftpSessionFactory.setKnownHosts("#{" + this.config.getKnownHostsExpression() + "}");
+		}
+		return sftpSessionFactory;
 	}
 
 }

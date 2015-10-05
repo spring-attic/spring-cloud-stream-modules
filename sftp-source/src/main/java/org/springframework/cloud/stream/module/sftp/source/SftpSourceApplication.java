@@ -13,16 +13,19 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.ftp;
+package org.springframework.cloud.stream.module.sftp.source;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.stream.module.file.remote.AbstractRemoteFileSourceProperties;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author David Turanski
  * @author Gary Russell
  */
-@ConfigurationProperties
-public class FtpSourceProperties extends AbstractRemoteFileSourceProperties {
+@SpringBootApplication
+public class SftpSourceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SftpSourceApplication.class, args);
+	}
 
 }

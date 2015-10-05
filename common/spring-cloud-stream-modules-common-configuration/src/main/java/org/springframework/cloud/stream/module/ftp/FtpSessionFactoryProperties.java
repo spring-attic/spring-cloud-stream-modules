@@ -15,78 +15,66 @@
 
 package org.springframework.cloud.stream.module.ftp;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.net.ftp.FTPClient;
 import org.hibernate.validator.constraints.Range;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.stream.module.file.remote.AbstractRemoteServerProperties;
 
 /**
+ * FTP {@code SessionFactory} properties.
+ *
  * @author David Turanski
+ * @author Gary Russell
  */
 @ConfigurationProperties
-public class FtpSessionFactoryProperties {
+public class FtpSessionFactoryProperties extends AbstractRemoteServerProperties {
 
 	/**
-	 * The host name of the FTP server. Default is 'localhost'. 
-	 */
-	private String host = "localhost";
-
-	/**
-	 * The port of the FTP server. Default is 21.
+	 * The port of the server.
 	 */
 	private int port = 21;
 
 	/**
-	 * The username to use to connect to the FTP server. 
+	 * The client mode to use for the FTP session.
 	 */
-	private String username;
-
-	/**
-	 * The password to use to connect to the FTP server. 
-	 */
-	private String password;
-
-	/**
-	 * The client mode to use for the FTP session. Default is 0.
-	 */
-	private int clientMode = 0;
-
-	@NotBlank
-	public String getHost() {
-		return host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
+	private ClientMode clientMode = ClientMode.ACTIVE;
 
 	@Range(min = 0, max = 65535)
 	public int getPort() {
-		return port;
+		return this.port;
 	}
 
 	public void setPort(int port) {
 		this.port = port;
 	}
 
-	@NotBlank
-	public String getUsername() {
-		return username;
+	@NotNull
+	public ClientMode getClientMode() {
+		return this.clientMode;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setClientMode(ClientMode clientMode) {
+		this.clientMode = clientMode;
 	}
 
-	public String getPassword() {
-		return password;
+	public static enum ClientMode {
+
+		ACTIVE(FTPClient.ACTIVE_LOCAL_DATA_CONNECTION_MODE),
+		PASSIVE(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
+
+		private final int mode;
+
+		private ClientMode(int mode) {
+			this.mode = mode;
+		}
+
+		public int getMode() {
+			return mode;
+		}
+
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public int getClientMode() { return clientMode; }
-
-	public void setClientMode(int clientMode) { this.clientMode = clientMode; }
 }
