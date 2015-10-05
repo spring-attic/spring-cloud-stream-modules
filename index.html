@@ -60,9 +60,10 @@ on variety of runtime platforms including: Cloud Foundry, Lattice, Apache Yarn, 
 | Source  | Processor | Sink | Task |
 | ------- | --------- | ---- | ---- |
 | ftp | filter | counter | timestamp | 
-| http | groovy-filter | hdfs | |
-| time | groovy-transform | log | | 
-| | transform | redis | | 
+| http | groovy-filter | file |
+| time | groovy-transform | hdfs | | | 
+| twitterstream | transform | log | | 
+| | | redis | | 
 
 <span id="quick-start"></span>
 ## Quick Start
