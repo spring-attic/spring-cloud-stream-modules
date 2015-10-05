@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.ftp;
+package org.springframework.cloud.stream.module.sftp;
 
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -35,7 +35,7 @@ import org.springframework.validation.FieldError;
  * @author David Turanski
  * @author Gary Russell
  */
-public class FtpSessionFactoryPropertiesTests {
+public class SftpSessionFactoryPropertiesTests {
 
 	@Test
 	public void hostCanBeCustomized() {
@@ -43,7 +43,7 @@ public class FtpSessionFactoryPropertiesTests {
 		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost");
 		context.register(Conf.class);
 		context.refresh();
-		FtpSessionFactoryProperties properties = context.getBean(FtpSessionFactoryProperties
+		SftpSessionFactoryProperties properties = context.getBean(SftpSessionFactoryProperties
 				.class);
 		assertThat(properties.getHost(), equalTo("myHost"));
 	}
@@ -54,31 +54,20 @@ public class FtpSessionFactoryPropertiesTests {
 		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost", "port:12");
 		context.register(Conf.class);
 		context.refresh();
-		FtpSessionFactoryProperties properties = context.getBean(FtpSessionFactoryProperties
+		SftpSessionFactoryProperties properties = context.getBean(SftpSessionFactoryProperties
 				.class);
 		assertThat(properties.getPort(), equalTo(12));
 	}
 
 	@Test
-	public void usernameCanBeCustomized() {
+	public void userCanBeCustomized() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost");
 		context.register(Conf.class);
 		context.refresh();
-		FtpSessionFactoryProperties properties = context.getBean(FtpSessionFactoryProperties
+		SftpSessionFactoryProperties properties = context.getBean(SftpSessionFactoryProperties
 				.class);
 		assertThat(properties.getUsername(), equalTo("user"));
-	}
-
-	@Test
-	public void clientModeCanBeCustomized() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost", "clientMode:2");
-		context.register(Conf.class);
-		context.refresh();
-		FtpSessionFactoryProperties properties = context.getBean(FtpSessionFactoryProperties
-				.class);
-		assertThat(properties.getClientMode(), equalTo(2));
 	}
 
 	@Test
@@ -87,9 +76,22 @@ public class FtpSessionFactoryPropertiesTests {
 		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost", "password:pass");
 		context.register(Conf.class);
 		context.refresh();
-		FtpSessionFactoryProperties properties = context.getBean(FtpSessionFactoryProperties
+		SftpSessionFactoryProperties properties = context.getBean(SftpSessionFactoryProperties
 				.class);
 		assertThat(properties.getPassword(), equalTo("pass"));
+	}
+
+	@Test
+	public void keysEtcCanBeCustomized() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost", "privateKey:id_rsa",
+				"passPhrase:foo");
+		context.register(Conf.class);
+		context.refresh();
+		SftpSessionFactoryProperties properties = context.getBean(SftpSessionFactoryProperties
+				.class);
+		assertThat(properties.getPrivateKey(), equalTo("id_rsa"));
+		assertThat(properties.getPassPhrase(), equalTo("foo"));
 	}
 
 	@Test
@@ -105,13 +107,13 @@ public class FtpSessionFactoryPropertiesTests {
 			assertThat(e.getCause(), instanceOf(BindException.class));
 			BindException bindException = (BindException) e.getCause();
 			FieldError fieldError = (FieldError) bindException.getAllErrors().get(0);
-			assertThat(fieldError.getArguments()[0].toString(), containsString("username"));
+			assertThat(fieldError.getArguments()[0].toString(), containsString("user"));
 			assertThat(fieldError.getDefaultMessage(), equalTo("may not be empty"));
 		}
 	}
 
 	@Configuration
-	@EnableConfigurationProperties(FtpSessionFactoryProperties.class)
+	@EnableConfigurationProperties(SftpSessionFactoryProperties.class)
 	static class Conf {
 	}
 }

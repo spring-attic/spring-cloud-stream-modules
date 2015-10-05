@@ -38,20 +38,20 @@ public class TestSftpServer extends TestFtpServer {
 
 	private final SshServer server = SshServer.setUpDefaultServer();
 
-	private final int port;
-
 	public TestSftpServer(String root, int port) {
 		super(root);
-		this.port = port;		
 	}
-	
-	
+
+	@Override
+	public void stopServer() throws Exception {
+		this.server.stop();
+	}
+
 	@PostConstruct
 	@Override
 	public void before() throws Throwable {
 		this.ftpTemporaryFolder.create();
 		this.localTemporaryFolder.create();
-		this.ftpRootFolder = ftpTemporaryFolder.getRoot();
 
 		server.setPasswordAuthenticator(new PasswordAuthenticator() {
 
@@ -62,7 +62,7 @@ public class TestSftpServer extends TestFtpServer {
 				return true;
 			}
 		});
-		server.setPort(port);
+		server.setPort(ftpPort);
 		server.setKeyPairProvider(new SimpleGeneratorHostKeyProvider("hostkey.ser"));
 		SftpSubsystem.Factory sftp = new SftpSubsystem.Factory();
 		server.setSubsystemFactories(Arrays.<NamedFactory<Command>>asList(sftp));
@@ -79,13 +79,13 @@ public class TestSftpServer extends TestFtpServer {
 			}
 
 		});
-		
+
 		server.start();
 	}
 
 	@PreDestroy
 	@Override
-	public void after() {
+	public void after() throws Exception {
 		super.after();
 		File hostkey = new File("hostkey.ser");
 		if (hostkey.exists()) {
