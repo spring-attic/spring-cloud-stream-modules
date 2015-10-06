@@ -87,21 +87,21 @@ public class SftpSourcePropertiesTests {
 	@Test
 	public void filenamePatternCanBeCustomized() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "pattern:*.foo");
+		EnvironmentTestUtils.addEnvironment(context, "filenamePattern:*.foo");
 		context.register(Conf.class);
 		context.refresh();
 		SftpSourceProperties properties = context.getBean(SftpSourceProperties.class);
-		assertThat(properties.getPattern(), equalTo("*.foo"));
+		assertThat(properties.getFilenamePattern(), equalTo("*.foo"));
 	}
 
 	@Test
 	public void filenameRegexCanBeCustomized() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "regexPattern:.*\\.foo");
+		EnvironmentTestUtils.addEnvironment(context, "filenameRegex:.*\\.foo");
 		context.register(Conf.class);
 		context.refresh();
 		SftpSourceProperties properties = context.getBean(SftpSourceProperties.class);
-		assertThat(properties.getRegexPattern(), equalTo(".*\\.foo"));
+		assertThat(properties.getFilenameRegex(), equalTo(".*\\.foo"));
 	}
 
 	@Test

@@ -91,12 +91,12 @@ public class SftpSource {
 				.temporaryFileSuffix(this.config.getTmpFileSuffix())
 				.deleteRemoteFiles(this.config.isDeleteRemoteFiles());
 
-		if (StringUtils.hasText(this.config.getPattern())) {
-			messageSourceBuilder.filter(new SftpSimplePatternFileListFilter(this.config.getPattern()));
+		if (StringUtils.hasText(this.config.getFilenamePattern())) {
+			messageSourceBuilder.filter(new SftpSimplePatternFileListFilter(this.config.getFilenamePattern()));
 		}
-		else if (StringUtils.hasText(this.config.getRegexPattern())) {
+		else if (StringUtils.hasText(this.config.getFilenameRegex())) {
 			messageSourceBuilder
-					.filter(new SftpRegexPatternFileListFilter(Pattern.compile(this.config.getRegexPattern())));
+					.filter(new SftpRegexPatternFileListFilter(Pattern.compile(this.config.getFilenameRegex())));
 		}
 
 		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(messageSourceBuilder

@@ -16,6 +16,7 @@
 package org.springframework.cloud.stream.module.sftp.source;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
@@ -32,11 +33,12 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
-import org.springframework.cloud.stream.modules.test.ftp.TestSftpServer;
+import org.springframework.cloud.stream.modules.test.file.remote.TestSftpServer;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.integration.endpoint.SourcePollingChannelAdapter;
 import org.springframework.integration.test.util.SocketUtils;
+import org.springframework.integration.test.util.TestUtils;
 import org.springframework.messaging.Message;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -80,6 +82,7 @@ public class SftpSourceIntegrationTests {
 		properties.put("port", sftpServer.getPort());
 		properties.put("mode", "ref");
 		properties.put("allowUnknownKeys", "true");
+		properties.put("filenameRegex", ".*");
 		PropertiesInitializer.PROPERTIES = properties;
 	}
 
@@ -94,6 +97,8 @@ public class SftpSourceIntegrationTests {
 
 	@Test
 	public void sourceFilesAsRef() throws InterruptedException {
+		assertEquals(".*", TestUtils.getPropertyValue(sourcePollingChannelAdapter, "source.synchronizer.filter.pattern")
+				.toString());
 		for (int i = 1; i <= 2; i++) {
 			@SuppressWarnings("unchecked")
 			Message<File> received = (Message<File>) messageCollector.forChannel(sftpSource.output()).poll(10,

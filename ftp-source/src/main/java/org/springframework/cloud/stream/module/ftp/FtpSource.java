@@ -16,6 +16,7 @@
 package org.springframework.cloud.stream.module.ftp;
 
 import java.util.Collections;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,13 +34,17 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
 import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.ftp.Ftp;
+import org.springframework.integration.dsl.ftp.FtpInboundChannelAdapterSpec;
 import org.springframework.integration.dsl.support.Consumer;
 import org.springframework.integration.file.splitter.FileSplitter;
 import org.springframework.integration.file.transformer.FileToByteArrayTransformer;
+import org.springframework.integration.ftp.filters.FtpRegexPatternFileListFilter;
+import org.springframework.integration.ftp.filters.FtpSimplePatternFileListFilter;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.scheduling.Trigger;
+import org.springframework.util.StringUtils;
 
 /**
  * @author David Turanski
@@ -77,15 +82,24 @@ public class FtpSource {
 
 	@Bean
 	public IntegrationFlow ftpInboundFlow() {
-		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(Ftp.inboundAdapter(FtpSource.this.ftpSessionFactory)
+		FtpInboundChannelAdapterSpec messageSourceBuilder = Ftp.inboundAdapter(FtpSource.this.ftpSessionFactory)
 				.preserveTimestamp(config.isPreserveTimestamp())
 				.remoteDirectory(config.getRemoteDir())
-				.patternFilter(config.getFilenamePattern())
 				.remoteFileSeparator(config.getRemoteFileSeparator())
 				.localDirectory(config.getLocalDir())
 				.autoCreateLocalDirectory(config.isAutoCreateLocalDir())
 				.temporaryFileSuffix(config.getTmpFileSuffix())
-				.deleteRemoteFiles(config.isDeleteRemoteFiles())
+				.deleteRemoteFiles(config.isDeleteRemoteFiles());
+
+		if (StringUtils.hasText(this.config.getFilenamePattern())) {
+			messageSourceBuilder.filter(new FtpSimplePatternFileListFilter(this.config.getFilenamePattern()));
+		}
+		else if (StringUtils.hasText(this.config.getFilenameRegex())) {
+			messageSourceBuilder
+					.filter(new FtpRegexPatternFileListFilter(Pattern.compile(this.config.getFilenameRegex())));
+		}
+
+		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(messageSourceBuilder
 				, new Consumer<SourcePollingChannelAdapterSpec>() {
 
 

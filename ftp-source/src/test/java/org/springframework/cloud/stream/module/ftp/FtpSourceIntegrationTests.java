@@ -16,6 +16,7 @@
 package org.springframework.cloud.stream.module.ftp;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
@@ -25,7 +26,6 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
@@ -35,10 +35,11 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
-import org.springframework.cloud.stream.modules.test.ftp.TestFtpServer;
+import org.springframework.cloud.stream.modules.test.file.remote.TestFtpServer;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.integration.endpoint.SourcePollingChannelAdapter;
+import org.springframework.integration.test.util.TestUtils;
 import org.springframework.messaging.Message;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -103,6 +104,7 @@ public class FtpSourceIntegrationTests {
 		properties.put("remoteDir", ftpServer.getSourceFtpDirectory().getName());
 		properties.put("username", "foo");
 		properties.put("password", "foo");
+		properties.put("filenamePattern", "*");
 		properties.put("port", ftpServer.getPort());
 		properties.put("mode", "ref");
 		PropertiesInitializer.PROPERTIES = properties;
@@ -112,9 +114,11 @@ public class FtpSourceIntegrationTests {
 	@Bindings(FtpSource.class)
 	Source ftpSource;
 
-	@Test @Ignore
+	@Test
 	public void sourceFilesAsRef() throws InterruptedException {
+		assertEquals("*", TestUtils.getPropertyValue(sourcePollingChannelAdapter, "source.synchronizer.filter.path"));
 		for (int i = 1; i <= 2; i++) {
+			@SuppressWarnings("unchecked")
 			Message<File> received = (Message<File>) messageCollector.forChannel(ftpSource.output()).poll(1,
 					TimeUnit.SECONDS);
 			assertThat(received.getPayload(), equalTo(new File(config.getLocalDir() + "/ftpSource" + i + ".txt")));

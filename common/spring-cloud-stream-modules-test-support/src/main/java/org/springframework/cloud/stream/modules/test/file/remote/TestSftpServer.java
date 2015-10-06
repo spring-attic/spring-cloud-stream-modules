@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.modules.test.ftp;
+package org.springframework.cloud.stream.modules.test.file.remote;
 
 import java.io.File;
 import java.io.FileOutputStream;
