@@ -18,9 +18,6 @@ package org.springframework.cloud.stream.modules.test.file.remote;
 import java.io.File;
 import java.util.Arrays;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
 import org.apache.ftpserver.ftplet.Authentication;
@@ -33,10 +30,8 @@ import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.ftpserver.usermanager.impl.ConcurrentLoginPermission;
 import org.apache.ftpserver.usermanager.impl.TransferRatePermission;
 import org.apache.ftpserver.usermanager.impl.WritePermission;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.integration.test.util.SocketUtils;
-import org.springframework.util.Assert;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 /**
  * Embedded FTP Server for test cases
@@ -45,114 +40,21 @@ import org.springframework.util.Assert;
  * @author Gary Russell
  * @author David Turanski
  */
-public class TestFtpServer {
+public class TestFtpServer extends TestRemoteFileServer {
 
-	protected final int ftpPort = SocketUtils.findAvailableServerSocket();
-
-	private final String rootFolderName;
-
-	protected TemporaryFolder ftpTemporaryFolder;
-
-	protected TemporaryFolder localTemporaryFolder;
-
-	protected volatile File ftpRootFolder;
-
-	protected volatile File sourceFtpDirectory;
-
-	protected volatile File targetFtpDirectory;
-
-	protected volatile File sourceLocalDirectory;
-
-	protected volatile File targetLocalDirectory;
-
-	private volatile FtpServer server;
-
-
-	public TestFtpServer(String rootFolderName) {
-		this.rootFolderName = rootFolderName;
-	}
-
-	public int getPort() {
-		return this.ftpPort;
-	}
-
-	public String getRootFolderName() {
-		return this.rootFolderName;
-	}
-
-	public File getRootFolder() {
-		return this.ftpRootFolder;
-	}
-
-	public File getSourceFtpDirectory() {
-		return sourceFtpDirectory;
-	}
-
-	public File getTargetFtpDirectory() {
-		return targetFtpDirectory;
-	}
-
-	public File getSourceLocalDirectory() {
-		return sourceLocalDirectory;
-	}
-
-	public File getTargetLocalDirectory() {
-		return targetLocalDirectory;
-	}
+	private static volatile FtpServer server;
 
 	public String getTargetLocalDirectoryName() {
 		return targetLocalDirectory.getAbsolutePath() + File.separator;
 	}
 
-	public TestFtpServer setFtpTemporaryFolder(TemporaryFolder ftpTemporaryFolder) {
-		this.ftpTemporaryFolder = ftpTemporaryFolder;
-		return this;
-	}
-
-	public TestFtpServer setLocalTemporaryFolder(TemporaryFolder localTemporaryFolder) {
-		this.localTemporaryFolder = localTemporaryFolder;
-		return this;
-	}
-
-
-	public TestFtpServer setFtpRootFolder(File ftpRootFolder) {
-		this.ftpRootFolder = ftpRootFolder;
-		return this;
-	}
-
-	public TestFtpServer setSourceFtpDirectory(File sourceFtpDirectory) {
-		this.sourceFtpDirectory = sourceFtpDirectory;
-		return this;
-	}
-
-	public TestFtpServer setTargetFtpDirectory(File targetFtpDirectory) {
-		this.targetFtpDirectory = targetFtpDirectory;
-		return this;
-	}
-
-	public TestFtpServer setSourceLocalDirectory(File sourceLocalDirectory) {
-		this.sourceLocalDirectory = sourceLocalDirectory;
-		return this;
-	}
-
-	public TestFtpServer setTargetLocalDirectory(File targetLocalDirectory) {
-		this.targetLocalDirectory = targetLocalDirectory;
-		return this;
-	}
-
-	@PostConstruct
-	public void before() throws Throwable {
-		Assert.notNull(ftpTemporaryFolder, "'ftpTemporaryFolder cannot be null.");
-		this.ftpTemporaryFolder.create();
-		if (localTemporaryFolder != null) {
-			this.localTemporaryFolder.create();
-		}
-
+	@BeforeClass
+	public static void createServer() throws Exception {
 		FtpServerFactory serverFactory = new FtpServerFactory();
-		serverFactory.setUserManager(new TestUserManager(this.ftpRootFolder.getAbsolutePath()));
+		serverFactory.setUserManager(new TestUserManager(remoteTemporaryFolder.getRoot().getAbsolutePath()));
 
 		ListenerFactory factory = new ListenerFactory();
-		factory.setPort(ftpPort);
+		factory.setPort(port);
 		serverFactory.addListener("default", factory.createListener());
 
 		server = serverFactory.createServer();
@@ -160,33 +62,17 @@ public class TestFtpServer {
 	}
 
 
-	@PreDestroy
-	public void after() throws Exception {
-		stopServer();
-		this.ftpTemporaryFolder.delete();
-		if (localTemporaryFolder != null) {
-			this.localTemporaryFolder.delete();
-		}
+	@AfterClass
+	public static void stopServer() throws Exception {
+		server.stop();
 	}
 
-	public void stopServer() throws Exception {
-		this.server.stop();
+	@Override
+	protected String prefix() {
+		return "ftp";
 	}
 
-	public void recursiveDelete(File file) {
-		File[] files = file.listFiles();
-		if (files != null) {
-			for (File each : files) {
-				recursiveDelete(each);
-			}
-		}
-		if (!(file.equals(this.targetFtpDirectory) || file.equals(this.targetLocalDirectory))) {
-			file.delete();
-		}
-	}
-
-
-	private class TestUserManager implements UserManager {
+	private static class TestUserManager implements UserManager {
 
 		private final BaseUser testUser;
 

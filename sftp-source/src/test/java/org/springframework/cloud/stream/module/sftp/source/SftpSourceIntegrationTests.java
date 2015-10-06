@@ -17,27 +17,25 @@ package org.springframework.cloud.stream.module.sftp.source;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
 import org.springframework.cloud.stream.modules.test.file.remote.TestSftpServer;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.integration.endpoint.SourcePollingChannelAdapter;
-import org.springframework.integration.test.util.SocketUtils;
 import org.springframework.integration.test.util.TestUtils;
 import org.springframework.messaging.Message;
 import org.springframework.test.annotation.DirtiesContext;
@@ -52,7 +50,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SftpSourceApplication.class, initializers = PropertiesInitializer.class)
 @DirtiesContext
-public class SftpSourceIntegrationTests {
+public class SftpSourceIntegrationTests extends TestSftpServer {
 
 	@Autowired ApplicationContext applicationContext;
 
@@ -64,35 +62,22 @@ public class SftpSourceIntegrationTests {
 	@Autowired
 	private SftpSourceProperties config;
 
-	private static TestSftpServer sftpServer;
-
 	@BeforeClass
-	public static void configureSftpServer() throws Throwable {
+	public static void configureSource() throws Throwable {
 
-		sftpServer = new TestSftpServer("sftpTest", SocketUtils.findAvailableServerSocket());
-
-		sftpServer.before();
 		Properties properties = new Properties();
-		properties.put("remoteDir", sftpServer.getRootFolder().getAbsolutePath() + File.separator
-				+ sftpServer.getSourceFtpDirectory().getName());
-		properties.put("localDir", sftpServer.getRootFolder().getAbsolutePath() + File.separator
-				+ sftpServer.getTargetLocalDirectory().getName());
+		properties.put("remoteDir", "sftpSource");
+		properties.put("localDir", localTemporaryFolder.getRoot().getAbsolutePath() + File.separator + "localTarget");
 		properties.put("username", "foo");
 		properties.put("password", "foo");
-		properties.put("port", sftpServer.getPort());
+		properties.put("port", port);
 		properties.put("mode", "ref");
 		properties.put("allowUnknownKeys", "true");
 		properties.put("filenameRegex", ".*");
 		PropertiesInitializer.PROPERTIES = properties;
 	}
 
-	@AfterClass
-	public static void tearDown() throws Exception {
-		sftpServer.after();
-	}
-
 	@Autowired
-	@Bindings(SftpSource.class)
 	Source sftpSource;
 
 	@Test
@@ -103,6 +88,7 @@ public class SftpSourceIntegrationTests {
 			@SuppressWarnings("unchecked")
 			Message<File> received = (Message<File>) messageCollector.forChannel(sftpSource.output()).poll(10,
 					TimeUnit.SECONDS);
+			assertNotNull(received);
 			assertThat(received.getPayload(), equalTo(new File(config.getLocalDir() + "/sftpSource" + i + ".txt")));
 		}
 	}

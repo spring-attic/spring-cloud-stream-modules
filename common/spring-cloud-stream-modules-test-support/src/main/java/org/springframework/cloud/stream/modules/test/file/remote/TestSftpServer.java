@@ -16,12 +16,7 @@
 package org.springframework.cloud.stream.modules.test.file.remote;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 import org.apache.sshd.SshServer;
 import org.apache.sshd.common.NamedFactory;
@@ -32,83 +27,25 @@ import org.apache.sshd.server.Command;
 import org.apache.sshd.server.PasswordAuthenticator;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
 import org.apache.sshd.server.sftp.SftpSubsystem;
-import org.junit.rules.TemporaryFolder;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 /**
  * @author David Turanski
+ * @author Gary Russell
  */
-public class TestSftpServer extends TestFtpServer {
+public class TestSftpServer extends TestRemoteFileServer {
 
-	private final SshServer server = SshServer.setUpDefaultServer();
-
-	public TestSftpServer(String root, int port) {
-		super(root);
-		setFtpTemporaryFolder(
-				new TemporaryFolder() {
-					@Override
-					public void create() throws IOException {
-						super.create();
-						File rootFolder = this.newFolder(getRootFolderName());
-						File sourceFtpDirectory = new File(rootFolder, "sftpSource");
-						sourceFtpDirectory.mkdir();
-
-						File file = new File(sourceFtpDirectory, "sftpSource1.txt");
-						file.createNewFile();
-						FileOutputStream fos = new FileOutputStream(file);
-						fos.write("source1".getBytes());
-						fos.close();
-						file = new File(sourceFtpDirectory, "sftpSource2.txt");
-						file.createNewFile();
-						fos = new FileOutputStream(file);
-						fos.write("source2".getBytes());
-						fos.close();
-
-						File targetFtpDirectory = new File(rootFolder, "sftpTarget");
-						targetFtpDirectory.mkdir();
-
-						setFtpRootFolder(rootFolder);
-						setSourceFtpDirectory(sourceFtpDirectory);
-						setTargetFtpDirectory(targetFtpDirectory);
-					}
-				});
-		setLocalTemporaryFolder(new TemporaryFolder() {
-
-			@Override
-			public void create() throws IOException {
-				super.create();
-				File rootFolder = getRootFolder();
-				File sourceLocalDirectory = new File(rootFolder, "localSource");
-				sourceLocalDirectory.mkdirs();
-				File file = new File(sourceLocalDirectory, "localSource1.txt");
-				file.createNewFile();
-				file = new File(sourceLocalDirectory, "localSource2.txt");
-				file.createNewFile();
-
-				File subSourceLocalDirectory = new File(sourceLocalDirectory, "subLocalSource");
-				subSourceLocalDirectory.mkdir();
-				file = new File(subSourceLocalDirectory, "subLocalSource1.txt");
-				file.createNewFile();
-
-				File targetLocalDirectory = new File(rootFolder, "slocalTarget");
-				targetLocalDirectory.mkdir();
-
-				setSourceLocalDirectory(sourceLocalDirectory);
-				setTargetLocalDirectory(targetLocalDirectory);
-			}
-		});
-	}
+	private static SshServer server;
 
 	@Override
-	public void stopServer() throws Exception {
-		this.server.stop();
+	public String prefix() {
+		return "sftp";
 	}
 
-	@PostConstruct
-	@Override
-	public void before() throws Throwable {
-		this.ftpTemporaryFolder.create();
-		this.localTemporaryFolder.create();
-
+	@BeforeClass
+	public static void createServer() throws Exception {
+		server = SshServer.setUpDefaultServer();
 		server.setPasswordAuthenticator(new PasswordAuthenticator() {
 
 
@@ -118,7 +55,7 @@ public class TestSftpServer extends TestFtpServer {
 				return true;
 			}
 		});
-		server.setPort(ftpPort);
+		server.setPort(port);
 		server.setKeyPairProvider(new SimpleGeneratorHostKeyProvider("hostkey.ser"));
 		SftpSubsystem.Factory sftp = new SftpSubsystem.Factory();
 		server.setSubsystemFactories(Arrays.<NamedFactory<Command>>asList(sftp));
@@ -129,7 +66,7 @@ public class TestSftpServer extends TestFtpServer {
 				return new NativeFileSystemView(session.getUsername(), false) {
 					@Override
 					public String getVirtualUserDir() {
-						return ftpRootFolder.getAbsolutePath();
+						return remoteTemporaryFolder.getRoot().getAbsolutePath();
 					}
 				};
 			}
@@ -139,13 +76,13 @@ public class TestSftpServer extends TestFtpServer {
 		server.start();
 	}
 
-	@PreDestroy
-	@Override
-	public void after() throws Exception {
-		super.after();
+	@AfterClass
+	public static void stopServer() throws Exception {
+		server.stop();
 		File hostkey = new File("hostkey.ser");
 		if (hostkey.exists()) {
 			hostkey.delete();
 		}
 	}
+
 }

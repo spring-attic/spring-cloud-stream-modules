@@ -13,27 +13,26 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.ftp;
+package org.springframework.cloud.stream.module.ftp.source;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.cloud.stream.module.ftp.source.FtpSourceApplication;
+import org.springframework.cloud.stream.module.ftp.source.FtpSourceProperties;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
 import org.springframework.cloud.stream.modules.test.file.remote.TestFtpServer;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
@@ -52,7 +51,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FtpSourceApplication.class, initializers = PropertiesInitializer.class)
 @DirtiesContext
-public class FtpSourceIntegrationTests {
+public class FtpSourceIntegrationTests extends TestFtpServer {
 
 	@Autowired ApplicationContext applicationContext;
 
@@ -65,53 +64,20 @@ public class FtpSourceIntegrationTests {
 	private FtpSourceProperties config;
 
 	@BeforeClass
-	public static void configureFtpServer() throws Throwable {
+	public static void configureSource() throws Throwable {
 
-		final TestFtpServer ftpServer = new TestFtpServer("ftpTest");
-		ftpServer.setFtpTemporaryFolder(
-				new TemporaryFolder() {
-					@Override
-					public void create() throws IOException {
-						super.create();
-						File rootFolder = this.newFolder(ftpServer.getRootFolderName());
-						File sourceFtpDirectory = new File(rootFolder, "ftpSource");
-						sourceFtpDirectory.mkdir();
-
-						File file = new File(sourceFtpDirectory, "ftpSource1.txt");
-						file.createNewFile();
-						FileOutputStream fos = new FileOutputStream(file);
-						fos.write("source1".getBytes());
-						fos.close();
-						file = new File(sourceFtpDirectory, "ftpSource2.txt");
-						file.createNewFile();
-						fos = new FileOutputStream(file);
-						fos.write("source2".getBytes());
-						fos.close();
-
-						File targetFtpDirectory = new File(rootFolder, "ftpTarget");
-						targetFtpDirectory.mkdir();
-
-						ftpServer
-								.setFtpRootFolder(rootFolder)
-								.setSourceFtpDirectory(sourceFtpDirectory)
-								.setTargetFtpDirectory(targetFtpDirectory);
-					}
-				});
-
-
-		ftpServer.before();
 		Properties properties = new Properties();
-		properties.put("remoteDir", ftpServer.getSourceFtpDirectory().getName());
+		properties.put("remoteDir", "ftpSource");
+		properties.put("localDir", localTemporaryFolder.getRoot().getAbsolutePath() + File.separator + "localTarget");
 		properties.put("username", "foo");
 		properties.put("password", "foo");
 		properties.put("filenamePattern", "*");
-		properties.put("port", ftpServer.getPort());
+		properties.put("port", port);
 		properties.put("mode", "ref");
 		PropertiesInitializer.PROPERTIES = properties;
 	}
 
 	@Autowired
-	@Bindings(FtpSource.class)
 	Source ftpSource;
 
 	@Test
@@ -119,8 +85,9 @@ public class FtpSourceIntegrationTests {
 		assertEquals("*", TestUtils.getPropertyValue(sourcePollingChannelAdapter, "source.synchronizer.filter.path"));
 		for (int i = 1; i <= 2; i++) {
 			@SuppressWarnings("unchecked")
-			Message<File> received = (Message<File>) messageCollector.forChannel(ftpSource.output()).poll(1,
+			Message<File> received = (Message<File>) messageCollector.forChannel(ftpSource.output()).poll(10,
 					TimeUnit.SECONDS);
+			assertNotNull(received);
 			assertThat(received.getPayload(), equalTo(new File(config.getLocalDir() + "/ftpSource" + i + ".txt")));
 		}
 	}

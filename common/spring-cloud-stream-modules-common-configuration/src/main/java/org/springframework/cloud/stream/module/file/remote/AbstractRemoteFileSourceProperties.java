@@ -21,8 +21,6 @@ import java.util.regex.Pattern;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 /**
  * Common properties for remote file sources (e.g. (S)FTP).
  *
@@ -30,12 +28,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author Gary Russell
  *
  */
-public abstract class AbstractRemoteFileSourceProperties {
-
-	/**
-	 * The remote FTP directory.
-	 */
-	private String remoteDir = "/";
+public abstract class AbstractRemoteFileSourceProperties extends AbstractRemoteFileProperties {
 
 	/**
 	 * Set to true to delete remote files after successful transfer.
@@ -53,11 +46,6 @@ public abstract class AbstractRemoteFileSourceProperties {
 	private boolean autoCreateLocalDir = true;
 
 	/**
-	 * The suffix to use while the transfer is in progress.
-	 */
-	private String tmpFileSuffix = ".tmp";
-
-	/**
 	 * A filter pattern to match the names of files to transfer.
 	 */
 	private String filenamePattern;
@@ -66,11 +54,6 @@ public abstract class AbstractRemoteFileSourceProperties {
 	 * A filter regex pattern to match the names of files to transfer.
 	 */
 	private Pattern filenameRegex;
-
-	/**
-	 * The remote file separator.
-	 */
-	private String remoteFileSeparator = "/";
 
 	/**
 	 * Set to true to preserve the original timestamp.
@@ -83,15 +66,6 @@ public abstract class AbstractRemoteFileSourceProperties {
 
 	public void setAutoCreateLocalDir(boolean autoCreateLocalDir) {
 		this.autoCreateLocalDir = autoCreateLocalDir;
-	}
-
-	@NotBlank
-	public String getRemoteDir() {
-		return remoteDir;
-	}
-
-	public void setRemoteDir(String remoteDir) {
-		this.remoteDir = remoteDir;
 	}
 
 	public boolean isDeleteRemoteFiles() {
@@ -111,15 +85,6 @@ public abstract class AbstractRemoteFileSourceProperties {
 		this.localDir = localDir;
 	}
 
-	@NotBlank
-	public String getTmpFileSuffix() {
-		return tmpFileSuffix;
-	}
-
-	public void setTmpFileSuffix(String tmpFileSuffix) {
-		this.tmpFileSuffix = tmpFileSuffix;
-	}
-
 	public String getFilenamePattern() {
 		return filenamePattern;
 	}
@@ -134,15 +99,6 @@ public abstract class AbstractRemoteFileSourceProperties {
 
 	public void setFilenameRegex(Pattern filenameRegex) {
 		this.filenameRegex = filenameRegex;
-	}
-
-	@NotBlank
-	public String getRemoteFileSeparator() {
-		return remoteFileSeparator;
-	}
-
-	public void setRemoteFileSeparator(String remoteFileSeparator) {
-		this.remoteFileSeparator = remoteFileSeparator;
 	}
 
 	public boolean isPreserveTimestamp() {
