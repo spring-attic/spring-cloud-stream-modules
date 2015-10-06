@@ -39,6 +39,7 @@
 		<!-- sinks in alphabetical order -->
 		<module>counter-sink</module>
 		<module>file-sink</module>
+		<module>ftp-sink</module>
 		<module>gemfire-sink</module>
 		<module>hdfs-sink</module>
 		<module>log-sink</module>

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.ftp;
+package org.springframework.cloud.stream.module.ftp.source;
 
 import java.util.Collections;
 
@@ -25,6 +25,7 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
+import org.springframework.cloud.stream.module.ftp.FtpSessionFactoryConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
