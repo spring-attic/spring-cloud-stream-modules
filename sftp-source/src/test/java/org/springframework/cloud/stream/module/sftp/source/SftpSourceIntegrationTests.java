@@ -19,15 +19,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,61 +68,6 @@ public class SftpSourceIntegrationTests {
 	public static void configureSftpServer() throws Throwable {
 
 		sftpServer = new TestSftpServer("sftpTest", SocketUtils.findAvailableServerSocket());
-		sftpServer.setFtpTemporaryFolder(
-				new TemporaryFolder() {
-					@Override
-					public void create() throws IOException {
-						super.create();
-						File rootFolder = this.newFolder(sftpServer.getRootFolderName());
-						File sourceFtpDirectory = new File(rootFolder, "sftpSource");
-						sourceFtpDirectory.mkdir();
-
-						File file = new File(sourceFtpDirectory, "sftpSource1.txt");
-						file.createNewFile();
-						FileOutputStream fos = new FileOutputStream(file);
-						fos.write("source1".getBytes());
-						fos.close();
-						file = new File(sourceFtpDirectory, "sftpSource2.txt");
-						file.createNewFile();
-						fos = new FileOutputStream(file);
-						fos.write("source2".getBytes());
-						fos.close();
-
-						File targetFtpDirectory = new File(rootFolder, "sftpTarget");
-						targetFtpDirectory.mkdir();
-
-						sftpServer
-								.setFtpRootFolder(rootFolder)
-								.setSourceFtpDirectory(sourceFtpDirectory)
-								.setTargetFtpDirectory(targetFtpDirectory);
-					}
-				});
-		sftpServer.setLocalTemporaryFolder(new TemporaryFolder() {
-
-			@Override
-			public void create() throws IOException {
-				super.create();
-				File rootFolder = sftpServer.getRootFolder();
-				File sourceLocalDirectory = new File(rootFolder, "localSource");
-				sourceLocalDirectory.mkdirs();
-				File file = new File(sourceLocalDirectory, "localSource1.txt");
-				file.createNewFile();
-				file = new File(sourceLocalDirectory, "localSource2.txt");
-				file.createNewFile();
-
-				File subSourceLocalDirectory = new File(sourceLocalDirectory, "subLocalSource");
-				subSourceLocalDirectory.mkdir();
-				file = new File(subSourceLocalDirectory, "subLocalSource1.txt");
-				file.createNewFile();
-
-				File targetLocalDirectory = new File(rootFolder, "slocalTarget");
-				targetLocalDirectory.mkdir();
-
-				sftpServer
-						.setSourceLocalDirectory(sourceLocalDirectory)
-						.setTargetLocalDirectory(targetLocalDirectory);
-			}
-		});
 
 		sftpServer.before();
 		Properties properties = new Properties();

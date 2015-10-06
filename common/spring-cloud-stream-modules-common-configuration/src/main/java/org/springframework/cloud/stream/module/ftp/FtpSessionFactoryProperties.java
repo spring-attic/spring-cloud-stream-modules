@@ -15,78 +15,27 @@
 
 package org.springframework.cloud.stream.module.ftp;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.stream.module.file.remote.AbstractRemoteServerProperties;
 
 /**
  * @author David Turanski
+ * @author Gary Russell
  */
 @ConfigurationProperties
-public class FtpSessionFactoryProperties {
-
-	/**
-	 * The host name of the FTP server. Default is 'localhost'. 
-	 */
-	private String host = "localhost";
-
-	/**
-	 * The port of the FTP server. Default is 21.
-	 */
-	private int port = 21;
-
-	/**
-	 * The username to use to connect to the FTP server. 
-	 */
-	private String username;
-
-	/**
-	 * The password to use to connect to the FTP server. 
-	 */
-	private String password;
+public class FtpSessionFactoryProperties extends AbstractRemoteServerProperties {
 
 	/**
 	 * The client mode to use for the FTP session. Default is 0.
 	 */
 	private int clientMode = 0;
 
-	@NotBlank
-	public String getHost() {
-		return host;
+	public int getClientMode() {
+		return this.clientMode;
 	}
 
-	public void setHost(String host) {
-		this.host = host;
+	public void setClientMode(int clientMode) {
+		this.clientMode = clientMode;
 	}
 
-	@Range(min = 0, max = 65535)
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-
-	@NotBlank
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public int getClientMode() { return clientMode; }
-
-	public void setClientMode(int clientMode) { this.clientMode = clientMode; }
 }

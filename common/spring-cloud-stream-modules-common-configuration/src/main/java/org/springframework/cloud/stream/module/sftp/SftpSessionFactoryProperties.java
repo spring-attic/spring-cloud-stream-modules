@@ -15,69 +15,36 @@
 
 package org.springframework.cloud.stream.module.sftp;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.stream.module.file.remote.AbstractRemoteServerProperties;
 
 /**
  * @author Gary Russell
  */
 @ConfigurationProperties
-public class SftpSessionFactoryProperties {
+public class SftpSessionFactoryProperties extends AbstractRemoteServerProperties {
 
 	public static final String KNOWNHOSTS_UNDEFINED = "UNDEFINED";
 
-	private String host = "localhost";
-
-	private int port = 22;
-
-	private String username;
-
-	private String password;
-
+	/**
+	 * Resource location of user's private key.
+	 */
 	private String privateKey = "";
 
+	/**
+	 * Passphrase for user's private key.
+	 */
 	private String passPhrase = "";
 
+	/**
+	 * True to allow an unknown or changed key.
+	 */
 	private boolean allowUnknownKeys = false;
 
-	private String knownHosts = KNOWNHOSTS_UNDEFINED;
-
-	@NotBlank
-	public String getHost() {
-		return this.host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	@Range(min = 0, max = 65535)
-	public int getPort() {
-		return this.port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-
-	@NotBlank
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	/**
+	 * A SpEL expression resolving to the location of the known hosts file.
+	 */
+	private String knownHostsExpression = KNOWNHOSTS_UNDEFINED;
 
 	public String getPrivateKey() {
 		return this.privateKey;
@@ -103,12 +70,12 @@ public class SftpSessionFactoryProperties {
 		this.allowUnknownKeys = allowUnknownKeys;
 	}
 
-	public String getKnownHosts() {
-		return this.knownHosts;
+	public String getKnownHostsExpression() {
+		return this.knownHostsExpression;
 	}
 
-	public void setKnownHosts(String knownHosts) {
-		this.knownHosts = knownHosts;
+	public void setKnownHostsExpression(String knownHosts) {
+		this.knownHostsExpression = knownHosts;
 	}
 
 }

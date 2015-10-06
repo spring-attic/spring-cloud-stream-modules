@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -92,6 +93,19 @@ public class SftpSessionFactoryPropertiesTests {
 				.class);
 		assertThat(properties.getPrivateKey(), equalTo("id_rsa"));
 		assertThat(properties.getPassPhrase(), equalTo("foo"));
+	}
+
+	@Test
+	public void knownHostsEtcCanBeCustomized() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost", "allowUnknownKeys:true",
+				"knownHostsExpression:'/foo/bar'");
+		context.register(Conf.class);
+		context.refresh();
+		SftpSessionFactoryProperties properties = context.getBean(SftpSessionFactoryProperties
+				.class);
+		assertTrue(properties.isAllowUnknownKeys());
+		assertThat(properties.getKnownHostsExpression(), equalTo("'/foo/bar'"));
 	}
 
 	@Test
