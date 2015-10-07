@@ -24,8 +24,6 @@ import org.springframework.cloud.stream.module.file.remote.AbstractRemoteServerP
 @ConfigurationProperties
 public class SftpSessionFactoryProperties extends AbstractRemoteServerProperties {
 
-	public static final String KNOWNHOSTS_UNDEFINED = "UNDEFINED";
-
 	/**
 	 * Resource location of user's private key.
 	 */
@@ -44,7 +42,7 @@ public class SftpSessionFactoryProperties extends AbstractRemoteServerProperties
 	/**
 	 * A SpEL expression resolving to the location of the known hosts file.
 	 */
-	private String knownHostsExpression = KNOWNHOSTS_UNDEFINED;
+	private String knownHostsExpression = null;
 
 	public String getPrivateKey() {
 		return this.privateKey;

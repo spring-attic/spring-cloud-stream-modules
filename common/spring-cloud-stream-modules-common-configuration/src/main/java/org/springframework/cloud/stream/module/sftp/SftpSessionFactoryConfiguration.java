@@ -40,7 +40,7 @@ public class SftpSessionFactoryConfiguration {
 		sftpSessionFactory.setUser(this.config.getUsername());
 		sftpSessionFactory.setPassword(this.config.getPassword());
 		sftpSessionFactory.setAllowUnknownKeys(this.config.isAllowUnknownKeys());
-		if (!SftpSessionFactoryProperties.KNOWNHOSTS_UNDEFINED.equals(this.config.getKnownHostsExpression())) {
+		if (this.config.getKnownHostsExpression() != null) {
 			sftpSessionFactory.setKnownHosts("#{" + this.config.getKnownHostsExpression() + "}");
 		}
 		return sftpSessionFactory;
