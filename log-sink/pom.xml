@@ -17,4 +17,16 @@
 		<start-class>org.springframework.cloud.stream.module.log.LogSinkApplication</start-class>
 	</properties>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud.stream.module</groupId>
+			<artifactId>spring-cloud-stream-modules-test-support</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>
