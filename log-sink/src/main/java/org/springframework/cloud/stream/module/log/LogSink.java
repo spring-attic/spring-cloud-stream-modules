@@ -16,25 +16,33 @@
 
 package org.springframework.cloud.stream.module.log;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.handler.LoggingHandler;
 
 /**
  * @author Dave Syer
  * @author Marius Bogoevici
+ * @author Gary Russell
  */
 @EnableBinding(Sink.class)
+@EnableConfigurationProperties(LogSinkProperties.class)
 public class LogSink {
 
-	private static Logger logger = LoggerFactory.getLogger(LogSink.class);
+	@Autowired
+	private LogSinkProperties config;
 
+	@Bean
 	@ServiceActivator(inputChannel=Sink.INPUT)
-	public void loggerSink(Object payload) {
-		logger.info("Received: " + payload);
+	public LoggingHandler logSinkHandler() {
+		LoggingHandler loggingHandler = new LoggingHandler(this.config.getLevel());
+		loggingHandler.setExpression(this.config.getExpression());
+		loggingHandler.setLoggerName(this.config.getName());
+		return loggingHandler;
 	}
 
 }

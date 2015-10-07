@@ -16,22 +16,35 @@
 
 package org.springframework.cloud.stream.module.log;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 
+import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
+import org.springframework.integration.handler.LoggingHandler;
+import org.springframework.integration.test.util.TestUtils;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = LogSinkApplication.class)
-@WebAppConfiguration
+@SpringApplicationConfiguration(classes = LogSinkApplication.class, initializers = PropertiesInitializer.class)
 @DirtiesContext
 public class LogSinkApplicationTests {
 
@@ -39,11 +52,39 @@ public class LogSinkApplicationTests {
 	@Bindings(LogSink.class)
 	private Sink sink;
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private Sink same;
 
-	@Test
-	public void contextLoads() {
-		assertNotNull(this.sink.input());
+	@Autowired
+	private LoggingHandler logSinkHandler;
+
+	@BeforeClass
+	public static void setUp() {
+		Properties properties = new Properties();
+		properties.put("name", "foo");
+		properties.put("level", "WARN");
+		properties.put("expression", "payload.toUpperCase()");
+		PropertiesInitializer.PROPERTIES = properties;
 	}
+
+	@Test
+	public void test() {
+		assertNotNull(this.sink.input());
+		assertEquals(LoggingHandler.Level.WARN, this.logSinkHandler.getLevel());
+		Log logger = TestUtils.getPropertyValue(this.logSinkHandler, "messageLogger", Log.class);
+		assertEquals("foo", TestUtils.getPropertyValue(logger, "name"));
+		logger = spy(logger);
+		new DirectFieldAccessor(this.logSinkHandler).setPropertyValue("messageLogger", logger);
+		GenericMessage<String> message = new GenericMessage<>("foo");
+		this.sink.input().send(message);
+		ArgumentCaptor<Object> captor = ArgumentCaptor.forClass(Object.class);
+		verify(logger).warn(captor.capture());
+		assertEquals("FOO", captor.getValue());
+		this.logSinkHandler.setExpression("#this");
+		this.sink.input().send(message);
+		verify(logger, times(2)).warn(captor.capture());
+		assertSame(message, captor.getValue());
+	}
+
 }
