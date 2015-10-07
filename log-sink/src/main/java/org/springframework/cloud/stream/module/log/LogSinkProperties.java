@@ -17,6 +17,7 @@ package org.springframework.cloud.stream.module.log;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -26,7 +27,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties
 public class LogSinkProperties {
 
-	private String name = "log.sink"; // TODO: set from environment 'group' if available
+	@Value("${spring.application.name:log.sink}")
+	private String name;
 
 	private String expression = "payload";
 

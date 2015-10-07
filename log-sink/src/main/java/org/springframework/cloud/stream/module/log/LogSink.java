@@ -34,14 +34,14 @@ import org.springframework.integration.handler.LoggingHandler;
 public class LogSink {
 
 	@Autowired
-	private LogSinkProperties config;
+	private LogSinkProperties properties;
 
 	@Bean
 	@ServiceActivator(inputChannel=Sink.INPUT)
 	public LoggingHandler logSinkHandler() {
-		LoggingHandler loggingHandler = new LoggingHandler(this.config.getLevel());
-		loggingHandler.setExpression(this.config.getExpression());
-		loggingHandler.setLoggerName(this.config.getName());
+		LoggingHandler loggingHandler = new LoggingHandler(this.properties.getLevel());
+		loggingHandler.setExpression(this.properties.getExpression());
+		loggingHandler.setLoggerName(this.properties.getName());
 		return loggingHandler;
 	}
 
