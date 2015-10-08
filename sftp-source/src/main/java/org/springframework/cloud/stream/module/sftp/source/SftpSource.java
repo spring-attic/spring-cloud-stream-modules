@@ -57,13 +57,13 @@ import org.springframework.util.StringUtils;
 public class SftpSource {
 
 	@Autowired
-	private SftpSourceProperties config;
+	private SftpSourceProperties properties;
 
 	@Autowired
-	private FileConsumerProperties fileConsumerConfig;
+	private FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
-	MaxMessagesProperties maxMessagesConfig;
+	MaxMessagesProperties maxMessagesProperties;
 
 	@Autowired
 	DefaultSftpSessionFactory sftpSessionFactory;
@@ -77,26 +77,26 @@ public class SftpSource {
 
 	@Bean
 	public PollerMetadata poller() {
-		return Pollers.trigger(this.trigger).maxMessagesPerPoll(this.maxMessagesConfig.getMaxMessages()).get();
+		return Pollers.trigger(this.trigger).maxMessagesPerPoll(this.maxMessagesProperties.getMaxMessages()).get();
 	}
 
 	@Bean
 	public IntegrationFlow sftpInboundFlow() {
 		SftpInboundChannelAdapterSpec messageSourceBuilder = Sftp.inboundAdapter(this.sftpSessionFactory)
-				.preserveTimestamp(this.config.isPreserveTimestamp())
-				.remoteDirectory(this.config.getRemoteDir())
-				.remoteFileSeparator(this.config.getRemoteFileSeparator())
-				.localDirectory(this.config.getLocalDir())
-				.autoCreateLocalDirectory(this.config.isAutoCreateLocalDir())
-				.temporaryFileSuffix(this.config.getTmpFileSuffix())
-				.deleteRemoteFiles(this.config.isDeleteRemoteFiles());
+				.preserveTimestamp(this.properties.isPreserveTimestamp())
+				.remoteDirectory(this.properties.getRemoteDir())
+				.remoteFileSeparator(this.properties.getRemoteFileSeparator())
+				.localDirectory(this.properties.getLocalDir())
+				.autoCreateLocalDirectory(this.properties.isAutoCreateLocalDir())
+				.temporaryFileSuffix(this.properties.getTmpFileSuffix())
+				.deleteRemoteFiles(this.properties.isDeleteRemoteFiles());
 
-		if (StringUtils.hasText(this.config.getFilenamePattern())) {
-			messageSourceBuilder.filter(new SftpSimplePatternFileListFilter(this.config.getFilenamePattern()));
+		if (StringUtils.hasText(this.properties.getFilenamePattern())) {
+			messageSourceBuilder.filter(new SftpSimplePatternFileListFilter(this.properties.getFilenamePattern()));
 		}
-		else if (StringUtils.hasText(this.config.getFilenameRegex())) {
+		else if (StringUtils.hasText(this.properties.getFilenameRegex())) {
 			messageSourceBuilder
-					.filter(new SftpRegexPatternFileListFilter(Pattern.compile(this.config.getFilenameRegex())));
+					.filter(new SftpRegexPatternFileListFilter(Pattern.compile(this.properties.getFilenameRegex())));
 		}
 
 		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(messageSourceBuilder
@@ -111,7 +111,7 @@ public class SftpSource {
 
 		});
 
-		switch (this.fileConsumerConfig.getMode()) {
+		switch (this.fileConsumerProperties.getMode()) {
 			case contents:
 				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
 						"application/octet-stream"))
@@ -120,11 +120,11 @@ public class SftpSource {
 			case lines:
 				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
 						"text/plain"))
-						.split(new FileSplitter(true, this.fileConsumerConfig.getWithMarkers()), null);
+						.split(new FileSplitter(true, this.fileConsumerProperties.getWithMarkers()), null);
 			case ref:
 				break;
 			default:
-				throw new IllegalArgumentException(fileConsumerConfig.getMode().name() +
+				throw new IllegalArgumentException(fileConsumerProperties.getMode().name() +
 						" is not a supported file reading mode.");
 		}
 		return flowBuilder.channel(this.source.output()).get();
