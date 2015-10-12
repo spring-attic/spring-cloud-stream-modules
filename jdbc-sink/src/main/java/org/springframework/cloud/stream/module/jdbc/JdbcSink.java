@@ -18,6 +18,10 @@ package org.springframework.cloud.stream.module.jdbc;
 
 import java.util.Set;
 
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.messaging.Message;
 
@@ -33,10 +37,17 @@ public abstract class JdbcSink {
 
 	private final String tableName;
 
+	protected EvaluationContext evaluationContext;
+
 	protected JdbcSink(JdbcOperations jdbcOperations, String tableName, Set<String> columns) {
 		this.jdbcOperations = jdbcOperations;
 		this.tableName = tableName;
 		this.sql = generateSql(columns);
+	}
+
+	@Autowired
+	public void setBeanFactory(BeanFactory beanFactory) {
+		this.evaluationContext = IntegrationContextUtils.getEvaluationContext(beanFactory);
 	}
 
 	private String generateSql(Set<String> columns) {

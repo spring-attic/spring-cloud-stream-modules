@@ -59,7 +59,7 @@ public class BatchingJdbcSink extends JdbcSink {
 			public void setValues(PreparedStatement ps, Object argument) throws SQLException {
 				int index = 1;
 				for (Expression spel : columnExpressions.values()) {
-					Object value = spel.getValue(argument);
+					Object value = spel.getValue(evaluationContext, argument);
 					ps.setObject(index++, value);
 				}
 			}

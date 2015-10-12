@@ -56,7 +56,7 @@ public class SimpleJdbcSink extends JdbcSink {
 					EvaluationException lastException = null;
 					for (Expression spel : spels) {
 						try {
-							value = spel.getValue(message);
+							value = spel.getValue(evaluationContext, message);
 						}
 						catch (EvaluationException e) {
 							lastException = e;
