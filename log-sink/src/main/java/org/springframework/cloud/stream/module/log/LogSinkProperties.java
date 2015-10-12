@@ -15,24 +15,40 @@
  */
 package org.springframework.cloud.stream.module.log;
 
+import static org.springframework.integration.handler.LoggingHandler.Level.*;
+
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.integration.handler.LoggingHandler;
 
 /**
- * @author Gary Russell
+ * Configuration properties for the Log Sink module.
  *
+ * @author Gary Russell
+ * @author Eric Bottard
  */
 @ConfigurationProperties
 public class LogSinkProperties {
 
+	/**
+	 * The name of the logger to use.
+	 */
 	@Value("${spring.application.name:log.sink}")
 	private String name;
 
+	/**
+	 * A SpEL expression (against the incoming message) to evaluate as the logged message.
+	 */
 	private String expression = "payload";
 
-	private String level = "INFO";
+	/**
+	 * The level at which to log messages.
+	 */
+	private LoggingHandler.Level level = INFO;
 
 	@NotBlank
 	public String getName() {
@@ -52,13 +68,13 @@ public class LogSinkProperties {
 		this.expression = expression;
 	}
 
-	@NotBlank
-	public String getLevel() {
+	@NotNull
+	public LoggingHandler.Level getLevel() {
 		return level;
 	}
 
-	public void setLevel(String level) {
-		this.level = level.toUpperCase();
+	public void setLevel(LoggingHandler.Level level) {
+		this.level = level;
 	}
 
 }
