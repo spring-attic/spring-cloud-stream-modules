@@ -1,0 +1,19 @@
+= Spring Cloud Stream Cassandra Sink
+
+This module writes the content of each message it receives to Cassandra.
+
+== Requirements
+
+* Java 7 or Above
+
+== Build
+
+```
+$ mvn clean package
+```
+
+== Run
+
+```
+$ java -jar target/cassandra-sink-${version}-exec.jar
+```
