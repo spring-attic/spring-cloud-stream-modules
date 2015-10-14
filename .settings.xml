@@ -38,6 +38,15 @@
 						<enabled>false</enabled>
 					</snapshots>
 				</repository>
+				<repository>
+					<id>gemstone-release</id>
+					<name>GemStone Maven Release Repository</name>
+					<url>http://dist.gemstone.com/maven/release</url>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>always</updatePolicy>
+					</snapshots>
+				</repository>
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
