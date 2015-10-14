@@ -22,24 +22,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 
 /**
+ * FTP Session factory configuration.
+ *
  * @author David Turanski
+ * @author Gary Russell
  */
 @Configuration
 @EnableConfigurationProperties(FtpSessionFactoryProperties.class)
 public class FtpSessionFactoryConfiguration {
-	public static final String FTP_SESSION_FACTORY_BEAN_NAME = "ftpSessionFactory";
 
 	@Autowired
 	private FtpSessionFactoryProperties config;
 
-	@Bean(name = FTP_SESSION_FACTORY_BEAN_NAME)
+	@Bean
 	public DefaultFtpSessionFactory ftpSessionFactory() {
 		DefaultFtpSessionFactory ftpSessionFactory = new DefaultFtpSessionFactory();
 		ftpSessionFactory.setHost(config.getHost());
 		ftpSessionFactory.setPort(config.getPort());
 		ftpSessionFactory.setUsername(config.getUsername());
 		ftpSessionFactory.setPassword(config.getPassword());
-		ftpSessionFactory.setClientMode(config.getClientMode());
+		ftpSessionFactory.setClientMode(config.getClientMode().getMode());
 		return ftpSessionFactory;
 	}
 

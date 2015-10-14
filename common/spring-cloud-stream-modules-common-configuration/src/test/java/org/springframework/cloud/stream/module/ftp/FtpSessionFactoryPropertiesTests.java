@@ -73,12 +73,12 @@ public class FtpSessionFactoryPropertiesTests {
 	@Test
 	public void clientModeCanBeCustomized() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost", "clientMode:2");
+		EnvironmentTestUtils.addEnvironment(context, "username:user", "host:myHost", "clientMode:PASSIVE");
 		context.register(Conf.class);
 		context.refresh();
 		FtpSessionFactoryProperties properties = context.getBean(FtpSessionFactoryProperties
 				.class);
-		assertThat(properties.getClientMode(), equalTo(2));
+		assertThat(properties.getClientMode(), equalTo(FtpSessionFactoryProperties.ClientMode.PASSIVE));
 	}
 
 	@Test
@@ -94,12 +94,11 @@ public class FtpSessionFactoryPropertiesTests {
 
 	@Test
 	public void noPropertiesThrowsMeaningfulException() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		try {
-			AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 			context.register(Conf.class);
 			context.refresh();
-			fail("should throw exception");
-			context.close();
+			fail("exception expected");
 		}
 		catch (Exception e) {
 			assertThat(e.getCause(), instanceOf(BindException.class));
@@ -107,6 +106,9 @@ public class FtpSessionFactoryPropertiesTests {
 			FieldError fieldError = (FieldError) bindException.getAllErrors().get(0);
 			assertThat(fieldError.getArguments()[0].toString(), containsString("username"));
 			assertThat(fieldError.getDefaultMessage(), equalTo("may not be empty"));
+		}
+		finally {
+			context.close();
 		}
 	}
 

@@ -101,7 +101,7 @@ public class SftpSourcePropertiesTests {
 		context.register(Conf.class);
 		context.refresh();
 		SftpSourceProperties properties = context.getBean(SftpSourceProperties.class);
-		assertThat(properties.getFilenameRegex(), equalTo(".*\\.foo"));
+		assertThat(properties.getFilenameRegex().toString(), equalTo(".*\\.foo"));
 	}
 
 	@Test

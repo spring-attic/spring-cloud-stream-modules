@@ -16,9 +16,10 @@
 package org.springframework.cloud.stream.module.file.remote;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 
 /**
+ * Common properties for remote servers (e.g. (S)FTP).
+ *
  * @author David Turanski
  * @author Gary Russell
  *
@@ -26,16 +27,14 @@ import org.hibernate.validator.constraints.Range;
 public abstract class AbstractRemoteServerProperties {
 
 	/**
-	 * The host name of the server. Default is 'localhost'.
+	 * The host name of the server.
 	 */
 	private String host = "localhost";
-	/**
-	 * The port of the server. Default is 21.
-	 */
-	private int port = 21;
+
 	/**
 	 * The username to use to connect to the server.
 	 */
+
 	private String username;
 	/**
 	 * The password to use to connect to the server.
@@ -49,15 +48,6 @@ public abstract class AbstractRemoteServerProperties {
 
 	public void setHost(String host) {
 		this.host = host;
-	}
-
-	@Range(min = 0, max = 65535)
-	public int getPort() {
-		return this.port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
 	}
 
 	@NotBlank

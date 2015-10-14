@@ -13,7 +13,6 @@
 	<description>SFTP Source stream module</description>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>org.springframework.cloud.stream.module.sftp.source.SftpSourceApplication</start-class>
 	</properties>
 

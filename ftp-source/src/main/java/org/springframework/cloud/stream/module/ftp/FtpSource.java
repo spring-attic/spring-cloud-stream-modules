@@ -16,7 +16,6 @@
 package org.springframework.cloud.stream.module.ftp;
 
 import java.util.Collections;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -94,9 +93,9 @@ public class FtpSource {
 		if (StringUtils.hasText(this.config.getFilenamePattern())) {
 			messageSourceBuilder.filter(new FtpSimplePatternFileListFilter(this.config.getFilenamePattern()));
 		}
-		else if (StringUtils.hasText(this.config.getFilenameRegex())) {
+		else if (this.config.getFilenameRegex() != null) {
 			messageSourceBuilder
-					.filter(new FtpRegexPatternFileListFilter(Pattern.compile(this.config.getFilenameRegex())));
+					.filter(new FtpRegexPatternFileListFilter(this.config.getFilenameRegex()));
 		}
 
 		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(messageSourceBuilder

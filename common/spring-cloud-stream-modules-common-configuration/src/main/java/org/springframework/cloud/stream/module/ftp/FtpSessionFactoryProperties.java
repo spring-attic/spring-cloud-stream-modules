@@ -15,10 +15,17 @@
 
 package org.springframework.cloud.stream.module.ftp;
 
+import javax.validation.constraints.NotNull;
+
+import org.apache.commons.net.ftp.FTPClient;
+import org.hibernate.validator.constraints.Range;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.stream.module.file.remote.AbstractRemoteServerProperties;
 
 /**
+ * FTP {@code SessionFactory} properties.
+ *
  * @author David Turanski
  * @author Gary Russell
  */
@@ -26,16 +33,48 @@ import org.springframework.cloud.stream.module.file.remote.AbstractRemoteServerP
 public class FtpSessionFactoryProperties extends AbstractRemoteServerProperties {
 
 	/**
-	 * The client mode to use for the FTP session. Default is 0.
+	 * The port of the server.
 	 */
-	private int clientMode = 0;
+	private int port = 21;
 
-	public int getClientMode() {
+	/**
+	 * The client mode to use for the FTP session.
+	 */
+	private ClientMode clientMode = ClientMode.ACTIVE;
+
+	@Range(min = 0, max = 65535)
+	public int getPort() {
+		return this.port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	@NotNull
+	public ClientMode getClientMode() {
 		return this.clientMode;
 	}
 
-	public void setClientMode(int clientMode) {
+	public void setClientMode(ClientMode clientMode) {
 		this.clientMode = clientMode;
+	}
+
+	public static enum ClientMode {
+
+		ACTIVE(FTPClient.ACTIVE_LOCAL_DATA_CONNECTION_MODE),
+		PASSIVE(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
+
+		private final int mode;
+
+		private ClientMode(int mode) {
+			this.mode = mode;
+		}
+
+		public int getMode() {
+			return mode;
+		}
+
 	}
 
 }

@@ -16,11 +16,9 @@
 package org.springframework.cloud.stream.module.sftp.source;
 
 import java.util.Collections;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
@@ -72,7 +70,6 @@ public class SftpSource {
 	Trigger trigger;
 
 	@Autowired
-	@Bindings(SftpSource.class)
 	Source source;
 
 	@Bean
@@ -94,9 +91,9 @@ public class SftpSource {
 		if (StringUtils.hasText(this.properties.getFilenamePattern())) {
 			messageSourceBuilder.filter(new SftpSimplePatternFileListFilter(this.properties.getFilenamePattern()));
 		}
-		else if (StringUtils.hasText(this.properties.getFilenameRegex())) {
+		else if (this.properties.getFilenameRegex() != null) {
 			messageSourceBuilder
-					.filter(new SftpRegexPatternFileListFilter(Pattern.compile(this.properties.getFilenameRegex())));
+					.filter(new SftpRegexPatternFileListFilter(this.properties.getFilenameRegex()));
 		}
 
 		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(messageSourceBuilder

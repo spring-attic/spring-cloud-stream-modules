@@ -22,18 +22,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 
 /**
+ * SFTP Session factory configuration.
+ *
  * @author Gary Russell
  */
 @Configuration
 @EnableConfigurationProperties(SftpSessionFactoryProperties.class)
 public class SftpSessionFactoryConfiguration {
-	public static final String SFTP_SESSION_FACTORY_BEAN_NAME = "sftpSessionFactory";
 
 	@Autowired
 	private SftpSessionFactoryProperties config;
 
-	@Bean(name = SFTP_SESSION_FACTORY_BEAN_NAME)
-	public DefaultSftpSessionFactory ftpSessionFactory() {
+	@Bean
+	public DefaultSftpSessionFactory sftpSessionFactory() {
 		DefaultSftpSessionFactory sftpSessionFactory = new DefaultSftpSessionFactory();
 		sftpSessionFactory.setHost(this.config.getHost());
 		sftpSessionFactory.setPort(this.config.getPort());

@@ -15,6 +15,8 @@
 
 package org.springframework.cloud.stream.module.sftp;
 
+import org.hibernate.validator.constraints.Range;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.stream.module.file.remote.AbstractRemoteServerProperties;
 
@@ -23,6 +25,11 @@ import org.springframework.cloud.stream.module.file.remote.AbstractRemoteServerP
  */
 @ConfigurationProperties
 public class SftpSessionFactoryProperties extends AbstractRemoteServerProperties {
+
+	/**
+	 * The port of the server.
+	 */
+	private int port = 22;
 
 	/**
 	 * Resource location of user's private key.
@@ -43,6 +50,15 @@ public class SftpSessionFactoryProperties extends AbstractRemoteServerProperties
 	 * A SpEL expression resolving to the location of the known hosts file.
 	 */
 	private String knownHostsExpression = null;
+
+	@Range(min = 0, max = 65535)
+	public int getPort() {
+		return this.port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
 
 	public String getPrivateKey() {
 		return this.privateKey;

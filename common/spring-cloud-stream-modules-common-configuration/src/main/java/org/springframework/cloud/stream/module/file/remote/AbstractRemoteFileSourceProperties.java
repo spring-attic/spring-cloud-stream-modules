@@ -16,8 +16,16 @@
 package org.springframework.cloud.stream.module.file.remote;
 
 import java.io.File;
+import java.util.regex.Pattern;
+
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
+ * Common properties for remote file sources (e.g. (S)FTP).
+ *
  * @author David Turanski
  * @author Gary Russell
  *
@@ -25,42 +33,42 @@ import java.io.File;
 public abstract class AbstractRemoteFileSourceProperties {
 
 	/**
-	 * The remote FTP directory, "/" by default.
+	 * The remote FTP directory.
 	 */
 	private String remoteDir = "/";
 
 	/**
-	 * Set to true to delete remote files after successful transfer, false by default.
+	 * Set to true to delete remote files after successful transfer.
 	 */
 	private boolean deleteRemoteFiles = false;
 
 	/**
-	 * The local directory to use for file transfers, System.getProperty("java.io.tmpdir") + "/xd/ftp" by default.
+	 * The local directory to use for file transfers.
 	 */
 	private File localDir = new File(System.getProperty("java.io.tmpdir") + "/xd/ftp");
 
 	/**
-	 * Set to true to create the local directory if it does not exist, true by default
+	 * Set to true to create the local directory if it does not exist.
 	 */
 	private boolean autoCreateLocalDir = true;
 
 	/**
-	 * The suffix to use while the transfer is in progress, ".tmp" by default.
+	 * The suffix to use while the transfer is in progress.
 	 */
 	private String tmpFileSuffix = ".tmp";
 
 	/**
-	 * A filter pattern to match the names of files to transfer, no filter by default.
+	 * A filter pattern to match the names of files to transfer.
 	 */
 	private String filenamePattern;
 
 	/**
-	 * A filter regex pattern to match the names of files to transfer, no filter by default.
+	 * A filter regex pattern to match the names of files to transfer.
 	 */
-	private String filenameRegex;
+	private Pattern filenameRegex;
 
 	/**
-	 * The remote file separator, "/" by default.
+	 * The remote file separator.
 	 */
 	private String remoteFileSeparator = "/";
 
@@ -77,6 +85,7 @@ public abstract class AbstractRemoteFileSourceProperties {
 		this.autoCreateLocalDir = autoCreateLocalDir;
 	}
 
+	@NotBlank
 	public String getRemoteDir() {
 		return remoteDir;
 	}
@@ -93,6 +102,7 @@ public abstract class AbstractRemoteFileSourceProperties {
 		this.deleteRemoteFiles = deleteRemoteFiles;
 	}
 
+	@NotNull
 	public File getLocalDir() {
 		return localDir;
 	}
@@ -101,6 +111,7 @@ public abstract class AbstractRemoteFileSourceProperties {
 		this.localDir = localDir;
 	}
 
+	@NotBlank
 	public String getTmpFileSuffix() {
 		return tmpFileSuffix;
 	}
@@ -117,14 +128,15 @@ public abstract class AbstractRemoteFileSourceProperties {
 		this.filenamePattern = filenamePattern;
 	}
 
-	public String getFilenameRegex() {
+	public Pattern getFilenameRegex() {
 		return filenameRegex;
 	}
 
-	public void setFilenameRegex(String filenameRegex) {
+	public void setFilenameRegex(Pattern filenameRegex) {
 		this.filenameRegex = filenameRegex;
 	}
 
+	@NotBlank
 	public String getRemoteFileSeparator() {
 		return remoteFileSeparator;
 	}
@@ -139,6 +151,11 @@ public abstract class AbstractRemoteFileSourceProperties {
 
 	public void setPreserveTimestamp(boolean preserveTimestamp) {
 		this.preserveTimestamp = preserveTimestamp;
+	}
+
+	@AssertTrue(message = "filenamePattern and filenameRegex are mutually exclusive")
+	public boolean exclusivePatterns() {
+		return !(this.filenamePattern != null && this.filenameRegex != null);
 	}
 
 }

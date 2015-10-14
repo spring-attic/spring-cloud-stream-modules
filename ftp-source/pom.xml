@@ -13,7 +13,6 @@
 	<description>FTP Source stream module</description>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>org.springframework.cloud.stream.module.ftp.FtpSourceApplication</start-class>
 	</properties>
 
