@@ -1,2 +1,11 @@
 # spring-cloud-stream-modules
-A source repository for OOTB Stream Modules
+A repository for Spring Cloud Stream Modules
+
+== Building
+
+Clone the repo and type
+
+----
+$ mvn -s .settings.xml clean install
+----
+

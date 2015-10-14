@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
-	<servers>
-		<server>
-			<id>repo.spring.io</id>
-			<username>${env.CI_DEPLOY_USERNAME}</username>
-			<password>${env.CI_DEPLOY_PASSWORD}</password>
-		</server>
-	</servers>
 	<profiles>
 		<profile>
 			<id>spring</id>
@@ -36,6 +29,19 @@
 					<url>http://repo.spring.io/libs-release</url>
 					<snapshots>
 						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+				<!-- Gemstone repository is needed since gemfire libs
+				     are not hosted in mvn central.  Note that the libs
+				     are also hosted and browsable at
+				     https://repo.spring.io/gemstone-release-cache -->
+				<repository>
+					<id>gemstone-release</id>
+					<name>GemStone Maven Release Repository</name>
+					<url>http://dist.gemstone.com/maven/release</url>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>always</updatePolicy>
 					</snapshots>
 				</repository>
 			</repositories>

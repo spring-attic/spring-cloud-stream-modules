@@ -26,6 +26,7 @@ import javax.annotation.Resource;
 import com.gemstone.gemfire.cache.Region;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -99,6 +100,8 @@ public class GemfireSinkIntegrationTests {
 	}
 
 	@Test
+	@Ignore("Need to spawn an embedded gemfire cacahe server.  " +
+			"See https://github.com/spring-cloud/spring-cloud-stream-modules/issues/49")
 	public void test() {
 		gemfireSink.input().send(new GenericMessage("hello"));
 		assertThat(region.get("key"), equalTo("hello"));
