@@ -154,7 +154,7 @@ public abstract class AbstractRemoteFileSourceProperties {
 	}
 
 	@AssertTrue(message = "filenamePattern and filenameRegex are mutually exclusive")
-	public boolean exclusivePatterns() {
+	public boolean isExclusivePatterns() {
 		return !(this.filenamePattern != null && this.filenameRegex != null);
 	}
 
