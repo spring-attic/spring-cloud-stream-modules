@@ -57,7 +57,17 @@ public class FileConsumerProperties {
 
 	@AssertTrue(message = "withMarkers can only be supplied when FileReadingMode is 'lines'")
 	public boolean isWithMarkersValid() {
-		if (this.withMarkers != null && !FileReadingMode.lines.equals(this.fileReadingmode)) {
+		if (this.withMarkers != null && FileReadingMode.lines != this.fileReadingmode) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	@AssertTrue(message = "withMarkers must be set when FileReadingMode is 'lines'")
+	public boolean isWithMarkersMustBeSet() {
+		if (this.withMarkers == null && FileReadingMode.lines == this.fileReadingmode) {
 			return false;
 		}
 		else {
