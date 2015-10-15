@@ -29,7 +29,8 @@ import org.springframework.integration.file.support.FileExistsMode;
 public abstract class AbstractRemoteFileSinkProperties extends AbstractRemoteFileProperties {
 
 	/**
-	 * A temporary directory where the file will be written.
+	 * A temporary directory where the file will be written if {@link #isUseTemporaryFilename()}
+	 * is true.
 	 */
 	private String temporaryRemoteDir = "/";
 
@@ -49,7 +50,7 @@ public abstract class AbstractRemoteFileSinkProperties extends AbstractRemoteFil
 	private boolean useTemporaryFilename = true;
 
 	/**
-	 * An expression to generate the remote file name.
+	 * A SpEL expression to generate the remote file name.
 	 */
 	private Expression filenameExpression;
 

@@ -24,17 +24,17 @@ import org.hibernate.validator.constraints.NotBlank;
 public abstract class AbstractRemoteFileProperties {
 
 	/**
-	 * The remote FTP directory, "/" by default.
+	 * The remote FTP directory.
 	 */
 	private String remoteDir = "/";
 
 	/**
-	 * The suffix to use while the transfer is in progress, ".tmp" by default.
+	 * The suffix to use while the transfer is in progress.
 	 */
 	private String tmpFileSuffix = ".tmp";
 
 	/**
-	 * The remote file separator, "/" by default.
+	 * The remote file separator.
 	 */
 	private String remoteFileSeparator = "/";
 
