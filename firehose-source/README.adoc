@@ -1,0 +1,57 @@
+= Spring Cloud Stream Firehose Module
+
+In this *Spring Cloud Stream* module, a source emits events from a
+https://github.com/cloudfoundry/loggregator[doppler] endpoint.
+
+This module connects to a doppler remote websocket endpoint and emits events from it. The module converts the binary
+protocol buffer message into either a Tuple Object or a JSON String, depending on your configuration
+
+## Requirements
+
+* Java 7 or Above
+* A Redis server
+* https://github.com/cloudfoundry/cf-release[Cloud Foundry], http://lattice.cf[Lattice] or a doppler https://github.com/viniciusccarvalho/doppler-simulator[simulator] running
+
+## Generated sources
+
+The firehose depends on generated code from https://github.com/cloudfoundry/dropsonde-protocol[droposonde-protocol].
+In order to simplify requirements to run this module
+all java sources have been generated already.
+
+The https://github.com/cloudfoundry/dropsonde-protocol[droposonde-protocol] repo has instructions and a script
+on how to generate java code from proto files.
+
+This module targets the PCF 1.5 version of the dropsonde protocol
+https://github.com/cloudfoundry/dropsonde-protocol/tree/ff69d48b9c570b0549c9161c8377f610b6e81dda[dropsonde-protocol@ff69d48b9c570b0549c9161c8377f610b6e81dda]
+
+## Classes
+
+FirehoseApplication:: Main boot application, bootstraps websocket clients and SSL contexts
+FirehoseSource:: Module that connects to the remote websocket. Note that connection needs to happen after the spring context was initialized
+ByteByfferMessageConverter: Message converter to read the binary message and convert into protocol buffers and then a tuple or JSON
+TupleFactory:: Support class to convert from Protobuf pojos into an XD tuple
+FirehoseOptionsMetadata:: Configuration for this sample
+ * dopplerUrl (required) : Remote endpoint of doppler, usually ws://doppler.<domain>
+ * cfDomain (Cloud Foundry only) :  this is your application domain on Cloud Foundry
+ * authenticationURL (Cloud Foundry only) : UAA authentication endpoint
+ * username (Cloud Foundry only) : user with doppler rights
+ * password (Cloud Foundry only) : user credentials
+ * dopplerSubscription (optional) : the subscription id, leave it blank for the simulator
+ * outputJson (optional) : Output JSON string instead of Tuple
+ * trustSelfCerts (optional) : If you are using wss and self signed certs on the doppler endpoint
+
+## Build
+
+Build the sample by executing (you need to explicitly remove the imports profile, otherwise build will fail:
+
+```
+$> mvn package
+```
+
+## Run
+
+To start the source module execute the following:
+
+```
+$> java -jar target/spring-cloud-streams-sample-firehose-1.0.0.BUILD-SNAPSHOT-exec.jar
+```
