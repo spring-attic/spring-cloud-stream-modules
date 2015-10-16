@@ -16,27 +16,20 @@
 
 package org.springframework.cloud.stream.module.log;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.Properties;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.apache.commons.logging.Log;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.test.util.TestUtils;
 import org.springframework.messaging.support.GenericMessage;
@@ -44,8 +37,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = LogSinkApplication.class, initializers = PropertiesInitializer.class)
+@SpringApplicationConfiguration(classes = LogSinkApplication.class)
 @DirtiesContext
+@IntegrationTest({"server.port=-1", "name=foo", "level=warn", "expression=payload.toUpperCase()"})
 public class LogSinkApplicationTests {
 
 	@Autowired
@@ -58,15 +52,6 @@ public class LogSinkApplicationTests {
 
 	@Autowired
 	private LoggingHandler logSinkHandler;
-
-	@BeforeClass
-	public static void setUp() {
-		Properties properties = new Properties();
-		properties.put("name", "foo");
-		properties.put("level", "WARN");
-		properties.put("expression", "payload.toUpperCase()");
-		PropertiesInitializer.PROPERTIES = properties;
-	}
 
 	@Test
 	public void test() {
