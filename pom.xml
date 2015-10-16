@@ -24,6 +24,7 @@
 
 	<modules>
 		<!-- common -->
+		<module>archetype</module>
 		<module>common</module>
 		<!-- sources in alphabetical order-->
 		<module>ftp-source</module>
@@ -42,7 +43,7 @@
 		<module>hdfs-sink</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
-	</modules>
+  </modules>
 	<build>
 		<plugins>
 			<plugin>
