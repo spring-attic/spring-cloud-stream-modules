@@ -48,24 +48,18 @@ import com.datastax.driver.core.Session;
 public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 	@Autowired
-	CassandraProperties cassandraSinkProperties;
+	CassandraProperties cassandraProperties;
 	
 	@Autowired
 	private Session session;
 
 	@PostConstruct
 	public void init() throws IOException {
-		if (cassandraSinkProperties.getInitScript() != null) {
-			Resource initScriptResource = new DefaultResourceLoader().getResource(cassandraSinkProperties.getInitScript());
-			Scanner scanner = new Scanner(initScriptResource.getInputStream(), "UTF-8");
+		if (cassandraProperties.getInitScript() != null) {
+			Resource initScriptResource = new DefaultResourceLoader().getResource(cassandraProperties.getInitScript());
 			String scripts = null;
-			try {
+			try (Scanner scanner = new Scanner(initScriptResource.getInputStream(), "UTF-8")) {
 				scripts = scanner.useDelimiter("\\A").next();
-			}
-			finally {
-				if (scanner != null) {
-					scanner.close();
-				}
 			}
 
 			CqlTemplate template = new CqlTemplate(this.session);
@@ -80,23 +74,23 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 	@Override
 	protected String getContactPoints() {
-		return cassandraSinkProperties.getContactPoints();
+		return cassandraProperties.getContactPoints();
 	}
 
 	@Override
 	protected int getPort() {
-		return cassandraSinkProperties.getPort();
+		return cassandraProperties.getPort();
 	}
 
 	@Override
 	protected String getKeyspaceName() {
-		return cassandraSinkProperties.getKeyspace();
+		return cassandraProperties.getKeyspace();
 	}
 
 	@Override
 	protected AuthProvider getAuthProvider() {
-		if (StringUtils.hasText(cassandraSinkProperties.getUsername())) {
-			return new PlainTextAuthProvider(cassandraSinkProperties.getUsername(), cassandraSinkProperties.getPassword());
+		if (StringUtils.hasText(cassandraProperties.getUsername())) {
+			return new PlainTextAuthProvider(cassandraProperties.getUsername(), cassandraProperties.getPassword());
 		}
 		else {
 			return null;
@@ -110,22 +104,22 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 	@Override
 	public String[] getEntityBasePackages() {
-		return cassandraSinkProperties.getEntityBasePackages();
+		return cassandraProperties.getEntityBasePackages();
 	}
 
 	@Override
 	protected CompressionType getCompressionType() {
-		return cassandraSinkProperties.getCompressionType();
+		return cassandraProperties.getCompressionType();
 	}
 
 	@Override
 	protected boolean getMetricsEnabled() {
-		return cassandraSinkProperties.isMetricsEnabled();
+		return cassandraProperties.isMetricsEnabled();
 	}
 
 	@Override
 	protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
-		if (ObjectUtils.isEmpty(getEntityBasePackages()) || cassandraSinkProperties.getInitScript() != null) {
+		if (ObjectUtils.isEmpty(getEntityBasePackages()) || cassandraProperties.getInitScript() != null) {
 			return Collections.singletonList(CreateKeyspaceSpecification.createKeyspace(getKeyspaceName())
 					.withSimpleReplication()
 					.ifNotExists());

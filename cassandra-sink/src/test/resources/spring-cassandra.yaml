@@ -262,7 +262,7 @@ storage_port: 9045
 # SSL port, for encrypted communication.  Unused unless enabled in
 # encryption_options
 #ssl_storage_port: ${build.cassandra.ssl_storage_port}
-ssl_storage_port: 9046
+ssl_storage_port: 0
 
 # Address to bind to and tell other Cassandra nodes to connect to. You
 # _must_ change this if you want multiple nodes to be able to

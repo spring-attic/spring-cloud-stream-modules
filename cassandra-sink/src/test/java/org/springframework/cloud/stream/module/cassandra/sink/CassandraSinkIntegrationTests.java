@@ -44,8 +44,6 @@ import com.datastax.driver.core.querybuilder.Select;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import reactor.fn.Supplier;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,12 +67,12 @@ public abstract class CassandraSinkIntegrationTests {
 
 	private static final int PORT = 9043; // See spring-cassandra.yaml - native_transport_port
 
-    @Autowired
-    @Bindings(CassandraSink.class)
-    protected Sink sink;
+	@Autowired
+	@Bindings(CassandraSink.class)
+	protected Sink sink;
 
-    @Autowired
-    ConfigurableApplicationContext applicationContext;
+	@Autowired
+	ConfigurableApplicationContext applicationContext;
 
 	private static Cluster cluster;
 
@@ -103,9 +101,9 @@ public abstract class CassandraSinkIntegrationTests {
 		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
 	}
 
-	@WebIntegrationTest({"spring.cassandra.port=9043", 
-		"spring.cassandra.keyspace=cassandraTest",
-		"spring.cassandra.init-script=int-db.cql",
+	@WebIntegrationTest({"spring.cassandra.port=" + PORT,
+		"spring.cassandra.keyspace=" + CASSANDRA_KEYSPACE,
+		"spring.cassandra.init-script=init-db.cql",
 		"spring.cassandra.entity-base-packages=org.springframework.cloud.stream.module.cassandra.test.domain",
 		"query-type=INSERT"})
 	public static class CassandraEntityInsertTests extends CassandraSinkIntegrationTests {
@@ -138,9 +136,9 @@ public abstract class CassandraSinkIntegrationTests {
 	}
 
 
-	@WebIntegrationTest({"spring.cassandra.port=9043", 
-		"spring.cassandra.keyspace=cassandraTest",
-		"spring.cassandra.init-script=int-db.cql",
+	@WebIntegrationTest({"spring.cassandra.port=" + PORT,
+		"spring.cassandra.keyspace=" + CASSANDRA_KEYSPACE,
+		"spring.cassandra.init-script=init-db.cql",
 		"query-type=INSERT",
 		"ingest-query=insert into book (isbn, title, author, pages, saleDate, inStock) values (?, ?, ?, ?, ?, ?)"})
 	public static class CassandraSinkIngestTests extends CassandraSinkIntegrationTests {
@@ -195,6 +193,10 @@ public abstract class CassandraSinkIntegrationTests {
 			Thread.sleep(100);
 		}
 		assertTrue(n < 10);
+	}
+
+	private interface Supplier<T> {
+		T get();
 	}
 
 }

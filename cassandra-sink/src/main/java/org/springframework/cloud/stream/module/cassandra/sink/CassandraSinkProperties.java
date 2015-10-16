@@ -28,33 +28,33 @@ import org.springframework.integration.cassandra.outbound.CassandraMessageHandle
 @ConfigurationProperties
 public class CassandraSinkProperties {
 
-	/*
-	 * The consistencyLevel option of WriteOptions
+	/**
+	 * The consistencyLevel option of WriteOptions.
 	 */
 	private ConsistencyLevel consistencyLevel;
 
-	/*
-	 * The retryPolicy option of WriteOptions
+	/**
+	 * The retryPolicy option of WriteOptions.
 	 */
 	private RetryPolicy retryPolicy;
 
-	/*
-	 * The time-to-live option of WriteOptions
+	/**
+	 * The time-to-live option of WriteOptions.
 	 */
 	private int ttl;
 
-	/*
-	 * The queryType for Cassandra Sink
+	/**
+	 * The queryType for Cassandra Sink.
 	 */
 	private CassandraMessageHandler.Type queryType;
 
-	/*
-	 * The ingest Cassandra query
+	/**
+	 * The ingest Cassandra query.
 	 */
 	private String ingestQuery;
 
-	/*
-	 * The expression in Cassandra query DSL style
+	/**
+	 * The expression in Cassandra query DSL style.
 	 */
 	private String statementExpression;
 

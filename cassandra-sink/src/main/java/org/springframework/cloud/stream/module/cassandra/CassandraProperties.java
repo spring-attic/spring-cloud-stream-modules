@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.cassandra;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cassandra.config.CassandraCqlClusterFactoryBean;
@@ -34,49 +35,49 @@ import org.springframework.util.StringUtils;
 @ConfigurationProperties("spring.cassandra")
 public class CassandraProperties {
 
-	/*
-	 * The comma-delimited string of the hosts to connect to Cassandra
+	/**
+	 * The comma-delimited string of the hosts to connect to Cassandra.
 	 */
 	private String contactPoints = CassandraCqlClusterFactoryBean.DEFAULT_CONTACT_POINTS;
 
-	/*
-	 * The port to use to connect to the Cassandra host
+	/**
+	 * The port to use to connect to the Cassandra host.
 	 */
 	private int port = CassandraCqlClusterFactoryBean.DEFAULT_PORT;
 
-	/*
-	 * The keyspace name to connect to
+	/**
+	 * The keyspace name to connect to.
 	 */
 	@Value("${spring.application.name:tmp}")
 	private String keyspace;
 
-	/*
-	 * The username for connection
+	/**
+	 * The username for connection.
 	 */
 	private String username;
 
-	/*
-	 * The password for connection
+	/**
+	 * The password for connection.
 	 */
 	private String password;
 
-	/*
-	 * The path to file with CQL scripts (delimited by ';') to initialize keyspace schema
+	/**
+	 * The path to file with CQL scripts (delimited by ';') to initialize keyspace schema.
 	 */
 	private String initScript;
 
-	/*
-	 * The base packages to scan for entities annotated with Table annotations
+	/**
+	 * The base packages to scan for entities annotated with Table annotations.
 	 */
 	private String[] entityBasePackages = new String[0];
 
-	/*
-	 * The compression to use for the transport
+	/**
+	 * The compression to use for the transport.
 	 */
 	private CompressionType compressionType = CompressionType.NONE;
 
-	/*
-	 * Enable/disable metrics collection for the created cluster
+	/**
+	 * Enable/disable metrics collection for the created cluster.
 	 */
 	private boolean metricsEnabled = CassandraCqlClusterFactoryBean.DEFAULT_METRICS_ENABLED;
 
@@ -121,6 +122,7 @@ public class CassandraProperties {
 		return this.contactPoints;
 	}
 
+	@Range(min = 0, max = 65535)
 	public int getPort() {
 		return this.port;
 	}

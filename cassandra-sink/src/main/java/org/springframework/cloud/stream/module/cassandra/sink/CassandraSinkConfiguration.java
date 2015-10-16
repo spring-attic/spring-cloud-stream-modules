@@ -37,7 +37,6 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.cassandra.outbound.CassandraMessageHandler;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.handler.AbstractMessageProducingHandler;
 import org.springframework.integration.handler.BridgeHandler;
 import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
@@ -59,7 +58,6 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
  */
 @Configuration
 @Import(CassandraConfiguration.class)
-@EnableIntegration
 @EnableConfigurationProperties(CassandraSinkProperties.class)
 public class CassandraSinkConfiguration {
 
@@ -70,11 +68,6 @@ public class CassandraSinkConfiguration {
 	
 	@Autowired
 	private CassandraOperations template;
-
-	@Bean
-	public MessageChannel input() {
-		return new DirectChannel();
-	}
 
 	@Bean
 	public MessageChannel toSink() {
@@ -193,6 +186,9 @@ public class CassandraSinkConfiguration {
 	}
 
 	@SuppressWarnings("serial")
+	/*
+	 * We need this to provide visibility to the protected method.
+	 */
 	private static class ISO8601StdDateFormat extends StdDateFormat {
 
 		@Override
