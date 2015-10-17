@@ -18,6 +18,8 @@ package org.springframework.cloud.stream.module.jdbc;
 
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.EvaluationContext;
@@ -35,25 +37,25 @@ public abstract class JdbcSink {
 
 	protected final String sql;
 
-	private final String tableName;
-
 	protected EvaluationContext evaluationContext;
+
+	@Autowired
+	private BeanFactory beanFactory;
 
 	protected JdbcSink(JdbcOperations jdbcOperations, String tableName, Set<String> columns) {
 		this.jdbcOperations = jdbcOperations;
-		this.tableName = tableName;
-		this.sql = generateSql(columns);
+		this.sql = generateSql(tableName, columns);
 	}
 
-	@Autowired
-	public void setBeanFactory(BeanFactory beanFactory) {
+	@PostConstruct
+	public void afterPropertiesSet() {
 		this.evaluationContext = IntegrationContextUtils.getEvaluationContext(beanFactory);
 	}
 
-	private String generateSql(Set<String> columns) {
+	private String generateSql(String tableName, Set<String> columns) {
 		StringBuilder builder = new StringBuilder("INSERT INTO ");
 		StringBuilder questionMarks = new StringBuilder(") VALUES (");
-		builder.append(this.tableName).append("(");
+		builder.append(tableName).append("(");
 		int i = 0;
 
 		for (String column : columns) {

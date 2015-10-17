@@ -18,6 +18,9 @@ package org.springframework.cloud.stream.module.jdbc;
 
 import java.nio.charset.Charset;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.core.io.ByteArrayResource;
 
 /**
@@ -27,6 +30,8 @@ import org.springframework.core.io.ByteArrayResource;
  * @author Eric Bottard
  */
 public class DefaultInitializationScriptResource extends ByteArrayResource {
+
+	private static final Logger logger = LoggerFactory.getLogger(DefaultInitializationScriptResource.class);
 
 	public DefaultInitializationScriptResource(JdbcSinkProperties properties) {
 		super(scriptFor(properties).getBytes(Charset.forName("UTF-8")));
@@ -45,7 +50,7 @@ public class DefaultInitializationScriptResource extends ByteArrayResource {
 			result.append(column).append(" VARCHAR(2000)");
 		}
 		result.append(");\n");
-		System.out.println(result);
+		logger.debug("Generated the following initializing script for table {}:\n{}", properties.getTableName(), result);
 		return result.toString();
 	}
 }
