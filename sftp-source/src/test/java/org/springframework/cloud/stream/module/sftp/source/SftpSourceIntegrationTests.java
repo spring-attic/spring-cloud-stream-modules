@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
-import org.springframework.cloud.stream.modules.test.file.remote.TestSftpServer;
+import org.springframework.cloud.stream.modules.test.file.remote.SftpTestSupport;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.integration.endpoint.SourcePollingChannelAdapter;
@@ -50,7 +50,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SftpSourceApplication.class, initializers = PropertiesInitializer.class)
 @DirtiesContext
-public class SftpSourceIntegrationTests extends TestSftpServer {
+public class SftpSourceIntegrationTests extends SftpTestSupport {
 
 	@Autowired ApplicationContext applicationContext;
 

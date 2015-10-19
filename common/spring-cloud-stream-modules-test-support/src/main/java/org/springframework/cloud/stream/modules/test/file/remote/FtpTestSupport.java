@@ -34,13 +34,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 /**
- * Embedded FTP Server for test cases
+ * Provides an embedded FTP Server for test cases.
  *
  * @author Artem Bilan
  * @author Gary Russell
  * @author David Turanski
  */
-public class TestFtpServer extends TestRemoteFileServer {
+public class FtpTestSupport extends RemoteFileTestSupport {
 
 	private static volatile FtpServer server;
 

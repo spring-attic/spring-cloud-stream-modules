@@ -31,10 +31,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 /**
+ * Provides an embedded SFTP Server for test cases.
+ *
  * @author David Turanski
  * @author Gary Russell
  */
-public class TestSftpServer extends TestRemoteFileServer {
+public class SftpTestSupport extends RemoteFileTestSupport {
 
 	private static SshServer server;
 

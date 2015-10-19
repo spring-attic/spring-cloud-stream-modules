@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
-import org.springframework.cloud.stream.modules.test.file.remote.TestFtpServer;
+import org.springframework.cloud.stream.modules.test.file.remote.FtpTestSupport;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -45,7 +45,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FtpSinkApplication.class, initializers = PropertiesInitializer.class)
 @DirtiesContext
-public class FtpSinkIntegrationTests extends TestFtpServer {
+public class FtpSinkIntegrationTests extends FtpTestSupport {
 
 	@BeforeClass
 	public static void configureFtpServer() throws Throwable {

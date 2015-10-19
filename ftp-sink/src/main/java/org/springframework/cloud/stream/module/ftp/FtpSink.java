@@ -56,23 +56,23 @@ public class FtpSink {
 	@Bean
 	public IntegrationFlow ftpInboundFlow() {
 		FtpMessageHandlerSpec handlerSpec =
-					Ftp.outboundAdapter(new FtpRemoteFileTemplate(this.ftpSessionFactory), this.properties.getMode())
-						.remoteDirectory(this.properties.getRemoteDir())
-						.remoteFileSeparator(this.properties.getRemoteFileSeparator())
-						.autoCreateDirectory(this.properties.isAutoCreateDir())
-						.temporaryFileSuffix(this.properties.getTmpFileSuffix());
+			Ftp.outboundAdapter(new FtpRemoteFileTemplate(this.ftpSessionFactory), this.properties.getMode())
+				.remoteDirectory(this.properties.getRemoteDir())
+				.remoteFileSeparator(this.properties.getRemoteFileSeparator())
+				.autoCreateDirectory(this.properties.isAutoCreateDir())
+				.temporaryFileSuffix(this.properties.getTmpFileSuffix());
 		if (this.properties.getFilenameExpression() != null) {
 			handlerSpec.fileNameExpression(this.properties.getFilenameExpression().getExpressionString());
 		}
 		return IntegrationFlows.from(Sink.INPUT)
-				.handle(handlerSpec,
-					new Consumer<GenericEndpointSpec<FileTransferringMessageHandler<FTPFile>>>() {
-						@Override
-						public void accept(GenericEndpointSpec<FileTransferringMessageHandler<FTPFile>> e) {
-							e.autoStartup(false);
-						}
-					})
-				.get();
+			.handle(handlerSpec,
+				new Consumer<GenericEndpointSpec<FileTransferringMessageHandler<FTPFile>>>() {
+					@Override
+					public void accept(GenericEndpointSpec<FileTransferringMessageHandler<FTPFile>> e) {
+						e.autoStartup(false);
+					}
+				})
+			.get();
 	}
 
 }

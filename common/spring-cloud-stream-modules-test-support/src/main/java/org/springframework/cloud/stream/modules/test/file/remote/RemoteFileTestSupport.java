@@ -26,12 +26,12 @@ import org.junit.rules.TemporaryFolder;
 import org.springframework.integration.test.util.SocketUtils;
 
 /**
- * Abstract base class for remote file servers, e.g. (S)FTP.
+ * Abstract base class for tests requiring remote file servers, e.g. (S)FTP.
  *
  * @author Gary Russell
  *
  */
-public abstract class TestRemoteFileServer {
+public abstract class RemoteFileTestSupport {
 
 	protected static final int port = SocketUtils.findAvailableServerSocket();
 

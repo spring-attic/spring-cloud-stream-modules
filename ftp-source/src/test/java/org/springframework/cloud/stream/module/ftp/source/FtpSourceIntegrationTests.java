@@ -34,7 +34,7 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.ftp.source.FtpSourceApplication;
 import org.springframework.cloud.stream.module.ftp.source.FtpSourceProperties;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
-import org.springframework.cloud.stream.modules.test.file.remote.TestFtpServer;
+import org.springframework.cloud.stream.modules.test.file.remote.FtpTestSupport;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.context.ApplicationContext;
 import org.springframework.integration.endpoint.SourcePollingChannelAdapter;
@@ -51,7 +51,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FtpSourceApplication.class, initializers = PropertiesInitializer.class)
 @DirtiesContext
-public class FtpSourceIntegrationTests extends TestFtpServer {
+public class FtpSourceIntegrationTests extends FtpTestSupport {
 
 	@Autowired ApplicationContext applicationContext;
 
