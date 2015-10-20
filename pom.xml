@@ -28,6 +28,7 @@
 		<!-- sources in alphabetical order-->
 		<module>ftp-source</module>
 		<module>http-source</module>
+		<module>sftp-source</module>
 		<module>time-source</module>
 		<module>twitterstream-source</module>
 		<!-- processors in alphabetical order -->
