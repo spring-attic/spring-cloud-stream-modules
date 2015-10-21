@@ -5,7 +5,7 @@ title: Spring Cloud Stream Modules
 badges:
 
   # Specify your project's twitter handle, if any. Delete if none.
-  twitter: SpringData
+  twitter: SpringCloudOSS
 
   # Customize your project's badges. Delete any entries that do not apply.
   custom:
@@ -57,12 +57,13 @@ on variety of runtime platforms including: Cloud Foundry, Lattice, Apache Yarn, 
 
 ## Available Modules
 
-| Source  | Processor | Sink | Task |
+| __Source__ | __Processor__ | __Sink__ | __Task__ |
 | ------- | --------- | ---- | ---- |
 | ftp | filter | counter | timestamp | 
 | http | groovy-filter | file |
-| time | groovy-transform | gemfire | | | 
-| twitterstream | transform | hdfs | | 
+| sftp | groovy-transform | ftp | | | 
+| time | transform | gemfire | | 
+| twitterstream | | hdfs | | 
 | | | log | | 
 | | | redis | | 
 
