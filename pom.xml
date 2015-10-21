@@ -39,6 +39,7 @@
 		<module>filter-processor</module>
 		<module>groovy-filter-processor</module>
 		<module>groovy-transform-processor</module>
+		<module>httpclient-processor</module>
 		<module>noop-processor</module>
 		<module>transform-processor</module>
 		<!-- sinks in alphabetical order -->
