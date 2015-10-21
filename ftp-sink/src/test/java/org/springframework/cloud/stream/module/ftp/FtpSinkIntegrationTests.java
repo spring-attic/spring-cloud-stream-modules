@@ -67,11 +67,13 @@ public class FtpSinkIntegrationTests extends FtpTestSupport {
 	@Test
 	public void sendFiles() {
 		for (int i = 1; i <= 2; i++) {
-			String pathname = "/LOCALSOURCE" + i + ".TXT";
-			new File(getTargetRemoteDirectory() + pathname).delete();
-			assertFalse(new File(getTargetRemoteDirectory() + pathname).exists());
+			String pathname = "/localSource" + i + ".txt";
+			String upperPathname = pathname.toUpperCase();
+			new File(getTargetRemoteDirectory() + upperPathname).delete();
+			assertFalse(new File(getTargetRemoteDirectory() + upperPathname).exists());
 			this.ftpSink.input().send(new GenericMessage<>(new File(getSourceLocalDirectory() + pathname)));
-			assertTrue(new File(getTargetRemoteDirectory() + pathname).exists());
+			File expected = new File(getTargetRemoteDirectory() + upperPathname);
+			assertTrue(expected.getAbsolutePath() + " does not exist", expected.exists());
 			// verify the upcase on a case-insensitive file system
 			File[] files = getTargetRemoteDirectory().listFiles();
 			for (File file : files) {
