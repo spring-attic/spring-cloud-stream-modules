@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>file-sink</artifactId>
+	<artifactId>file-source</artifactId>
 	<packaging>jar</packaging>
-	<name>file-sink</name>
-	<description>File Sink stream module</description>
+	<name>file-source</name>
+	<description>File Source stream module</description>
 
 	<parent>
 		<groupId>org.springframework.cloud.stream.module</groupId>
@@ -14,13 +14,21 @@
 	</parent>
 
 	<properties>
-		<start-class>org.springframework.cloud.stream.module.file.sink.FileSinkApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.file.source.FileSourceApplication</start-class>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-file</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-java-dsl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud.stream.module</groupId>
+			<artifactId>spring-cloud-stream-modules-common-configuration</artifactId>
 		</dependency>
 	</dependencies>
 </project>

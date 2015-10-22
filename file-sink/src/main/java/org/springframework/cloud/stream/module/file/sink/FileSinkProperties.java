@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.file;
+package org.springframework.cloud.stream.module.file.sink;
 
 import java.io.File;
 

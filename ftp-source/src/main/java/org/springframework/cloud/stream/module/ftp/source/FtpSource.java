@@ -15,8 +15,6 @@
 
 package org.springframework.cloud.stream.module.ftp.source;
 
-import java.util.Collections;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.Bindings;
@@ -25,6 +23,7 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
+import org.springframework.cloud.stream.module.file.FileUtils;
 import org.springframework.cloud.stream.module.ftp.FtpSessionFactoryConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -36,19 +35,17 @@ import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.ftp.Ftp;
 import org.springframework.integration.dsl.ftp.FtpInboundChannelAdapterSpec;
 import org.springframework.integration.dsl.support.Consumer;
-import org.springframework.integration.file.splitter.FileSplitter;
-import org.springframework.integration.file.transformer.FileToByteArrayTransformer;
 import org.springframework.integration.ftp.filters.FtpRegexPatternFileListFilter;
 import org.springframework.integration.ftp.filters.FtpSimplePatternFileListFilter;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.scheduling.Trigger;
 import org.springframework.util.StringUtils;
 
 /**
  * @author David Turanski
  * @author Marius Bogoevici
+ * @author Gary Russell
  */
 @EnableBinding(Source.class)
 @EnableConfigurationProperties({FtpSourceProperties.class,
@@ -60,7 +57,7 @@ public class FtpSource {
 	private FtpSourceProperties config;
 
 	@Autowired
-	private FileConsumerProperties fileConsumerConfig;
+	private FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
 	MaxMessagesProperties maxMessagesConfig;
@@ -111,22 +108,9 @@ public class FtpSource {
 			}
 		});
 
-		switch (fileConsumerConfig.getMode()) {
-			case contents:
-				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
-						"application/octet-stream"))
-						.transform(new FileToByteArrayTransformer());
-				break;
-			case lines:
-				flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
-						"text/plain"))
-						.split(new FileSplitter(true, fileConsumerConfig.getWithMarkers()), null);
-			case ref:
-				break;
-			default:
-				throw new IllegalArgumentException(fileConsumerConfig.getMode().name() +
-						" is not a supported file reading mode.");
-		}
-		return flowBuilder.channel(source.output()).get();
+		return FileUtils.enhanceFlowForReadingMode(flowBuilder, this.fileConsumerProperties)
+				.channel(source.output())
+				.get();
 	}
+
 }

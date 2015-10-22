@@ -1,5 +1,6 @@
 /*
  * Copyright 2015 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,7 +14,9 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.sftp.source;
+package org.springframework.cloud.stream.module.file.source;
+
+import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,7 +26,6 @@ import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
 import org.springframework.cloud.stream.module.file.FileUtils;
-import org.springframework.cloud.stream.module.sftp.SftpSessionFactoryConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -31,82 +33,73 @@ import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
 import org.springframework.integration.dsl.core.Pollers;
-import org.springframework.integration.dsl.sftp.Sftp;
-import org.springframework.integration.dsl.sftp.SftpInboundChannelAdapterSpec;
+import org.springframework.integration.dsl.file.FileInboundChannelAdapterSpec;
+import org.springframework.integration.dsl.file.Files;
 import org.springframework.integration.dsl.support.Consumer;
+import org.springframework.integration.file.FileReadingMessageSource;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
-import org.springframework.integration.sftp.filters.SftpSimplePatternFileListFilter;
-import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
 import org.springframework.scheduling.Trigger;
 import org.springframework.util.StringUtils;
 
 /**
+ * Creates a {@link FileReadingMessageSource} bean and registers it as a
+ * Inbound Channel Adapter that sends messages to the Source output channel.
+ *
  * @author Gary Russell
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties({SftpSourceProperties.class,
-		FileConsumerProperties.class, MaxMessagesProperties.class})
-@Import({PeriodicTriggerConfiguration.class, SftpSessionFactoryConfiguration.class})
-public class SftpSource {
+@Import(PeriodicTriggerConfiguration.class)
+@EnableConfigurationProperties({ FileSourceProperties.class,
+	FileConsumerProperties.class, MaxMessagesProperties.class })
+public class FileSource {
 
 	@Autowired
-	private SftpSourceProperties properties;
+	private FileSourceProperties properties;
 
 	@Autowired
 	private FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
-	MaxMessagesProperties maxMessagesProperties;
+	private MaxMessagesProperties maxMessagesProperties;
 
 	@Autowired
-	DefaultSftpSessionFactory sftpSessionFactory;
+	private Trigger trigger;
 
-	@Autowired
-	Trigger trigger;
+	@Bean
+	public PollerMetadata poller() {
+		return Pollers.trigger(trigger).maxMessagesPerPoll(this.maxMessagesProperties.getMaxMessages()).get();
+	}
 
 	@Autowired
 	Source source;
 
 	@Bean
-	public PollerMetadata poller() {
-		return Pollers.trigger(this.trigger).maxMessagesPerPoll(this.maxMessagesProperties.getMaxMessages()).get();
-	}
-
-	@Bean
-	public IntegrationFlow sftpInboundFlow() {
-		SftpInboundChannelAdapterSpec messageSourceBuilder = Sftp.inboundAdapter(this.sftpSessionFactory)
-				.preserveTimestamp(this.properties.isPreserveTimestamp())
-				.remoteDirectory(this.properties.getRemoteDir())
-				.remoteFileSeparator(this.properties.getRemoteFileSeparator())
-				.localDirectory(this.properties.getLocalDir())
-				.autoCreateLocalDirectory(this.properties.isAutoCreateLocalDir())
-				.temporaryFileSuffix(this.properties.getTmpFileSuffix())
-				.deleteRemoteFiles(this.properties.isDeleteRemoteFiles());
+	public IntegrationFlow fileSourceFlow() {
+		FileInboundChannelAdapterSpec messageSourceSpec = Files.inboundAdapter(new File(this.properties.getDirectory()));
 
 		if (StringUtils.hasText(this.properties.getFilenamePattern())) {
-			messageSourceBuilder.filter(new SftpSimplePatternFileListFilter(this.properties.getFilenamePattern()));
+			messageSourceSpec.patternFilter(this.properties.getFilenamePattern(), this.properties.isPreventDuplicates());
 		}
 		else if (this.properties.getFilenameRegex() != null) {
-			messageSourceBuilder
-					.filter(new SftpRegexPatternFileListFilter(this.properties.getFilenameRegex()));
+			messageSourceSpec.regexFilter(this.properties.getFilenameRegex().pattern(),
+					this.properties.isPreventDuplicates());
 		}
 
-		IntegrationFlowBuilder flowBuilder = IntegrationFlows.from(messageSourceBuilder
-				, new Consumer<SourcePollingChannelAdapterSpec>() {
+		IntegrationFlowBuilder flowBuilder = IntegrationFlows
+				.from(messageSourceSpec,
+					new Consumer<SourcePollingChannelAdapterSpec>() {
 
-			@Override
-			public void accept(SourcePollingChannelAdapterSpec sourcePollingChannelAdapterSpec) {
-				sourcePollingChannelAdapterSpec
-						.autoStartup(false)
-						.poller(poller());
-			}
+						@Override
+						public void accept(SourcePollingChannelAdapterSpec sourcePollingChannelAdapterSpec) {
+							sourcePollingChannelAdapterSpec
+									.autoStartup(false)
+									.poller(poller());
+						}
 
-		});
-
+					});
 		return FileUtils.enhanceFlowForReadingMode(flowBuilder, this.fileConsumerProperties)
-				.channel(this.source.output())
-				.get();
+			.channel(source.output())
+			.get();
 	}
 
 }

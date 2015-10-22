@@ -22,6 +22,7 @@ import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.BeforeClass;
@@ -31,8 +32,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.cloud.stream.module.ftp.source.FtpSourceApplication;
-import org.springframework.cloud.stream.module.ftp.source.FtpSourceProperties;
 import org.springframework.cloud.stream.modules.test.PropertiesInitializer;
 import org.springframework.cloud.stream.modules.test.file.remote.FtpTestSupport;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
@@ -82,7 +81,8 @@ public class FtpSourceIntegrationTests extends FtpTestSupport {
 
 	@Test
 	public void sourceFilesAsRef() throws InterruptedException {
-		assertEquals("*", TestUtils.getPropertyValue(sourcePollingChannelAdapter, "source.synchronizer.filter.path"));
+		assertEquals("*", TestUtils.getPropertyValue(TestUtils.getPropertyValue(sourcePollingChannelAdapter,
+									"source.synchronizer.filter.fileFilters", Set.class).iterator().next(), "path"));
 		for (int i = 1; i <= 2; i++) {
 			@SuppressWarnings("unchecked")
 			Message<File> received = (Message<File>) messageCollector.forChannel(ftpSource.output()).poll(10,
