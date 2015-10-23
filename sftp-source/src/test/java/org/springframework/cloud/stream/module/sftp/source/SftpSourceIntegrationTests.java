@@ -22,6 +22,7 @@ import static org.junit.Assert.assertThat;
 
 import java.io.File;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.BeforeClass;
@@ -82,8 +83,8 @@ public class SftpSourceIntegrationTests extends SftpTestSupport {
 
 	@Test
 	public void sourceFilesAsRef() throws InterruptedException {
-		assertEquals(".*", TestUtils.getPropertyValue(sourcePollingChannelAdapter, "source.synchronizer.filter.pattern")
-				.toString());
+		assertEquals(".*", TestUtils.getPropertyValue(TestUtils.getPropertyValue(sourcePollingChannelAdapter,
+				"source.synchronizer.filter.fileFilters", Set.class).iterator().next(), "pattern").toString());
 		for (int i = 1; i <= 2; i++) {
 			@SuppressWarnings("unchecked")
 			Message<File> received = (Message<File>) messageCollector.forChannel(sftpSource.output()).poll(10,

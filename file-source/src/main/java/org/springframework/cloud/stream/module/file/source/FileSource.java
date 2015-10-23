@@ -17,7 +17,6 @@
 package org.springframework.cloud.stream.module.file.source;
 
 import java.io.File;
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,6 +25,7 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
+import org.springframework.cloud.stream.module.file.FileUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -36,10 +36,8 @@ import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.file.FileInboundChannelAdapterSpec;
 import org.springframework.integration.dsl.file.Files;
 import org.springframework.integration.dsl.support.Consumer;
-import org.springframework.integration.dsl.support.Transformers;
 import org.springframework.integration.file.FileReadingMessageSource;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.scheduling.Trigger;
 import org.springframework.util.StringUtils;
 
@@ -99,29 +97,9 @@ public class FileSource {
 						}
 
 					});
-		return enhanceFlowForReadingMode(flowBuilder)
+		return FileUtils.enhanceFlowForReadingMode(flowBuilder, this.fileConsumerProperties)
 			.channel(source.output())
 			.get();
-	}
-
-	private IntegrationFlowBuilder enhanceFlowForReadingMode(IntegrationFlowBuilder flowBuilder) {
-		switch (this.fileConsumerProperties.getMode()) {
-		case contents:
-			flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
-					"application/octet-stream"))
-					.transform(Transformers.fileToByteArray());
-			break;
-		case lines:
-			flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
-					"text/plain"))
-					.split(Files.splitter(true, this.fileConsumerProperties.getWithMarkers()));
-		case ref:
-			break;
-		default:
-			throw new IllegalArgumentException(this.fileConsumerProperties.getMode().name() +
-					" is not a supported file reading mode.");
-		}
-		return flowBuilder;
 	}
 
 }
