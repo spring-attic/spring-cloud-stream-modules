@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.file.source;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 import javax.validation.constraints.AssertTrue;
 
@@ -51,10 +52,10 @@ public class FileSourceProperties {
 	/**
 	 * A regex pattern to match files.
 	 */
-	private String filenameRegex;
+	private Pattern filenameRegex;
 
 	public String getDirectory() {
-		return directory;
+		return this.directory;
 	}
 
 	public void setDirectory(String directory) {
@@ -62,7 +63,7 @@ public class FileSourceProperties {
 	}
 
 	public boolean isPreventDuplicates() {
-		return preventDuplicates;
+		return this.preventDuplicates;
 	}
 
 	public void setPreventDuplicates(boolean preventDuplicates) {
@@ -70,18 +71,18 @@ public class FileSourceProperties {
 	}
 
 	public String getFilenamePattern() {
-		return filenamePattern;
+		return this.filenamePattern;
 	}
 
 	public void setFilenamePattern(String filenamePattern) {
 		this.filenamePattern = filenamePattern;
 	}
 
-	public String getFilenameRegex() {
-		return filenameRegex;
+	public Pattern getFilenameRegex() {
+		return this.filenameRegex;
 	}
 
-	public void setFilenameRegex(String filenameRegex) {
+	public void setFilenameRegex(Pattern filenameRegex) {
 		this.filenameRegex = filenameRegex;
 	}
 

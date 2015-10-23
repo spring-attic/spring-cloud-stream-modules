@@ -14,7 +14,7 @@
 	</parent>
 
 	<properties>
-		<start-class>org.springframework.cloud.stream.module.file.FileSinkApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.file.sink.FileSinkApplication</start-class>
 	</properties>
 
 	<dependencies>

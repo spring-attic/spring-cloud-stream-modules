@@ -22,7 +22,6 @@ import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
@@ -37,9 +36,8 @@ import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.file.FileInboundChannelAdapterSpec;
 import org.springframework.integration.dsl.file.Files;
 import org.springframework.integration.dsl.support.Consumer;
+import org.springframework.integration.dsl.support.Transformers;
 import org.springframework.integration.file.FileReadingMessageSource;
-import org.springframework.integration.file.splitter.FileSplitter;
-import org.springframework.integration.file.transformer.FileToByteArrayTransformer;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.scheduling.Trigger;
@@ -47,14 +45,14 @@ import org.springframework.util.StringUtils;
 
 /**
  * Creates a {@link FileReadingMessageSource} bean and registers it as a
- * Inbound Channel Adapter that sends messages from the Source output channel.
+ * Inbound Channel Adapter that sends messages to the Source output channel.
  *
  * @author Gary Russell
  */
 @EnableBinding(Source.class)
-@Import({PeriodicTriggerConfiguration.class, SpelExpressionConverterConfiguration.class})
+@Import(PeriodicTriggerConfiguration.class)
 @EnableConfigurationProperties({ FileSourceProperties.class,
-	FileConsumerProperties.class, MaxMessagesProperties.class})
+	FileConsumerProperties.class, MaxMessagesProperties.class })
 public class FileSource {
 
 	@Autowired
@@ -64,10 +62,10 @@ public class FileSource {
 	private FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
-	MaxMessagesProperties maxMessagesProperties;
+	private MaxMessagesProperties maxMessagesProperties;
 
 	@Autowired
-	Trigger trigger;
+	private Trigger trigger;
 
 	@Bean
 	public PollerMetadata poller() {
@@ -85,7 +83,8 @@ public class FileSource {
 			messageSourceSpec.patternFilter(this.properties.getFilenamePattern(), this.properties.isPreventDuplicates());
 		}
 		else if (this.properties.getFilenameRegex() != null) {
-			messageSourceSpec.regexFilter(this.properties.getFilenameRegex(), this.properties.isPreventDuplicates());
+			messageSourceSpec.regexFilter(this.properties.getFilenameRegex().pattern(),
+					this.properties.isPreventDuplicates());
 		}
 
 		IntegrationFlowBuilder flowBuilder = IntegrationFlows
@@ -110,12 +109,12 @@ public class FileSource {
 		case contents:
 			flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
 					"application/octet-stream"))
-					.transform(new FileToByteArrayTransformer());
+					.transform(Transformers.fileToByteArray());
 			break;
 		case lines:
 			flowBuilder.enrichHeaders(Collections.<String, Object>singletonMap(MessageHeaders.CONTENT_TYPE,
 					"text/plain"))
-					.split(new FileSplitter(true, this.fileConsumerProperties.getWithMarkers()), null);
+					.split(Files.splitter(true, this.fileConsumerProperties.getWithMarkers()));
 		case ref:
 			break;
 		default:

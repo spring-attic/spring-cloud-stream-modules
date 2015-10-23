@@ -26,6 +26,7 @@
 		<!-- common -->
 		<module>common</module>
 		<!-- sources in alphabetical order-->
+		<module>file-source</module>
 		<module>ftp-source</module>
 		<module>http-source</module>
 		<module>sftp-source</module>
