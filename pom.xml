@@ -47,6 +47,7 @@
 		<module>jdbc-sink</module>
 		<module>log-sink</module>
 		<module>redis-sink</module>
+		<module>websocket-sink</module>
 	</modules>
 	<build>
 		<plugins>

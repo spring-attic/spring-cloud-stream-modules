@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright 2014-15 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<html>
+<head><title>Web Socket Test</title></head>
+<body>
+<script type="text/javascript">
+	var socket;
+
+	function connectoToWebsocket(url) {
+		if (!window.WebSocket) {
+			window.WebSocket = window.MozWebSocket;
+		}
+		if (window.WebSocket) {
+			socket = new WebSocket(url);
+			socket.onmessage = function (event) {
+				var ta = document.getElementById('responseText');
+				ta.value = ta.value + '\n' + event.data
+			};
+			socket.onopen = function (event) {
+				var ta = document.getElementById('responseText');
+				ta.value = "Web Socket opened!";
+				document.getElementById('message').removeAttribute("disabled");
+				document.getElementById('sendButton').removeAttribute("disabled");
+			};
+			socket.onclose = function (event) {
+				var ta = document.getElementById('responseText');
+				ta.value = ta.value + "Web Socket closed";
+			};
+		} else {
+			alert("Your browser does not support Web Socket.");
+		}
+
+	}
+
+	function send(message) {
+		if (!window.WebSocket) {
+			return;
+		}
+		if (socket.readyState == WebSocket.OPEN) {
+			socket.send(message);
+		} else {
+			alert("The socket is not open.");
+		}
+	}
+</script>
+<form onsubmit="return false;">
+	<input name="url" value="ws://localhost:9292/websocket"/>
+	<input type="button" value="Connect" onclick="connectoToWebsocket(this.form.url.value)"/> <br/>
+
+	<input type="text" name="message" value="Hello, World!" disabled="disabled"/>
+	<input type="button" name="sendButton" value="Send Web Socket Data" onclick="send(this.form.message.value)"
+	disabled="disabled"/>
+
+	<h3>Output</h3>
+	<textarea id="responseText" style="width:500px;height:300px;"></textarea>
+</form>
+</body>
+</html>
