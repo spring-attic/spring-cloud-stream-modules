@@ -40,7 +40,7 @@ public class FileSourceProperties {
 	private String directory = DEFAULT_DIR;
 
 	/**
-	 * Set to true to include an {@code AcceptOnceFileListFilter}.
+	 * Set to true to include an AcceptOnceFileListFilter which prevents duplicates.
 	 */
 	private boolean preventDuplicates = true;
 
