@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Tests for Http Client Processor.
@@ -51,15 +51,65 @@ public abstract class HttpClientProcessorTests {
 	@Autowired
 	protected MessageCollector messageCollector;
 
-	protected RestTemplate restTemplate = new RestTemplate();
-
-	@WebIntegrationTest(value = "url=http://google.com", randomPort = true)
-	public static class SimpleMappingTests extends HttpClientProcessorTests {
+	@WebIntegrationTest(value = "url='http://google.com'", randomPort = true)
+	public static class TestRequestGET extends HttpClientProcessorTests {
 
 		@Test
-		public void testText() {
+		public void testRequest() {
 			channels.input().send(new GenericMessage<Object>("hello"));
 			assertThat(messageCollector.forChannel(channels.output()), receivesPayloadThat(containsString("google")));
+		}
+
+	}
+
+	@WebIntegrationTest(
+			value = {
+				"url='https://httpbin.org/post'",
+				"body='{\"foo\":\"bar\"}'",
+				"httpMethod=POST"},
+			randomPort = true)
+	public static class TestRequestPOST extends HttpClientProcessorTests {
+
+		@Test
+		public void testRequest() {
+			channels.input().send(new GenericMessage<Object>("..."));
+			assertThat(messageCollector.forChannel(channels.output()), 
+					receivesPayloadThat(Matchers.allOf(
+							containsString("foo"), containsString("bar"))));
+		}
+
+	}
+
+	@WebIntegrationTest(
+			value = {
+				"url='https://httpbin.org/headers'",
+				"headers={Key1:'value1',Key2:'value2'}"},
+			randomPort = true)
+	public static class TestRequestWithHeaders extends HttpClientProcessorTests {
+
+		@Test
+		public void testRequest() {
+			channels.input().send(new GenericMessage<Object>("..."));
+			assertThat(messageCollector.forChannel(channels.output()), 
+					receivesPayloadThat(Matchers.allOf(
+							containsString("Key1"), containsString("value1"),
+							containsString("Key2"), containsString("value2"))));
+		}
+
+	}
+
+	@WebIntegrationTest(
+			value = {
+				"url='http://google.com'",
+				"expectedReturnType=''.bytes.class"},
+			randomPort = true)
+	public static class TestRequestWithReturnType extends HttpClientProcessorTests {
+
+		@Test
+		public void testRequest() {
+			channels.input().send(new GenericMessage<Object>("hello"));
+			assertThat(messageCollector.forChannel(channels.output()), 
+					receivesPayloadThat(Matchers.isA(byte[].class)));
 		}
 
 	}

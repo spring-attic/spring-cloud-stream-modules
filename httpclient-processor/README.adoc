@@ -27,5 +27,4 @@ The following arguments are supported (pass via Spring Cloud Data Flow DSL strin
 * --url : URL of the target resource
 * --httpMethod : HTTP method, e.g., GET, POST, PUT, DELETE
 * --body : HTTP body to send along with the request
-
-(Request headers not yet supported, will be added in a future version).
+* --headers : a map of HTTP headers to send along with the request
