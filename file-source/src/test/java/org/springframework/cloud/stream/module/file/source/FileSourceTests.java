@@ -55,9 +55,15 @@ public abstract class FileSourceTests {
 	private static final String ROOT_DIR = TMPDIR + File.separator + "dataflow-tests"
 			+ File.separator + "input";
 
+	@Autowired
+	protected Source source;
+
+	@Autowired
+	protected MessageCollector messageCollector;
+
 	protected File atomicFileCreate(String filename) throws FileNotFoundException, IOException {
 		File file = new File(ROOT_DIR, filename + ".tmp");
-		File fileFinal = new File(ROOT_DIR, "test.txt");
+		File fileFinal = new File(ROOT_DIR, filename);
 		file.delete();
 		file.deleteOnExit();
 		fileFinal.delete();
@@ -68,12 +74,6 @@ public abstract class FileSourceTests {
 		assertTrue(file.renameTo(fileFinal));
 		return fileFinal;
 	}
-
-	@Autowired
-	protected Source source;
-
-	@Autowired
-	protected MessageCollector messageCollector;
 
 	@IntegrationTest({ "directory = ${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}input",
 		"fixedDelay = 100", "timeUnit = MILLISECONDS" })
@@ -163,6 +163,7 @@ public abstract class FileSourceTests {
 		public void testSimpleFile() throws Exception {
 			File file = atomicFileCreate("test.txt");
 			File hidden = atomicFileCreate("test.foo");
+			assertTrue(new File(ROOT_DIR, "test.foo").exists());
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertEquals(file, received.getPayload());
@@ -182,6 +183,7 @@ public abstract class FileSourceTests {
 		public void testSimpleFile() throws Exception {
 			File file = atomicFileCreate("test.txt");
 			File hidden = atomicFileCreate("test.foo");
+			assertTrue(new File(ROOT_DIR, "test.foo").exists());
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertEquals(file, received.getPayload());
