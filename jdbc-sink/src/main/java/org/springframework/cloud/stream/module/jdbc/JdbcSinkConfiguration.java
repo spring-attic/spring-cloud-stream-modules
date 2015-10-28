@@ -23,6 +23,8 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -59,6 +61,10 @@ import org.springframework.util.MultiValueMap;
 @EnableBinding(Sink.class)
 @EnableConfigurationProperties(JdbcSinkProperties.class)
 public class JdbcSinkConfiguration {
+
+	private static final Logger logger = LoggerFactory.getLogger(JdbcSinkConfiguration.class);
+
+	public static final Object NOT_SET = new Object();
 
 	@Autowired(required = false)
 	private SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
@@ -98,7 +104,7 @@ public class JdbcSinkConfiguration {
 						MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 						for (String key: columnExpressionVariations.keySet()) {
 							List<Expression> spels = columnExpressionVariations.get(key);
-							Object value = null;
+							Object value = NOT_SET;
 							EvaluationException lastException = null;
 							for (Expression spel : spels) {
 								try {
@@ -108,7 +114,15 @@ public class JdbcSinkConfiguration {
 									lastException = e;
 								}
 							}
-							parameterSource.addValue(key, value);
+							if (value == NOT_SET) {
+								if (lastException != null) {
+									logger.info("Could not find value for column '" + key + "': " + lastException.getMessage());
+								}
+								parameterSource.addValue(key, null);
+							}
+							else {
+								parameterSource.addValue(key, value);
+							}
 						}
 						return parameterSource;
 					}
