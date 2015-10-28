@@ -23,8 +23,10 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -42,6 +44,7 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.integration.jdbc.JdbcMessageHandler;
 import org.springframework.integration.jdbc.SqlParameterSourceFactory;
+import org.springframework.integration.json.JsonPropertyAccessor;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -121,7 +124,28 @@ public class JdbcSinkConfiguration {
 								parameterSource.addValue(key, null);
 							}
 							else {
-								parameterSource.addValue(key, value);
+								if (value instanceof JsonPropertyAccessor.ToStringFriendlyJsonNode) {
+									// Need to do some reflection until we have a getter for the Node
+									DirectFieldAccessor dfa = new DirectFieldAccessor(value);
+									JsonNode node = (JsonNode) dfa.getPropertyValue("node");
+									Object valueToUse;
+									if (node == null || node.isNull()) {
+										valueToUse = null;
+									}
+									else if (node.isNumber()) {
+										valueToUse = node.numberValue();
+									}
+									else if (node.isBoolean()) {
+										valueToUse = node.booleanValue();
+									}
+									else {
+										valueToUse = node.textValue();
+									}
+									parameterSource.addValue(key, valueToUse);
+								}
+								else {
+									parameterSource.addValue(key, value);
+								}
 							}
 						}
 						return parameterSource;
