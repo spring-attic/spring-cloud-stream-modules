@@ -16,14 +16,14 @@
 
 package org.springframework.cloud.stream.module.jdbc;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
@@ -31,13 +31,19 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.context.IntegrationContextUtils;
+import org.springframework.integration.jdbc.JdbcMessageHandler;
+import org.springframework.integration.jdbc.SqlParameterSourceFactory;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.messaging.Message;
@@ -48,52 +54,71 @@ import org.springframework.util.MultiValueMap;
  * A module that writes its incoming payload to an RDBMS using JDBC.
  *
  * @author Eric Bottard
+ * @author Thomas Risberg
  */
 @EnableBinding(Sink.class)
 @EnableConfigurationProperties(JdbcSinkProperties.class)
 public class JdbcSinkConfiguration {
 
-	private static final Logger logger = LoggerFactory.getLogger(JdbcSinkConfiguration.class);
-
 	@Autowired(required = false)
 	private SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
+
+	@Autowired
+	private BeanFactory beanFactory;
+
+	protected EvaluationContext evaluationContext;
 
 	@Autowired
 	private JdbcSinkProperties properties;
 
 	@Autowired
-	private JdbcSink jdbcSink;
+	private JdbcMessageHandler msgHandler;
 
-	@Autowired
-	private GenericApplicationContext applicationContext;
 
+	@Bean
+	public JdbcMessageHandler jdbcMessageHandler(DataSource dataSource) {
+		final MultiValueMap<String, Expression> columnExpressionVariations = new LinkedMultiValueMap<>();
+		for (Map.Entry<String, String> entry : properties.getColumns().entrySet()) {
+			String value = entry.getValue();
+			columnExpressionVariations.add(entry.getKey(), spelExpressionParser.parseExpression(value));
+			if (!value.startsWith("payload")) {
+				columnExpressionVariations.add(entry.getKey(), spelExpressionParser.parseExpression("payload." + value));
+			}
+		}
+		JdbcMessageHandler jdbcMessageHandler = new JdbcMessageHandler(dataSource,
+				generateSql(properties.getTableName(),columnExpressionVariations.keySet()));
+		jdbcMessageHandler.setSqlParameterSourceFactory(
+				new SqlParameterSourceFactory() {
+					@Override
+					public SqlParameterSource createParameterSource(Object o) {
+						if (!(o instanceof Message)) {
+							throw new IllegalArgumentException("Unable to handle type " + o.getClass().getName());
+						}
+						Message<?> message = (Message<?>) o;
+						MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+						for (String key: columnExpressionVariations.keySet()) {
+							List<Expression> spels = columnExpressionVariations.get(key);
+							Object value = null;
+							EvaluationException lastException = null;
+							for (Expression spel : spels) {
+								try {
+									value = spel.getValue(evaluationContext, message);
+								}
+								catch (EvaluationException e) {
+									lastException = e;
+								}
+							}
+							parameterSource.addValue(key, value);
+						}
+						return parameterSource;
+					}
+				});
+		return jdbcMessageHandler;
+	}
 
 	@ServiceActivator(autoStartup = "false", inputChannel = Sink.INPUT)
 	public void handleMessage(Message<?> msg) {
-		jdbcSink.handle(msg);
-	}
-
-	@Bean
-	public JdbcSink jdbcSink(JdbcOperations jdbcOperations) {
-		if (properties.getBatchSize() != null) {
-			Map<String, Expression> columnExpressionVariations = new HashMap<>();
-			for (Map.Entry<String, String> entry : properties.getColumns().entrySet()) {
-				String value = entry.getValue();
-				columnExpressionVariations.put(entry.getKey(), spelExpressionParser.parseExpression(value));
-			}
-			return new BatchingJdbcSink(jdbcOperations, properties.getTableName(), columnExpressionVariations, properties.getBatchSize());
-		} // Implicitly allow expressions against the (single item) payload
-		else {
-			MultiValueMap<String, Expression> columnExpressionVariations = new LinkedMultiValueMap<>();
-			for (Map.Entry<String, String> entry : properties.getColumns().entrySet()) {
-				String value = entry.getValue();
-				columnExpressionVariations.add(entry.getKey(), spelExpressionParser.parseExpression(value));
-				if (!value.startsWith("payload")) {
-					columnExpressionVariations.add(entry.getKey(), spelExpressionParser.parseExpression("payload." + value));
-				}
-			}
-			return new SimpleJdbcSink(jdbcOperations, properties.getTableName(), columnExpressionVariations);
-		}
+		msgHandler.handleMessage(msg);
 	}
 
 	@ConditionalOnProperty("initialize")
@@ -126,6 +151,29 @@ public class JdbcSinkConfiguration {
 		public ShorthandMapConverter shorthandMapConverter() {
 			return new ShorthandMapConverter();
 		}
+	}
+
+	@PostConstruct
+	public void afterPropertiesSet() {
+		this.evaluationContext = IntegrationContextUtils.getEvaluationContext(beanFactory);
+	}
+
+	private String generateSql(String tableName, Set<String> columns) {
+		StringBuilder builder = new StringBuilder("INSERT INTO ");
+		StringBuilder questionMarks = new StringBuilder(") VALUES (");
+		builder.append(tableName).append("(");
+		int i = 0;
+
+		for (String column : columns) {
+			if (i++ > 0) {
+				builder.append(", ");
+				questionMarks.append(", ");
+			}
+			builder.append(column);
+			questionMarks.append(':' + column);
+		}
+		builder.append(questionMarks).append(")");
+		return builder.toString();
 	}
 
 }

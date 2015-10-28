@@ -17,7 +17,6 @@ package org.springframework.cloud.stream.module.jdbc;
 
 import static org.hamcrest.Matchers.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.Matchers;
@@ -41,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Integration Tests for JdbcSink. Uses hsqldb as a (real) embedded DB.
  *
  * @author Eric Bottard
+ * @author Thomas Risberg
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {JdbcSinkApplication.class, EmbeddedDataSourceConfiguration.class})
@@ -89,21 +89,23 @@ public abstract class JdbcSinkIntegrationTests {
 			channels.input().send(MessageBuilder.withPayload(sent).build());
 			Payload expected = new Payload("hell", 666);
 			Payload result = jdbcOperations.query("select a, b from messages", new BeanPropertyRowMapper<>(Payload.class)).get(0);
-
 			Assert.assertThat(result, Matchers.samePropertyValuesAs(expected));
 		}
 	}
 
-	@IntegrationTest(value = {"batchSize=3", "columns=a,b"})
-	public static class BatchingTests extends JdbcSinkIntegrationTests {
+	@IntegrationTest(value = {"columns=a,b"})
+	public static class VaryingInsertTests extends JdbcSinkIntegrationTests {
 
 		@Test
 		public void testInsertion() {
 			Payload a = new Payload("hello", 42);
 			Payload b = new Payload("world", 12);
-			Payload c = new Payload("bonjour", 32);
-			Payload d = new Payload("monde", 22);
-			channels.input().send(MessageBuilder.withPayload(Arrays.asList(a, b, c, d)).build());
+			Payload c = new Payload("bonjour", null);
+			Payload d = new Payload(null, 22);
+			channels.input().send(MessageBuilder.withPayload(a).build());
+			channels.input().send(MessageBuilder.withPayload(b).build());
+			channels.input().send(MessageBuilder.withPayload(c).build());
+			channels.input().send(MessageBuilder.withPayload(d).build());
 			List<Payload> result = jdbcOperations.query("select a, b from messages", new BeanPropertyRowMapper<>(Payload.class));
 			Assert.assertThat(result, containsInAnyOrder(
 					samePropertyValuesAs(a),
@@ -140,12 +142,12 @@ public abstract class JdbcSinkIntegrationTests {
 	public static class Payload {
 		private String a;
 
-		private int b;
+		private Integer b;
 
 		public Payload() {
 		}
 
-		public Payload(String a, int b) {
+		public Payload(String a, Integer b) {
 			this.a = a;
 			this.b = b;
 		}
@@ -154,7 +156,7 @@ public abstract class JdbcSinkIntegrationTests {
 			return a;
 		}
 
-		public int getB() {
+		public Integer getB() {
 			return b;
 		}
 
@@ -162,7 +164,7 @@ public abstract class JdbcSinkIntegrationTests {
 			this.a = a;
 		}
 
-		public void setB(int b) {
+		public void setB(Integer b) {
 			this.b = b;
 		}
 

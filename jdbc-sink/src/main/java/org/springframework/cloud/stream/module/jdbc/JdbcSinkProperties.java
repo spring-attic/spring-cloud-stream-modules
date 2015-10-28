@@ -47,20 +47,6 @@ public class JdbcSinkProperties {
 	 */
 	private String initialize = "false";
 
-	/**
-	 * If set, then the received payload must be a collection and this tells how
-	 * frequently to emit batches of inserts.
-	 */
-	private Integer batchSize = null;
-
-	public Integer getBatchSize() {
-		return batchSize;
-	}
-
-	public void setBatchSize(Integer batchSize) {
-		this.batchSize = batchSize;
-	}
-
 	public String getTableName() {
 		return tableName;
 	}
