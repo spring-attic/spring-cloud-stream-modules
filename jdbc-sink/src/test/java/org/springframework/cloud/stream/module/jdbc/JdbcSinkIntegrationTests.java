@@ -17,7 +17,9 @@ package org.springframework.cloud.stream.module.jdbc;
 
 import static org.hamcrest.Matchers.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -30,8 +32,12 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.tuple.Tuple;
+import org.springframework.cloud.stream.tuple.TupleBuilder;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -115,6 +121,7 @@ public abstract class JdbcSinkIntegrationTests {
 			));
 		}
 	}
+
 	@IntegrationTest(value = {"tableName=no_script", "initialize=true", "columns=a,b"})
 	public static class ImplicitTableCreationTests extends JdbcSinkIntegrationTests {
 
@@ -136,6 +143,78 @@ public abstract class JdbcSinkIntegrationTests {
 			channels.input().send(MessageBuilder.withPayload(sent).build());
 			Payload result = jdbcOperations.query("select a, b from foobar", new BeanPropertyRowMapper<>(Payload.class)).get(0);
 			Assert.assertThat(result, Matchers.samePropertyValuesAs(sent));
+		}
+	}
+
+	@IntegrationTest(value = {"columns=a,b"})
+	public static class MapPayloadInsertTests extends JdbcSinkIntegrationTests {
+
+		@Test
+		public void testInsertion() {
+			NamedParameterJdbcOperations namedParameterJdbcOperations = new NamedParameterJdbcTemplate(jdbcOperations);
+			Map<String, Object> mapA = new HashMap<>();
+			mapA.put("a", "hello1");
+			mapA.put("b", 42);
+			Map<String, Object> mapB = new HashMap<>();
+			mapB.put("a", "hello2");
+			mapB.put("b", null);
+			Map<String, Object> mapC = new HashMap<>();
+			mapC.put("a", "hello3");
+			channels.input().send(MessageBuilder.withPayload(mapA).build());
+			channels.input().send(MessageBuilder.withPayload(mapB).build());
+			channels.input().send(MessageBuilder.withPayload(mapC).build());
+			Assert.assertThat(namedParameterJdbcOperations.queryForObject(
+					"select count(*) from messages where a = :a and b = :b", mapA, Integer.class), is(1));
+			Assert.assertThat(namedParameterJdbcOperations.queryForObject(
+					"select count(*) from messages where a = :a and b IS NULL", mapB, Integer.class), is(1));
+			Assert.assertThat(namedParameterJdbcOperations.queryForObject(
+					"select count(*) from messages where a = :a and b IS NULL", mapC, Integer.class), is(1));
+		}
+	}
+
+	@IntegrationTest(value = {"columns=a,b"})
+	public static class TuplePayloadInsertTests extends JdbcSinkIntegrationTests {
+
+		@Test
+		public void testInsertion() {
+			Tuple tupleA = new TupleBuilder().of("a", "hello1", "b", 42);
+			Tuple tupleB = new TupleBuilder().of("a", "hello2", "b", null);
+			Tuple tupleC = new TupleBuilder().of("a", "hello3");
+			channels.input().send(MessageBuilder.withPayload(tupleA).build());
+			channels.input().send(MessageBuilder.withPayload(tupleB).build());
+			channels.input().send(MessageBuilder.withPayload(tupleC).build());
+			Assert.assertThat(jdbcOperations.queryForObject(
+					"select count(*) from messages where a = ? and b = ?",
+					Integer.class, tupleA.getString("a"), tupleA.getInt("b")), is(1));
+			Assert.assertThat(jdbcOperations.queryForObject(
+					"select count(*) from messages where a = ? and b IS NULL",
+					Integer.class, tupleB.getString("a")), is(1));
+			Assert.assertThat(jdbcOperations.queryForObject(
+					"select count(*) from messages where a = ? and b IS NULL",
+					Integer.class, tupleC.getString("a")), is(1));
+		}
+	}
+
+	@IntegrationTest(value = {"columns=a,b"})
+	public static class JsonStringPayloadInsertTests extends JdbcSinkIntegrationTests {
+
+		@Test
+		public void testInsertion() {
+			String stringA = "{\"a\": \"hello1\", \"b\": 42}";
+			String stringB = "{\"a\": \"hello2\", \"b\": null}";
+			String stringC = "{\"a\": \"hello3\"";
+			channels.input().send(MessageBuilder.withPayload(stringA).build());
+			channels.input().send(MessageBuilder.withPayload(stringB).build());
+			channels.input().send(MessageBuilder.withPayload(stringC).build());
+			Assert.assertThat(jdbcOperations.queryForObject(
+					"select count(*) from messages where a = ? and b = ?",
+					Integer.class, "hello1", 42), is(1));
+			Assert.assertThat(jdbcOperations.queryForObject(
+					"select count(*) from messages where a = ? and b IS NULL",
+					Integer.class, "hello2"), is(1));
+			Assert.assertThat(jdbcOperations.queryForObject(
+					"select count(*) from messages where a = ? and b IS NULL",
+					Integer.class, "hello3"), is(1));
 		}
 	}
 

@@ -51,7 +51,8 @@ public class ShorthandMapConverter implements Converter<String, Map<String, Stri
 			}
 			// Split on colon, if not preceded by backslash
 			String[] keyValuePair = unescaped.split("(?<!\\\\):");
-			Assert.isTrue(keyValuePair.length <= 2, "'" + unescaped + "' could not be parsed to a 'key:value' pair or simple 'key' with implicit value");
+			Assert.isTrue(keyValuePair.length <= 2, "'" + unescaped +
+					"' could not be parsed to a 'key:value' pair or simple 'key' with implicit value");
 			String key = keyValuePair[0].trim().replace("\\:", ":");
 			String value = keyValuePair.length == 2 ? keyValuePair[1].trim().replace("\\:", ":") : key;
 			result.put(key, value);

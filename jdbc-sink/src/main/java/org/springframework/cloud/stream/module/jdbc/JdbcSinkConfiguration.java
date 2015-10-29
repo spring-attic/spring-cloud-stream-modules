@@ -41,12 +41,10 @@ import org.springframework.expression.EvaluationException;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.context.IntegrationContextUtils;
+import org.springframework.integration.expression.ExpressionUtils;
 import org.springframework.integration.jdbc.JdbcMessageHandler;
 import org.springframework.integration.jdbc.SqlParameterSourceFactory;
 import org.springframework.integration.json.JsonPropertyAccessor;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
@@ -69,7 +67,6 @@ public class JdbcSinkConfiguration {
 
 	public static final Object NOT_SET = new Object();
 
-	@Autowired(required = false)
 	private SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
 
 	@Autowired
@@ -85,6 +82,7 @@ public class JdbcSinkConfiguration {
 
 
 	@Bean
+	@ServiceActivator(autoStartup = "false", inputChannel = Sink.INPUT)
 	public JdbcMessageHandler jdbcMessageHandler(DataSource dataSource) {
 		final MultiValueMap<String, Expression> columnExpressionVariations = new LinkedMultiValueMap<>();
 		for (Map.Entry<String, String> entry : properties.getColumns().entrySet()) {
@@ -112,6 +110,7 @@ public class JdbcSinkConfiguration {
 							for (Expression spel : spels) {
 								try {
 									value = spel.getValue(evaluationContext, message);
+									break;
 								}
 								catch (EvaluationException e) {
 									lastException = e;
@@ -154,11 +153,6 @@ public class JdbcSinkConfiguration {
 		return jdbcMessageHandler;
 	}
 
-	@ServiceActivator(autoStartup = "false", inputChannel = Sink.INPUT)
-	public void handleMessage(Message<?> msg) {
-		msgHandler.handleMessage(msg);
-	}
-
 	@ConditionalOnProperty("initialize")
 	@Bean
 	public DataSourceInitializer nonBootDataSourceInitializer(DataSource dataSource, ResourceLoader resourceLoader) {
@@ -169,15 +163,11 @@ public class JdbcSinkConfiguration {
 		dataSourceInitializer.setDatabasePopulator(databasePopulator);
 		if ("true".equals(properties.getInitialize())) {
 			databasePopulator.addScript(new DefaultInitializationScriptResource(properties));
-		} else {
+		}
+		else {
 			databasePopulator.addScript(resourceLoader.getResource(properties.getInitialize()));
 		}
 		return dataSourceInitializer;
-	}
-
-	@Bean
-	public JdbcOperations jdbcOperations(DataSource dataSource) {
-		return new JdbcTemplate(dataSource);
 	}
 
 	/*
@@ -193,7 +183,7 @@ public class JdbcSinkConfiguration {
 
 	@PostConstruct
 	public void afterPropertiesSet() {
-		this.evaluationContext = IntegrationContextUtils.getEvaluationContext(beanFactory);
+		this.evaluationContext = ExpressionUtils.createStandardEvaluationContext(beanFactory);
 	}
 
 	private String generateSql(String tableName, Set<String> columns) {

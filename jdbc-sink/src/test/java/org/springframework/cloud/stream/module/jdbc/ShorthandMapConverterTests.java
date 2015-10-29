@@ -29,7 +29,7 @@ import org.junit.Test;
  *
  * @author Eric Bottard
  */
-public class ShorthandMapConverterTest {
+public class ShorthandMapConverterTests {
 
 	private ShorthandMapConverter converter = new ShorthandMapConverter();
 
