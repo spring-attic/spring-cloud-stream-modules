@@ -202,7 +202,7 @@ public abstract class JdbcSinkIntegrationTests {
 		public void testInsertion() {
 			String stringA = "{\"a\": \"hello1\", \"b\": 42}";
 			String stringB = "{\"a\": \"hello2\", \"b\": null}";
-			String stringC = "{\"a\": \"hello3\"";
+			String stringC = "{\"a\": \"hello3\"}";
 			channels.input().send(MessageBuilder.withPayload(stringA).build());
 			channels.input().send(MessageBuilder.withPayload(stringB).build());
 			channels.input().send(MessageBuilder.withPayload(stringC).build());
