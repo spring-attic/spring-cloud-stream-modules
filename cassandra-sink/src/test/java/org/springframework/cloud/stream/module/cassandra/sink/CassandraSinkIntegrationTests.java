@@ -1,6 +1,6 @@
 /*
  * Copyright 2015 the original author or authors.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -106,7 +106,6 @@ public abstract class CassandraSinkIntegrationTests {
 		"spring.cassandra.keyspace=" + CASSANDRA_KEYSPACE,
 		"spring.cassandra.entity-base-packages=org.springframework.cloud.stream.module.cassandra.test.domain",
 		"query-type=INSERT"})
-	@DirtiesContext
 	public static class CassandraEntityInsertTests extends CassandraSinkIntegrationTests {
 
 		@Test
@@ -142,7 +141,6 @@ public abstract class CassandraSinkIntegrationTests {
 		"spring.cassandra.init-script=init-db.cql",
 		"query-type=INSERT",
 		"ingest-query=insert into book (isbn, title, author, pages, saleDate, inStock) values (?, ?, ?, ?, ?, ?)"})
-	@DirtiesContext
 	public static class CassandraSinkIngestTests extends CassandraSinkIntegrationTests {
 
 		@Test
