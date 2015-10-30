@@ -67,7 +67,7 @@ public class CassandraSinkConfiguration {
 
 	@Autowired
 	private CassandraSinkProperties cassandraSinkProperties;
-	
+
 	@Autowired
 	private CassandraOperations template;
 

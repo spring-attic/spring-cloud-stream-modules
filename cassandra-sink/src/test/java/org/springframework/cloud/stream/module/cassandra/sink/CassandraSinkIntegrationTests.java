@@ -117,20 +117,20 @@ public abstract class CassandraSinkIntegrationTests {
 			book.setPages(521);
 			book.setSaleDate(new Date());
 			book.setInStock(true);
-	
+
 			sink.input().send(new GenericMessage<>(book));
-	
+
 			final Select select = QueryBuilder.select().all().from("book");
-	
+
 			assertEqualsEventually(1, new Supplier<Integer>() {
-	
+
 				@Override
 				public Integer get() {
 					return cassandraTemplate.select(select, Book.class).size();
 				}
-	
+
 			});
-	
+
 			cassandraTemplate.delete(book);
 		}
 	}
@@ -167,7 +167,7 @@ public abstract class CassandraSinkIntegrationTests {
 		}
 	}
 
-	
+
 	private static List<Book> getBookList(int numBooks) {
 
 		List<Book> books = new ArrayList<>();
