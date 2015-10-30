@@ -17,19 +17,19 @@
 package org.springframework.cloud.stream.module.cassandra;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import com.datastax.driver.core.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cassandra.config.CompressionType;
+import org.springframework.cassandra.core.CqlTemplate;
 import org.springframework.cassandra.core.keyspace.CreateKeyspaceSpecification;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.config.java.AbstractCassandraConfiguration;
 import org.springframework.util.ObjectUtils;
@@ -37,6 +37,8 @@ import org.springframework.util.StringUtils;
 
 import com.datastax.driver.core.AuthProvider;
 import com.datastax.driver.core.PlainTextAuthProvider;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author Artem Bilan
@@ -48,30 +50,6 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 	@Autowired
 	CassandraProperties cassandraProperties;
-
-	@Override
-	protected List<String> getStartupScripts() {
-		if (cassandraProperties.getInitScript() == null) {
-			return Collections.emptyList();
-		}
-		else {
-			Resource initScriptResource = new DefaultResourceLoader().getResource(cassandraProperties.getInitScript());
-			String scripts = null;
-			try (Scanner scanner = new Scanner(initScriptResource.getInputStream(), "UTF-8")) {
-				scripts = scanner.useDelimiter("\\A").next();
-			} catch (IOException e) {
-				throw new InvalidDataAccessApiUsageException("Unable to load the specified init script (" +
-						cassandraProperties.getInitScript() + ")", e);
-			}
-			List<String> scriptList = new ArrayList<>();
-			for (String script : StringUtils.delimitedListToStringArray(scripts, ";", "\r\n\f")) {
-				if (StringUtils.hasText(script)) { // an empty String after the last ';'
-					scriptList.add(script + ";");
-				}
-			}
-			return scriptList;
-		}
-	}
 
 	@Override
 	protected String getContactPoints() {
@@ -130,5 +108,37 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 		}
 	}
 
+	/**
+	 * Inner class to execute init scripts on the provided {@code keyspace}.
+	 * It is here to bypass circular dependency with {@link Session} injection and
+	 * its {@code @amp;Bean} in the {@link AbstractCassandraConfiguration}.
+	 * From other side we can't use {@link #getStartupScripts()} because they are
+	 * shared between Cluster and Session initializations.
+	 */
+	@Configuration
+	protected static class CassandraKeyspaceInitializerConfiguration {
+
+		@Autowired
+		CassandraProperties cassandraProperties;
+
+		@Autowired
+		Session session;
+
+		@PostConstruct
+		public void init() throws IOException {
+			if (cassandraProperties.getInitScript() != null) {
+				Resource initScriptResource = new DefaultResourceLoader().getResource(cassandraProperties.getInitScript());
+				String scripts = new Scanner(initScriptResource.getInputStream(), "UTF-8").useDelimiter("\\A").next();
+
+				CqlTemplate template = new CqlTemplate(this.session);
+
+				for (String script : StringUtils.delimitedListToStringArray(scripts, ";", "\r\n\f")) {
+					if (StringUtils.hasText(script)) { // an empty String after the last ';'
+						template.execute(script + ";");
+					}
+				}
+			}
+		}
+	}
 }
 

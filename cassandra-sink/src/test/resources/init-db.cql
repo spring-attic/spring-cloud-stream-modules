@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS test.book;
+DROP TABLE IF EXISTS book;
 
-CREATE TABLE test.book  (
+CREATE TABLE book  (
 	isbn    	uuid PRIMARY KEY,
 	author  	text,
 	instock 	boolean,
