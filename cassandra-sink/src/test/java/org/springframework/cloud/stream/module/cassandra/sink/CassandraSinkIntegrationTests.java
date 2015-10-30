@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.stream.module.cassandra.sink;
 
+import com.datastax.driver.core.utils.UUIDs;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,14 +62,14 @@ import static org.junit.Assert.assertTrue;
 @DirtiesContext
 public abstract class CassandraSinkIntegrationTests {
 
-	public static final String CASSANDRA_KEYSPACE = "cassandraTest";
+	public static final String CASSANDRA_KEYSPACE = "test";
 
 	private static final String CASSANDRA_STORAGE_CONFIG = "spring-cassandra.yaml";
 
 	private static final int PORT = 9043; // See spring-cassandra.yaml - native_transport_port
 
 	@Autowired
-	@Bindings(CassandraSink.class)
+	@Bindings(CassandraSinkConfiguration.class)
 	protected Sink sink;
 
 	@Autowired
@@ -103,15 +104,15 @@ public abstract class CassandraSinkIntegrationTests {
 
 	@WebIntegrationTest({"spring.cassandra.port=" + PORT,
 		"spring.cassandra.keyspace=" + CASSANDRA_KEYSPACE,
-		"spring.cassandra.init-script=init-db.cql",
 		"spring.cassandra.entity-base-packages=org.springframework.cloud.stream.module.cassandra.test.domain",
 		"query-type=INSERT"})
+	@DirtiesContext
 	public static class CassandraEntityInsertTests extends CassandraSinkIntegrationTests {
 
 		@Test
 		public void testInsert() throws InterruptedException {
 			Book book = new Book();
-			book.setIsbn(UUID.randomUUID());
+			book.setIsbn(UUIDs.timeBased());
 			book.setTitle("Spring Integration Cassandra");
 			book.setAuthor("Cassandra Guru");
 			book.setPages(521);
@@ -141,6 +142,7 @@ public abstract class CassandraSinkIntegrationTests {
 		"spring.cassandra.init-script=init-db.cql",
 		"query-type=INSERT",
 		"ingest-query=insert into book (isbn, title, author, pages, saleDate, inStock) values (?, ?, ?, ?, ?, ?)"})
+	@DirtiesContext
 	public static class CassandraSinkIngestTests extends CassandraSinkIntegrationTests {
 
 		@Test

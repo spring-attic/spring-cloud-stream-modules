@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cassandra.core.WriteOptions;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -58,6 +60,7 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
  */
 @Configuration
 @Import(CassandraConfiguration.class)
+@EnableBinding(Sink.class)
 @EnableConfigurationProperties(CassandraSinkProperties.class)
 public class CassandraSinkConfiguration {
 
@@ -76,6 +79,7 @@ public class CassandraSinkConfiguration {
 
 	@Bean
 	@Primary
+	@ServiceActivator(inputChannel= Sink.INPUT)
 	public MessageHandler bridgeMessageHandler() {
 		AbstractMessageProducingHandler messageHandler;
 		if (StringUtils.hasText(cassandraSinkProperties.getIngestQuery())) {

@@ -17,19 +17,19 @@
 package org.springframework.cloud.stream.module.cassandra;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cassandra.config.CompressionType;
-import org.springframework.cassandra.core.CqlTemplate;
 import org.springframework.cassandra.core.keyspace.CreateKeyspaceSpecification;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.config.java.AbstractCassandraConfiguration;
 import org.springframework.util.ObjectUtils;
@@ -37,7 +37,6 @@ import org.springframework.util.StringUtils;
 
 import com.datastax.driver.core.AuthProvider;
 import com.datastax.driver.core.PlainTextAuthProvider;
-import com.datastax.driver.core.Session;
 
 /**
  * @author Artem Bilan
@@ -49,26 +48,28 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 	@Autowired
 	CassandraProperties cassandraProperties;
-	
-	@Autowired
-	private Session session;
 
-	@PostConstruct
-	public void init() throws IOException {
-		if (cassandraProperties.getInitScript() != null) {
+	@Override
+	protected List<String> getStartupScripts() {
+		if (cassandraProperties.getInitScript() == null) {
+			return Collections.emptyList();
+		}
+		else {
 			Resource initScriptResource = new DefaultResourceLoader().getResource(cassandraProperties.getInitScript());
 			String scripts = null;
 			try (Scanner scanner = new Scanner(initScriptResource.getInputStream(), "UTF-8")) {
 				scripts = scanner.useDelimiter("\\A").next();
+			} catch (IOException e) {
+				throw new InvalidDataAccessApiUsageException("Unable to load the specified init script (" +
+						cassandraProperties.getInitScript() + ")", e);
 			}
-
-			CqlTemplate template = new CqlTemplate(this.session);
-
+			List<String> scriptList = new ArrayList<>();
 			for (String script : StringUtils.delimitedListToStringArray(scripts, ";", "\r\n\f")) {
 				if (StringUtils.hasText(script)) { // an empty String after the last ';'
-					template.execute(script + ";");
+					scriptList.add(script + ";");
 				}
 			}
+			return scriptList;
 		}
 	}
 
