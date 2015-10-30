@@ -19,8 +19,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.test.EnvironmentTestUtils;
 import org.springframework.cassandra.core.ConsistencyLevel;
 import org.springframework.cassandra.core.RetryPolicy;
+import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.cassandra.outbound.CassandraMessageHandler;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -32,7 +36,7 @@ import org.junit.Test;
  * @author Thomas Risberg
  */
 public class CassandraSinkPropertiesTests {
-	
+
 	@Test
 	public void consistencyLevelCanBeCustomized() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
@@ -87,16 +91,18 @@ public class CassandraSinkPropertiesTests {
 	@Test
 	public void statementExpressionCanBeCustomized() {
 		String queryDsl = "Select(FOO.BAR).From(FOO)";
+		Expression expression =  new SpelExpressionParser().parseExpression(queryDsl);
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		EnvironmentTestUtils.addEnvironment(context, "statement-expression:" + queryDsl);
 		context.register(Conf.class);
 		context.refresh();
 		CassandraSinkProperties properties = context.getBean(CassandraSinkProperties.class);
-		assertThat(properties.getStatementExpression(), equalTo(queryDsl));
+		assertThat(properties.getStatementExpression().getExpressionString(), equalTo(expression.getExpressionString()));
 	}
 
 	@Configuration
 	@EnableConfigurationProperties(CassandraSinkProperties.class)
+	@Import(SpelExpressionConverterConfiguration.class)
 	static class Conf {
 	}
 

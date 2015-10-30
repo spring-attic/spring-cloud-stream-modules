@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.cassandra.sink;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cassandra.core.ConsistencyLevel;
 import org.springframework.cassandra.core.RetryPolicy;
+import org.springframework.expression.Expression;
 import org.springframework.integration.cassandra.outbound.CassandraMessageHandler;
 
 /**
@@ -56,7 +57,7 @@ public class CassandraSinkProperties {
 	/**
 	 * The expression in Cassandra query DSL style.
 	 */
-	private String statementExpression;
+	private Expression statementExpression;
 
 	public ConsistencyLevel getConsistencyLevel() {
 		return consistencyLevel;
@@ -98,11 +99,11 @@ public class CassandraSinkProperties {
 		this.ingestQuery = ingestQuery;
 	}
 
-	public String getStatementExpression() {
+	public Expression getStatementExpression() {
 		return statementExpression;
 	}
 
-	public void setStatementExpression(String statementExpression) {
+	public void setStatementExpression(Expression statementExpression) {
 		this.statementExpression = statementExpression;
 	}
 

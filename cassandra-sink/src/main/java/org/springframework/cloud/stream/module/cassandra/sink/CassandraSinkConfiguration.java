@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cassandra.core.WriteOptions;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -59,12 +60,10 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
  * @author Thomas Risberg
  */
 @Configuration
-@Import(CassandraConfiguration.class)
+@Import({SpelExpressionConverterConfiguration.class, CassandraConfiguration.class})
 @EnableBinding(Sink.class)
 @EnableConfigurationProperties(CassandraSinkProperties.class)
 public class CassandraSinkConfiguration {
-
-	private static final SpelExpressionParser PARSER = new SpelExpressionParser();
 
 	@Autowired
 	private CassandraSinkProperties cassandraSinkProperties;
@@ -104,9 +103,8 @@ public class CassandraSinkConfiguration {
 		if (StringUtils.hasText(cassandraSinkProperties.getIngestQuery())) {
 			cassandraMessageHandler.setIngestQuery(cassandraSinkProperties.getIngestQuery());
 		}
-		else if (StringUtils.hasText(cassandraSinkProperties.getStatementExpression())) {
-			Expression expression = PARSER.parseExpression(cassandraSinkProperties.getStatementExpression());
-			cassandraMessageHandler.setStatementExpression(expression);
+		else if (cassandraSinkProperties.getStatementExpression() != null) {
+			cassandraMessageHandler.setStatementExpression(cassandraSinkProperties.getStatementExpression());
 		}
 		return cassandraMessageHandler;
 	}
