@@ -156,7 +156,6 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-lattice-core</artifactId>
 			<version>${spring-cloud-lattice.version}</version>
-			<optional>true</optional>
 		</dependency>
 		<!-- Cloud connector dependencies -->
 		<!-- Lattice connector dependency to create services info from lattice -->
@@ -164,19 +163,16 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-lattice-connector</artifactId>
 			<version>${spring-cloud-lattice.version}</version>
-			<optional>true</optional>
 		</dependency>
 		<!-- CF connector dependency to create services info from CF -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-cloudfoundry-connector</artifactId>
-			<optional>true</optional>
 		</dependency>
 		<!-- dependency to connect to detected cloud services -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-spring-service-connector</artifactId>
-			<optional>true</optional>
 		</dependency>
 		<!--TODO: Move transport related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
 		<dependency>
