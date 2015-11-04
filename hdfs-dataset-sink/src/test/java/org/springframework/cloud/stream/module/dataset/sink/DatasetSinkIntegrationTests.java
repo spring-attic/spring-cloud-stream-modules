@@ -18,7 +18,6 @@ package org.springframework.cloud.stream.module.dataset.sink;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,7 +62,7 @@ public abstract class DatasetSinkIntegrationTests {
 	protected DatasetOperations datasetOperations;
 
 	@Autowired
-	@Bindings(DatasetSink.class)
+	@Bindings(DatasetSinkConfiguration.class)
 	protected Sink sink;
 
 	@Before
@@ -86,10 +85,7 @@ public abstract class DatasetSinkIntegrationTests {
 			sink.input().send(new GenericMessage<>("Foo"));
 			sink.input().send(new GenericMessage<>("Bar"));
 			sink.input().send(new GenericMessage<>("Baz"));
-		}
 
-		@After
-		public void checkFilesClosedOK() throws IOException {
 			applicationContext.close();
 			File testOutput = new File(testDir);
 			assertTrue("Dataset path created", testOutput.exists());
@@ -138,11 +134,7 @@ public abstract class DatasetSinkIntegrationTests {
 			t2.setTimestamp(systemTime + 50000);
 			t2.setDescription("x");
 			sink.input().send(MessageBuilder.withPayload(t2).build());
-		}
 
-		@After
-		public void checkFilesClosedOK() throws IOException {
-			applicationContext.close();
 			File testOutput = new File(testDir);
 			assertTrue("Dataset path created", testOutput.exists());
 			assertTrue("Dataset storage created",
@@ -192,11 +184,7 @@ public abstract class DatasetSinkIntegrationTests {
 			t2.setTimestamp(System.currentTimeMillis());
 			t2.setDescription("x");
 			sink.input().send(MessageBuilder.withPayload(t2).build());
-		}
 
-		@After
-		public void checkFilesClosedOK() throws IOException {
-			applicationContext.close();
 			File testOutput = new File(testDir);
 			assertTrue("Dataset path created", testOutput.exists());
 			assertTrue("Dataset storage created",

@@ -17,7 +17,9 @@
 package org.springframework.cloud.stream.module.dataset.domain;
 
 /**
- * Test POJO for writing partitioned dataset
+ * Test POJO for writing partitioned dataset.
+ *
+ * @author Thomas Risberg
  */
 public class TestPojo {
 

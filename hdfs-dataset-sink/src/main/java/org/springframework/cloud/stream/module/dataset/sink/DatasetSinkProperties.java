@@ -39,7 +39,7 @@ public class DatasetSinkProperties {
 	private String directory = "/tmp/hdfs-dataset-sink";
 
 	/**
-	 * The sub-directory under the basePath where files will be written.
+	 * The sub-directory under the base directory where files will be written.
 	 */
 	@Value("${spring.application.name:data}")
 	private String namespace;

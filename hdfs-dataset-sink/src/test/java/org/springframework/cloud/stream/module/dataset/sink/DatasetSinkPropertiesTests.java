@@ -27,7 +27,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * @author Thomas Risberg
  */
-public class DatasetPropertiesTests {
+public class DatasetSinkPropertiesTests {
 
 	@Test
 	public void fsUriCanBeCustomized() {

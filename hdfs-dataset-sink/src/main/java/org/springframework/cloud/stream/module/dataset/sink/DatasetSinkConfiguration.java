@@ -17,12 +17,16 @@
 package org.springframework.cloud.stream.module.dataset.sink;
 
 import org.kitesdk.data.PartitionStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.hadoop.store.StoreException;
 import org.springframework.data.hadoop.store.dataset.DatasetDefinition;
 import org.springframework.data.hadoop.store.dataset.DatasetOperations;
@@ -36,20 +40,23 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.integration.aggregator.DefaultAggregatingMessageGroupProcessor;
 import org.springframework.integration.aggregator.ExpressionEvaluatingCorrelationStrategy;
-import org.springframework.integration.aggregator.ExpressionEvaluatingReleaseStrategy;
+import org.springframework.integration.aggregator.MessageCountReleaseStrategy;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.AggregatorFactoryBean;
 import org.springframework.integration.store.MessageGroupStore;
 import org.springframework.integration.store.MessageGroupStoreReaper;
 import org.springframework.integration.store.SimpleMessageStore;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.MessagingException;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -63,8 +70,11 @@ import java.util.List;
  */
 @Configuration
 @EnableScheduling
+@EnableBinding(Sink.class)
 @EnableConfigurationProperties(DatasetSinkProperties.class)
 public class DatasetSinkConfiguration {
+
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private DatasetSinkProperties properties;
@@ -75,20 +85,41 @@ public class DatasetSinkConfiguration {
 	}
 
 	@Bean
+	@Primary
 	@ServiceActivator(inputChannel= Sink.INPUT)
 	FactoryBean<MessageHandler> aggregatorFactoryBean(MessageChannel toSink, MessageGroupStore messageGroupStore) {
 		AggregatorFactoryBean aggregatorFactoryBean = new AggregatorFactoryBean();
 		aggregatorFactoryBean.setCorrelationStrategy(
 				new ExpressionEvaluatingCorrelationStrategy("payload.getClass().name"));
-		String releaseStrategyExpression = "size() == " + properties.getBatchSize();
-		aggregatorFactoryBean.setReleaseStrategy(
-				new ExpressionEvaluatingReleaseStrategy(releaseStrategyExpression));
+		aggregatorFactoryBean.setReleaseStrategy(new MessageCountReleaseStrategy(properties.getBatchSize()));
 		aggregatorFactoryBean.setMessageStore(messageGroupStore);
 		aggregatorFactoryBean.setProcessorBean(new DefaultAggregatingMessageGroupProcessor());
 		aggregatorFactoryBean.setExpireGroupsUponCompletion(true);
 		aggregatorFactoryBean.setSendPartialResultOnExpiry(true);
 		aggregatorFactoryBean.setOutputChannel(toSink);
 		return aggregatorFactoryBean;
+	}
+
+	@Bean
+	@ServiceActivator(inputChannel = "toSink")
+	public MessageHandler datasetSinkMessageHandler(final DatasetOperations datasetOperations) {
+		return new MessageHandler() {
+
+			@Override
+			public void handleMessage(Message<?> message) throws MessagingException {
+				Object payload = message.getPayload();
+				if (payload instanceof Collection<?>) {
+					Collection<?> payloads = (Collection<?>) payload;
+					logger.debug("Writing a collection of {} POJOs", payloads.size());
+					datasetOperations.write((Collection<?>) message.getPayload());
+				}
+				else {
+					// This should never happen since message handler is fronted by an aggregator
+					throw new IllegalStateException("Expected a collection of POJOs but received " +
+							message.getPayload().getClass().getName());
+				}
+			}
+		};
 	}
 
 	@Bean
