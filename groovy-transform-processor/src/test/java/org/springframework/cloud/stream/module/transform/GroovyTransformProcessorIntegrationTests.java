@@ -17,9 +17,11 @@
 package org.springframework.cloud.stream.module.transform;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -38,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author Eric Bottard
  * @author Marius Bogoevici
+ * @author Artem Bilan
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = GroovyTransformProcessorApplication.class)
@@ -52,13 +55,26 @@ public abstract class GroovyTransformProcessorIntegrationTests {
 	@Autowired
 	protected MessageCollector collector;
 
-	@WebIntegrationTest({"script=script.groovy", "variables=limit=5"})
+	//TODO after https://github.com/spring-projects/spring-boot/issues/4384
+	@BeforeClass
+	public static void setup() {
+		System.setProperty("variables", "limit=5\n foo=\\\40WORLD");
+	}
+
+	@AfterClass
+	public static void teardown() {
+		System.clearProperty("variables");
+	}
+
+	@WebIntegrationTest({"script=script.groovy", /*"variables=limit=5\n foo=\\\40WORLD"*/})
 	public static class UsingScriptIntegrationTests extends GroovyTransformProcessorIntegrationTests {
 
 		@Test
 		public void test() {
 			channels.input().send(new GenericMessage<Object>("hello world"));
-			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello")));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello WORLD")));
 		}
+
 	}
+
 }

@@ -31,7 +31,7 @@ import org.springframework.core.io.Resource;
 public class ScriptVariableProperties {
 
 	/**
-	 * Variable bindings as a comma delimited string of name-value pairs, e.g. 'foo=bar,baz=car'.
+	 * Variable bindings as a new line delimited string of name-value pairs, e.g. 'foo=bar\n baz=car'.
 	 */
 	private Properties variables;
 
