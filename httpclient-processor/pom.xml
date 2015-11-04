@@ -14,7 +14,7 @@
 	</parent>
 
 	<properties>
-		<start-class>org.springframework.cloud.stream.module.http.HttpClientProcessorApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.httpclient.HttpClientProcessorApplication</start-class>
 	</properties>
 
 </project>

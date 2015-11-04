@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.http;
+package org.springframework.cloud.stream.module.httpclient;
 
 import java.net.URI;
 import java.util.Map;
@@ -22,20 +22,16 @@ import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.integration.annotation.Transformer;
+import org.springframework.integration.annotation.MessageEndpoint;
+import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -44,11 +40,9 @@ import org.springframework.web.client.RestTemplate;
  * with a time source module to periodically poll results from a HTTP resource.
  *
  * @author Waldemar Hummer
+ * @author Mark Fisher
  */
-@Controller
-@EnableBinding(Processor.class)
-@Import(SpelExpressionConverterConfiguration.class)
-@EnableConfigurationProperties(HttpClientProcessorProperties.class)
+@MessageEndpoint
 public class HttpClientProcessor {
 
 	private static final Logger LOG = LoggerFactory.getLogger(HttpClientProcessor.class);
@@ -59,37 +53,37 @@ public class HttpClientProcessor {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
-	@SuppressWarnings("unchecked")
+	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
 	public Object transform(Message<?> message) {
 		try {
 			/* construct headers */
 			HttpHeaders headers = new HttpHeaders();
-			if(properties.getHeaders() != null) {
-				Map<String,String> headersMap = properties.getHeaders().getValue(Map.class);
-				for(Entry<String,String> header : headersMap.entrySet()) {
-					headers.add(header.getKey(), header.getValue());
+			if (properties.getHeadersExpression() != null) {
+				Map<?, ?> headersMap = properties.getHeadersExpression().getValue(message, Map.class);
+				for (Entry<?, ?> header : headersMap.entrySet()) {
+					if (header.getKey() != null && header.getValue() != null) {
+						headers.add(header.getKey().toString(),
+								header.getValue().toString());
+					}
 				}
 			}
 
-			/* determine return type */
-			Class<?> clazz = String.class;
-			if(properties.getExpectedReturnType() != null) {
-				clazz = properties.getExpectedReturnType().getValue(Class.class);
+			Class<?> responseType = properties.getExpectedReturnType();
+			HttpMethod method = properties.getHttpMethod();
+			String url = properties.getUrlExpression().getValue(message, String.class);
+			Object body = null;
+			if (properties.getBody() != null) {
+				body = properties.getBody();
 			}
-
-			HttpMethod method = HttpMethod.valueOf(properties.getHttpMethod());
-			String url = properties.getUrl().getValue(String.class);
-			Object body = properties.getBody() == null ? null : properties.getBody().getValue(message);
+			else if (properties.getBodyExpression() != null) {
+				body = properties.getBodyExpression().getValue(message);
+			}
 			URI uri = new URI(url);
-			HttpEntity<?> requestEntity = new RequestEntity<Object>(body, headers, method, uri);
-			ResponseEntity<?> httpResponse = restTemplate.exchange(
-					uri, 
-					HttpMethod.valueOf(properties.getHttpMethod()),
-					requestEntity,
-					clazz);
-			return httpResponse.getBody();
-		} catch (Exception e) {
+			RequestEntity<?> request = new RequestEntity<Object>(body, headers, method, uri);
+			ResponseEntity<?> response = restTemplate.exchange(request, responseType);
+			return response.getBody();
+		}
+		catch (Exception e) {
 			LOG.warn("Error in HTTP request", e);
 			return null;
 		}

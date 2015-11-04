@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.http;
+package org.springframework.cloud.stream.module.httpclient;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
@@ -23,10 +23,10 @@ import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.support.GenericMessage;
@@ -37,6 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Tests for Http Client Processor.
  *
  * @author Waldemar Hummer
+ * @author Mark Fisher
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = HttpClientProcessorApplication.class)
@@ -45,14 +46,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class HttpClientProcessorTests {
 
 	@Autowired
-	@Bindings(HttpClientProcessor.class)
 	protected Processor channels;
 
 	@Autowired
 	protected MessageCollector messageCollector;
 
-	@WebIntegrationTest(value = "url='http://google.com'", randomPort = true)
+	@WebIntegrationTest(value = "url=http://google.com", randomPort = true)
 	public static class TestRequestGET extends HttpClientProcessorTests {
+
+		@Test
+		public void testRequest() {
+			channels.input().send(new GenericMessage<Object>("hello"));
+			assertThat(messageCollector.forChannel(channels.output()), receivesPayloadThat(containsString("google")));
+		}
+
+	}
+
+	@WebIntegrationTest(value = "urlExpression='http://google.com'", randomPort = true)
+	public static class TestRequestGETWithUrlExpression extends HttpClientProcessorTests {
 
 		@Test
 		public void testRequest() {
@@ -64,8 +75,8 @@ public abstract class HttpClientProcessorTests {
 
 	@WebIntegrationTest(
 			value = {
-				"url='https://httpbin.org/post'",
-				"body='{\"foo\":\"bar\"}'",
+				"url=https://httpbin.org/post",
+				"body={\"foo\":\"bar\"}",
 				"httpMethod=POST"},
 			randomPort = true)
 	public static class TestRequestPOST extends HttpClientProcessorTests {
@@ -82,8 +93,26 @@ public abstract class HttpClientProcessorTests {
 
 	@WebIntegrationTest(
 			value = {
-				"url='https://httpbin.org/headers'",
-				"headers={Key1:'value1',Key2:'value2'}"},
+				"url=https://httpbin.org/post",
+				"bodyExpression=payload",
+				"httpMethod=POST"},
+			randomPort = true)
+	public static class TestRequestPOSTWithBodyExpression extends HttpClientProcessorTests {
+
+		@Test
+		public void testRequest() {
+			channels.input().send(new GenericMessage<Object>("{\"foo\":\"bar\"}"));
+			assertThat(messageCollector.forChannel(channels.output()), 
+					receivesPayloadThat(Matchers.allOf(
+							containsString("foo"), containsString("bar"))));
+		}
+
+	}
+
+	@WebIntegrationTest(
+			value = {
+				"url=https://httpbin.org/headers",
+				"headersExpression={Key1:'value1',Key2:'value2'}"},
 			randomPort = true)
 	public static class TestRequestWithHeaders extends HttpClientProcessorTests {
 
@@ -100,8 +129,8 @@ public abstract class HttpClientProcessorTests {
 
 	@WebIntegrationTest(
 			value = {
-				"url='http://google.com'",
-				"expectedReturnType=''.bytes.class"},
+				"url=http://google.com",
+				"expectedReturnType=byte[]"},
 			randomPort = true)
 	public static class TestRequestWithReturnType extends HttpClientProcessorTests {
 
