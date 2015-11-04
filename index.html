@@ -59,10 +59,11 @@ on variety of runtime platforms including: Cloud Foundry, Lattice, Apache Yarn, 
 
 | __Source__ | __Processor__ | __Sink__ | __Task__ |
 | ------- | --------- | ---- | ---- |
-| ftp | filter | counter | timestamp | 
-| http | groovy-filter | file |
-| sftp | groovy-transform | ftp | | | 
-| time | transform | gemfire | | 
+| file | filter | counter | timestamp | 
+| ftp | groovy-filter | file |
+| http | groovy-transform | ftp | | | 
+| sftp | transform | gemfire | | 
+| time | | jdbc | | 
 | twitterstream | | hdfs | | 
 | | | log | | 
 | | | redis | | 
