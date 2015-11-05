@@ -18,6 +18,8 @@ package org.springframework.cloud.stream.module.dataset.sink;
 
 import static org.junit.Assert.assertTrue;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +58,7 @@ public abstract class DatasetSinkIntegrationTests {
 	protected String testDir;
 
 	@Autowired
-	protected FsShell fsShell;
+	protected Configuration hadoopConfiguration;
 
 	@Autowired
 	protected DatasetOperations datasetOperations;
@@ -66,7 +68,9 @@ public abstract class DatasetSinkIntegrationTests {
 	protected Sink sink;
 
 	@Before
-	public void setup() {
+	public void setup() throws IOException {
+		FileSystem fs = FileSystem.get(hadoopConfiguration);
+		FsShell fsShell = new FsShell(hadoopConfiguration, fs);
 		if (fsShell.test(testDir)) {
 			fsShell.rmr(testDir);
 		}
