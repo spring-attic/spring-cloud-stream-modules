@@ -23,9 +23,11 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.hadoop.store.StoreException;
 import org.springframework.data.hadoop.store.dataset.DatasetDefinition;
@@ -131,17 +133,19 @@ public class DatasetSinkConfiguration {
 	}
 
 	@Bean
-	MessageGroupStoreReaper messageGroupStoreReaper(MessageGroupStore messageStore) {
+	MessageGroupStoreReaper messageGroupStoreReaper(MessageGroupStore messageStore,
+	                                                InputBindingLifecycle inputBindingLifecycle) {
 		MessageGroupStoreReaper messageGroupStoreReaper = new MessageGroupStoreReaper(messageStore);
-			messageGroupStoreReaper.setTimeout(properties.getIdleTimeout());
+		messageGroupStoreReaper.setPhase(inputBindingLifecycle.getPhase() -1);
+		messageGroupStoreReaper.setTimeout(properties.getIdleTimeout());
 		messageGroupStoreReaper.setAutoStartup(true);
 		messageGroupStoreReaper.setExpireOnDestroy(true);
 		return messageGroupStoreReaper;
 	}
 
 	@Bean
-	Reaper reaper() {
-		return new Reaper();
+	ReaperTask reaperTask() {
+		return new ReaperTask();
 	}
 
 	@Bean
@@ -207,7 +211,7 @@ public class DatasetSinkConfiguration {
 		return psb.build();
 	}
 
-	public static class Reaper {
+	public static class ReaperTask {
 
 		@Autowired
 		MessageGroupStoreReaper messageGroupStoreReaper;

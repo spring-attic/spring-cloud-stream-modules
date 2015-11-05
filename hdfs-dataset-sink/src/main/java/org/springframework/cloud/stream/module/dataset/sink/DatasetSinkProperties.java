@@ -52,7 +52,7 @@ public class DatasetSinkProperties {
 	/**
 	 * Idle timeout in milliseconds when Hadoop file resource is automatically closed.
 	 */
-	private long idleTimeout = 0L;
+	private long idleTimeout = -1L;
 
 	/**
 	 * Whether null property values are allowed, if set to true then schema will use UNION for each field.

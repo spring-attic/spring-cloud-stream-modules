@@ -18,13 +18,14 @@ package org.springframework.cloud.stream.module.dataset.sink;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.hadoop.boot.HadoopFsShellAutoConfiguration;
 
 /**
  * Spring Boot App for starting the DatasetSink module.
  *
  * @author Thomas Risberg
  */
-@SpringBootApplication
+@SpringBootApplication(exclude={HadoopFsShellAutoConfiguration.class})
 public class DatasetSinkApplication {
 
 	public static void main(String[] args) throws InterruptedException {
