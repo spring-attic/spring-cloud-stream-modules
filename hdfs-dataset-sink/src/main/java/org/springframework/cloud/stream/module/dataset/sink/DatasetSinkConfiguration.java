@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.stream.module.dataset.sink;
 
+import org.apache.hadoop.fs.CommonConfigurationKeysPublic;
 import org.kitesdk.data.PartitionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,6 @@ import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.hadoop.store.StoreException;
 import org.springframework.data.hadoop.store.dataset.DatasetDefinition;
@@ -57,6 +57,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PreDestroy;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -157,7 +158,15 @@ public class DatasetSinkConfiguration {
 	@Bean
 	public DatasetRepositoryFactory datasetRepositoryFactory(org.apache.hadoop.conf.Configuration configuration) {
 		DatasetRepositoryFactory datasetRepositoryFactory = new DatasetRepositoryFactory();
-		datasetRepositoryFactory.setConf(configuration);
+		if (StringUtils.hasText(properties.getFsUri())) {
+			org.apache.hadoop.conf.Configuration moduleConfiguration = null;
+			moduleConfiguration = new org.apache.hadoop.conf.Configuration(configuration);
+			moduleConfiguration.set(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY, properties.getFsUri());
+			datasetRepositoryFactory.setConf(moduleConfiguration);
+		}
+		else {
+			datasetRepositoryFactory.setConf(configuration);
+		}
 		datasetRepositoryFactory.setBasePath(properties.getDirectory());
 		datasetRepositoryFactory.setNamespace(properties.getNamespace());
 		return datasetRepositoryFactory;
@@ -219,6 +228,11 @@ public class DatasetSinkConfiguration {
 		@Scheduled(fixedRate=1000)
 		public void reap() {
 			messageGroupStoreReaper.run();
+		}
+
+		@PreDestroy
+		public void beforeDestroy() {
+			reap();
 		}
 
 	}
