@@ -1,9 +1,8 @@
-## Netty based Websocket Sink for Spring Cloud Data Stream
-SCDS version of [springxd-netty-websocket-sink](https://github.com/olmoser/spring-xd-netty-websocket-sink).
-Based on the [Netty Websocket samples](https://github.com/netty/netty/tree/master/example/src/main/java/io/netty/example/http/websocketx/server)
+## Netty based Websocket Sink for Spring Cloud Stream
+A simple Websocket Sink implementation for SCS.
 
 ## Build and Install
-Go to the  `spring-cloud-data-stream-modules` root directory and run the following
+Go to the  `spring-cloud-stream-modules` root directory and run the following
 command:
 
 ```
@@ -19,11 +18,11 @@ As with the other SCDS modules, there is a single fat JAR that starts the sink i
 java -jar target/websocket-sink-*-exec.jar --spring.cloud.stream.bindings.input=ticktock
 ```
 
-The default ist to bind the Netty based WebsocketServer to port `9292` and path `/websocket`. Those
-defaults can be overriden via commandline arguments.
+The default is to bind the Netty based WebsocketServer to port `9292` and path `/websocket`. Those
+defaults can be overridden via commandline arguments.
 
 ### Options
-The following commmandline arguments are supported:
+The following commmand line arguments are supported:
 
 #### Server Port
 Controls the port onto which the Netty server binds. Default is `9292`.
