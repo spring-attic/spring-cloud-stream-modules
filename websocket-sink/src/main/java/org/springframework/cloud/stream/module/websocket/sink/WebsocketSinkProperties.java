@@ -27,7 +27,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Oliver Moser
  */
 @Data
-@ConfigurationProperties(prefix = "ws")
+@ConfigurationProperties
 public class WebsocketSinkProperties {
 
 	public static final String DEFAULT_LOGLEVEL = LogLevel.WARN.toString();
@@ -44,9 +44,9 @@ public class WebsocketSinkProperties {
 	boolean ssl;
 
 	/**
-	 * the port on which the Netty server listens. Default is <tt>9292</tt>
+	 * the websocketPort on which the Netty server listens. Default is <tt>9292</tt>
 	 */
-	int port = DEFAULT_PORT;
+	int websocketPort = DEFAULT_PORT;
 
 	/**
 	 * the number of threads for the Netty {@link io.netty.channel.EventLoopGroup}. Default is <tt>1</tt>
@@ -54,12 +54,12 @@ public class WebsocketSinkProperties {
 	int threads = DEFAULT_THREADS;
 
 	/**
-	 * the loglevel for netty channels. Default is <tt>WARN</tt>
+	 * the websocketLoglevel for netty channels. Default is <tt>WARN</tt>
 	 */
-	String loglevel = DEFAULT_LOGLEVEL;
+	String websocketLoglevel = DEFAULT_LOGLEVEL;
 
 	/**
-	 * the path on which a WebsocketSink consumer needs to connect. Default is <tt>/websocket</tt>
+	 * the websocketPath on which a WebsocketSink consumer needs to connect. Default is <tt>/websocket</tt>
 	 */
-	String path = DEFAULT_PATH;
+	String websocketPath = DEFAULT_PATH;
 }

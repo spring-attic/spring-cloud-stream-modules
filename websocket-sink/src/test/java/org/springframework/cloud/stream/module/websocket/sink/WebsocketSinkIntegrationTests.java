@@ -24,14 +24,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Description;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
@@ -55,10 +50,10 @@ import static org.junit.Assert.assertThat;
 @SpringApplicationConfiguration(classes = {WebsocketSinkApplication.class})
 @WebIntegrationTest({
 	"server.port:0",
-	"ws.port=9393",
-	"ws.path=/some_websocket_path",
-	"ws.loglevel=DEBUG",
-	"ws.threads=2"
+	"websocketPort=9393",
+	"websocketPath=/some_websocket_path",
+	"websocketLoglevel=DEBUG",
+	"threads=2"
 })
 public class WebsocketSinkIntegrationTests {
 
@@ -82,9 +77,9 @@ public class WebsocketSinkIntegrationTests {
 
 	@Test
 	public void checkCmdlineArgs() {
-		assertThat(properties.getPath(), is("/some_websocket_path"));
-		assertThat(properties.getPort(), is(9393));
-		assertThat(properties.getLoglevel(), is("DEBUG"));
+		assertThat(properties.getWebsocketPath(), is("/some_websocket_path"));
+		assertThat(properties.getWebsocketPort(), is(9393));
+		assertThat(properties.getWebsocketLoglevel(), is("DEBUG"));
 		assertThat(properties.getThreads(), is(2));
 	}
 
@@ -142,7 +137,7 @@ public class WebsocketSinkIntegrationTests {
 	//
 
 	private WebSocketSession doHandshake(WebsocketSinkClientHandler handler) throws InterruptedException, ExecutionException {
-		String wsEndpoint = "ws://localhost:" + properties.getPort() + properties.getPath();
+		String wsEndpoint = "ws://localhost:" + properties.getWebsocketPort() + properties.getWebsocketPath();
 		return new StandardWebSocketClient().doHandshake(handler, wsEndpoint).get();
 	}
 

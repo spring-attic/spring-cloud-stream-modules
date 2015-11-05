@@ -189,7 +189,7 @@ class WebsocketSinkServerHandler extends SimpleChannelInboundHandler<Object> {
 	}
 
 	private String getWebSocketLocation(FullHttpRequest req) {
-		String location = req.headers().get(HOST) + properties.getPath();
+		String location = req.headers().get(HOST) + properties.getWebsocketPath();
 		if (properties.isSsl()) {
 			return "wss://" + location;
 		} else {

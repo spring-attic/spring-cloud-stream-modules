@@ -27,33 +27,33 @@ The following commmand line arguments are supported:
 #### Server Port
 Controls the port onto which the Netty server binds. Default is `9292`.
 ```
---ws.port=<PORT>
+--websocketPort=<PORT>
 ```
 
 #### Path
 Controls the path where the WebsocketServer expects Websocket connections. Default is `/websocket`
 ```
---ws.path=<PATH>
+--websocketPath=<PATH>
 ```
 #### SSL
 Controls whether the Websocket server should accept SSL connections (i.e. `wss://host:9292/websocket`). The default
 is `false`
 ```
---ws.ssl=<true|false>
+--ssl=<true|false>
 ```
 Please note that currently a self signed certificate is used to create the SSL context.
 
 #### Logging
 Controls the loglevel of the underlying Netty loghandler. The default is `WARN`
 ```
---ws.loglevel=<trace|debug|info|warn|error>
+--websocketLoglevel=<trace|debug|info|warn|error>
 ```
 Please note that this has nothing to do with the Spring Boot logging options (i.e. `--logging.level...`)
 
 #### Threads
 Controls the number of worker threads used for the Netty event loop. The default is `1`
 ```
---ws.threads=<N>
+--threads=<N>
 ```
 
 ### Example
@@ -121,6 +121,6 @@ it directly via  `http://host:port` in your browser
 
 
 ### Gotchas
-For SSL mode (`--ws.ssl=true`) a self signed certificate is used that might cause troubles with some
-Websocket clients. In a future release, there will be a `--ws.certificate=mycert.cer` switch to pass a valid (not
+For SSL mode (`--ssl=true`) a self signed certificate is used that might cause troubles with some
+Websocket clients. In a future release, there will be a `--certificate=mycert.cer` switch to pass a valid (not
 self-signed) certificate.
