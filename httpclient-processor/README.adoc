@@ -1,0 +1,30 @@
+= Spring Cloud Stream Http Client Processor
+
+A processor module that makes requests to an HTTP resource and emits the 
+response body as a message payload. This processor can be combined, e.g., 
+with a time source module to periodically poll results from a HTTP resource.
+
+== Requirements
+
+* Java 7 or above
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/httpclient-processor-${version}-exec.jar
+```
+
+== Module Arguments
+
+The following arguments are supported (pass via Spring Cloud Data Flow DSL string):
+
+* --url : URL of the target resource
+* --httpMethod : HTTP method, e.g., GET, POST, PUT, DELETE
+* --body : HTTP body to send along with the request
+* --headers : a map of HTTP headers to send along with the request
