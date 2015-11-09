@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.dataset.sink;
 
 import org.apache.hadoop.fs.CommonConfigurationKeysPublic;
+import org.apache.hadoop.fs.FileSystem;
 import org.kitesdk.data.PartitionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.binding.InputBindingLifecycle;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -58,6 +60,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PreDestroy;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -77,7 +80,7 @@ import java.util.List;
 @EnableConfigurationProperties(DatasetSinkProperties.class)
 public class DatasetSinkConfiguration {
 
-	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+	protected static Logger logger = LoggerFactory.getLogger(DatasetSinkConfiguration.class);
 
 	@Autowired
 	private DatasetSinkProperties properties;
@@ -137,7 +140,7 @@ public class DatasetSinkConfiguration {
 	MessageGroupStoreReaper messageGroupStoreReaper(MessageGroupStore messageStore,
 	                                                InputBindingLifecycle inputBindingLifecycle) {
 		MessageGroupStoreReaper messageGroupStoreReaper = new MessageGroupStoreReaper(messageStore);
-		messageGroupStoreReaper.setPhase(inputBindingLifecycle.getPhase() -1);
+		messageGroupStoreReaper.setPhase(inputBindingLifecycle.getPhase() - 1);
 		messageGroupStoreReaper.setTimeout(properties.getIdleTimeout());
 		messageGroupStoreReaper.setAutoStartup(true);
 		messageGroupStoreReaper.setExpireOnDestroy(true);
@@ -150,6 +153,12 @@ public class DatasetSinkConfiguration {
 	}
 
 	@Bean
+	FsShutdown fsShutdown(InputBindingLifecycle inputBindingLifecycle) {
+		// make sure the FsShutdown runs after the messageGroupStoreReaper
+		return new FsShutdown(inputBindingLifecycle.getPhase() - 2);
+	}
+
+	@Bean
 	public DatasetOperations datasetOperations(DatasetRepositoryFactory datasetRepositoryFactory,
 	                                           DatasetDefinition datasetDefinition) {
 		return new DatasetTemplate(datasetRepositoryFactory, datasetDefinition);
@@ -158,15 +167,14 @@ public class DatasetSinkConfiguration {
 	@Bean
 	public DatasetRepositoryFactory datasetRepositoryFactory(org.apache.hadoop.conf.Configuration configuration) {
 		DatasetRepositoryFactory datasetRepositoryFactory = new DatasetRepositoryFactory();
+		org.apache.hadoop.conf.Configuration moduleConfiguration =
+				new org.apache.hadoop.conf.Configuration(configuration);
+		// turn off auto closing of the Hadoop FileSystem since the shut-down hook might run before the sink one
+		moduleConfiguration.setBoolean(CommonConfigurationKeysPublic.FS_AUTOMATIC_CLOSE_KEY, false);
 		if (StringUtils.hasText(properties.getFsUri())) {
-			org.apache.hadoop.conf.Configuration moduleConfiguration = null;
-			moduleConfiguration = new org.apache.hadoop.conf.Configuration(configuration);
 			moduleConfiguration.set(CommonConfigurationKeysPublic.FS_DEFAULT_NAME_KEY, properties.getFsUri());
-			datasetRepositoryFactory.setConf(moduleConfiguration);
 		}
-		else {
-			datasetRepositoryFactory.setConf(configuration);
-		}
+		datasetRepositoryFactory.setConf(moduleConfiguration);
 		datasetRepositoryFactory.setBasePath(properties.getDirectory());
 		datasetRepositoryFactory.setNamespace(properties.getNamespace());
 		return datasetRepositoryFactory;
@@ -235,5 +243,58 @@ public class DatasetSinkConfiguration {
 			reap();
 		}
 
+	}
+
+	public static class FsShutdown implements SmartLifecycle {
+
+		public FsShutdown(int phase) {
+			this.phase = phase;
+		}
+
+		@Autowired
+		org.apache.hadoop.conf.Configuration configuration;
+
+		private int phase;
+
+		private volatile boolean running = true;
+
+
+		@Override
+		public boolean isAutoStartup() {
+			return true;
+		}
+
+		@Override
+		public void stop(Runnable runnable) {
+			stop();
+			if (runnable != null) {
+				runnable.run();
+			}
+		}
+
+		@Override
+		public void start() {
+		}
+
+		@Override
+		public void stop() {
+			try {
+				FileSystem.closeAll();
+				logger.info("Closing the Hadoop FileSystem");
+			} catch (IOException e) {
+				logger.error("Unable to close Hadoop FileSystem", e);
+			}
+			this.running = false;
+		}
+
+		@Override
+		public boolean isRunning() {
+			return this.running;
+		}
+
+		@Override
+		public int getPhase() {
+			return this.phase;
+		}
 	}
 }
