@@ -41,6 +41,7 @@
 		<module>groovy-transform-processor</module>
 		<module>httpclient-processor</module>
 		<module>noop-processor</module>
+		<module>pmml-processor</module>
 		<module>transform-processor</module>
 		<!-- sinks in alphabetical order -->
 		<module>cassandra-sink</module>
