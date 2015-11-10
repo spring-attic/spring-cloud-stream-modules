@@ -53,7 +53,7 @@ public class HttpClientProcessor {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
+	@ServiceActivator(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT, autoStartup = "false")
 	public Object transform(Message<?> message) {
 		try {
 			/* construct headers */
@@ -68,7 +68,7 @@ public class HttpClientProcessor {
 				}
 			}
 
-			Class<?> responseType = properties.getExpectedReturnType();
+			Class<?> responseType = properties.getExpectedResponseType();
 			HttpMethod method = properties.getHttpMethod();
 			String url = properties.getUrlExpression().getValue(message, String.class);
 			Object body = null;
@@ -79,9 +79,9 @@ public class HttpClientProcessor {
 				body = properties.getBodyExpression().getValue(message);
 			}
 			URI uri = new URI(url);
-			RequestEntity<?> request = new RequestEntity<Object>(body, headers, method, uri);
+			RequestEntity<?> request = new RequestEntity<>(body, headers, method, uri);
 			ResponseEntity<?> response = restTemplate.exchange(request, responseType);
-			return response.getBody();
+			return properties.getResultExpression().getValue(response);
 		}
 		catch (Exception e) {
 			LOG.warn("Error in HTTP request", e);

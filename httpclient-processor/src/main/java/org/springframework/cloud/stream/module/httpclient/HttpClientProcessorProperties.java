@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.http.HttpMethod;
 
 /**
@@ -35,21 +36,49 @@ public class HttpClientProcessorProperties {
 
 	private static final HttpMethod DEFAULT_HTTP_METHOD = HttpMethod.GET;
 
-	private static final Class<?> DEFAULT_RETURN_TYPE = String.class;
+	private static final Class<?> DEFAULT_RESPONSE_TYPE = String.class;
 
+	public static final Expression DEFAULT_BODY_EXPRESSION = new SpelExpressionParser().parseExpression("payload");
+
+	/**
+	 * The URL to issue an http request to, as a static value.
+	 */
 	private String url;
 
+	/**
+	 * A SpEL expression against incoming message to determine the URL to use.
+	 */
 	private Expression urlExpression;
 
+	/**
+	 * The kind of http method to use.
+	 */
 	private HttpMethod httpMethod = DEFAULT_HTTP_METHOD;
 
+	/**
+	 * The (static) body of the request to use.
+	 */
 	private Object body;
 
-	private Expression bodyExpression;
+	/**
+	 * A SpEL expression against incoming message to derive the request body to use.
+	 */
+	private Expression bodyExpression = DEFAULT_BODY_EXPRESSION;
 
+	/**
+	 * A SpEL expression used to derive the http headers map to use.
+	 */
 	private Expression headersExpression;
 
-	private Class<?> expectedReturnType = DEFAULT_RETURN_TYPE;
+	/**
+	 * The type used to interpret the response.
+	 */
+	private Class<?> expectedResponseType = DEFAULT_RESPONSE_TYPE;
+
+	/**
+	 * A SpEL expression used to compute the final result, applied against the whole http response.
+	 */
+	private Expression resultExpression = new SpelExpressionParser().parseExpression("body");
 
 	public void setUrl(String url) {
 		this.url = url;
@@ -78,6 +107,10 @@ public class HttpClientProcessorProperties {
 	}
 
 	public void setBody(Object body) {
+		if (bodyExpression != null &&
+				bodyExpression.getExpressionString().equals(DEFAULT_BODY_EXPRESSION.getExpressionString())) {
+			this.bodyExpression = null;
+		}
 		this.body = body;
 	}
 
@@ -98,21 +131,30 @@ public class HttpClientProcessorProperties {
 	}
 
 	@NotNull
-	public Class<?> getExpectedReturnType() {
-		return expectedReturnType;
+	public Class<?> getExpectedResponseType() {
+		return expectedResponseType;
 	}
 
-	public void setExpectedReturnType(Class<?> expectedReturnType) {
-		this.expectedReturnType = expectedReturnType;
+	public void setExpectedResponseType(Class<?> expectedResponseType) {
+		this.expectedResponseType = expectedResponseType;
 	}
 
-    @AssertTrue(message = "Exactly one of 'url' or 'urlExpression' is required")
-    public boolean isExactlyOneUrl() {
-    		return url == null ^ urlExpression == null;
-    }
+	@NotNull
+	public Expression getResultExpression() {
+		return resultExpression;
+	}
 
-    @AssertTrue(message = "At most one of 'body' or 'bodyExpression' is allowed")
-    public boolean isAtMostOneBody() {
-    		return body == null || bodyExpression == null;
-    }
+	public void setResultExpression(Expression resultExpression) {
+		this.resultExpression = resultExpression;
+	}
+
+	@AssertTrue(message = "Exactly one of 'url' or 'urlExpression' is required")
+	public boolean isExactlyOneUrl() {
+		return url == null ^ urlExpression == null;
+	}
+
+	@AssertTrue(message = "At most one of 'body' or 'bodyExpression' is allowed")
+	public boolean isAtMostOneBody() {
+		return body == null || bodyExpression == null;
+	}
 }
