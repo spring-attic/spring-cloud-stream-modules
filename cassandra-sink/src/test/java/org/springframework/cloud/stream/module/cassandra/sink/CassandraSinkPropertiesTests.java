@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.cassandra.outbound.CassandraMessageHandler;
+import org.springframework.integration.config.EnableIntegration;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -101,6 +102,7 @@ public class CassandraSinkPropertiesTests {
 	}
 
 	@Configuration
+	@EnableIntegration
 	@EnableConfigurationProperties(CassandraSinkProperties.class)
 	@Import(SpelExpressionConverterConfiguration.class)
 	static class Conf {
