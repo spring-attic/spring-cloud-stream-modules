@@ -25,7 +25,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.messaging.Processor;
@@ -47,7 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {HttpClientProcessorApplication.class, HttpClientProcessorTests.AdditionalController.class})
-@IntegrationTest("server.port=9494") // Need to use a hardcoded port to be able to reference it below
+@WebIntegrationTest(randomPort = true) // Need to use a hardcoded port to be able to reference it below
 @DirtiesContext
 public abstract class HttpClientProcessorTests {
 
@@ -58,31 +57,31 @@ public abstract class HttpClientProcessorTests {
 	protected MessageCollector messageCollector;
 
 
-	@WebIntegrationTest(value = {"url=http://localhost:9494/health"})
+	@WebIntegrationTest(value = {"urlExpression='http://localhost:' + @environment.getProperty('local.server.port') + '/greet'"})
 	public static class TestRequestGET extends HttpClientProcessorTests {
 
 		@Test
 		public void testRequest() {
-			channels.input().send(new GenericMessage<Object>("hello"));
-			assertThat(messageCollector.forChannel(channels.output()), receivesPayloadThat(containsString("status")));
+			channels.input().send(new GenericMessage<Object>("..."));
+			assertThat(messageCollector.forChannel(channels.output()), receivesPayloadThat(is("Hello World")));
 		}
 
 	}
 
-	@WebIntegrationTest(value = "urlExpression='http://localhost:9494/'+payload")
-	public static class TestRequestGETWithUrlExpression extends HttpClientProcessorTests {
+	@WebIntegrationTest(value = "urlExpression='http://localhost:' + @environment.getProperty('local.server.port') + '/' + payload")
+	public static class TestRequestGETWithUrlExpressionUsingMessage extends HttpClientProcessorTests {
 
 		@Test
 		public void testRequest() {
-			channels.input().send(new GenericMessage<Object>("health"));
-			assertThat(messageCollector.forChannel(channels.output()), receivesPayloadThat(containsString("status")));
+			channels.input().send(new GenericMessage<Object>("greet"));
+			assertThat(messageCollector.forChannel(channels.output()), receivesPayloadThat(containsString("Hello")));
 		}
 
 	}
 
 	@WebIntegrationTest(
 			value = {
-					"url=http://localhost:9494/foobar",
+					"urlExpression='http://localhost:' + @environment.getProperty('local.server.port') + '/greet'",
 					"body={\"foo\":\"bar\"}",
 					"httpMethod=POST"})
 	public static class TestRequestPOST extends HttpClientProcessorTests {
@@ -99,7 +98,7 @@ public abstract class HttpClientProcessorTests {
 
 	@WebIntegrationTest(
 			value = {
-					"url=http://localhost:9494/foobar",
+					"urlExpression='http://localhost:' + @environment.getProperty('local.server.port') + '/greet'",
 					"httpMethod=POST"})
 	public static class TestRequestPOSTWithBodyExpression extends HttpClientProcessorTests {
 
@@ -115,7 +114,7 @@ public abstract class HttpClientProcessorTests {
 
 	@WebIntegrationTest(
 			value = {
-					"url=http://localhost:9494/headers",
+					"urlExpression='http://localhost:' + @environment.getProperty('local.server.port') + '/headers'",
 					"headersExpression={Key1:'value1',Key2:'value2'}"})
 	public static class TestRequestWithHeaders extends HttpClientProcessorTests {
 
@@ -130,7 +129,7 @@ public abstract class HttpClientProcessorTests {
 
 	@WebIntegrationTest(
 			value = {
-					"url=http://localhost:9494/foobar",
+					"urlExpression='http://localhost:' + @environment.getProperty('local.server.port') +'/greet'",
 					"httpMethod=POST",
 					"headersExpression={Accept:'application/octet-stream'}",
 					"expectedResponseType=byte[]"})
@@ -147,9 +146,9 @@ public abstract class HttpClientProcessorTests {
 
 	@WebIntegrationTest(
 			value = {
-					"url=http://localhost:9494/foobar",
+					"urlExpression='http://localhost:' + @environment.getProperty('local.server.port') + '/greet'",
 					"httpMethod=POST",
-					"resultExpression=body.substring(3,8)"})
+					"replyExpression=body.substring(3,8)"})
 	public static class TestRequestWithResultExtractor extends HttpClientProcessorTests {
 
 		@Test
@@ -164,8 +163,11 @@ public abstract class HttpClientProcessorTests {
 	@RestController
 	public static class AdditionalController {
 
-		@RequestMapping("/foobar")
-		public String greet(@RequestBody String who) {
+		@RequestMapping("/greet")
+		public String greet(@RequestBody(required = false) String who) {
+			if (who == null) {
+				who = "World";
+			}
 			return "Hello " + who;
 		}
 

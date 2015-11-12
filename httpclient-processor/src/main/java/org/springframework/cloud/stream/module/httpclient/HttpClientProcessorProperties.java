@@ -78,7 +78,7 @@ public class HttpClientProcessorProperties {
 	/**
 	 * A SpEL expression used to compute the final result, applied against the whole http response.
 	 */
-	private Expression resultExpression = new SpelExpressionParser().parseExpression("body");
+	private Expression replyExpression = new SpelExpressionParser().parseExpression("body");
 
 	public void setUrl(String url) {
 		this.url = url;
@@ -140,12 +140,12 @@ public class HttpClientProcessorProperties {
 	}
 
 	@NotNull
-	public Expression getResultExpression() {
-		return resultExpression;
+	public Expression getReplyExpression() {
+		return replyExpression;
 	}
 
-	public void setResultExpression(Expression resultExpression) {
-		this.resultExpression = resultExpression;
+	public void setReplyExpression(Expression replyExpression) {
+		this.replyExpression = replyExpression;
 	}
 
 	@AssertTrue(message = "Exactly one of 'url' or 'urlExpression' is required")

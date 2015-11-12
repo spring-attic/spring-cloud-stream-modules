@@ -26,9 +26,9 @@ The following arguments are supported:
 
 url:: The URL to issue an http request to, as a static value.
 urlExpression:: A SpEL expression against incoming message to determine the URL to use.
-httpMethod::The kind of http method to use.
+httpMethod:: The kind of http method to use.
 body:: The (static) body of the request to use.
 bodyExpression:: A SpEL expression against incoming message to derive the request body to use.
 headersExpression:: A SpEL expression used to derive the http headers map to use.
 expectedResponseType:: The type used to interpret the response.
-resultExpression:: A SpEL expression used to compute the final result, applied against the whole http response.
+replyExpression:: A SpEL expression used to compute the final result, applied against the whole http response.
