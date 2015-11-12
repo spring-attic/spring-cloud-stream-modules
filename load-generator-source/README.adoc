@@ -15,7 +15,7 @@ and sends them to channel
 == Build
 
 ```
-$> mvn package
+$> mvn -s .settings.xml package
 ```
 
 == Run

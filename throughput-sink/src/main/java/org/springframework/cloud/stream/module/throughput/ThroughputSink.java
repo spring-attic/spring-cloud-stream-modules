@@ -142,9 +142,9 @@ public class ThroughputSink implements Lifecycle {
 					}
 				}
 				catch (InterruptedException e) {
-					if (!isRunning()) {
-						Thread.currentThread().interrupt();
-					}
+					Thread.currentThread().interrupt();
+					logger.warn("Thread interrupted", e);
+					return;
 				}
 			}
 		}

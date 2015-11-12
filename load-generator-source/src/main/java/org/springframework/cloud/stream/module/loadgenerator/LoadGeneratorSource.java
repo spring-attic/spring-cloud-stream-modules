@@ -43,10 +43,10 @@ public class LoadGeneratorSource extends AbstractEndpoint {
 	private static final Logger logger = LoggerFactory.getLogger(LoadGeneratorSource.class);
 
 	@Autowired
-	private volatile LoadGeneratorSourceProperties config;
+	private LoadGeneratorSourceProperties config;
 
 	@Autowired
-	private volatile Source channel;
+	private Source channel;
 
 	private final AtomicBoolean running = new AtomicBoolean(false);
 

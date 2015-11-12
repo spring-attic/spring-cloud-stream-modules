@@ -16,7 +16,7 @@ at a selected interval.
 == Build
 
 ```
-$> mvn package
+$> mvn -s .settings.xml package
 ```
 
 == Run
