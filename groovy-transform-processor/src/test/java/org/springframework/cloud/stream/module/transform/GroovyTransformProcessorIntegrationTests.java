@@ -20,8 +20,6 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -55,18 +53,7 @@ public abstract class GroovyTransformProcessorIntegrationTests {
 	@Autowired
 	protected MessageCollector collector;
 
-	//TODO after https://github.com/spring-projects/spring-boot/issues/4384
-	@BeforeClass
-	public static void setup() {
-		System.setProperty("variables", "limit=5\n foo=\\\40WORLD");
-	}
-
-	@AfterClass
-	public static void teardown() {
-		System.clearProperty("variables");
-	}
-
-	@WebIntegrationTest({"script=script.groovy", /*"variables=limit=5\n foo=\\\40WORLD"*/})
+	@WebIntegrationTest({"script=script.groovy", "variables=limit=5\\n foo=\\\\\40WORLD"})
 	public static class UsingScriptIntegrationTests extends GroovyTransformProcessorIntegrationTests {
 
 		@Test
