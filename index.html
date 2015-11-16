@@ -59,14 +59,17 @@ on variety of runtime platforms including: Cloud Foundry, Lattice, Apache Yarn, 
 
 | __Source__ | __Processor__ | __Sink__ | __Task__ |
 | ------- | --------- | ---- | ---- |
-| file | filter | counter | timestamp | 
-| ftp | groovy-filter | file |
-| http | groovy-transform | ftp | | | 
-| sftp | transform | gemfire | | 
-| time | | jdbc | | 
-| twitterstream | | hdfs | | 
+| file | filter | cassandra | timestamp | 
+| ftp | groovy-filter | counter |
+| http | groovy-transform | file | | | 
+| sftp | transform | ftp | | 
+| time | noop | gemfire | | 
+| load-generator | | hdfs | | 
+| twitterstream | | jdbc | | 
 | | | log | | 
 | | | redis | | 
+| | | websocket | | 
+| | | throughput | | 
 
 <span id="quick-start"></span>
 ## Quick Start
