@@ -16,7 +16,12 @@
 
 package org.springframework.cloud.stream.module.time;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+
+import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matchers;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,9 +34,6 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TimeSourceApplication.class)
@@ -58,6 +60,7 @@ public abstract class TimeSourceIntegrationTests {
 	public static class TimeUnitPropertiesTests extends TimeSourceIntegrationTests {
 		@Test
 		public void test() throws InterruptedException {
+			Assume.assumeThat("Skipping this test which is time dependent in travis", System.getenv("TRAVIS"), CoreMatchers.nullValue());
 			Thread.sleep(1000);
 			assertThat(messageCollector.forChannel(timeSource.output()).size(), Matchers.greaterThanOrEqualTo(500));
 		}
