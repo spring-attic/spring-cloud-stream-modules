@@ -251,9 +251,6 @@ public class DatasetSinkConfiguration {
 			this.phase = phase;
 		}
 
-		@Autowired
-		org.apache.hadoop.conf.Configuration configuration;
-
 		private int phase;
 
 		private volatile boolean running = true;
