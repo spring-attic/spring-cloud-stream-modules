@@ -7,5 +7,8 @@ jdk:
   - oraclejdk8
 services:
   - redis-server
+install: true
+#- ./mvnw install -P docs -q -U -DskipTests=true
+#- ./docs/src/main/asciidoc/ghpages.sh
 script:
-  - ./mvnw install -nsu
+  - ./mvnw -s .settings.xml package -nsu
