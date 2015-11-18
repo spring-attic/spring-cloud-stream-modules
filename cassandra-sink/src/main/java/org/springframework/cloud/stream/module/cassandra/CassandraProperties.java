@@ -53,6 +53,11 @@ public class CassandraProperties {
 	private String keyspace;
 
 	/**
+	 * The flag to create (or not) keyspace on module startup.
+	 */
+	private boolean createKeyspace;
+
+	/**
 	 * The username for connection.
 	 */
 	private String username;
@@ -94,6 +99,10 @@ public class CassandraProperties {
 		this.keyspace = keyspace;
 	}
 
+	public void setCreateKeyspace(boolean createKeyspace) {
+		this.createKeyspace = createKeyspace;
+	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -130,6 +139,10 @@ public class CassandraProperties {
 
 	public String getKeyspace() {
 		return this.keyspace;
+	}
+
+	public boolean isCreateKeyspace() {
+		return createKeyspace;
 	}
 
 	public String getUsername() {

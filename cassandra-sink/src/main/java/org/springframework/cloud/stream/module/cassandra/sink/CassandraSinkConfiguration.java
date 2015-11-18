@@ -96,7 +96,9 @@ public class CassandraSinkConfiguration {
 	@ServiceActivator(inputChannel = "toSink")
 	public MessageHandler cassandraSinkMessageHandler() {
 		CassandraMessageHandler<?> cassandraMessageHandler =
-				new CassandraMessageHandler<>(this.template, this.cassandraSinkProperties.getQueryType());
+				this.cassandraSinkProperties.getQueryType() != null
+						? new CassandraMessageHandler<>(this.template, this.cassandraSinkProperties.getQueryType())
+						: new CassandraMessageHandler<>(this.template);
 		cassandraMessageHandler.setProducesReply(false);
 		if (this.cassandraSinkProperties.getConsistencyLevel() != null
 				|| this.cassandraSinkProperties.getRetryPolicy() != null
