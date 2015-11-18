@@ -79,7 +79,7 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 	@Override
 	public SchemaAction getSchemaAction() {
-		return !ObjectUtils.isEmpty(this.getEntityBasePackages()) ? SchemaAction.CREATE : super.getSchemaAction();
+		return this.cassandraProperties.getSchemaAction();
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 	@Override
 	protected List<CreateKeyspaceSpecification> getKeyspaceCreations() {
-		if (ObjectUtils.isEmpty(getEntityBasePackages()) || this.cassandraProperties.getInitScript() != null) {
+		if (this.cassandraProperties.isCreateKeyspace()) {
 			return Collections.singletonList(CreateKeyspaceSpecification.createKeyspace(getKeyspaceName())
 					.withSimpleReplication()
 					.ifNotExists());
@@ -127,7 +127,7 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 		@PostConstruct
 		public void init() throws IOException {
-			if (cassandraProperties.getInitScript() != null) {
+			if (this.cassandraProperties.getInitScript() != null) {
 				String scripts = new Scanner(this.cassandraProperties.getInitScript().getInputStream(),
 						"UTF-8").useDelimiter("\\A").next();
 

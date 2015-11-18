@@ -77,9 +77,6 @@ public class JdbcSinkConfiguration {
 	@Autowired
 	private JdbcSinkProperties properties;
 
-	@Autowired
-	private JdbcMessageHandler msgHandler;
-
 
 	@Bean
 	@ServiceActivator(autoStartup = "false", inputChannel = Sink.INPUT)
@@ -174,11 +171,13 @@ public class JdbcSinkConfiguration {
 	 * This is needed to prevent a circular dependency issue with the creation of the converter.
 	 */
 	public static class Nested {
+
 		@Bean
 		@ConfigurationPropertiesBinding
 		public ShorthandMapConverter shorthandMapConverter() {
 			return new ShorthandMapConverter();
 		}
+
 	}
 
 	@PostConstruct

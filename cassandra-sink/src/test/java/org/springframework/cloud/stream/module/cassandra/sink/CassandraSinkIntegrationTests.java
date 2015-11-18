@@ -18,14 +18,13 @@ package org.springframework.cloud.stream.module.cassandra.sink;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.cassandra.exceptions.ConfigurationException;
-import org.apache.thrift.transport.TTransportException;
+import org.cassandraunit.spring.CassandraUnitDependencyInjectionIntegrationTestExecutionListener;
+import org.cassandraunit.spring.EmbeddedCassandra;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -33,20 +32,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.IntegrationTest;
+import org.springframework.boot.test.IntegrationTestPropertiesListener;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.module.cassandra.test.domain.Book;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.cassandra.core.CassandraOperations;
-import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
 import com.datastax.driver.core.utils.UUIDs;
@@ -58,54 +57,37 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  * @author Thomas Risberg
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = CassandraSinkApplication.class)
+@TestExecutionListeners(mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
+		listeners = { IntegrationTestPropertiesListener.class,
+				CassandraUnitDependencyInjectionIntegrationTestExecutionListener.class })
+@SpringApplicationConfiguration(CassandraSinkApplication.class)
+@IntegrationTest({"spring.cassandra.keyspace=" + CassandraSinkIntegrationTests.CASSANDRA_KEYSPACE,
+		"spring.cassandra.createKeyspace=true"})
+@EmbeddedCassandra(configuration = EmbeddedCassandraServerHelper.CASSANDRA_RNDPORT_YML_FILE)
 @DirtiesContext
 public abstract class CassandraSinkIntegrationTests {
 
 	public static final String CASSANDRA_KEYSPACE = "test";
-
-	private static final String CASSANDRA_STORAGE_CONFIG = "spring-cassandra.yaml";
-
-	private static final int PORT = 9043; // See spring-cassandra.yaml - native_transport_port
 
 	@Autowired
 	@Bindings(CassandraSinkConfiguration.class)
 	protected Sink sink;
 
 	@Autowired
-	ConfigurableApplicationContext applicationContext;
-
-	private static Cluster cluster;
-
-	private static CassandraOperations cassandraTemplate;
+	protected CassandraOperations cassandraTemplate;
 
 	@BeforeClass
-	public static void setUp() throws ConfigurationException, IOException, TTransportException {
-		EmbeddedCassandraServerHelper.startEmbeddedCassandra(CASSANDRA_STORAGE_CONFIG, "target/embeddedCassandra");
-		cluster = Cluster.builder()
-				.addContactPoint("localhost")
-				.withPort(PORT)
-				.build();
-
-		cluster.connect().execute(String.format("CREATE KEYSPACE IF NOT EXISTS %s" +
-				"  WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };", CASSANDRA_KEYSPACE));
-
-		cassandraTemplate = new CassandraTemplate(cluster.connect(CASSANDRA_KEYSPACE));
-
+	public static void setUp() {
+		System.setProperty("spring.cassandra.port", "" + EmbeddedCassandraServerHelper.getNativeTransportPort());
 	}
 
 	@AfterClass
 	public static void cleanup() {
-		if (cluster != null) {
-			cluster.close();
-		}
-		EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
+		System.clearProperty("spring.cassandra.port");
 	}
 
-	@WebIntegrationTest({"spring.cassandra.port=" + PORT,
-		"spring.cassandra.keyspace=" + CASSANDRA_KEYSPACE,
-		"spring.cassandra.entity-base-packages=org.springframework.cloud.stream.module.cassandra.test.domain",
-		"query-type=INSERT"})
+	@WebIntegrationTest({"spring.cassandra.schema-action=RECREATE",
+			"spring.cassandra.entity-base-packages=org.springframework.cloud.stream.module.cassandra.test.domain"})
 	public static class CassandraEntityInsertTests extends CassandraSinkIntegrationTests {
 
 		@Test
@@ -118,7 +100,7 @@ public abstract class CassandraSinkIntegrationTests {
 			book.setSaleDate(new Date());
 			book.setInStock(true);
 
-			sink.input().send(new GenericMessage<>(book));
+			this.sink.input().send(new GenericMessage<>(book));
 
 			final Select select = QueryBuilder.select().all().from("book");
 
@@ -131,27 +113,25 @@ public abstract class CassandraSinkIntegrationTests {
 
 			});
 
-			cassandraTemplate.delete(book);
+			this.cassandraTemplate.delete(book);
 		}
 
 	}
 
 
-	@WebIntegrationTest({"spring.cassandra.port=" + PORT,
-		"spring.cassandra.keyspace=" + CASSANDRA_KEYSPACE,
-		"spring.cassandra.init-script=init-db.cql",
-		"query-type=INSERT",
-		"ingest-query=insert into book (isbn, title, author, pages, saleDate, inStock) values (?, ?, ?, ?, ?, ?)"})
+	@WebIntegrationTest({"spring.cassandra.init-script=init-db.cql",
+			"ingest-query=insert into book (isbn, title, author, pages, saleDate, inStock) values (?, ?, ?, ?, ?, ?)"})
 	public static class CassandraSinkIngestTests extends CassandraSinkIntegrationTests {
 
 		@Test
 		public void testIngestQuery() throws Exception {
 			List<Book> books = getBookList(5);
+
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 			Jackson2JsonObjectMapper mapper = new Jackson2JsonObjectMapper(objectMapper);
 
-			sink.input().send(new GenericMessage<>(mapper.toJson(books)));
+			this.sink.input().send(new GenericMessage<>(mapper.toJson(books)));
 
 			final Select select = QueryBuilder.select().all().from("book");
 
@@ -164,7 +144,7 @@ public abstract class CassandraSinkIntegrationTests {
 
 			});
 
-			cassandraTemplate.truncate("book");
+			this.cassandraTemplate.truncate("book");
 		}
 
 	}
