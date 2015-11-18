@@ -21,7 +21,6 @@ import javax.validation.constraints.AssertTrue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**
  * Holds configuration options for the Counter Sink.
@@ -31,18 +30,18 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 @ConfigurationProperties
 public class CounterSinkProperties {
 
-	private final SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
+	@Value("${spring.application.name:counts}")
+	private String defaultName;
 
 	/**
 	 * The name of the counter to increment.
 	 */
-	@Value("${spring.application.name:counts}")
 	private String name;
 
 	/**
 	 * A SpEL expression (against the incoming Message) to derive the name of the counter to increment.
 	 */
-	private String nameExpression;
+	private Expression nameExpression;
 
 	/**
 	 * The name of a store used to store the counter.
@@ -59,6 +58,9 @@ public class CounterSinkProperties {
 	}
 
 	public String getName() {
+		if (name == null && nameExpression == null) {
+			return defaultName;
+		}
 		return name;
 	}
 
@@ -67,16 +69,16 @@ public class CounterSinkProperties {
 	}
 
 	public Expression getNameExpression() {
-		return spelExpressionParser.parseExpression(nameExpression);
+		return nameExpression;
 	}
 
-	public void setNameExpression(String nameExpression) {
+	public void setNameExpression(Expression nameExpression) {
 		this.nameExpression = nameExpression;
 	}
 
 	@AssertTrue(message = "exactly one of 'name' and 'nameExpression' must be set")
 	public boolean isExclusiveOptions() {
-		return name != null ^ nameExpression != null;
+		return getName() != null ^ getNameExpression() != null;
 	}
 
 }

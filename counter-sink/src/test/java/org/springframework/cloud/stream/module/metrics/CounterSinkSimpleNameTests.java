@@ -20,15 +20,18 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.repository.MetricRepository;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.test.junit.redis.RedisTestSupport;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -40,38 +43,77 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = CounterSinkApplication.class)
-@WebIntegrationTest({"server.port:0","name:simpleCounter","store:redis"})
+@IntegrationTest({"server.port:-1", "store:redis", "spring.metrics.export.delayMillis:10"})
 @DirtiesContext
-public class CounterSinkSimpleNameTests {
+public abstract class CounterSinkSimpleNameTests {
 
-    //TODO RedisAvailable Rule
+	@Rule
+	public RedisTestSupport redisAvailableRule = new RedisTestSupport();
 
-    @Autowired
-    @Bindings(CounterSink.class)
-    private Sink sink;
+	@Autowired
+	@Bindings(CounterSink.class)
+	protected Sink sink;
 
-    @Autowired
-    private MetricRepository redisMetricRepository;
+	@Autowired
+	protected MetricRepository redisMetricRepository;
 
-    @Before
-    public void init() {
-        redisMetricRepository.reset("counter.simpleCounter");
-    }
+	@Before
+	public void init() {
+		redisMetricRepository.reset("counter.simpleCounter");
+	}
 
-    @After
-    public void clear() {
-        redisMetricRepository.reset("counter.simpleCounter");
-    }
+	@After
+	public void clear() {
+		redisMetricRepository.reset("counter.simpleCounter");
+	}
 
-    @Test
-    public void testIncrement() throws InterruptedException {
-        assertNotNull(this.sink.input());
-        Message<String> message = MessageBuilder.withPayload("Hi").build();
-        sink.input().send(message);
-        Thread.sleep(5500);
-        //Note:  If the name of the counter does not start with 'counter' or 'metric' the 'counter.' prefix is added
-        //       by the DefaultCounterService
-        assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
-    }
+
+	@WebIntegrationTest({"name:simpleCounter"})
+	public static class TestSimpleNameTests extends CounterSinkSimpleNameTests {
+
+		@Test
+		public void testIncrement() throws InterruptedException {
+			assertNotNull(this.sink.input());
+			Message<String> message = MessageBuilder.withPayload("Hi").build();
+			sink.input().send(message);
+			Thread.sleep(20);
+			//Note:  If the name of the counter does not start with 'counter' or 'metric' the 'counter.' prefix is added
+			//       by the DefaultCounterService
+			assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
+		}
+
+	}
+
+	@WebIntegrationTest({"nameExpression:payload"})
+	public static class TestExpressionNameTests extends CounterSinkSimpleNameTests {
+
+		@Test
+		public void testIncrement() throws InterruptedException {
+			assertNotNull(this.sink.input());
+			Message<String> message = MessageBuilder.withPayload("simpleCounter").build();
+			sink.input().send(message);
+			Thread.sleep(20);
+			//Note:  If the name of the counter does not start with 'counter' or 'metric' the 'counter.' prefix is added
+			//       by the DefaultCounterService
+			assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
+		}
+
+	}
+
+	@WebIntegrationTest({"spring.application.name:simpleCounter"})
+	public static class TestDefaultNameTests extends CounterSinkSimpleNameTests {
+
+		@Test
+		public void testIncrement() throws InterruptedException {
+			assertNotNull(this.sink.input());
+			Message<String> message = MessageBuilder.withPayload("...").build();
+			sink.input().send(message);
+			Thread.sleep(20);
+			//Note:  If the name of the counter does not start with 'counter' or 'metric' the 'counter.' prefix is added
+			//       by the DefaultCounterService
+			assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
+		}
+
+	}
 
 }

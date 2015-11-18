@@ -20,8 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 
@@ -33,6 +37,9 @@ import org.springframework.messaging.Message;
  * @author Marius Bogoevici
  */
 @EnableBinding(Sink.class)
+@EnableConfigurationProperties(CounterSinkProperties.class)
+@Configuration
+@Import(SpelExpressionConverterConfiguration.class)
 public class CounterSink {
 
 	private static Logger logger = LoggerFactory.getLogger(CounterSink.class);
@@ -42,9 +49,6 @@ public class CounterSink {
 
 	@Autowired
 	private CounterSinkProperties counterSinkProperties;
-
-	@Autowired
-	private CounterSinkConfiguration counterSinkConfiguration;
 
 	@ServiceActivator(inputChannel=Sink.INPUT)
 	public void count(Message<?> message) {
@@ -57,8 +61,7 @@ public class CounterSink {
 		if (counterSinkProperties.getName() != null) {
 			return counterSinkProperties.getName();
 		} else {
-			return counterSinkProperties.getNameExpression().getValue(counterSinkConfiguration.evaluationContext(),
-					message, CharSequence.class).toString();
+			return counterSinkProperties.getNameExpression().getValue(message, CharSequence.class).toString();
 		}
 	}
 
