@@ -18,7 +18,6 @@ package org.springframework.cloud.stream.module.pmml.processor;
 
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.cloud.stream.config.GenericMapConverter;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -41,7 +40,7 @@ public class CustomConversionServiceRegistrar implements ImportBeanDefinitionReg
 					.genericBeanDefinition(CustomDefaultConversionService.class);
 			registry.registerBeanDefinition(ConfigurableApplicationContext.CONVERSION_SERVICE_BEAN_NAME, conversionService.getBeanDefinition());
 
-			conversionService.addPropertyReference("spelConverter", SpelExpressionConverterConfiguration.SPEL_CONVERTER_BEAN_NAME);
+			conversionService.addPropertyReference("spelConverter", "spelConverter");
 		}
 	}
 
@@ -49,7 +48,6 @@ public class CustomConversionServiceRegistrar implements ImportBeanDefinitionReg
 
 		public CustomDefaultConversionService() {
 			addConverter(new GenericMapConverter(this));
-//			addConverter(new SpelExpressionConverterConfiguration().spelConverter());
 		}
 
 		public void setSpelConverter(SpelExpressionConverterConfiguration.SpelConverter spelConverter) {
