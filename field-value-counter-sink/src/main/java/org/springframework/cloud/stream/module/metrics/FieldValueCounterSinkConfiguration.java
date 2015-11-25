@@ -15,16 +15,23 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration class for the `counter-sink`.
+ * Configuration class for the Field Value Counter.
  *
- * @author Mark Pollack
  * @author Ilayaperumal Gopinathan
  */
 @Configuration
-@EnableConfigurationProperties(MetricProperties.class)
-public class CounterSinkConfiguration extends MetricConfiguration {
+@EnableConfigurationProperties(FieldValueCounterSinkProperties.class)
+public class FieldValueCounterSinkConfiguration extends MetricConfiguration {
+
+	@Bean
+	@ConditionalOnExpression("'${store}'.isEmpty()")
+	public FieldValueCounterRepository repository() {
+		return new InMemoryFieldValueCounterRepository();
+	}
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.cloud.stream.module.metrics;
 
 import javax.validation.constraints.AssertTrue;
@@ -24,12 +23,13 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**
- * Holds configuration options for the Counter Sink.
+ * Common configuration properties for the Spring Cloud Stream metric modules.
  *
  * @author Eric Bottard
+ * @author Ilayaperumal Gopinathan
  */
 @ConfigurationProperties
-public class CounterSinkProperties {
+public class MetricProperties {
 
 	private final SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
 
@@ -70,6 +70,10 @@ public class CounterSinkProperties {
 		return spelExpressionParser.parseExpression(nameExpression);
 	}
 
+	public Expression getComputedNameExpression() {
+		return spelExpressionParser.parseExpression(nameExpression != null ? nameExpression : ("'" + name + "'"));
+	}
+
 	public void setNameExpression(String nameExpression) {
 		this.nameExpression = nameExpression;
 	}
@@ -78,5 +82,4 @@ public class CounterSinkProperties {
 	public boolean isExclusiveOptions() {
 		return name != null ^ nameExpression != null;
 	}
-
 }

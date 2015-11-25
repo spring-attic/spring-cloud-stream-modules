@@ -13,18 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.cloud.stream.module.metrics;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Configuration class for the `counter-sink`.
- *
- * @author Mark Pollack
  * @author Ilayaperumal Gopinathan
  */
-@Configuration
-@EnableConfigurationProperties(MetricProperties.class)
-public class CounterSinkConfiguration extends MetricConfiguration {
+@ConfigurationProperties
+public class FieldValueCounterSinkProperties extends MetricProperties {
+
+	private String fieldName;
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
+
 }

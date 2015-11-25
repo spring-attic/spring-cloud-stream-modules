@@ -15,16 +15,15 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
 /**
- * Configuration class for the `counter-sink`.
- *
- * @author Mark Pollack
- * @author Ilayaperumal Gopinathan
+ * Super interface for all metrics. Metrics all have a name which must be unique (per kind).
+ * 
+ * @author Luke Taylor
  */
-@Configuration
-@EnableConfigurationProperties(MetricProperties.class)
-public class CounterSinkConfiguration extends MetricConfiguration {
+public interface Metric {
+
+	/**
+	 * Return the name of the metric.
+	 */
+	String getName();
 }

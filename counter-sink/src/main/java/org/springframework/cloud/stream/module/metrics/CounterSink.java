@@ -18,6 +18,7 @@ package org.springframework.cloud.stream.module.metrics;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -41,7 +42,7 @@ public class CounterSink {
 	private CounterService counterService;
 
 	@Autowired
-	private CounterSinkProperties counterSinkProperties;
+	private MetricProperties counterSinkProperties;
 
 	@Autowired
 	private CounterSinkConfiguration counterSinkConfiguration;
