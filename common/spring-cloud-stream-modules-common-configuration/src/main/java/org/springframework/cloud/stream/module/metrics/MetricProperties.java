@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.cloud.stream.module.metrics;
 
 import javax.validation.constraints.AssertTrue;
@@ -21,17 +20,16 @@ import javax.validation.constraints.AssertTrue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.common.LiteralExpression;
 
 /**
- * Holds configuration options for the Counter Sink.
+ * Common configuration properties for the Spring Cloud Stream metric modules.
  *
  * @author Eric Bottard
+ * @author Ilayaperumal Gopinathan
  */
 @ConfigurationProperties
-public class CounterSinkProperties {
-
-	private final SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
+public class MetricProperties {
 
 	/**
 	 * The name of the counter to increment.
@@ -42,7 +40,7 @@ public class CounterSinkProperties {
 	/**
 	 * A SpEL expression (against the incoming Message) to derive the name of the counter to increment.
 	 */
-	private String nameExpression;
+	private Expression nameExpression;
 
 	/**
 	 * The name of a store used to store the counter.
@@ -67,10 +65,14 @@ public class CounterSinkProperties {
 	}
 
 	public Expression getNameExpression() {
-		return spelExpressionParser.parseExpression(nameExpression);
+		return nameExpression;
 	}
 
-	public void setNameExpression(String nameExpression) {
+	public Expression getComputedNameExpression() {
+		return (nameExpression != null ? nameExpression : new LiteralExpression(name));
+}
+
+	public void setNameExpression(Expression nameExpression) {
 		this.nameExpression = nameExpression;
 	}
 
@@ -78,5 +80,4 @@ public class CounterSinkProperties {
 	public boolean isExclusiveOptions() {
 		return name != null ^ nameExpression != null;
 	}
-
 }

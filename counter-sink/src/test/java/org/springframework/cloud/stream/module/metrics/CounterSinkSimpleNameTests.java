@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,6 +30,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.test.junit.redis.RedisTestSupport;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -44,7 +46,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @DirtiesContext
 public class CounterSinkSimpleNameTests {
 
-    //TODO RedisAvailable Rule
+    @Rule
+    public RedisTestSupport redisTestSupport = new RedisTestSupport();
 
     @Autowired
     @Bindings(CounterSink.class)

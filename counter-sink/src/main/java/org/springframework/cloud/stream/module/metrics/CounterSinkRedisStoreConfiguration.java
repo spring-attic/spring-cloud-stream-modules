@@ -29,7 +29,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * a store.
  *
  * @author Eric Bottard
- * @see CounterSinkProperties#getStore()
+ * @see MetricProperties#getStore()
  */
 @Configuration
 @ConditionalOnProperty(value="store", havingValue = "redis")
