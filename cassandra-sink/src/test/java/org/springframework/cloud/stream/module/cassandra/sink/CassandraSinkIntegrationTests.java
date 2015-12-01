@@ -23,11 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.datastax.driver.core.querybuilder.Select;
-import com.datastax.driver.core.utils.UUIDs;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.cassandraunit.spring.CassandraUnitDependencyInjectionIntegrationTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
@@ -37,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.IntegrationTestPropertiesListener;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -50,6 +46,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.querybuilder.Select;
+import com.datastax.driver.core.utils.UUIDs;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 /**
  * @author Artem Bilan
  * @author Thomas Risberg
@@ -59,6 +61,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		listeners = { IntegrationTestPropertiesListener.class,
 				CassandraUnitDependencyInjectionIntegrationTestExecutionListener.class })
 @SpringApplicationConfiguration(CassandraSinkApplication.class)
+@IntegrationTest({"spring.cassandra.keyspace=" + CassandraSinkIntegrationTests.CASSANDRA_KEYSPACE,
+		"spring.cassandra.createKeyspace=true"})
 @EmbeddedCassandra(configuration = EmbeddedCassandraServerHelper.CASSANDRA_RNDPORT_YML_FILE)
 @DirtiesContext
 public abstract class CassandraSinkIntegrationTests {
@@ -82,9 +86,7 @@ public abstract class CassandraSinkIntegrationTests {
 		System.clearProperty("spring.cassandra.port");
 	}
 
-	@WebIntegrationTest({"spring.cassandra.keyspace=" + CASSANDRA_KEYSPACE,
-			"spring.cassandra.createKeyspace=true",
-			"query-type=INSERT",
+	@WebIntegrationTest({"spring.cassandra.schema-action=RECREATE",
 			"spring.cassandra.entity-base-packages=org.springframework.cloud.stream.module.cassandra.test.domain"})
 	public static class CassandraEntityInsertTests extends CassandraSinkIntegrationTests {
 
@@ -117,9 +119,7 @@ public abstract class CassandraSinkIntegrationTests {
 	}
 
 
-	@WebIntegrationTest({"spring.cassandra.keyspace=" + CASSANDRA_KEYSPACE,
-			"spring.cassandra.createKeyspace=true",
-			"spring.cassandra.init-script=init-db.cql",
+	@WebIntegrationTest({"spring.cassandra.init-script=init-db.cql",
 			"ingest-query=insert into book (isbn, title, author, pages, saleDate, inStock) values (?, ?, ?, ?, ?, ?)"})
 	public static class CassandraSinkIngestTests extends CassandraSinkIntegrationTests {
 

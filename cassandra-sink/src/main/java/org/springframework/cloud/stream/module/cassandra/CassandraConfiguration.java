@@ -79,7 +79,7 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
 
 	@Override
 	public SchemaAction getSchemaAction() {
-		return !ObjectUtils.isEmpty(getEntityBasePackages()) ? SchemaAction.CREATE : super.getSchemaAction();
+		return this.cassandraProperties.getSchemaAction();
 	}
 
 	@Override

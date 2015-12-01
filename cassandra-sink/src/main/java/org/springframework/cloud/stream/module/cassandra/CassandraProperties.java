@@ -25,6 +25,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cassandra.config.CassandraCqlClusterFactoryBean;
 import org.springframework.cassandra.config.CompressionType;
 import org.springframework.core.io.Resource;
+import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.util.StringUtils;
 
 /**
@@ -56,6 +57,11 @@ public class CassandraProperties {
 	 * The flag to create (or not) keyspace on module startup.
 	 */
 	private boolean createKeyspace;
+
+	/**
+	 * The schema action to perform.
+	 */
+	private SchemaAction schemaAction = SchemaAction.NONE;
 
 	/**
 	 * The username for connection.
@@ -143,6 +149,15 @@ public class CassandraProperties {
 
 	public boolean isCreateKeyspace() {
 		return createKeyspace;
+	}
+
+	@NotNull
+	public SchemaAction getSchemaAction() {
+		return schemaAction;
+	}
+
+	public void setSchemaAction(SchemaAction schemaAction) {
+		this.schemaAction = schemaAction;
 	}
 
 	public String getUsername() {
