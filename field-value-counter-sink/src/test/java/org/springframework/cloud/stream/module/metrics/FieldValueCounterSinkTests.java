@@ -28,7 +28,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -50,7 +49,7 @@ public class FieldValueCounterSinkTests {
 	private Sink sink;
 
 	@Autowired
-	private CrudRepository<FieldValueCounter, String> fieldValueCounterRepository;
+	private MetricRepository<FieldValueCounter, String> fieldValueCounterRepository;
 
 	@Before
 	public void init() {

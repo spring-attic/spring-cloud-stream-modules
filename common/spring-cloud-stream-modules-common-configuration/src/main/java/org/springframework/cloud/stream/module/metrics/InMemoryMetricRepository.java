@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.util.Assert;
 
 /**
@@ -29,7 +28,7 @@ import org.springframework.util.Assert;
  * @author Luke Taylor
  *
  */
-public abstract class InMemoryMetricRepository<M extends Metric> implements CrudRepository<M, String> {
+public abstract class InMemoryMetricRepository<M extends Metric> implements MetricRepository<M, String> {
 
 	private final ConcurrentMap<String, M> map = new ConcurrentHashMap<String, M>();
 
@@ -49,26 +48,6 @@ public abstract class InMemoryMetricRepository<M extends Metric> implements Crud
 	}
 
 	@Override
-	public void delete(String name) {
-		Assert.notNull(name, "The name of the metric must not be null");
-		map.remove(name);
-	}
-
-	@Override
-	public void delete(M metric) {
-		Assert.notNull(metric, "The metric instance must not be null");
-		map.remove(metric.getName());
-	}
-
-
-	@Override
-	public void delete(Iterable<? extends M> metrics) {
-		for (M metric : metrics) {
-			delete(metric);
-		}
-	}
-
-	@Override
 	public M findOne(String name) {
 		Assert.notNull(name, "The name of the metric must not be null");
 		return map.get(name);
@@ -78,31 +57,8 @@ public abstract class InMemoryMetricRepository<M extends Metric> implements Crud
 		return findOne(s) != null;
 	}
 
-	@Override
-	public List<M> findAll() {
-		return new ArrayList<M>(map.values());
-	}
-
-	@Override
-	public List<M> findAll(Iterable<String> keys) {
-		List<M> results = new ArrayList<M>();
-
-		for (String k : keys) {
-			M value = findOne(k);
-			if (value != null) {
-				results.add(value);
-			}
-		}
-		return results;
-	}
-
 	public long count() {
 		return map.size();
-	}
-
-	@Override
-	public void deleteAll() {
-		map.clear();
 	}
 
 	protected M getOrCreate(String name) {

@@ -23,15 +23,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.cloud.stream.module.retry.StringRedisRetryTemplate;
-import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.retry.RetryOperations;
 import org.springframework.util.Assert;
 
 public class RedisFieldValueCounterRepository implements FieldValueCounterRepository,
-		CrudRepository<FieldValueCounter, String> {
+		MetricRepository<FieldValueCounter, String> {
 
 	private final String metricPrefix;
 
@@ -77,24 +75,9 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 		return results;
 	}
 
-	@Override
 	public void delete(String name) {
 		Assert.notNull(name, "The name of the FieldValueCounter must not be null");
 		this.redisTemplate.delete(getMetricKey(name));
-	}
-
-	@Override
-	public void delete(FieldValueCounter fieldValueCounter) {
-		Assert.notNull(fieldValueCounter, "The FieldValueCounter must not be null");
-		this.redisTemplate.delete(getMetricKey(fieldValueCounter.getName()));
-
-	}
-
-	@Override
-	public void delete(Iterable<? extends FieldValueCounter> fvcs) {
-		for (FieldValueCounter fvc : fvcs) {
-			delete(fvc);
-		}
 	}
 
 	@Override
@@ -113,52 +96,6 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 
 	public boolean exists(String s) {
 		return findOne(s) != null;
-	}
-
-	@Override
-	public List<FieldValueCounter> findAll() {
-		List<FieldValueCounter> counters = new ArrayList<FieldValueCounter>();
-		// TODO asking for keys is not recommended. See
-		// http://redis.io/commands/keys
-		Set<String> keys = this.redisTemplate.keys(this.metricPrefix + "*");
-		for (String key : keys) {
-			// TODO remove this naming convention for minute aggregates
-			if (!key.matches(this.metricPrefix
-					+ ".+?_\\d{4}\\.\\d{2}\\.\\d{2}-\\d{2}:\\d{2}")) {
-				if (this.redisTemplate.type(key) == DataType.ZSET) {
-					Map<String, Double> values = getZSetData(key);
-					String name = key.substring(metricPrefix.length());
-					FieldValueCounter c = new FieldValueCounter(name, values);
-					counters.add(c);
-				}
-			}
-		}
-		return counters;
-	}
-
-	@Override
-	public Iterable<FieldValueCounter> findAll(Iterable<String> keys) {
-		List<FieldValueCounter> results = new ArrayList<FieldValueCounter>();
-
-		for (String k : keys) {
-			FieldValueCounter value = findOne(k);
-			if (value != null) {
-				results.add(value);
-			}
-		}
-		return results;
-	}
-
-	public long count() {
-		return findAll().size();
-	}
-
-	@Override
-	public void deleteAll() {
-		Set<String> keys = redisTemplate.keys(metricPrefix + "*");
-		if (keys.size() > 0) {
-			redisTemplate.delete(keys);
-		}
 	}
 
 	@Override
