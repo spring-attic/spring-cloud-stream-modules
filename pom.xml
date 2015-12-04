@@ -46,6 +46,7 @@
 		<module>file-sink</module>
 		<module>ftp-sink</module>
 		<module>gemfire-sink</module>
+		<module>hdfs-dataset-sink</module>
 		<module>hdfs-sink</module>
 		<module>jdbc-sink</module>
 		<module>log-sink</module>
