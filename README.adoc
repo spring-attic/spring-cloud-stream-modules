@@ -1,4 +1,4 @@
-# spring-cloud-stream-modules [![Stories in Ready](https://badge.waffle.io/spring-cloud/spring-cloud-stream-modules.svg?label=ready&title=Ready)](http://waffle.io/spring-cloud/spring-cloud-stream-modules) [![Stories in Progress](https://badge.waffle.io/spring-cloud/spring-cloud-stream-modules.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/spring-cloud/spring-cloud-stream-modules)
+# spring-cloud-stream-modules image:https://badge.waffle.io/spring-cloud/spring-cloud-stream-modules.svg?label=ready&title=Ready[Stories in Ready, link=http://waffle.io/spring-cloud/spring-cloud-stream-modules] image:https://badge.waffle.io/spring-cloud/spring-cloud-stream-modules.svg?label=In%20Progress&title=In%20Progress[Stories in Progress, link=http://waffle.io/spring-cloud/spring-cloud-stream-modules]
 
 A repository for Spring Cloud Stream Modules
 
