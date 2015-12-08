@@ -21,6 +21,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<spring-cloud-lattice.version>1.0.0.M1</spring-cloud-lattice.version>
+		<spring-integration.version>4.2.3.BUILD-SNAPSHOT</spring-integration.version>
 	</properties>
 
 	<modules>
