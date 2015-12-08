@@ -26,5 +26,5 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableConfigurationProperties(MetricProperties.class)
-public class CounterSinkConfiguration extends MetricConfiguration {
+public class CounterSinkConfiguration {
 }

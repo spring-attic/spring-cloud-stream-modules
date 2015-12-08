@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.expression.EvaluationContext;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 
@@ -45,7 +46,7 @@ public class CounterSink {
 	private MetricProperties counterSinkProperties;
 
 	@Autowired
-	private CounterSinkConfiguration counterSinkConfiguration;
+	private EvaluationContext evaluationContext;
 
 	@ServiceActivator(inputChannel=Sink.INPUT)
 	public void count(Message<?> message) {
@@ -58,7 +59,7 @@ public class CounterSink {
 		if (counterSinkProperties.getName() != null) {
 			return counterSinkProperties.getName();
 		} else {
-			return counterSinkProperties.getNameExpression().getValue(counterSinkConfiguration.evaluationContext(),
+			return counterSinkProperties.getNameExpression().getValue(evaluationContext,
 					message, CharSequence.class).toString();
 		}
 	}

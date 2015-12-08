@@ -24,11 +24,14 @@ import java.util.Map;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.tuple.Tuple;
 import org.springframework.cloud.stream.tuple.integration.JsonToTupleTransformer;
+import org.springframework.expression.EvaluationContext;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.integration.transformer.MessageTransformationException;
 import org.springframework.messaging.Message;
 import org.springframework.util.ObjectUtils;
@@ -47,10 +50,11 @@ public class FieldValueCounterSink {
 	private FieldValueCounterSinkProperties fvcSinkProperties;
 
 	@Autowired
-	private FieldValueCounterSinkConfiguration fvcSinkConfiguration;
+	private FieldValueCounterRepository fieldValueCounterRepository;
 
 	@Autowired
-	private FieldValueCounterRepository fieldValueCounterRepository;
+	@Qualifier(IntegrationContextUtils.INTEGRATION_EVALUATION_CONTEXT_BEAN_NAME)
+	private EvaluationContext evaluationContext;
 
 	private final JsonToTupleTransformer jsonToTupleTransformer = new JsonToTupleTransformer();
 
@@ -129,7 +133,7 @@ public class FieldValueCounterSink {
 	}
 
 	protected String computeMetricName(Message<?> message) {
-		return fvcSinkProperties.getComputedNameExpression().getValue(this.fvcSinkConfiguration.evaluationContext(),
+		return fvcSinkProperties.getComputedNameExpression().getValue(evaluationContext,
 				message, CharSequence.class).toString();
 	}
 

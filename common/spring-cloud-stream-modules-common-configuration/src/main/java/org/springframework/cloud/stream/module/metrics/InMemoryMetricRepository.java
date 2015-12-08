@@ -15,8 +15,6 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -39,26 +37,9 @@ public abstract class InMemoryMetricRepository<M extends Metric> implements Metr
 	}
 
 	@Override
-	public <S extends M> Iterable<S> save(Iterable<S> metrics) {
-		List<S> results = new ArrayList<S>();
-		for (S m : metrics) {
-			results.add(save(m));
-		}
-		return results;
-	}
-
-	@Override
 	public M findOne(String name) {
 		Assert.notNull(name, "The name of the metric must not be null");
 		return map.get(name);
-	}
-
-	public boolean exists(String s) {
-		return findOne(s) != null;
-	}
-
-	public long count() {
-		return map.size();
 	}
 
 	protected M getOrCreate(String name) {

@@ -24,7 +24,5 @@ public interface MetricRepository<T, ID extends Serializable> {
 
 	<S extends T> S save(S var1);
 
-	<S extends T> Iterable<S> save(Iterable<S> var1);
-
 	T findOne(ID var1);
 }

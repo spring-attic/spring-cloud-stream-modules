@@ -15,10 +15,8 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,26 +56,12 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 	 */
 	@Override
 	public <S extends FieldValueCounter> S save(S fieldValueCounter) {
-		delete(fieldValueCounter.getName());
+		reset(fieldValueCounter.getName(), MARKER);
 		increment(fieldValueCounter.getName(), MARKER, 0);
 		for (Map.Entry<String, Double> entry : fieldValueCounter.getFieldValueCount().entrySet()) {
 			increment(fieldValueCounter.getName(), entry.getKey(), entry.getValue());
 		}
 		return fieldValueCounter;
-	}
-
-	@Override
-	public <S extends FieldValueCounter> Iterable<S> save(Iterable<S> metrics) {
-		List<S> results = new ArrayList<S>();
-		for (S m : metrics) {
-			results.add(save(m));
-		}
-		return results;
-	}
-
-	public void delete(String name) {
-		Assert.notNull(name, "The name of the FieldValueCounter must not be null");
-		this.redisTemplate.delete(getMetricKey(name));
 	}
 
 	@Override
@@ -92,10 +76,6 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 		else {
 			return null;
 		}
-	}
-
-	public boolean exists(String s) {
-		return findOne(s) != null;
 	}
 
 	@Override
