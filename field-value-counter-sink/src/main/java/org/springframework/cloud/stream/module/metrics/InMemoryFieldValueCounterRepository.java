@@ -16,6 +16,10 @@
 package org.springframework.cloud.stream.module.metrics;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import org.springframework.util.Assert;
 
 /**
  * Memory backed implementation of FieldValueCounterRepository that uses a ConcurrentMap
@@ -24,21 +28,42 @@ import java.util.Map;
  * @author Ilayaperumal Gopinathan
  *
  */
-public class InMemoryFieldValueCounterRepository extends InMemoryMetricRepository<FieldValueCounter> implements
-		FieldValueCounterRepository {
+public class InMemoryFieldValueCounterRepository implements FieldValueCounterRepository {
 
-	@Override
+	private final ConcurrentMap<String, FieldValueCounter> map = new ConcurrentHashMap<>();
+
+	public FieldValueCounter save(FieldValueCounter fieldValueCounter) {
+		map.put(fieldValueCounter.getName(), fieldValueCounter);
+		return fieldValueCounter;
+	}
+
+	public FieldValueCounter findOne(String name) {
+		Assert.notNull(name, "The name of the metric must not be null");
+		return map.get(name);
+	}
+
+	protected FieldValueCounter getOrCreate(String name) {
+		synchronized (map) {
+			FieldValueCounter result = findOne(name);
+			if (result == null) {
+				result = create(name);
+				result = save(result);
+			}
+			return result;
+		}
+	}
+
 	public FieldValueCounter create(String name) {
 		return new FieldValueCounter(name);
 	}
 
 	@Override
-	public synchronized void increment(String name, String fieldName) {
-		modifyFieldValue(name, fieldName, 1);
+	public synchronized void increment(String name, String fieldName, double score) {
+		modifyFieldValue(name, fieldName, score);
 	}
 
 	@Override
-	public synchronized void decrement(String name, String fieldName) {
+	public synchronized void decrement(String name, String fieldName, double score) {
 		modifyFieldValue(name, fieldName, -1);
 	}
 

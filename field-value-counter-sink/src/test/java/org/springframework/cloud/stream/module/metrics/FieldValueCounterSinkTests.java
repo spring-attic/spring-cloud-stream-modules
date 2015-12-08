@@ -50,18 +50,18 @@ public class FieldValueCounterSinkTests {
 	private Sink sink;
 
 	@Autowired
-	private MetricRepository<FieldValueCounter, String> fieldValueCounterRepository;
+	private RedisFieldValueCounterRepository fieldValueCounterRepository;
 
 	@Before
 	public void init() {
-		((FieldValueCounterRepository) fieldValueCounterRepository).reset("FVCounter", "Hi");
-		((FieldValueCounterRepository) fieldValueCounterRepository).reset("FVCounter", "Hello");
+		fieldValueCounterRepository.reset("FVCounter", "Hi");
+		fieldValueCounterRepository.reset("FVCounter", "Hello");
 	}
 
 	@After
 	public void clear() {
-		((FieldValueCounterRepository) fieldValueCounterRepository).reset("FVCounter", "Hi");
-		((FieldValueCounterRepository) fieldValueCounterRepository).reset("FVCounter", "Hello");
+		fieldValueCounterRepository.reset("FVCounter", "Hi");
+		fieldValueCounterRepository.reset("FVCounter", "Hello");
 	}
 
 	@Test

@@ -22,7 +22,7 @@ package org.springframework.cloud.stream.module.metrics;
  * The name is the id and should be unique.
  * 
  * @author Mark Pollack
- * 
+ * @author Ilayaperumal Gopinathan
  */
 public interface FieldValueCounterRepository {
 
@@ -31,18 +31,20 @@ public interface FieldValueCounterRepository {
 	 * 
 	 * @param name the FieldValueCounter name
 	 * @param fieldName the name of the field
+	 * @param score the incremental value
 	 * @throws IllegalArgumentException in case the given name is null
 	 */
-	void increment(String name, String fieldName);
+	void increment(String name, String fieldName, double score);
 
 	/**
 	 * Decrement the FieldValueCounter for a given field name by one, creating missing counters.
 	 * 
 	 * @param name the FieldValueCounter name
 	 * @param fieldName the name of the field
+	 * @param score the decremental value
 	 * @throws IllegalArgumentException in case the given name is null
 	 */
-	void decrement(String name, String fieldName);
+	void decrement(String name, String fieldName, double score);
 
 	/**
 	 * Reset the FieldValueCounter to zero for the given field name, creating missing counters.

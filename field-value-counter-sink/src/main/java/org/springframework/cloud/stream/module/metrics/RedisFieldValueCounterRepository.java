@@ -26,8 +26,7 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.retry.RetryOperations;
 import org.springframework.util.Assert;
 
-public class RedisFieldValueCounterRepository implements FieldValueCounterRepository,
-		MetricRepository<FieldValueCounter, String> {
+public class RedisFieldValueCounterRepository implements FieldValueCounterRepository {
 
 	private final String metricPrefix;
 
@@ -54,7 +53,6 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 	 * Note: Handler implementations typically use increment() variants to save state. The save() contract
 	 * is to store the counter as a whole. Simplest approach is erase/rewrite.
 	 */
-	@Override
 	public <S extends FieldValueCounter> S save(S fieldValueCounter) {
 		reset(fieldValueCounter.getName(), MARKER);
 		increment(fieldValueCounter.getName(), MARKER, 0);
@@ -64,7 +62,6 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 		return fieldValueCounter;
 	}
 
-	@Override
 	public FieldValueCounter findOne(String name) {
 		Assert.notNull(name, "The name of the FieldValueCounter must not be null");
 		String metricKey = getMetricKey(name);
@@ -79,20 +76,11 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 	}
 
 	@Override
-	public void increment(String counterName, String fieldName) {
-		redisTemplate.boundZSetOps(getMetricKey(counterName)).incrementScore(fieldName, 1.0);
-	}
-
 	public void increment(String counterName, String fieldName, double score) {
 		redisTemplate.boundZSetOps(getMetricKey(counterName)).incrementScore(fieldName, score);
 	}
 
 	@Override
-	public void decrement(String counterName, String fieldName) {
-		redisTemplate.boundZSetOps(getMetricKey(counterName)).incrementScore(fieldName, -1.0);
-	}
-
-
 	public void decrement(String counterName, String fieldName, double score) {
 		redisTemplate.boundZSetOps(getMetricKey(counterName)).incrementScore(fieldName, -score);
 	}

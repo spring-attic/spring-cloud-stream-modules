@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.stream.module.metrics;
 
+import javax.validation.constraints.NotNull;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -26,6 +28,7 @@ public class FieldValueCounterSinkProperties extends MetricProperties {
 
 	private String fieldName;
 
+	@NotNull(message = "field name must not be null.")
 	public String getFieldName() {
 		return fieldName;
 	}

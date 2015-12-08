@@ -124,11 +124,11 @@ public class FieldValueCounterSink {
 					: Arrays.asList(ObjectUtils.toObjectArray(value));
 			for (Object val : c) {
 				// TODO better conversion to a string
-				fieldValueCounterRepository.increment(counterName, val.toString());
+				fieldValueCounterRepository.increment(counterName, val.toString(), 1.0);
 			}
 		}
 		else {
-			fieldValueCounterRepository.increment(counterName, value.toString());
+			fieldValueCounterRepository.increment(counterName, value.toString(), 1.0);
 		}
 	}
 
