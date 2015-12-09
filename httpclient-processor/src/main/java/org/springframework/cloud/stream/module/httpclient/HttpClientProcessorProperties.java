@@ -38,8 +38,6 @@ public class HttpClientProcessorProperties {
 
 	private static final Class<?> DEFAULT_RESPONSE_TYPE = String.class;
 
-	public static final Expression DEFAULT_BODY_EXPRESSION = new SpelExpressionParser().parseExpression("payload");
-
 	/**
 	 * The URL to issue an http request to, as a static value.
 	 */
