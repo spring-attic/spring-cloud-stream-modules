@@ -78,6 +78,9 @@ public class HttpClientProcessor {
 			else if (properties.getBodyExpression() != null) {
 				body = properties.getBodyExpression().getValue(message);
 			}
+			else {
+				body = message.getPayload();
+			}
 			URI uri = new URI(url);
 			RequestEntity<?> request = new RequestEntity<>(body, headers, method, uri);
 			ResponseEntity<?> response = restTemplate.exchange(request, responseType);

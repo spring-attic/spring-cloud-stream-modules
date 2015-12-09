@@ -16,9 +16,10 @@
 
 package org.springframework.cloud.stream.module.httpclient;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -46,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {HttpClientProcessorApplication.class, HttpClientProcessorTests.AdditionalController.class})
-@WebIntegrationTest(randomPort = true) // Need to use a hardcoded port to be able to reference it below
+@WebIntegrationTest(randomPort = true)
 @DirtiesContext
 public abstract class HttpClientProcessorTests {
 

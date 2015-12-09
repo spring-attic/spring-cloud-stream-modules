@@ -56,14 +56,14 @@ public class HttpClientProcessorProperties {
 	private HttpMethod httpMethod = DEFAULT_HTTP_METHOD;
 
 	/**
-	 * The (static) body of the request to use.
+	 * The (static) request body; if neither this nor bodyExpression is provided, the payload will be used.
 	 */
 	private Object body;
 
 	/**
-	 * A SpEL expression against incoming message to derive the request body to use.
+	 * A SpEL expression to derive the request body from the incoming message.
 	 */
-	private Expression bodyExpression = DEFAULT_BODY_EXPRESSION;
+	private Expression bodyExpression;
 
 	/**
 	 * A SpEL expression used to derive the http headers map to use.
@@ -107,10 +107,6 @@ public class HttpClientProcessorProperties {
 	}
 
 	public void setBody(Object body) {
-		if (bodyExpression != null &&
-				bodyExpression.getExpressionString().equals(DEFAULT_BODY_EXPRESSION.getExpressionString())) {
-			this.bodyExpression = null;
-		}
 		this.body = body;
 	}
 
