@@ -27,12 +27,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 /**
  * Used to configure the connection and offloading of counters to redis in case it is used as
  * a store.
- *
  * @author Eric Bottard
  * @see CounterSinkProperties#getStore()
  */
 @Configuration
-@ConditionalOnProperty(value="store", havingValue = "redis")
+@ConditionalOnProperty(value = "store", havingValue = "redis")
 public class CounterSinkRedisStoreConfiguration {
 
 	@Autowired
