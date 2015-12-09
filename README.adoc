@@ -1,11 +1,15 @@
-# spring-cloud-stream-modules
-A repository for Spring Cloud Stream Modules
+== Spring Cloud Stream Modules image:https://build.spring.io/plugins/servlet/buildStatusImage/SCS-MODULESBMASTER[Build Status, link=https://build.spring.io/browse/SCS-MODULESBMASTER] image:https://badge.waffle.io/spring-cloud/spring-cloud-stream-modules.svg?label=ready&title=Ready[Stories Ready, link=http://waffle.io/spring-cloud/spring-cloud-stream-modules] image:https://badge.waffle.io/spring-cloud/spring-cloud-stream-modules.svg?label=In%20Progress&title=In%20Progress[Stores In Progress, link=http://waffle.io/spring-cloud/spring-cloud-stream-modules]
 
-## Building
+This project provides a collection of modules for common cases.  They can be run on their own or orchestrated via Spring Cloud Data Flow.
+
+=== Building
+
+Some module may require an external server to execute, e.g. redis.  If the external server is not found, the test will be skipped.
 
 Clone the repo and type
 
 ----
-$ mvn -s .settings.xml clean install
+$ ./mvnw clean install
 ----
+
 
