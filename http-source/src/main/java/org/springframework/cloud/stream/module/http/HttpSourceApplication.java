@@ -16,6 +16,10 @@
 
 package org.springframework.cloud.stream.module.http;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -23,12 +27,27 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * A main application that can be used to run the HTTP Source as a standalone app.
  *
  * @author Eric Bottard
+ * @author Ilayaperumal Gopinathan
  */
 @SpringBootApplication
 public class HttpSourceApplication {
 
+	private static final String SERVER_PORT_OPTION = "server.port";
+
 	public static void main(String[] args) {
-		SpringApplication.run(HttpSourceApplication.class, args);
+		List<String> argsList = new ArrayList<>();
+		argsList.addAll(Arrays.asList(args));
+		boolean hasServerPort = false;
+		for (String arg : argsList) {
+			if (arg.contains(SERVER_PORT_OPTION)) {
+				hasServerPort = true;
+				return;
+			}
+		}
+		if (!hasServerPort) {
+			argsList.add("--" + SERVER_PORT_OPTION + "=9000");
+		}
+		SpringApplication.run(HttpSourceApplication.class, argsList.toArray(new String[0]));
 	}
 
 }
