@@ -4,7 +4,7 @@
       "name": "pathPattern",
       "type": "java.lang.String",
       "description": "An Ant-Style pattern to determine which http requests will be captured",
-      "defaultValue": "/messages"
+      "defaultValue": "/"
     }
   ],
   "hints": []

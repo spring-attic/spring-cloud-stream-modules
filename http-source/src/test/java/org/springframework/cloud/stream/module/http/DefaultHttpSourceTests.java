@@ -21,9 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
-import java.net.URI;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,27 +31,22 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Tests for HttpSource.
+ * Tests for HttpSource with default mapping.
  *
  * @author Eric Bottard
  * @author Mark Fisher
  * @author Marius Bogoevici
+ * @author Ilayaperumal Gopinathan
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = HttpSourceApplication.class)
-public abstract class HttpSourceTests {
+public abstract class DefaultHttpSourceTests {
 
 	@Autowired
 	@Bindings(HttpSource.class)
@@ -68,39 +60,8 @@ public abstract class HttpSourceTests {
 
 	protected RestTemplate restTemplate = new RestTemplate();
 
-	@WebIntegrationTest(value = "pathPattern=/foo", randomPort = true)
-	public static class SimpleMappingTests extends HttpSourceTests {
-
-		@Test
-		public void testText() {
-			ResponseEntity<?> entity = restTemplate.postForEntity("http://localhost:" + port + "/foo", "hello", Object.class);
-			assertEquals(HttpStatus.ACCEPTED, entity.getStatusCode());
-			assertThat(messageCollector.forChannel(channels.output()), receivesPayloadThat(is("hello")));
-		}
-
-		@Test
-		public void testBytes() {
-			ResponseEntity<?> entity = restTemplate.postForEntity("http://localhost:" + port + "/foo", "hello".getBytes(), Object.class);
-			assertEquals(HttpStatus.ACCEPTED, entity.getStatusCode());
-			assertThat(messageCollector.forChannel(channels.output()), receivesPayloadThat(is("hello".getBytes())));
-		}
-
-		@Test
-		public void testJson() throws Exception {
-			String json = "{\"foo\":1,\"bar\":true}";
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON);
-			RequestEntity<String> request = new RequestEntity<String>(json, headers, HttpMethod.POST, new URI("http://localhost:" + port + "/foo"));
-			ResponseEntity<?> response = restTemplate.exchange(request, Object.class);
-			assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-			Message<?> message = messageCollector.forChannel(channels.output()).poll(1, TimeUnit.SECONDS);
-			assertEquals(json, message.getPayload());
-			assertEquals("application/json", message.getHeaders().get(MessageHeaders.CONTENT_TYPE));
-		}
-	}
-
-	@WebIntegrationTest
-	public static class DefaultMappingTests extends HttpSourceTests {
+	@WebIntegrationTest(randomPort = true)
+	public static class DefaultMappingTests extends DefaultHttpSourceTests {
 
 		@Test
 		public void testText() {
