@@ -32,7 +32,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * @see MetricProperties#getStore()
  */
 @Configuration
-@ConditionalOnProperty(value="store", havingValue = "redis")
+@ConditionalOnProperty(value = "store", havingValue = "redis")
 public class CounterSinkRedisStoreConfiguration {
 
 	@Autowired

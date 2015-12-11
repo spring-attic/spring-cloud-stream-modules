@@ -32,9 +32,14 @@ import org.springframework.expression.common.LiteralExpression;
 public class MetricProperties {
 
 	/**
-	 * The name of the counter to increment.
+	 * The default name of the counter
 	 */
 	@Value("${spring.application.name:counts}")
+	private String defaultName;
+
+	/**
+	 * The name of the counter to increment.
+	 */
 	private String name;
 
 	/**
@@ -57,6 +62,9 @@ public class MetricProperties {
 	}
 
 	public String getName() {
+		if (name == null && nameExpression == null) {
+			return defaultName;
+		}
 		return name;
 	}
 
@@ -78,6 +86,6 @@ public class MetricProperties {
 
 	@AssertTrue(message = "exactly one of 'name' and 'nameExpression' must be set")
 	public boolean isExclusiveOptions() {
-		return name != null ^ nameExpression != null;
+		return getName() != null ^ getNameExpression() != null;
 	}
 }
