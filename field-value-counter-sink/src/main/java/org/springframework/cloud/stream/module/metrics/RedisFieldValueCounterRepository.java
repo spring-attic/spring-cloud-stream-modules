@@ -56,7 +56,7 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 	public <S extends FieldValueCounter> S save(S fieldValueCounter) {
 		reset(fieldValueCounter.getName(), MARKER);
 		increment(fieldValueCounter.getName(), MARKER, 0);
-		for (Map.Entry<String, Double> entry : fieldValueCounter.getFieldValueCount().entrySet()) {
+		for (Map.Entry<String, Double> entry : fieldValueCounter.getFieldValueCounts().entrySet()) {
 			increment(fieldValueCounter.getName(), entry.getKey(), entry.getValue());
 		}
 		return fieldValueCounter;

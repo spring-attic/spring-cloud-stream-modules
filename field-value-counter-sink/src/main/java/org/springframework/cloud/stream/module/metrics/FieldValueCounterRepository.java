@@ -27,7 +27,7 @@ package org.springframework.cloud.stream.module.metrics;
 public interface FieldValueCounterRepository {
 
 	/**
-	 * Increment the FieldValueCounter for a given field name by one, creating missing counters.
+	 * Increment the FieldValueCounter for a given field name by score, creating missing counters.
 	 * 
 	 * @param name the FieldValueCounter name
 	 * @param fieldName the name of the field
@@ -37,7 +37,7 @@ public interface FieldValueCounterRepository {
 	void increment(String name, String fieldName, double score);
 
 	/**
-	 * Decrement the FieldValueCounter for a given field name by one, creating missing counters.
+	 * Decrement the FieldValueCounter for a given field name by score, creating missing counters.
 	 * 
 	 * @param name the FieldValueCounter name
 	 * @param fieldName the name of the field

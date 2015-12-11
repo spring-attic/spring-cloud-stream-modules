@@ -19,8 +19,7 @@ import javax.validation.constraints.AssertTrue;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.common.LiteralExpression;
 
 /**
  * Common configuration properties for the Spring Cloud Stream metric modules.
@@ -31,8 +30,6 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 @ConfigurationProperties
 public class MetricProperties {
 
-	private final SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
-
 	/**
 	 * The name of the counter to increment.
 	 */
@@ -42,7 +39,7 @@ public class MetricProperties {
 	/**
 	 * A SpEL expression (against the incoming Message) to derive the name of the counter to increment.
 	 */
-	private String nameExpression;
+	private LiteralExpression nameExpression;
 
 	/**
 	 * The name of a store used to store the counter.
@@ -66,15 +63,15 @@ public class MetricProperties {
 		this.name = name;
 	}
 
-	public Expression getNameExpression() {
-		return spelExpressionParser.parseExpression(nameExpression);
+	public LiteralExpression getNameExpression() {
+		return nameExpression;
 	}
 
-	public Expression getComputedNameExpression() {
-		return spelExpressionParser.parseExpression(nameExpression != null ? nameExpression : ("'" + name + "'"));
-	}
+	public LiteralExpression getComputedNameExpression() {
+		return (nameExpression != null ? nameExpression : new LiteralExpression(name));
+}
 
-	public void setNameExpression(String nameExpression) {
+	public void setNameExpression(LiteralExpression nameExpression) {
 		this.nameExpression = nameExpression;
 	}
 

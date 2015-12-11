@@ -32,17 +32,34 @@ public class InMemoryFieldValueCounterRepository implements FieldValueCounterRep
 
 	private final ConcurrentMap<String, FieldValueCounter> map = new ConcurrentHashMap<>();
 
-	public FieldValueCounter save(FieldValueCounter fieldValueCounter) {
-		map.put(fieldValueCounter.getName(), fieldValueCounter);
-		return fieldValueCounter;
+	@Override
+	public synchronized void increment(String name, String fieldName, double score) {
+		modifyFieldValue(name, fieldName, score);
 	}
 
-	public FieldValueCounter findOne(String name) {
-		Assert.notNull(name, "The name of the metric must not be null");
-		return map.get(name);
+	@Override
+	public synchronized void decrement(String name, String fieldName, double score) {
+		modifyFieldValue(name, fieldName, score);
 	}
 
-	protected FieldValueCounter getOrCreate(String name) {
+	@Override
+	public void reset(String name, String fieldName) {
+		FieldValueCounter counter = getOrCreate(name);
+		Map<String, Double> data = counter.getFieldValueCounts();
+		if (data.containsKey(fieldName)) {
+			data.put(fieldName, 0D);
+		}
+	}
+
+	private void modifyFieldValue(String name, String fieldName, double delta) {
+		FieldValueCounter counter = getOrCreate(name);
+		Map<String, Double> data = counter.getFieldValueCounts();
+		double count = data.containsKey(fieldName) ? data.get(fieldName) : 0;
+		data.put(fieldName, count + delta);
+		save(counter);
+	}
+
+	private FieldValueCounter getOrCreate(String name) {
 		synchronized (map) {
 			FieldValueCounter result = findOne(name);
 			if (result == null) {
@@ -53,35 +70,18 @@ public class InMemoryFieldValueCounterRepository implements FieldValueCounterRep
 		}
 	}
 
-	public FieldValueCounter create(String name) {
+	private FieldValueCounter save(FieldValueCounter fieldValueCounter) {
+		map.put(fieldValueCounter.getName(), fieldValueCounter);
+		return fieldValueCounter;
+	}
+
+	private FieldValueCounter findOne(String name) {
+		Assert.notNull(name, "The name of the metric must not be null");
+		return map.get(name);
+	}
+
+	private FieldValueCounter create(String name) {
 		return new FieldValueCounter(name);
-	}
-
-	@Override
-	public synchronized void increment(String name, String fieldName, double score) {
-		modifyFieldValue(name, fieldName, score);
-	}
-
-	@Override
-	public synchronized void decrement(String name, String fieldName, double score) {
-		modifyFieldValue(name, fieldName, -1);
-	}
-
-	@Override
-	public void reset(String name, String fieldName) {
-		FieldValueCounter counter = getOrCreate(name);
-		Map<String, Double> data = counter.getFieldValueCount();
-		if (data.containsKey(fieldName)) {
-			data.put(fieldName, 0D);
-		}
-	}
-
-	private void modifyFieldValue(String name, String fieldName, double delta) {
-		FieldValueCounter counter = getOrCreate(name);
-		Map<String, Double> data = counter.getFieldValueCount();
-		double count = data.containsKey(fieldName) ? data.get(fieldName) : 0;
-		data.put(fieldName, count + delta);
-		save(counter);
 	}
 
 }

@@ -26,58 +26,40 @@ import org.springframework.util.Assert;
  * should be unique.
  * 
  * @author Mark Pollack
- * 
+ * @author Ilayaperumal Gopinathan
  */
 public final class FieldValueCounter implements Metric {
 
 	private final String name;
 
-	private final Map<String, Double> fieldValueCount;
+	private final Map<String, Double> fieldValueCounts;
 
 	public FieldValueCounter(String name) {
 		Assert.notNull(name);
 		this.name = name;
-		this.fieldValueCount = new ConcurrentHashMap<String, Double>();
+		this.fieldValueCounts = new ConcurrentHashMap<String, Double>();
 	}
 
-	//@PersistenceConstructor
-	public FieldValueCounter(String name, Map<String, Double> fieldValueCount) {
+	public FieldValueCounter(String name, Map<String, Double> fieldValueCounts) {
 		Assert.notNull(name);
-		Assert.notNull(fieldValueCount);
+		Assert.notNull(fieldValueCounts);
 		this.name = name;
-		this.fieldValueCount = fieldValueCount;
+		this.fieldValueCounts = fieldValueCounts;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @return the fieldValueCount
-	 */
-	public Map<String, Double> getFieldValueCount() {
-		return this.fieldValueCount;
+	public Map<String, Double> getFieldValueCounts() {
+		return this.fieldValueCounts;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "FieldValueCounter [name=" + name + ", fieldValueCount="
-				+ fieldValueCount + "]";
+		return "FieldValueCounter [name=" + name + ", fieldValueCounts=" + fieldValueCounts + "]";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -86,11 +68,6 @@ public final class FieldValueCounter implements Metric {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

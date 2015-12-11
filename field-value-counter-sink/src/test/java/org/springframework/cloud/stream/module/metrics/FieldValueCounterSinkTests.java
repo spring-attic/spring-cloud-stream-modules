@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,6 +44,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @DirtiesContext
 public class FieldValueCounterSinkTests {
 
+	@Rule
 	public RedisTestSupport redisTestSupport = new RedisTestSupport();
 
 	@Autowired
@@ -73,8 +75,8 @@ public class FieldValueCounterSinkTests {
 		sink.input().send(message);
 		message = MessageBuilder.withPayload("{\"test\": \"Hi\"}").build();
 		sink.input().send(message);
-		assertEquals(2, this.fieldValueCounterRepository.findOne("FVCounter").getFieldValueCount().get("Hi").longValue());
-		assertEquals(1, this.fieldValueCounterRepository.findOne("FVCounter").getFieldValueCount().get("Hello").longValue());
+		assertEquals(2, this.fieldValueCounterRepository.findOne("FVCounter").getFieldValueCounts().get("Hi").longValue());
+		assertEquals(1, this.fieldValueCounterRepository.findOne("FVCounter").getFieldValueCounts().get("Hello").longValue());
 	}
 
 }
