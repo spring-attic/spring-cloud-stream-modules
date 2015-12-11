@@ -1,0 +1,27 @@
+= Spring Cloud Stream PMML Processor
+
+A processor that evaluates a machine learning model stored in PMML format.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+PmmlProcessorApplication:: the Spring Boot Main Application
+PmmlProcessor:: the actual module that interacts with message channels
+PmmlProcessorProperties:: configuration properties for the module
+
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+To start the module execute the following:
+```
+$> java -jar target/pmml-processor-${version}-exec.jar
+```
