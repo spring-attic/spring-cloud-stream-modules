@@ -49,6 +49,8 @@ public abstract class AbstractCounterSinkTests {
     @Rule
     public RedisTestSupport redisAvailableRule = new RedisTestSupport();
 
+    protected int sleepTime = 100;
+
     @Autowired
     @Bindings(CounterSink.class)
     protected Sink sink;

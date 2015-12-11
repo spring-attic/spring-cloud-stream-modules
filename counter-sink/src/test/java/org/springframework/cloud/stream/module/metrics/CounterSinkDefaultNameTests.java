@@ -31,7 +31,7 @@ public class CounterSinkDefaultNameTests extends AbstractCounterSinkTests {
         assertNotNull(this.sink.input());
         Message<String> message = MessageBuilder.withPayload("...").build();
         sink.input().send(message);
-        Thread.sleep(20);
+        Thread.sleep(sleepTime);
         //Note:  If the name of the counter does not start with 'counter' or 'metric' the 'counter.' prefix is added
         //       by the DefaultCounterService
         assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
