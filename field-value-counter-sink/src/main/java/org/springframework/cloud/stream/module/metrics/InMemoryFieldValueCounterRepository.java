@@ -33,13 +33,13 @@ public class InMemoryFieldValueCounterRepository implements FieldValueCounterRep
 	private final ConcurrentMap<String, FieldValueCounter> map = new ConcurrentHashMap<>();
 
 	@Override
-	public synchronized void increment(String name, String fieldName, double score) {
+	public void increment(String name, String fieldName, double score) {
 		modifyFieldValue(name, fieldName, score);
 	}
 
 	@Override
-	public synchronized void decrement(String name, String fieldName, double score) {
-		modifyFieldValue(name, fieldName, score);
+	public void decrement(String name, String fieldName, double score) {
+		modifyFieldValue(name, fieldName, -score);
 	}
 
 	@Override
@@ -60,14 +60,14 @@ public class InMemoryFieldValueCounterRepository implements FieldValueCounterRep
 	}
 
 	private FieldValueCounter getOrCreate(String name) {
-		synchronized (map) {
 			FieldValueCounter result = findOne(name);
 			if (result == null) {
-				result = create(name);
+				synchronized (map) {
+					result = create(name);
+				}
 				result = save(result);
 			}
 			return result;
-		}
 	}
 
 	private FieldValueCounter save(FieldValueCounter fieldValueCounter) {

@@ -19,6 +19,7 @@ import javax.validation.constraints.AssertTrue;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 
 /**
@@ -39,7 +40,7 @@ public class MetricProperties {
 	/**
 	 * A SpEL expression (against the incoming Message) to derive the name of the counter to increment.
 	 */
-	private LiteralExpression nameExpression;
+	private Expression nameExpression;
 
 	/**
 	 * The name of a store used to store the counter.
@@ -63,15 +64,15 @@ public class MetricProperties {
 		this.name = name;
 	}
 
-	public LiteralExpression getNameExpression() {
+	public Expression getNameExpression() {
 		return nameExpression;
 	}
 
-	public LiteralExpression getComputedNameExpression() {
+	public Expression getComputedNameExpression() {
 		return (nameExpression != null ? nameExpression : new LiteralExpression(name));
 }
 
-	public void setNameExpression(LiteralExpression nameExpression) {
+	public void setNameExpression(Expression nameExpression) {
 		this.nameExpression = nameExpression;
 	}
 
