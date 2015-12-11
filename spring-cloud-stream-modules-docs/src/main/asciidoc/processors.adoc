@@ -1,0 +1,65 @@
+[[spring-cloud-stream-modules-processors]]
+== Processors
+
+[[spring-cloud-stream-modules-filter]]
+=== Filter (`filter`)
+Use the filter module in a stream to determine whether a Message should be passed to the output channel.
+
+The **$$filter$$** $$processor$$ has the following options:
+
+$$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, default: `payload.toString()`)*
+
+==== Filter with SpEL expression
+The simplest way to use the filter processor is to pass a SpEL expression when creating the stream. The expression should evaluate the message and return true or false.  For example:
+
+    dataflow:> stream create --name filtertest --definition "http | filter --expression=payload=='good' | log" --deploy
+
+This filter will only pass Messages to the log sink if the payload is the word "good". Try sending "good" to the HTTP endpoint and you should see it in the XD log:
+
+    dataflow:> http post --target http://localhost:9000 --data "good"
+
+Alternatively, if you send the word "bad" (or anything else), you shouldn't see the log entry.
+
+
+[[spring-cloud-stream-modules-groovy-filter]]
+=== `groovy-filter`
+
+A Processor module that retains or discards messages according to a predicate, expressed as a Groovy script.
+
+The **$$groovy-filter$$** $$processor$$ has the following options:
+
+$$script$$:: $$The script resource location$$ *($$String$$, default: ``)*
+$$variables$$:: $$Variable bindings as a comma delimited string of name-value pairs, e.g. 'foo=bar,baz=car'$$ *($$String$$, default: ``)*
+$$variablesLocation$$:: $$The location of a properties file containing custom script variable bindings$$ *($$String$$, default: ``)*
+
+
+[[spring-cloud-stream-modules-groovy-transform]]
+=== `groovy-transform`
+
+A Processor module that transforms messages using a Groovy script.
+
+The **$$groovy-filter$$** $$processor$$ has the following options:
+
+$$script$$:: $$The script resource location$$ *($$String$$, default: ``)*
+$$variables$$:: $$Variable bindings as a comma delimited string of name-value pairs, e.g. 'foo=bar,baz=car'$$ *($$String$$, default: ``)*
+$$variablesLocation$$:: $$The location of a properties file containing custom script variable bindings$$ *($$String$$, default: ``)*
+
+
+[[spring-cloud-stream-modules-transform]]
+=== Transform (`transform`)
+Use the transform module in a stream to convert a Message's content or structure.
+
+The **$$transform$$** $$processor$$ has the following options:
+
+$$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, default: `payload.toString()`)*
+
+==== Transform with SpEL expression
+The simplest way to use the transform processor is to pass a SpEL expression when creating the stream. The expression should return the modified message or payload.  For example:
+
+    dataflow:> stream create --name transformtest --definition "http --port=9003 | transform --expression=payload.toUpperCase() | log" --deploy
+
+This transform will convert all message payloads to upper case. If sending the word "foo" to the HTTP endpoint and you should see "FOO" in the XD log:
+
+    dataflow:> http post --target http://localhost:9003 --data "foo"
+
+As part of the SpEL expression you can make use of the pre-registered JSON Path function.  The syntax is #jsonPath(payload,'<json path expression>')

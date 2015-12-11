@@ -57,6 +57,8 @@
 		<module>redis-sink</module>
 		<module>throughput-sink</module>
 		<module>websocket-sink</module>
+		<!-- documentation -->
+		<module>spring-cloud-stream-modules-docs</module>
 	</modules>
 	<build>
 		<plugins>
