@@ -54,7 +54,6 @@ import org.springframework.web.client.RestTemplate;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = HttpSourceApplication.class)
-//@WebIntegrationTest(randomPort = true)
 public abstract class HttpSourceTests {
 
 	@Autowired

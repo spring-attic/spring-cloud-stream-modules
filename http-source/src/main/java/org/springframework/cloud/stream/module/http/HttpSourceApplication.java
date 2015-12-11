@@ -41,7 +41,6 @@ public class HttpSourceApplication {
 		for (String arg : argsList) {
 			if (arg.contains(SERVER_PORT_OPTION)) {
 				hasServerPort = true;
-				return;
 			}
 		}
 		if (!hasServerPort) {
