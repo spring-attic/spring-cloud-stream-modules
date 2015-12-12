@@ -6,9 +6,9 @@
 		<artifactId>spring-cloud-stream-parent</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
 	</parent>
-	<artifactId>spring-cloud-stream-docs</artifactId>
-	<name>spring-cloud-stream-docs</name>
-	<description>Spring Cloud Stream Docs</description>
+	<artifactId>spring-cloud-stream-modules-docs</artifactId>
+	<name>spring-cloud-stream-modules-docs</name>
+	<description>Spring Cloud Stream Modules Docs</description>
 	<properties>
 		<main.basedir>${basedir}/..</main.basedir>
 	</properties>
@@ -275,7 +275,7 @@
 								<configuration>
 									<artifacts>
 										<artifact>
-											<file>${project.build.directory}/${project.artifactId}-${project.version}.zip</file>
+											<file>${project.build.directory}/spring-cloud-stream-modules-${project.version}.zip</file>
 											<type>zip;zip.type=docs;zip.deployed=false</type>
 										</artifact>
 									</artifacts>

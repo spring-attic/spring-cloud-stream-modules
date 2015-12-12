@@ -41,7 +41,7 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 = Reference Guide
 include::overview.adoc[]
 
-= Samples
+= Modules
 include::sources.adoc[]
 include::processors.adoc[]
 include::sinks.adoc[]
