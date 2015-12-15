@@ -131,6 +131,26 @@ public class HdfsSinkPropertiesTests {
 	}
 
 	@Test
+	public void enableSyncCanBeCustomized() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		EnvironmentTestUtils.addEnvironment(context, "enableSync:true");
+		context.register(Conf.class);
+		context.refresh();
+		HdfsSinkProperties properties = context.getBean(HdfsSinkProperties.class);
+		assertThat(properties.isEnableSync(), equalTo(true));
+	}
+
+	@Test
+	public void flushTimeoutCanBeCustomized() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		EnvironmentTestUtils.addEnvironment(context, "flushTimeout:12345");
+		context.register(Conf.class);
+		context.refresh();
+		HdfsSinkProperties properties = context.getBean(HdfsSinkProperties.class);
+		assertThat(properties.getFlushTimeout(), equalTo(12345L));
+	}
+
+	@Test
 	public void inUsePrefixCanBeCustomized() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		EnvironmentTestUtils.addEnvironment(context, "inUsePrefix:_");

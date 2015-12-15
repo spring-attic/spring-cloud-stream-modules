@@ -15,7 +15,7 @@
 
 	<properties>
 		<start-class>org.springframework.cloud.stream.module.dataset.sink.DatasetSinkApplication</start-class>
-		<spring-data-hadoop.version>2.3.0.RC1</spring-data-hadoop.version>
+		<spring-data-hadoop.version>2.3.0.RC2</spring-data-hadoop.version>
 	</properties>
 
 	<dependencies>

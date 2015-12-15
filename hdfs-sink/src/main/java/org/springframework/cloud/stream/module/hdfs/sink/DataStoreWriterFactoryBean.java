@@ -129,6 +129,8 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 			TextFileWriter writer = new TextFileWriter(configurationToUse, basePath, codec);
 			writer.setIdleTimeout(properties.getIdleTimeout());
 			writer.setCloseTimeout(properties.getCloseTimeout());
+			writer.setSyncable(properties.isEnableSync());
+			writer.setFlushTimeout(properties.getFlushTimeout());
 			if (StringUtils.hasText(properties.getInUsePrefix())) {
 				writer.setInWritingPrefix(properties.getInUsePrefix());
 			}
@@ -161,6 +163,8 @@ public class DataStoreWriterFactoryBean implements InitializingBean, DisposableB
 					partitionStrategy);
 			writer.setIdleTimeout(properties.getIdleTimeout());
 			writer.setCloseTimeout(properties.getCloseTimeout());
+			writer.setSyncable(properties.isEnableSync());
+			writer.setFlushTimeout(properties.getFlushTimeout());
 			if (StringUtils.hasText(properties.getInUsePrefix())) {
 				writer.setInWritingPrefix(properties.getInUsePrefix());
 			}

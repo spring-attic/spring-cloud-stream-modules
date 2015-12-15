@@ -31,74 +31,84 @@ import javax.validation.constraints.Pattern;
 public class HdfsSinkProperties {
 
 	/**
-	 * URL for HDFS Namenode
+	 * URL for HDFS Namenode.
 	 */
 	private String fsUri;
 
 	/**
-	 * base path to write files to
+	 * Base path to write files to.
 	 */
 	@Value("/tmp/${spring.application.name:hdfs-sink}")
 	private String directory;
 
 	/**
-	 * the base filename to use for the created files
+	 * The base filename to use for the created files.
 	 */
 	@Value("${spring.application.name:data}")
 	private String fileName;
 
 	/**
-	 * the base filename extension to use for the created files
+	 * The base filename extension to use for the created files.
 	 */
 	private String fileExtension = "txt";
 
 	/**
-	 * compression codec alias name (gzip, snappy, bzip2, lzo, or slzo)
+	 * Compression codec alias name (gzip, snappy, bzip2, lzo, or slzo).
 	 */
 	private String codec = null;
 
 	/**
-	 * whether file name should contain uuid
+	 * Whether file name should contain uuid.
 	 */
 	private boolean fileUuid = false;
 
 	/**
-	 * whether writer is allowed to overwrite files in Hadoop FileSystem
+	 * Whether writer is allowed to overwrite files in Hadoop FileSystem.
 	 */
 	private boolean overwrite = false;
 
 	/**
-	 * threshold in bytes when file will be automatically rolled over.
+	 * Threshold in bytes when file will be automatically rolled over.
 	 */
 	private int rollover = 1000000000;
 
 	/**
-	 * inactivity timeout in ms after which file will be automatically closed
+	 * Whether writer will sync to datanode when flush is called, setting this to 'true' could impact throughput.
+	 */
+	private boolean enableSync = false;
+
+	/**
+	 * Inactivity timeout in ms after which file will be automatically closed.
 	 */
 	private long idleTimeout = 0L;
 
 	/**
-	 * timeout in ms, regardless of activity, after which file will be automatically closed
+	 * Timeout in ms, regardless of activity, after which file will be automatically closed.
 	 */
 	private long closeTimeout = 0L;
 
 	/**
-	 * prefix for files currently being written
+	 * Timeout in ms, regardless of activity, after which data written to file will be flushed.
+	 */
+	private long flushTimeout = 0L;
+
+	/**
+	 * Prefix for files currently being written.
 	 */
 	private String inUsePrefix;
 
 	/**
-	 * suffix for files currently being written
+	 * Suffix for files currently being written.
 	 */
 	private String inUseSuffix;
 
 	/**
-	 * maximum number of file open attempts to find a path
+	 * Maximum number of file open attempts to find a path.
 	 */
 	private int fileOpenAttempts = 10;
 
 	/**
-	 * a SpEL expression defining the partition path
+	 * A SpEL expression defining the partition path.
 	 */
 	private String partitionPath;
 
@@ -168,6 +178,14 @@ public class HdfsSinkProperties {
 		this.rollover = rollover;
 	}
 
+	public boolean isEnableSync() {
+		return enableSync;
+	}
+
+	public void setEnableSync(boolean enableSync) {
+		this.enableSync = enableSync;
+	}
+
 	public long getIdleTimeout() {
 		return idleTimeout;
 	}
@@ -182,6 +200,14 @@ public class HdfsSinkProperties {
 
 	public void setCloseTimeout(long closeTimeout) {
 		this.closeTimeout = closeTimeout;
+	}
+
+	public long getFlushTimeout() {
+		return flushTimeout;
+	}
+
+	public void setFlushTimeout(long flushTimeout) {
+		this.flushTimeout = flushTimeout;
 	}
 
 	public String getInUsePrefix() {
