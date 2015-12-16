@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module;
+package org.springframework.cloud.stream.module.trigger;
 
 import java.util.concurrent.TimeUnit;
 

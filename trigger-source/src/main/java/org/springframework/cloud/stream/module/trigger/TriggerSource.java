@@ -1,6 +1,5 @@
 /*
  * Copyright 2015 the original author or authors.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,39 +12,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.springframework.cloud.stream.module.time;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+package org.springframework.cloud.stream.module.trigger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.cloud.stream.module.trigger.PeriodicTriggerConfiguration;
-import org.springframework.cloud.stream.module.trigger.TriggerConstants;
 import org.springframework.context.annotation.Import;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.common.LiteralExpression;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 
 /**
- * @author Dave Syer
- * @author Glenn Renfro
- * @author Marius Bogoevici
+ * @author Ilayaperumal Gopinathan
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties(TimeSourceProperties.class)
-@Import(PeriodicTriggerConfiguration.class)
-public class TimeSource {
+@EnableConfigurationProperties(TriggerSourceProperties.class)
+@Import({PeriodicTriggerConfiguration.class, CronTriggerConfiguration.class, DateTriggerConfiguration.class,
+		SpelExpressionConverterConfiguration.class})
+public class TriggerSource {
 
 	@Autowired
-	private TimeSourceProperties properties;
+	private EvaluationContext evaluationContext;
+
+	@Autowired
+	private TriggerSourceProperties config;
 
 	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(
-			trigger = TriggerConstants.TRIGGER_BEAN_NAME, maxMessagesPerPoll = "1"))
-	public String publishTime() {
-		return new SimpleDateFormat(this.properties.getFormat()).format(new Date());
+			trigger = TriggerConstants.TRIGGER_BEAN_NAME, maxMessagesPerPoll = "1"), autoStartup = "false")
+	public String trigger() {
+		if (this.config.getPayload() != null && !this.config.getPayload().isEmpty()) {
+			return new LiteralExpression(this.config.getPayload()).getValue(this.evaluationContext, String.class);
+		}
+		// Return empty string as payload
+		return "";
 	}
 
 }

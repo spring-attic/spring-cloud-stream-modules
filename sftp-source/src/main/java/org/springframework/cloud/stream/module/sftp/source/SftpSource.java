@@ -20,7 +20,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
-import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
+import org.springframework.cloud.stream.module.trigger.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
 import org.springframework.cloud.stream.module.file.FileUtils;
 import org.springframework.cloud.stream.module.sftp.SftpSessionFactoryConfiguration;
