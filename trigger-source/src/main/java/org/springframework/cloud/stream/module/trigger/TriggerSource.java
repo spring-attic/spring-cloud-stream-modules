@@ -1,6 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
- *
+ * Copyright 2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,34 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.springframework.cloud.stream.module.time;
-
-import java.util.Date;
+package org.springframework.cloud.stream.module.trigger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.annotation.PollableSource;
-import org.springframework.cloud.stream.module.trigger.TriggerConfiguration;
-import org.springframework.cloud.stream.module.trigger.TriggerProperties;
 import org.springframework.context.annotation.Import;
 
 /**
- * @author Dave Syer
- * @author Glenn Renfro
- * @author Marius Bogoevici
+ * Trigger source module.
+ *
+ * @author Ilayaperumal Gopinathan
  */
 @EnableBinding(Source.class)
+@EnableConfigurationProperties({TriggerProperties.class, MaxMessagesProperties.class})
 @Import(TriggerConfiguration.class)
-public class TimeSource {
+public class TriggerSource {
 
 	@Autowired
-	private TriggerProperties properties;
+	private TriggerProperties config;
 
 	@PollableSource
-	public String publishTime() {
-		return this.properties.getDateFormat().format(new Date());
+	public Object triggerSource() {
+		return this.config.getPayload().getValue();
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,6 @@
 
 package org.springframework.cloud.stream.module.time;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -27,7 +24,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Eric Bottard
  * @author Gary Russell
  * @author David Turanski
+ *
+ * @deprecated in favor of {@link org.springframework.cloud.stream.module.trigger.TriggerProperties#dateFormat}
  */
+@Deprecated
 @ConfigurationProperties
 public class TimeSourceProperties {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,22 +16,22 @@
 package org.springframework.cloud.stream.module.ftp.source;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
-import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
 import org.springframework.cloud.stream.module.file.FileUtils;
 import org.springframework.cloud.stream.module.ftp.FtpSessionFactoryConfiguration;
+import org.springframework.cloud.stream.module.trigger.TriggerConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
-import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.ftp.Ftp;
 import org.springframework.integration.dsl.ftp.FtpInboundChannelAdapterSpec;
 import org.springframework.integration.dsl.support.Consumer;
@@ -39,7 +39,6 @@ import org.springframework.integration.ftp.filters.FtpRegexPatternFileListFilter
 import org.springframework.integration.ftp.filters.FtpSimplePatternFileListFilter;
 import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.scheduling.Trigger;
 import org.springframework.util.StringUtils;
 
 /**
@@ -50,7 +49,7 @@ import org.springframework.util.StringUtils;
 @EnableBinding(Source.class)
 @EnableConfigurationProperties({FtpSourceProperties.class,
 		FileConsumerProperties.class, MaxMessagesProperties.class})
-@Import({PeriodicTriggerConfiguration.class, FtpSessionFactoryConfiguration.class})
+@Import({TriggerConfiguration.class, FtpSessionFactoryConfiguration.class})
 public class FtpSource {
 
 	@Autowired
@@ -60,22 +59,15 @@ public class FtpSource {
 	private FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
-	MaxMessagesProperties maxMessagesConfig;
-
-	@Autowired
 	DefaultFtpSessionFactory ftpSessionFactory;
 
 	@Autowired
-	Trigger trigger;
+	@Qualifier("defaultPoller")
+	PollerMetadata defaultPoller;
 
 	@Autowired
 	@Bindings(FtpSource.class)
 	Source source;
-
-	@Bean
-	public PollerMetadata poller() {
-		return Pollers.trigger(trigger).maxMessagesPerPoll(maxMessagesConfig.getMaxMessages()).get();
-	}
 
 	@Bean
 	public IntegrationFlow ftpInboundFlow() {
@@ -103,8 +95,7 @@ public class FtpSource {
 			@Override
 			public void accept(SourcePollingChannelAdapterSpec sourcePollingChannelAdapterSpec) {
 				sourcePollingChannelAdapterSpec
-						.autoStartup(false)
-						.poller(poller());
+						.poller(defaultPoller);
 			}
 		});
 

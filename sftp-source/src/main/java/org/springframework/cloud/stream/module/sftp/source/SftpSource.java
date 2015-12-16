@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,21 +16,21 @@
 package org.springframework.cloud.stream.module.sftp.source;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
-import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
 import org.springframework.cloud.stream.module.file.FileUtils;
 import org.springframework.cloud.stream.module.sftp.SftpSessionFactoryConfiguration;
+import org.springframework.cloud.stream.module.trigger.TriggerConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
-import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.sftp.Sftp;
 import org.springframework.integration.dsl.sftp.SftpInboundChannelAdapterSpec;
 import org.springframework.integration.dsl.support.Consumer;
@@ -38,7 +38,6 @@ import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.integration.sftp.filters.SftpRegexPatternFileListFilter;
 import org.springframework.integration.sftp.filters.SftpSimplePatternFileListFilter;
 import org.springframework.integration.sftp.session.DefaultSftpSessionFactory;
-import org.springframework.scheduling.Trigger;
 import org.springframework.util.StringUtils;
 
 /**
@@ -47,7 +46,7 @@ import org.springframework.util.StringUtils;
 @EnableBinding(Source.class)
 @EnableConfigurationProperties({SftpSourceProperties.class,
 		FileConsumerProperties.class, MaxMessagesProperties.class})
-@Import({PeriodicTriggerConfiguration.class, SftpSessionFactoryConfiguration.class})
+@Import({TriggerConfiguration.class, SftpSessionFactoryConfiguration.class})
 public class SftpSource {
 
 	@Autowired
@@ -57,21 +56,14 @@ public class SftpSource {
 	private FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
-	MaxMessagesProperties maxMessagesProperties;
-
-	@Autowired
 	DefaultSftpSessionFactory sftpSessionFactory;
 
 	@Autowired
-	Trigger trigger;
+	@Qualifier("defaultPoller")
+	PollerMetadata defaultPoller;
 
 	@Autowired
 	Source source;
-
-	@Bean
-	public PollerMetadata poller() {
-		return Pollers.trigger(this.trigger).maxMessagesPerPoll(this.maxMessagesProperties.getMaxMessages()).get();
-	}
 
 	@Bean
 	public IntegrationFlow sftpInboundFlow() {
@@ -98,8 +90,7 @@ public class SftpSource {
 			@Override
 			public void accept(SourcePollingChannelAdapterSpec sourcePollingChannelAdapterSpec) {
 				sourcePollingChannelAdapterSpec
-						.autoStartup(false)
-						.poller(poller());
+						.poller(defaultPoller);
 			}
 
 		});

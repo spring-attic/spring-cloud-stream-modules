@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,29 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.springframework.cloud.stream.module;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
+package org.springframework.cloud.stream.module.trigger;
 
 /**
- * @author David Turanski
+ * @author Ilayaperumal Gopinathan
  */
-@ConfigurationProperties
-public class MaxMessagesProperties {
+public class TriggerConstants {
 
-	/**
-	 * Maximum messages per poll.
-	 * Defaults to -1 (infinity) for polling consumers and 1 for polling inbound channel adapters.
-	 */
-	long maxMessages = -1;
+	public static final String TRIGGER_BEAN_NAME = "POLLER_TRIGGER";
 
-	public long getMaxMessages() {
-		return this.maxMessages;
-	}
+	public static final String DATE_FORMAT = "MM/dd/yy HH:mm:ss";
 
-	public void setMaxMessages(long maxMessages) {
-		this.maxMessages = maxMessages;
-	}
+	public static final String CRON_TRIGGER_OPTION = "cron";
+
+	public static final String DATE_TRIGGER_OPTION = "date";
 
 }

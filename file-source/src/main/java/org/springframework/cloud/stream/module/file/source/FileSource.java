@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,26 +19,25 @@ package org.springframework.cloud.stream.module.file.source;
 import java.io.File;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
-import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
 import org.springframework.cloud.stream.module.file.FileUtils;
+import org.springframework.cloud.stream.module.trigger.TriggerConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
-import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.file.FileInboundChannelAdapterSpec;
 import org.springframework.integration.dsl.file.Files;
 import org.springframework.integration.dsl.support.Consumer;
 import org.springframework.integration.file.FileReadingMessageSource;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.scheduling.Trigger;
 import org.springframework.util.StringUtils;
 
 /**
@@ -48,7 +47,7 @@ import org.springframework.util.StringUtils;
  * @author Gary Russell
  */
 @EnableBinding(Source.class)
-@Import(PeriodicTriggerConfiguration.class)
+@Import(TriggerConfiguration.class)
 @EnableConfigurationProperties({ FileSourceProperties.class,
 	FileConsumerProperties.class, MaxMessagesProperties.class })
 public class FileSource {
@@ -60,15 +59,8 @@ public class FileSource {
 	private FileConsumerProperties fileConsumerProperties;
 
 	@Autowired
-	private MaxMessagesProperties maxMessagesProperties;
-
-	@Autowired
-	private Trigger trigger;
-
-	@Bean
-	public PollerMetadata poller() {
-		return Pollers.trigger(trigger).maxMessagesPerPoll(this.maxMessagesProperties.getMaxMessages()).get();
-	}
+	@Qualifier("defaultPoller")
+	PollerMetadata defaultPoller;
 
 	@Autowired
 	Source source;
@@ -78,11 +70,14 @@ public class FileSource {
 		FileInboundChannelAdapterSpec messageSourceSpec = Files.inboundAdapter(new File(this.properties.getDirectory()));
 
 		if (StringUtils.hasText(this.properties.getFilenamePattern())) {
-			messageSourceSpec.patternFilter(this.properties.getFilenamePattern(), this.properties.isPreventDuplicates());
+			messageSourceSpec.patternFilter(this.properties.getFilenamePattern());
 		}
 		else if (this.properties.getFilenameRegex() != null) {
-			messageSourceSpec.regexFilter(this.properties.getFilenameRegex().pattern(),
-					this.properties.isPreventDuplicates());
+			messageSourceSpec.regexFilter(this.properties.getFilenameRegex().pattern());
+		}
+
+		if (this.properties.isPreventDuplicates()) {
+			messageSourceSpec.preventDuplicates();
 		}
 
 		IntegrationFlowBuilder flowBuilder = IntegrationFlows
@@ -92,8 +87,7 @@ public class FileSource {
 						@Override
 						public void accept(SourcePollingChannelAdapterSpec sourcePollingChannelAdapterSpec) {
 							sourcePollingChannelAdapterSpec
-									.autoStartup(false)
-									.poller(poller());
+									.poller(defaultPoller);
 						}
 
 					});
