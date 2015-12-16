@@ -1,0 +1,26 @@
+= Spring Cloud Stream TCP Source
+
+This module converts an incoming TCP stream into messages using a decoder.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+TcpSourceApplication:: the Spring Boot Main Application
+TcpSource:: the TCP source
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/tcp-source-${version}-exec.jar
+```
+
+The "decoder" property determines the message format (default is termination with CRLF).
