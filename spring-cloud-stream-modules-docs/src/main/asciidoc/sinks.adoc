@@ -537,17 +537,3 @@ $$key$$:: $$name for the key$$ *($$String$$, no default)*
 $$queue$$:: $$name for the queue$$ *($$String$$, no default)*
 $$topic$$:: $$name for the topic$$ *($$String$$, no default)*
 
-
-[[spring-cloud-stream-modules-tasks]]
-== Tasks
-
-[[spring-cloud-stream-modules-timestamp]]
-=== Timestamp (`timestamp`)
-
-Executes a batch job that logs a timestamp.
-
-==== Options
-
-The **$$timestamp$$** $$task$$ has the following options:
-
-$$format$$:: $$The timestamp format$$ *($$String$$, default: `yyyy-MM-dd HH:mm:ss.SSS`)*
