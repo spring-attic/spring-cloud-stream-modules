@@ -47,8 +47,8 @@ public class FieldValueCounterSinkWithDefaultsTests {
 	@Rule
 	public RedisTestSupport redisTestSupport = new RedisTestSupport();
 
-	// default counter name
-	private static final String FVC_NAME = "counts";
+	// default field value counter name
+	private static final String FVC_NAME = "field-value-counter";
 
 	@Autowired
 	@Bindings(FieldValueCounterSink.class)

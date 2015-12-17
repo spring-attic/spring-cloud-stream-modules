@@ -39,7 +39,7 @@ import org.springframework.messaging.Message;
  * @author Marius Bogoevici
  */
 @EnableBinding(Sink.class)
-@EnableConfigurationProperties(MetricProperties.class)
+@EnableConfigurationProperties(CounterProperties.class)
 @Configuration
 @Import(SpelExpressionConverterConfiguration.class)
 public class CounterSink {
@@ -50,7 +50,7 @@ public class CounterSink {
 	private CounterService counterService;
 
 	@Autowired
-	private MetricProperties counterSinkProperties;
+	private CounterProperties counterSinkProperties;
 
 	@Autowired
 	private EvaluationContext evaluationContext;

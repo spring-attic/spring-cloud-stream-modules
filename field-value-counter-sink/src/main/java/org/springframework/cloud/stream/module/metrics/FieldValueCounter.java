@@ -28,7 +28,7 @@ import org.springframework.util.Assert;
  * @author Mark Pollack
  * @author Ilayaperumal Gopinathan
  */
-public final class FieldValueCounter implements Metric {
+public final class FieldValueCounter {
 
 	private final String name;
 
