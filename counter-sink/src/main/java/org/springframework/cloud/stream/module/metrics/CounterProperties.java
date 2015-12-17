@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.springframework.cloud.stream.module.metrics;
 
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -25,16 +23,18 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 
 /**
+ * Common configuration properties for the Spring Cloud Stream metric modules.
+ *
+ * @author Eric Bottard
  * @author Ilayaperumal Gopinathan
  */
 @ConfigurationProperties
-public class FieldValueCounterSinkProperties extends MetricProperties {
+public class CounterProperties extends MetricProperties {
 
-	private String fieldName;
 	/**
 	 * The default name of the counter
 	 */
-	@Value("${spring.application.name:field-value-counter}")
+	@Value("${spring.application.name:counts}")
 	private String defaultName;
 
 	/**
@@ -46,16 +46,6 @@ public class FieldValueCounterSinkProperties extends MetricProperties {
 	 * A SpEL expression (against the incoming Message) to derive the name of the counter to increment.
 	 */
 	private Expression nameExpression;
-
-	@NotNull(message = "field name must not be null.")
-	public String getFieldName() {
-		return fieldName;
-	}
-
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
-
 
 	public String getName() {
 		if (name == null && nameExpression == null) {
@@ -74,7 +64,7 @@ public class FieldValueCounterSinkProperties extends MetricProperties {
 
 	public Expression getComputedNameExpression() {
 		return (nameExpression != null ? nameExpression : new LiteralExpression(getName()));
-	}
+}
 
 	public void setNameExpression(Expression nameExpression) {
 		this.nameExpression = nameExpression;
@@ -84,5 +74,4 @@ public class FieldValueCounterSinkProperties extends MetricProperties {
 	public boolean isExclusiveOptions() {
 		return getName() != null ^ getNameExpression() != null;
 	}
-
 }
