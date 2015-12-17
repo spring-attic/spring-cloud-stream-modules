@@ -1,6 +1,58 @@
 [[spring-cloud-stream-modules-sinks]]
 == Sinks
 
+[[spring-cloud-stream-modules-cassandra]]
+=== Cassandra (`cassandra`)
+
+The Cassandra sink writes into a Cassandra table.  Here is a simple example
+
+  dataflow:>stream create cassandrastream --definition "http --server.port=8888 --spring.cloud.stream.bindings.output.contentType='application/json' | cassandra --ingestQuery='insert into book (id, isbn, title, author) values (uuid(), ?, ?, ?)' --spring.cassandra.keyspace=clouddata" --deploy
+
+Create a keyspace and a `book` table in Cassandra using:
+
+[source,text]
+----
+CREATE KEYSPACE clouddata WITH REPLICATION = { 'class' : 'org.apache.cassandra.locator.SimpleStrategy', 'replication_factor': '1' } AND DURABLE_WRITES = true;
+USE clouddata;
+CREATE TABLE book  (
+    id          uuid PRIMARY KEY,
+    isbn        text,
+    author      text,
+    title       text
+);
+----
+
+You can then send data to this stream via
+
+  dataflow:>http post --contentType 'application/json' --data '{"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}' --target http://localhost:8888/messages
+  > POST (application/json;charset=UTF-8) http://localhost:8888/messages {"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}
+  > 202 ACCEPTED
+
+and see the table contents using the CQL
+
+  SELECT * FROM clouddata.book;
+
+==== Options
+
+The **$$cassandra$$** $$sink$$ has the following options:
+
+$$compressionType$$:: $$the compression to use for the transport$$ *($$CompressionType$$, default: `NONE`, possible values: `NONE,SNAPPY`)*
+$$consistencyLevel$$:: $$the consistencyLevel option of WriteOptions$$ *($$ConsistencyLevel$$, no default, possible values: `ANY,ONE,TWO,THREE,QUOROM,LOCAL_QUOROM,EACH_QUOROM,ALL,LOCAL_ONE,SERIAL,LOCAL_SERIAL`)*
+$$spring.cassandra.contactPoints$$:: $$the comma-delimited string of the hosts to connect to Cassandra$$ *($$String$$, default: `localhost`)*
+$$entityBasePackages$$:: $$the base packages to scan for entities annotated with Table annotations$$ *($$String[]$$, default: `[]`)*
+$$ingestQuery$$:: $$the ingest Cassandra query$$ *($$String$$, no default)*
+$$spring.cassandra.initScript$$:: $$the path to file with CQL scripts (delimited by ';') to initialize keyspace schema$$ *($$String$$, no default)*
+$$spring.cassandra.keyspace$$:: $$the keyspace name to connect to$$ *($$String$$, default: `<stream name>`)*
+$$metricsEnabled$$:: $$enable/disable metrics collection for the created cluster$$ *($$boolean$$, default: `true`)*
+$$spring.cassandra.password$$:: $$the password for connection$$ *($$String$$, no default)*
+$$spring.cassandra.port$$:: $$the port to use to connect to the Cassandra host$$ *($$int$$, default: `9042`)*
+$$queryType$$:: $$the queryType for Cassandra Sink$$ *($$Type$$, default: `INSERT`, possible values: `INSERT,UPDATE,DELETE,STATEMENT`)*
+$$retryPolicy$$:: $$the retryPolicy  option of WriteOptions$$ *($$RetryPolicy$$, no default, possible values: `DEFAULT,DOWNGRADING_CONSISTENCY,FALLTHROUGH,LOGGING`)*
+$$statementExpression$$:: $$the expression in Cassandra query DSL style$$ *($$String$$, no default)*
+$$spring.cassandra.schemaAction$$:: $$schema action to perform$$ *($$SchemaAction$$, default: `NONE`, possible values: `CREATE,NONE,RECREATE,RECREATE_DROP_UNUSED`)*
+$$ttl$$:: $$the time-to-live option of WriteOptions$$ *($$int$$, default: `0`)*
+$$spring.cassandra.username$$:: $$the username for connection$$ *($$String$$, no default)*
+
 [[spring-cloud-stream-modules-counter]]
 === Counter (`counter`)
 
@@ -12,11 +64,107 @@ $$name$$:: $$The name of the counter to increment.$$ *($$String$$, default: `cou
 $$nameExpression$$:: $$A SpEL expression (against the incoming Message) to derive the name of the counter to increment.$$ *($$String$$, default: ``)*
 $$store$$:: $$The name of a store used to store the counter.$$ *($$String$$, default: `memory`, possible values: `memory`, `redis`)*
 
+[[spring-cloud-stream-modules-field-value-counter]]
+=== Field Value Counter (`field-value-counter`)
+
+A field value counter is a Metric used for counting occurrences of unique values for a named field in a message payload. Spring Cloud Data Flow supports the following payload types out of the box:
+
+* POJO (Java bean)
+* Tuple
+* JSON String
+
+For example suppose a message source produces a payload with a field named _user_ :
+
+[source,java]
+class Foo {
+   String user;
+   public Foo(String user) {
+       this.user = user;
+   }
+}
+
+If the stream source produces messages with the following objects:
+
+[source, java]
+   new Foo("fred")
+   new Foo("sue")
+   new Foo("dave")
+   new Foo("sue")
+
+The field value counter on the field _user_ will contain:
+
+    fred:1, sue:2, dave:1 
+
+Multi-value fields are also supported. For example, if a field contains a list, each value will be counted once:
+    
+     users:["dave","fred","sue"]
+     users:["sue","jon"]
+
+The field value counter on the field _users_ will contain:
+
+    dave:1, fred:1, sue:2, jon:1
+
+==== Options
+
+The **$$field-value-counter$$** $$sink$$ has the following options:
+
+$$fieldName$$:: $$the name of the field for which values are counted$$ *($$String$$, no default)*
+$$name$$:: $$the name of the metric to contribute to (will be created if necessary)$$ *($$String$$, default: `<stream name>`)*
+$$nameExpression$$:: $$a SpEL expression to compute the name of the metric to contribute to$$ *($$String$$, no default)*
+
+[[spring-cloud-stream-modules-file-sink]]
+=== File (`file`)
+
+This module writes each message it receives to a file.
+
+==== Options
+
+The **$$file$$** $$sink$$ has the following options:
+
+$$binary$$:: $$if false, will append a newline character at the end of each line$$ *($$boolean$$, default: `false`)*
+$$charset$$:: $$the charset to use when writing a String payload$$ *($$String$$, default: `UTF-8`)*
+$$dir$$:: $$the directory in which files will be created$$ *($$String$$, default: ``)*
+$$dirExpression$$:: $$spring expression used to define directory name$$ *($$String$$, no default)*
+$$mode$$:: $$what to do if the file already exists$$ *($$Mode$$, default: `APPEND`, possible values: `APPEND,REPLACE,FAIL,IGNORE`)*
+$$name$$:: $$filename pattern to use$$ *($$String$$, default: `<stream name>`)*
+$$nameExpression$$:: $$spring expression used to define filename$$ *($$String$$, no default)*
+$$suffix$$:: $$filename extension to use$$ *($$String$$, no default)*
+
+[[ftp-sink]]
+=== FTP Sink (`ftp`)
+
+FTP sink is a simple option to push files to an FTP server from incoming messages.
+
+It uses an `ftp-outbound-adapter`, therefore incoming messages could be either a `java.io.File` object, a `String` (content of the file)
+or an array of `bytes` (file content as well).
+
+To use this sink, you need a username and a password to login. 
+
+NOTE: By default Spring Integration will use `o.s.i.file.DefaultFileNameGenerator` if none is specified. `DefaultFileNameGenerator` will determine the file name
+based on the value of the `file_name` header (if it exists) in the `MessageHeaders`, or if the payload of the `Message` is already a `java.io.File`, then it will
+use the original name of that file.
+
+
+[[spring-cloud-stream-modules-gemfire-sink]]
+=== Gemfire (`gemfire`)
+
+A sink module that allows one to write message payloads to a Gemfire server.
+
+==== Options
+
+The **$$gemfire$$** $$sink$$ has the following options:
+
+$$hostAddresses$$:: $$a comma separated list of [host]:[port] specifying either locator or server addresses for the client connection pool$$ *($$String$$, `localhost:10334`)*
+$$keyExpression$$:: $$a SpEL expression which is evaluated to create a cache key$$ *($$String$$, default: `the value is currently the message payload'`)*
+$$port$$:: $$port of the cache server or locator (if useLocator=true). May be a comma delimited list$$ *($$String$$, no default)*
+$$regionName$$:: $$name of the region to use when storing data$$ *($$String$$, default: `${spring.application.name}`)*
+$$connectType$$:: $$'server' or 'locator'$$ *($$String$$, default: `locator`)*
+
 
 [[spring-cloud-stream-modules-hdfs]]
 === Hadoop (HDFS) (`hdfs`)
 
-If you do not have Hadoop installed, you can install Hadoop as described in our xref:Hadoop-Installation#installing-hadoop[separate guide]. Spring XD supports 4 Hadoop distributions, see xref:Running-Distributed-Mode#using-hadoop[using Hadoop] for more information on how to start Spring XD to target a specific distribution.
+If you do not have Hadoop installed, you can install Hadoop as described in our xref:Hadoop-Installation#installing-hadoop[separate guide].
 
 Once Hadoop is up and running, you can then use the `hdfs` sink when creating a xref:Streams#streams[stream]
 
@@ -91,7 +239,7 @@ Often a stream of data may not have a high enough rate to roll over files freque
 
 NOTE: The `idleTimeout` value should not exceed the timeout values set on the Hadoop cluster. These are typically configured using the `dfs.socket.timeout` and/or `dfs.datanode.socket.write.timeout` properties in the `hdfs-site.xml` configuration file.
 
-  dataflow:> stream create --name myhdfsstream5 --definition "http --port=8000 | hdfs --rollover=20 --idleTimeout=10000" --deploy
+  dataflow:> stream create --name myhdfsstream5 --definition "http --server.port=8000 | hdfs --rollover=20 --idleTimeout=10000" --deploy
 
 In the above example we changed a source to `http` order to control what we write into a `hdfs` sink. We defined a small rollover size and a timeout of 10 seconds. Now we can simply post data into this stream via source end point using a below command.
 
@@ -332,19 +480,37 @@ bucketcount:: A number of buckets
 .Return Value
 A path part prefixed with a hash key i.e. `XXX_hash`.
 
+[[spring-cloud-stream-modules-jdbc]]
+=== JDBC (`jdbc`)
+
+A module that writes its incoming payload to an RDBMS using JDBC.
+
+==== Options
+
+The **$$jdbc$$** $$sink$$ has the following options:
+
+$$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, default: ``)*
+$$tableName$$:: $$String$$ *($$String$$, default: `<stream name`)*
+$$columns$$:: $$the names of the columns that shall receive data, as a set of column[:SpEL] mappings, also used at initialization time to issue the DDL$$ *($$String$$, default: `payload`)*
+$$initialize$$:: $$String$$ *($$Boolean$$, default: `false`)*
+$$batchSize$$:: $$String$$ *($$long$$, default: `10000`)*
+
+The module also uses Spring Boot's http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html#boot-features-configure-datasource[DataSource support]
+for configuring the database connection, so properties like `spring.datasource.url` _etc._ apply.
+
 
 [[spring-cloud-stream-modules-log]]
 === Log (`log`)
 
 Probably the simplest option for a sink is just to log the data. The `log` sink uses the application logger to output the data for inspection. The log level is set to `WARN` and the logger name is created from the stream name. To create a stream using a `log` sink you would use a command like
 
-  dataflow:> stream create --name mylogstream --definition "http --port=8000 | log" --deploy
+  dataflow:> stream create --name mylogstream --definition "http --server.port=8000 | log" --deploy
 
 You can then try adding some data. We've used the `http` source on port 8000 here, so run the following command to send a message
 
   dataflow:> http post --target http://localhost:8000 --data "hello"
 
-and you should see the following output in the XD container console.
+and you should see the following output in the Spring Cloud Data Flow console.
 
   13/06/07 16:12:18 INFO Received: hello
 
@@ -372,14 +538,3 @@ $$queue$$:: $$name for the queue$$ *($$String$$, no default)*
 $$topic$$:: $$name for the topic$$ *($$String$$, no default)*
 
 
-[[spring-cloud-stream-modules-tasks]]
-== Tasks
-
-[[spring-cloud-stream-modules-timestamp]]
-=== Timestamp (`timestamp`)
-
-Executes a batch job that logs a timestamp.
-
-The **$$timestamp$$** $$task$$ has the following options:
-
-$$format$$:: $$The timestamp format$$ *($$String$$, default: `yyyy-MM-dd HH:mm:ss.SSS`)*

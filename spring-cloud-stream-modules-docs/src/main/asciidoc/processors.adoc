@@ -12,9 +12,9 @@ $$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, 
 ==== Filter with SpEL expression
 The simplest way to use the filter processor is to pass a SpEL expression when creating the stream. The expression should evaluate the message and return true or false.  For example:
 
-    dataflow:> stream create --name filtertest --definition "http | filter --expression=payload=='good' | log" --deploy
+    dataflow:> stream create --name filtertest --definition "http --server.port=9000 | filter --expression=payload=='good' | log" --deploy
 
-This filter will only pass Messages to the log sink if the payload is the word "good". Try sending "good" to the HTTP endpoint and you should see it in the XD log:
+This filter will only pass Messages to the log sink if the payload is the word "good". Try sending "good" to the HTTP endpoint and you should see it in the Spring Cloud Data Flow logs:
 
     dataflow:> http post --target http://localhost:9000 --data "good"
 
@@ -22,9 +22,11 @@ Alternatively, if you send the word "bad" (or anything else), you shouldn't see 
 
 
 [[spring-cloud-stream-modules-groovy-filter]]
-=== `groovy-filter`
+=== Groovy Filter (`groovy-filter`)
 
 A Processor module that retains or discards messages according to a predicate, expressed as a Groovy script.
+
+==== Options
 
 The **$$groovy-filter$$** $$processor$$ has the following options:
 
@@ -32,13 +34,37 @@ $$script$$:: $$The script resource location$$ *($$String$$, default: ``)*
 $$variables$$:: $$Variable bindings as a comma delimited string of name-value pairs, e.g. 'foo=bar,baz=car'$$ *($$String$$, default: ``)*
 $$variablesLocation$$:: $$The location of a properties file containing custom script variable bindings$$ *($$String$$, default: ``)*
 
+[[spring-cloud-stream-modules-httpclient]]
+=== Http Client (`httpclient`)
+
+A processor module that makes requests to an HTTP resource and emits the response body as a message payload. This processor can be combined, e.g., with a time source module to periodically poll results from a HTTP resource.
+
+==== Options
+
+The **$$httpclient$$** $$processor$$ has the following options:
+
+$$url$$:: The URL to issue an http request to, as a static value.
+$$urlExpression$$:: A SpEL expression against incoming message to determine the URL to use.
+$$httpMethod$$:: The kind of http method to use.
+$$body$$:: The (static) body of the request to use.
+$$bodyExpression$$:: A SpEL expression against incoming message to derive the request body to use.
+$$headersExpression$$:: A SpEL expression used to derive the http headers map to use.
+$$expectedResponseType$$:: The type used to interpret the response.
+$$replyExpression$$:: A SpEL expression used to compute the final result, applied against the whole http response.
+
+[[spring-cloud-stream-modules-noop]]
+=== Noop (`noop`)
+
+A Processor module that returns messages that is passed in for performance testing.
 
 [[spring-cloud-stream-modules-groovy-transform]]
-=== `groovy-transform`
+=== Groovy Transform (`groovy-transform`)
 
 A Processor module that transforms messages using a Groovy script.
 
-The **$$groovy-filter$$** $$processor$$ has the following options:
+==== Options
+
+The **$$groovy-transform$$** $$processor$$ has the following options:
 
 $$script$$:: $$The script resource location$$ *($$String$$, default: ``)*
 $$variables$$:: $$Variable bindings as a comma delimited string of name-value pairs, e.g. 'foo=bar,baz=car'$$ *($$String$$, default: ``)*
@@ -49,6 +75,8 @@ $$variablesLocation$$:: $$The location of a properties file containing custom sc
 === Transform (`transform`)
 Use the transform module in a stream to convert a Message's content or structure.
 
+==== Options
+
 The **$$transform$$** $$processor$$ has the following options:
 
 $$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, default: `payload.toString()`)*
@@ -56,9 +84,9 @@ $$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, 
 ==== Transform with SpEL expression
 The simplest way to use the transform processor is to pass a SpEL expression when creating the stream. The expression should return the modified message or payload.  For example:
 
-    dataflow:> stream create --name transformtest --definition "http --port=9003 | transform --expression=payload.toUpperCase() | log" --deploy
+    dataflow:> stream create --name transformtest --definition "http --server.port=9003 | transform --expression=payload.toUpperCase() | log" --deploy
 
-This transform will convert all message payloads to upper case. If sending the word "foo" to the HTTP endpoint and you should see "FOO" in the XD log:
+This transform will convert all message payloads to upper case. If sending the word "foo" to the HTTP endpoint and you should see "FOO" in the Spring Cloud Data Flow logs:
 
     dataflow:> http post --target http://localhost:9003 --data "foo"
 
