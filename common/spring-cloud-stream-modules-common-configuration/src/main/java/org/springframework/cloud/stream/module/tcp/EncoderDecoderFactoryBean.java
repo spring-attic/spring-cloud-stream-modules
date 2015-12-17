@@ -26,6 +26,7 @@ import org.springframework.integration.ip.tcp.serializer.ByteArrayLfSerializer;
 import org.springframework.integration.ip.tcp.serializer.ByteArrayRawSerializer;
 import org.springframework.integration.ip.tcp.serializer.ByteArraySingleTerminatorSerializer;
 import org.springframework.integration.ip.tcp.serializer.ByteArrayStxEtxSerializer;
+import org.springframework.util.Assert;
 
 /**
  * Factory bean for an encoder/decoder based on
@@ -41,6 +42,7 @@ public class EncoderDecoderFactoryBean extends AbstractFactoryBean<AbstractByteA
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	public EncoderDecoderFactoryBean(Encoding encoding) {
+		Assert.notNull(encoding, "'encoding' cannot be null");
 		this.encoding = encoding;
 	}
 

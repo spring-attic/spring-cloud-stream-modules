@@ -34,6 +34,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
@@ -51,6 +52,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TcpSourceApplication.class)
 @DirtiesContext
+@WebIntegrationTest(randomPort = true, value = "port = 0")
 public abstract class TcpSourceTests {
 
 	@Autowired
@@ -65,7 +67,7 @@ public abstract class TcpSourceTests {
 	@Autowired
 	protected TcpSourceProperties properties;
 
-	@IntegrationTest({ "port = 0", "nio = true", "reverseLookup = true",
+	@IntegrationTest({ "nio = true", "reverseLookup = true",
 					"useDirectBuffers = true", "socketTimeout = 123" })
 	public static class PropertiesPopulatedTests extends TcpSourceTests {
 
@@ -79,7 +81,6 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0" })
 	public static class NotNioTests extends TcpSourceTests {
 
 		@Test
@@ -91,7 +92,6 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0" })
 	public static class CRLFTests extends TcpSourceTests {
 
 		@Test
@@ -101,7 +101,7 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0", "decoder = LF" })
+	@IntegrationTest({ "decoder = LF" })
 	public static class LFTests extends TcpSourceTests {
 
 		@Test
@@ -111,7 +111,7 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0", "decoder = NULL" })
+	@IntegrationTest({ "decoder = NULL" })
 	public static class NULLTests extends TcpSourceTests {
 
 		@Test
@@ -121,7 +121,7 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0", "decoder = STXETX" })
+	@IntegrationTest({ "decoder = STXETX" })
 	public static class STXETXTests extends TcpSourceTests {
 
 		@Test
@@ -131,7 +131,7 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0", "decoder = L1" })
+	@IntegrationTest({ "decoder = L1" })
 	public static class L1Tests extends TcpSourceTests {
 
 		@Test
@@ -141,7 +141,7 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0", "decoder = L2" })
+	@IntegrationTest({ "decoder = L2" })
 	public static class L2Tests extends TcpSourceTests {
 
 		@Test
@@ -151,7 +151,7 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0", "decoder = L4" })
+	@IntegrationTest({ "decoder = L4" })
 	public static class L4Tests extends TcpSourceTests {
 
 		@Test
@@ -161,7 +161,7 @@ public abstract class TcpSourceTests {
 
 	}
 
-	@IntegrationTest({ "port = 0", "decoder = RAW" })
+	@IntegrationTest({ "decoder = RAW" })
 	public static class RAWTests extends TcpSourceTests {
 
 		@Test
@@ -171,12 +171,22 @@ public abstract class TcpSourceTests {
 
 	}
 
+	/*
+	 * Sends two messages with <prefix><payload><suffix> and asserts the
+	 * payload is received on the other side.
+	 */
 	protected void doTest(String prefix, String payload, String suffix) throws Exception {
 		int port = getPort();
 		Socket socket = SocketFactory.getDefault().createSocket("localhost", port);
 		socket.getOutputStream().write((prefix + payload + suffix).getBytes());
 		if (prefix.length() == 0 && suffix.length() == 0) {
-			socket.close(); // RAW - for the others, close AFTER the message is decoded.
+			socket.close(); // RAW - for the others, close AFTER the messages are decoded.
+			socket = SocketFactory.getDefault().createSocket("localhost", port);
+		}
+		assertThat(this.messageCollector.forChannel(channels.output()), receivesPayloadThat(is(payload.getBytes())));
+		socket.getOutputStream().write((prefix + payload + suffix).getBytes());
+		if (prefix.length() == 0 && suffix.length() == 0) {
+			socket.close(); // RAW - for the others, close AFTER the messages are decoded.
 		}
 		assertThat(this.messageCollector.forChannel(channels.output()), receivesPayloadThat(is(payload.getBytes())));
 		socket.close();
