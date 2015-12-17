@@ -1,6 +1,36 @@
 [[sources]]
 == Sources
 
+[[spring-cloud-stream-modules-file-source]]
+=== File
+
+The file source provides the contents of a File as a byte array by default. 
+However, this can be customized using the `--mode` option:
+
+- *ref* Provides a `java.io.File` reference
+- *lines* Will split files line-by-line and emit a new message for each line
+- *contents* The default. Provides the contents of a file as a byte array
+
+When using `--mode=lines`, you can also provide the additional option `--withMarkers=true`.
+If set to `true`, the underlying `FileSplitter` will emit additional _start-of-file_ and _end-of-file_ marker messages before and after the actual data.
+The payload of these 2 additional marker messages is of type `FileSplitter.FileMarker`. The option `withMarkers` defaults to `false` if not explicitly set.
+
+==== Options
+
+The **$$file$$** $$source$$ has the following options:
+
+$$dir$$:: $$the absolute path to the directory to monitor for files$$ *($$String$$, default: ``)*
+$$fixedDelay$$:: $$the fixed delay polling interval specified in seconds$$ *($$int$$, default: `5`)*
+$$initialDelay$$:: $$an initial delay when using a fixed delay trigger, expressed in TimeUnits (seconds by default)$$ *($$int$$, default: `0`)*
+$$maxMessages$$:: $$the maximum messages per poll; -1 for unlimited$$ *($$long$$, default: `-1`)*
+$$mode$$:: $$specifies how the file is being read. By default the content of a file is provided as byte array$$ *($$FileReadingMode$$, default: `contents`, possible values: `ref,lines,contents`)*
+$$pattern$$:: $$a filter expression (Ant style) to accept only files that match the pattern$$ *($$String$$, default: `*`)*
+$$preventDuplicates$$:: $$whether to prevent the same file from being processed twice$$ *($$boolean$$, default: `true`)*
+$$timeUnit$$:: $$the time unit for the fixed and initial delays$$ *($$String$$, default: `SECONDS`)*
+$$withMarkers$$:: $$if true emits start of file/end of file marker messages before/after the data. Only valid with FileReadingMode 'lines'$$ *($$Boolean$$, no default)*
+
+The `ref` option is useful in some cases in which the file contents are large and it would be more efficient to send the file path.
+
 [[spring-cloud-stream-modules-ftp]]
 === FTP (`ftp`)
 
@@ -28,7 +58,7 @@ $$filenamePattern$$:: $$simple filename pattern to apply to the filter$$ *($$Str
 $$fixedDelay$$:: $$the rate at which to poll the remote directory$$ *($$int$$, default: `1`)*
 $$host$$:: $$the host name for the FTP server$$ *($$String$$, default: `localhost`)*
 $$initialDelay$$:: $$an initial delay when using a fixed delay trigger, expressed in TimeUnits (seconds by default)$$ *($$int$$, default: `0`)*
-$$localDir$$:: $$set the local directory the remote files are transferred to$$ *($$String$$, default: `/tmp/xd/ftp`)*
+$$localDir$$:: $$set the local directory the remote files are transferred to$$ *($$String$$, default: ``)*
 $$maxMessages$$:: $$the maximum messages per poll; -1 for unlimited$$ *($$long$$, default: `-1`)*
 $$mode$$:: $$specifies how the file is being read. By default the content of a file is provided as byte array$$ *($$FileReadingMode$$, default: `contents`, possible values: `ref,lines,contents`)*
 $$password$$:: $$the password for the FTP connection$$ *($$Password$$, no default)*
@@ -48,20 +78,78 @@ A source module that listens for HTTP requests and emits the body as a message p
 If the Content-Type matches 'text/*' or 'application/json', the payload will be a String,
 otherwise the payload will be a byte array.
 
-To create a stream definition in the server using the XD shell
+To create a stream definition in the server using the Spring Cloud Data Flow shell
 
-    dataflow:> stream create --name httptest --definition "http | log" --deploy
+    dataflow:> stream create --name httptest --definition "http --server.port=9000 | log" --deploy
 
-Post some data to the http server on the default port of 9000
+Post some data to the http server on port 9000
 
      dataflow:> http post --target http://localhost:9000 --data "hello world"
 
 See if the data ended up in the log.
 
+[[spring-cloud-stream-modules-load-generator]]
+=== Load Generator (`load-generator`)
+
+A source that sends generated data and dispatches it to the stream. This is to provide a method for users to identify the performance of Spring Cloud Data Flow in different environments and deployment types.
+
+==== Options
+
+The **$$load-generator$$** $$source$$ has the following options:
+
+$$messageCount$$:: $$the number of messages to send$$ *($$Integer$$, default: `100`)*
+$$messageSize$$:: $$the size of message to send$$ *($$Integer$$, `1000`)*
+$$producers$$:: $$the number of producers$$ *($$Integer$$, `1`)*
+$$outputType$$:: $$how this module should emit messages it produces$$ *($$MimeType$$, default: no default)*
+
+[[spring-cloud-stream-modules-sftp]]
+=== SFTP (`sftp`)
+
+This source module supports transfer of files using the SFTP protocol.
+Files are transferred from the `remote` directory to the `local` directory where the module is deployed.
+
+Messages emitted by the source are provided as a byte array by default. However, this can be
+customized using the `--mode` option:
+
+- *ref* Provides a `java.io.File` reference
+- *lines* Will split files line-by-line and emit a new message for each line
+- *contents* The default. Provides the contents of a file as a byte array
+
+When using `--mode=lines`, you can also provide the additional option `--withMarkers=true`.
+If set to `true`, the underlying `FileSplitter` will emit additional _start-of-file_ and _end-of-file_ marker messages before and after the actual data.
+The payload of these 2 additional marker messages is of type `FileSplitter.FileMarker`. The option `withMarkers` defaults to `false` if not explicitly set.
+
+==== Options
+
+The **$$sftp$$** $$source$$ has the following options:
+
+$$allowUnknownKeys$$:: $$true to allow connecting to a host with an unknown or changed key$$ *($$boolean$$, default: `false`)*
+$$autoCreateLocalDir$$:: $$if local directory must be auto created if it does not exist$$ *($$boolean$$, default: `true`)*
+$$deleteRemoteFiles$$:: $$delete remote files after transfer$$ *($$boolean$$, default: `false`)*
+$$fixedDelay$$:: $$fixed delay in SECONDS to poll the remote directory$$ *($$int$$, default: `1`)*
+$$host$$:: $$the remote host to connect to$$ *($$String$$, default: `localhost`)*
+$$initialDelay$$:: $$an initial delay when using a fixed delay trigger, expressed in TimeUnits (seconds by default)$$ *($$int$$, default: `0`)*
+$$knownHostsExpression$$:: $$a SpEL expresssion location of known hosts file; required if 'allowUnknownKeys' is false; examples: systemProperties["user.home"]+"/.ssh/known_hosts", "/foo/bar/known_hosts"$$ *($$String$$, no default)*
+$$localDir$$:: $$set the local directory the remote files are transferred to$$ *($$String$$, default: ``)*
+$$maxMessages$$:: $$the maximum messages per poll; -1 for unlimited$$ *($$long$$, default: `-1`)*
+$$mode$$:: $$specifies how the file is being read. By default the content of a file is provided as byte array$$ *($$FileReadingMode$$, default: `contents`, possible values: `ref,lines,contents`)*
+$$passPhrase$$:: $$the passphrase to use$$ *($$String$$, default: ``)*
+$$password$$:: $$the password for the provided user$$ *($$String$$, default: ``)*
+$$pattern$$:: $$simple filename pattern to apply to the filter$$ *($$String$$, no default)*
+$$port$$:: $$the remote port to connect to$$ *($$int$$, default: `22`)*
+$$privateKey$$:: $$the private key location (a valid Spring Resource URL)$$ *($$String$$, default: ``)*
+$$regexPattern$$:: $$filename regex pattern to apply to the filter$$ *($$String$$, no default)*
+$$remoteDir$$:: $$the remote directory to transfer the files from$$ *($$String$$, no default)*
+$$timeUnit$$:: $$the time unit for the fixed and initial delays$$ *($$String$$, default: `SECONDS`)*
+$$tmpFileSuffix$$:: $$extension to use when downloading files$$ *($$String$$, default: `.tmp`)*
+$$user$$:: $$the username to use$$ *($$String$$, no default)*
+$$withMarkers$$:: $$if true emits start of file/end of file marker messages before/after the data. Only valid with FileReadingMode 'lines'$$ *($$Boolean$$, no default)*
 
 [[spring-cloud-stream-modules-time]]
 === Time (`time`)
 The time source will simply emit a String with the current time every so often.
+
+==== Options
 
 The **$$time$$** $$source$$ has the following options:
 
@@ -82,6 +170,8 @@ Stream creation is then straightforward:
 
     dataflow:> stream create --name tweets --definition "twitterstream | log" --deploy
 
+==== Options
+
 The **$$twitterstream$$** $$source$$ has the following options:
 
 $$accessToken$$:: $$a valid OAuth access token$$ *($$String$$, no default)*
@@ -90,5 +180,5 @@ $$consumerKey$$:: $$a consumer key issued by twitter$$ *($$String$$, no default)
 $$consumerSecret$$:: $$consumer secret corresponding to the consumer key$$ *($$String$$, no default)*
 $$language$$:: $$language code e.g. 'en'$$ *($$String$$, default: ``)*
 
-NOTE: `twittersearch` emit JSON in the https://dev.twitter.com/docs/platform-objects/tweets[native Twitter format].
+NOTE: `twitterstream` emit JSON in the https://dev.twitter.com/docs/platform-objects/tweets[native Twitter format].
 
