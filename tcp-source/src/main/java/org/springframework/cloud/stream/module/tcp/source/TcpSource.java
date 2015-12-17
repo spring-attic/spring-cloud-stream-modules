@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.tcp.source;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.tcp.EncoderDecoderFactoryBean;
@@ -38,6 +39,7 @@ import org.springframework.integration.ip.tcp.serializer.AbstractByteArraySerial
 public class TcpSource {
 
 	@Autowired
+	@Bindings(TcpSource.class)
 	private Source channels;
 
 	@Autowired

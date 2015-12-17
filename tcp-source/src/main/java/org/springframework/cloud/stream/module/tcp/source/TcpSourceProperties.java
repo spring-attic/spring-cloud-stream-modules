@@ -30,7 +30,7 @@ import org.springframework.cloud.stream.module.tcp.AbstractTcpConnectionFactoryP
 public class TcpSourceProperties extends AbstractTcpConnectionFactoryProperties {
 
 	/**
-	 * The decoder to use when receiving messages. CRLF, LF, NULL, STXETX, L1, L2, L4, RAW.
+	 * The decoder to use when receiving messages.
 	 */
 	private Encoding decoder = Encoding.CRLF;
 
