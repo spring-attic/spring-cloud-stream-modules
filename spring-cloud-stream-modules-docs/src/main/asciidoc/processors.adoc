@@ -12,7 +12,7 @@ $$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, 
 ==== Filter with SpEL expression
 The simplest way to use the filter processor is to pass a SpEL expression when creating the stream. The expression should evaluate the message and return true or false.  For example:
 
-    dataflow:> stream create --name filtertest --definition "http | filter --expression=payload=='good' | log" --deploy
+    dataflow:> stream create --name filtertest --definition "http --server.port=9000 | filter --expression=payload=='good' | log" --deploy
 
 This filter will only pass Messages to the log sink if the payload is the word "good". Try sending "good" to the HTTP endpoint and you should see it in the Spring Cloud Data Flow logs:
 
