@@ -4,7 +4,7 @@
 [[spring-cloud-stream-modules-file-source]]
 === File
 
-The file source provides the contents of a File as a byte array by default. 
+The file source provides the contents of a File as a byte array by default.
 However, this can be customized using the `--mode` option:
 
 - *ref* Provides a `java.io.File` reference
@@ -145,6 +145,42 @@ $$tmpFileSuffix$$:: $$extension to use when downloading files$$ *($$String$$, de
 $$user$$:: $$the username to use$$ *($$String$$, no default)*
 $$withMarkers$$:: $$if true emits start of file/end of file marker messages before/after the data. Only valid with FileReadingMode 'lines'$$ *($$Boolean$$, no default)*
 
+[[spring-cloud-stream-modules-source-tcp]]
+=== TCP
+The `tcp` source acts as a server and allows a remote party to connect to Spring Cloud Data Flow and submit data over a raw tcp socket.
+
+TCP is a streaming protocol and some mechanism is needed to frame messages on the wire. A number of decoders are
+available, the default being 'CRLF' which is compatible with Telnet.
+
+Messages produced by the TCP source module have a `byte[]` payload.
+
+==== Options
+
+$$bufferSize$$:: $$the size of the buffer (bytes) to use when decoding$$ *($$int$$, default: `2048`)*
+$$decoder$$:: $$the decoder to use when receiving messages$$ *($$Encoding$$, default: `CRLF`, possible values: `CRLF,LF,NULL,STXETX,RAW,L1,L2,L4`)*
+$$nio$$:: $$whether or not to use NIO$$ *($$boolean$$, default: `false`)*
+$$port$$:: $$the port on which to listen$$ *($$int$$, default: `1234`)*
+$$reverseLookup$$:: $$perform a reverse DNS lookup on the remote IP Address$$ *($$boolean$$, default: `false`)*
+$$socketTimeout$$:: $$the timeout (ms) before closing the socket when no data is received$$ *($$int$$, default: `120000`)*
+$$useDirectBuffers$$:: $$whether or not to use direct buffers$$ *($$boolean$$, default: `false`)*
+
+==== Available Decoders
+
+.Text Data
+
+CRLF (default):: text terminated by carriage return (0x0d) followed by line feed (0x0a)
+LF:: text terminated by line feed (0x0a)
+NULL:: text terminated by a null byte (0x00)
+STXETX:: text preceded by an STX (0x02) and terminated by an ETX (0x03)
+
+.Text and Binary Data
+
+RAW:: no structure - the client indicates a complete message by closing the socket
+L1:: data preceded by a one byte (unsigned) length field (supports up to 255 bytes)
+L2:: data preceded by a two byte (unsigned) length field (up to 2^16^-1 bytes)
+L4:: data preceded by a four byte (signed) length field (up to 2^31^-1 bytes)
+
+
 [[spring-cloud-stream-modules-time]]
 === Time (`time`)
 The time source will simply emit a String with the current time every so often.
@@ -181,4 +217,3 @@ $$consumerSecret$$:: $$consumer secret corresponding to the consumer key$$ *($$S
 $$language$$:: $$language code e.g. 'en'$$ *($$String$$, default: ``)*
 
 NOTE: `twitterstream` emit JSON in the https://dev.twitter.com/docs/platform-objects/tweets[native Twitter format].
-

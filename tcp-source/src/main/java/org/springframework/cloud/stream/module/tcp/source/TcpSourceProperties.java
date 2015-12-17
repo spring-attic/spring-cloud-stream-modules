@@ -34,6 +34,11 @@ public class TcpSourceProperties extends AbstractTcpConnectionFactoryProperties 
 	 */
 	private Encoding decoder = Encoding.CRLF;
 
+	/**
+	 * The buffer size used when decoding messages; larger messages will be rejected.
+	 */
+	private int bufferSize = 2048;
+
 	@NotNull
 	public Encoding getDecoder() {
 		return this.decoder;
@@ -41,6 +46,14 @@ public class TcpSourceProperties extends AbstractTcpConnectionFactoryProperties 
 
 	public void setDecoder(Encoding decoder) {
 		this.decoder = decoder;
+	}
+
+	public int getBufferSize() {
+		return bufferSize;
+	}
+
+	public void setBufferSize(int bufferSize) {
+		this.bufferSize = bufferSize;
 	}
 
 }

@@ -14,65 +14,71 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.tcp.source;
+package org.springframework.cloud.stream.module.tcp.sink;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.module.tcp.EncoderDecoderFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.ip.config.TcpConnectionFactoryFactoryBean;
-import org.springframework.integration.ip.tcp.TcpReceivingChannelAdapter;
+import org.springframework.integration.ip.tcp.TcpSendingMessageHandler;
 import org.springframework.integration.ip.tcp.connection.AbstractConnectionFactory;
+import org.springframework.integration.ip.tcp.connection.TcpMessageMapper;
 import org.springframework.integration.ip.tcp.serializer.AbstractByteArraySerializer;
 
 /**
- * A source module that receives data over TCP.
+ * A sink module that sends data over TCP.
  *
  * @author Gary Russell
  */
-@EnableBinding(Source.class)
-@EnableConfigurationProperties(TcpSourceProperties.class)
-public class TcpSource {
+@EnableBinding(Sink.class)
+@EnableConfigurationProperties(TcpSinkProperties.class)
+public class TcpSink {
 
 	@Autowired
-	@Bindings(TcpSource.class)
-	private Source channels;
-
-	@Autowired
-	private TcpSourceProperties properties;
+	private TcpSinkProperties properties;
 
 	@Bean
-	public TcpReceivingChannelAdapter adapter(
-			@Qualifier("tcpSourceConnectionFactory") AbstractConnectionFactory connectionFactory) {
-		TcpReceivingChannelAdapter adapter = new TcpReceivingChannelAdapter();
-		adapter.setConnectionFactory(connectionFactory);
-		adapter.setOutputChannel(this.channels.output());
-		return adapter;
+	@ServiceActivator(inputChannel=Sink.INPUT)
+	public TcpSendingMessageHandler handler(
+			@Qualifier("tcpSinkConnectionFactory") AbstractConnectionFactory connectionFactory) {
+		TcpSendingMessageHandler handler = new TcpSendingMessageHandler();
+		handler.setConnectionFactory(connectionFactory);
+		return handler;
 	}
 
 	@Bean
-	public TcpConnectionFactoryFactoryBean tcpSourceConnectionFactory(
-			@Qualifier("tcpSourceDecoder") AbstractByteArraySerializer decoder) throws Exception {
+	public TcpConnectionFactoryFactoryBean tcpSinkConnectionFactory(
+			@Qualifier("tcpSinkEncoder") AbstractByteArraySerializer encoder,
+			@Qualifier("tcpSinkMapper") TcpMessageMapper mapper) throws Exception {
 		TcpConnectionFactoryFactoryBean factoryBean = new TcpConnectionFactoryFactoryBean();
-		factoryBean.setType("server");
+		factoryBean.setType("client");
+		factoryBean.setHost(this.properties.getHost());
 		factoryBean.setPort(this.properties.getPort());
 		factoryBean.setUsingNio(this.properties.isNio());
 		factoryBean.setUsingDirectBuffers(this.properties.isUseDirectBuffers());
 		factoryBean.setLookupHost(this.properties.isReverseLookup());
-		factoryBean.setDeserializer(decoder);
+		factoryBean.setSerializer(encoder);
 		factoryBean.setSoTimeout(this.properties.getSocketTimeout());
+		factoryBean.setMapper(mapper);
+		factoryBean.setSingleUse(this.properties.isClose());
 		return factoryBean;
 	}
 
 	@Bean
-	public EncoderDecoderFactoryBean tcpSourceDecoder() {
-		EncoderDecoderFactoryBean factoryBean = new EncoderDecoderFactoryBean(this.properties.getDecoder());
-		factoryBean.setMaxMessageSize(this.properties.getBufferSize());
-		return factoryBean;
+	public EncoderDecoderFactoryBean tcpSinkEncoder() {
+		return new EncoderDecoderFactoryBean(this.properties.getEncoder());
+	}
+
+	@Bean
+	public TcpMessageMapper tcpSinkMapper() {
+		TcpMessageMapper mapper = new TcpMessageMapper();
+		mapper.setCharset(this.properties.getCharset());
+		return mapper;
 	}
 
 }
