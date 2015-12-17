@@ -77,7 +77,7 @@ public class MetricProperties {
 	}
 
 	public Expression getComputedNameExpression() {
-		return (nameExpression != null ? nameExpression : new LiteralExpression(name));
+		return (nameExpression != null ? nameExpression : new LiteralExpression(getName()));
 }
 
 	public void setNameExpression(Expression nameExpression) {

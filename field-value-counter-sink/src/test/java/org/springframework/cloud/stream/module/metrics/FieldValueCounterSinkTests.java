@@ -205,5 +205,4 @@ public class FieldValueCounterSinkTests {
 			this.test = test;
 		}
 	}
-
 }

@@ -1,0 +1,92 @@
+/*
+ * Copyright 2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.springframework.cloud.stream.module.metrics;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.cloud.stream.annotation.Bindings;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.test.junit.redis.RedisTestSupport;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+/**
+ * @author Ilayaperumal Gopinathan
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = FieldValueCounterSinkApplication.class)
+@WebIntegrationTest({"server.port:-1", "store:redis", "fieldName:test"})
+@DirtiesContext
+public class FieldValueCounterSinkWithDefaultsTests {
+
+	@Rule
+	public RedisTestSupport redisTestSupport = new RedisTestSupport();
+
+	// default counter name
+	private static final String FVC_NAME = "counts";
+
+	@Autowired
+	@Bindings(FieldValueCounterSink.class)
+	private Sink sink;
+
+	@Autowired
+	private RedisFieldValueCounterRepository fieldValueCounterRepository;
+
+	@Before
+	public void init() {
+		fieldValueCounterRepository.reset(FVC_NAME, "Hi");
+		fieldValueCounterRepository.reset(FVC_NAME, "Hello");
+		fieldValueCounterRepository.reset(FVC_NAME, "{\"test1\":\"Hi\"}");
+		fieldValueCounterRepository.reset(FVC_NAME, "{\"test2\":\"Hello\"}");
+		fieldValueCounterRepository.reset(FVC_NAME, "{test1=Hello}");
+		fieldValueCounterRepository.reset(FVC_NAME, "{test2=Hi}");
+	}
+
+	@After
+	public void clear() {
+		fieldValueCounterRepository.reset(FVC_NAME, "Hi");
+		fieldValueCounterRepository.reset(FVC_NAME, "Hello");
+		fieldValueCounterRepository.reset(FVC_NAME, "{\"test1\":\"Hi\"}");
+		fieldValueCounterRepository.reset(FVC_NAME, "{\"test2\":\"Hello\"}");
+		fieldValueCounterRepository.reset(FVC_NAME, "{test1=Hello}");
+		fieldValueCounterRepository.reset(FVC_NAME, "{test2=Hi}");
+	}
+
+	@Test
+	public void testFieldNameIncrement() {
+		assertNotNull(this.sink.input());
+		Message<String> message = MessageBuilder.withPayload("{\"test\": \"Hi\"}").build();
+		sink.input().send(message);
+		message = MessageBuilder.withPayload("{\"test\": \"Hello\"}").build();
+		sink.input().send(message);
+		message = MessageBuilder.withPayload("{\"test\": \"Hi\"}").build();
+		sink.input().send(message);
+		assertEquals(2, this.fieldValueCounterRepository.findOne(FVC_NAME).getFieldValueCounts().get("Hi").longValue());
+		assertEquals(1, this.fieldValueCounterRepository.findOne(FVC_NAME).getFieldValueCounts().get("Hello").longValue());
+	}
+}
