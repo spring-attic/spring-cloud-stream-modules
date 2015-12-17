@@ -126,8 +126,7 @@ public abstract class TcpSourceTests {
 
 		@Test
 		public void test() throws Exception {
-			String payload = "foo";
-			doTest("\u0002", payload, "\u0003");
+			doTest("\u0002", "foo", "\u0003");
 		}
 
 	}
