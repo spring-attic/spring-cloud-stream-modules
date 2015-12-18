@@ -61,15 +61,16 @@ on variety of runtime platforms including: Cloud Foundry, Lattice, Apache Yarn, 
 | ------- | --------- | ---- | ---- |
 | file | filter | cassandra | timestamp | 
 | ftp | groovy-filter | counter |
-| http | groovy-transform | file | | | 
-| sftp | transform | ftp | | 
-| time | noop | gemfire | | 
-| load-generator | | hdfs | | 
-| twitterstream | | jdbc | | 
+| http | groovy-transform | field-value-counter | | | 
+| load-generator | httpclient | file | | 
+| sftp | noop | ftp | | 
+| time | pmml | gemfire | | 
+| twitterstream | transform | hdfs | | 
+| | | jdbc | | 
 | | | log | | 
 | | | redis | | 
-| | | websocket | | 
 | | | throughput | | 
+| | | websocket | | 
 
 <span id="quick-start"></span>
 ## Quick Start
