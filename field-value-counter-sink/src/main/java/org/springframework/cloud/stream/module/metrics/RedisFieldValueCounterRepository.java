@@ -102,7 +102,6 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 	}
 
 	protected Map<String, Double> getZSetData(String counterKey) {
-		// TODO directly serialize into a Map vs Set of TypedTuples to avoid extra copy
 		Set<ZSetOperations.TypedTuple<String>> rangeWithScore = this.redisTemplate
 				.boundZSetOps(counterKey).rangeWithScores(0, -1);
 		Map<String, Double> values = new HashMap<String, Double>(

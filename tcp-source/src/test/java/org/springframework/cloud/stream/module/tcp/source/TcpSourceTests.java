@@ -193,7 +193,6 @@ public abstract class TcpSourceTests {
 	}
 
 	private int getPort() throws Exception {
-		// TODO: with SI 4.3, we can wait for the TcpConnectionServerListeningEvent
 		int n = 0;
 		while (n++ < 100 && !this.connectionFactory.isListening()) {
 			Thread.sleep(100);
