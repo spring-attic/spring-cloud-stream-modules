@@ -24,8 +24,8 @@ CREATE TABLE book  (
 
 You can then send data to this stream via
 
-  dataflow:>http post --contentType 'application/json' --data '{"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}' --target http://localhost:8888/messages
-  > POST (application/json;charset=UTF-8) http://localhost:8888/messages {"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}
+  dataflow:>http post --contentType 'application/json' --data '{"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}' --target http://localhost:8888/
+  > POST (application/json;charset=UTF-8) http://localhost:8888/ {"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}
   > 202 ACCEPTED
 
 and see the table contents using the CQL
