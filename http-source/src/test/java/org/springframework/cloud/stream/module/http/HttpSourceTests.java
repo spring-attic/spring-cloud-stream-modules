@@ -99,7 +99,7 @@ public abstract class HttpSourceTests {
 		}
 	}
 
-	@WebIntegrationTest
+	@WebIntegrationTest(randomPort = true)
 	public static class DefaultMappingTests extends HttpSourceTests {
 
 		@Test
