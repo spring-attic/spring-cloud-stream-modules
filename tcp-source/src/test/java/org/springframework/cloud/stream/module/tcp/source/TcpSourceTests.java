@@ -68,7 +68,7 @@ public abstract class TcpSourceTests {
 	protected TcpSourceProperties properties;
 
 	@IntegrationTest({ "nio = true", "reverseLookup = true",
-					"useDirectBuffers = true", "socketTimeout = 123" })
+					"useDirectBuffers = true", "socketTimeout = 123", "bufferSize = 5" })
 	public static class PropertiesPopulatedTests extends TcpSourceTests {
 
 		@Test
@@ -77,6 +77,7 @@ public abstract class TcpSourceTests {
 			assertTrue(TestUtils.getPropertyValue(this.connectionFactory, "lookupHost", Boolean.class));
 			assertTrue(TestUtils.getPropertyValue(this.connectionFactory, "usingDirectBuffers", Boolean.class));
 			assertEquals(123, TestUtils.getPropertyValue(this.connectionFactory, "soTimeout"));
+			assertEquals(5, TestUtils.getPropertyValue(this.connectionFactory, "deserializer.maxMessageSize"));
 		}
 
 	}
@@ -88,6 +89,7 @@ public abstract class TcpSourceTests {
 			assertThat(this.connectionFactory, Matchers.instanceOf(TcpNetServerConnectionFactory.class));
 			assertFalse(TestUtils.getPropertyValue(this.connectionFactory, "lookupHost", Boolean.class));
 			assertEquals(120000, TestUtils.getPropertyValue(this.connectionFactory, "soTimeout"));
+			assertEquals(2048, TestUtils.getPropertyValue(this.connectionFactory, "deserializer.maxMessageSize"));
 		}
 
 	}

@@ -93,10 +93,10 @@ If the stream source produces messages with the following objects:
 
 The field value counter on the field _user_ will contain:
 
-    fred:1, sue:2, dave:1 
+    fred:1, sue:2, dave:1
 
 Multi-value fields are also supported. For example, if a field contains a list, each value will be counted once:
-    
+
      users:["dave","fred","sue"]
      users:["sue","jon"]
 
@@ -138,7 +138,7 @@ FTP sink is a simple option to push files to an FTP server from incoming message
 It uses an `ftp-outbound-adapter`, therefore incoming messages could be either a `java.io.File` object, a `String` (content of the file)
 or an array of `bytes` (file content as well).
 
-To use this sink, you need a username and a password to login. 
+To use this sink, you need a username and a password to login.
 
 NOTE: By default Spring Integration will use `o.s.i.file.DefaultFileNameGenerator` if none is specified. `DefaultFileNameGenerator` will determine the file name
 based on the value of the `file_name` header (if it exists) in the `MessageHeaders`, or if the payload of the `Message` is already a `java.io.File`, then it will
@@ -538,3 +538,40 @@ $$queue$$:: $$name for the queue$$ *($$String$$, no default)*
 $$topic$$:: $$name for the topic$$ *($$String$$, no default)*
 
 
+[[spring-cloud-stream-modules-sink-tcp]]
+=== TCP Sink
+
+The TCP Sink provides for outbound messaging over TCP; messages sent to the sink can have `String` or `byte[]` payloads.
+
+TCP is a streaming protocol and some mechanism is needed to frame messages on the wire. A number of encoders are
+available, the default being 'CRLF'.
+
+==== Options
+
+The **$$tcp$$** $$sink$$ has the following options:
+
+$$charset$$:: $$the charset used when converting from String to bytes$$ *($$String$$, default: `UTF-8`)*
+$$close$$:: $$whether to close the socket after each message$$ *($$boolean$$, default: `false`)*
+$$encoder$$:: $$the encoder to use when sending messages$$ *($$Encoding$$, default: `CRLF`, possible values: `CRLF,LF,NULL,STXETX,RAW,L1,L2,L4`)*
+$$host$$:: $$the remote host to connect to$$ *($$String$$, default: `localhost`)*
+$$nio$$:: $$whether or not to use NIO$$ *($$boolean$$, default: `false`)*
+$$port$$:: $$the port on the remote host to connect to$$ *($$int$$, default: `1234`)*
+$$reverseLookup$$:: $$perform a reverse DNS lookup on the remote IP Address$$ *($$boolean$$, default: `false`)*
+$$socketTimeout$$:: $$the timeout (ms) before closing the socket when no data is received$$ *($$int$$, default: `120000`)*
+$$useDirectBuffers$$:: $$whether or not to use direct buffers$$ *($$boolean$$, default: `false`)*
+
+==== Available Encoders
+
+.Text Data
+
+CRLF (default):: text terminated by carriage return (0x0d) followed by line feed (0x0a)
+LF:: text terminated by line feed (0x0a)
+NULL:: text terminated by a null byte (0x00)
+STXETX:: text preceded by an STX (0x02) and terminated by an ETX (0x03)
+
+.Text and Binary Data
+
+RAW:: no structure - the client indicates a complete message by closing the socket
+L1:: data preceded by a one byte (unsigned) length field (supports up to 255 bytes)
+L2:: data preceded by a two byte (unsigned) length field (up to 2^16^-1 bytes)
+L4:: data preceded by a four byte (signed) length field (up to 2^31^-1 bytes)

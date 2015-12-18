@@ -41,6 +41,8 @@ public class EncoderDecoderFactoryBean extends AbstractFactoryBean<AbstractByteA
 
 	private ApplicationEventPublisher applicationEventPublisher;
 
+	private Integer maxMessageSize;
+
 	public EncoderDecoderFactoryBean(Encoding encoding) {
 		Assert.notNull(encoding, "'encoding' cannot be null");
 		this.encoding = encoding;
@@ -49,6 +51,14 @@ public class EncoderDecoderFactoryBean extends AbstractFactoryBean<AbstractByteA
 	@Override
 	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
 		this.applicationEventPublisher = applicationEventPublisher;
+	}
+
+	/**
+	 * The maximum message size allowed when decoding.
+	 * @param maxMessageSize the maximum message size.
+	 */
+	public void setMaxMessageSize(int maxMessageSize) {
+		this.maxMessageSize = maxMessageSize;
 	}
 
 	@Override
@@ -83,6 +93,9 @@ public class EncoderDecoderFactoryBean extends AbstractFactoryBean<AbstractByteA
 				throw new IllegalArgumentException("Invalid encoding: " + this.encoding);
 		}
 		codec.setApplicationEventPublisher(this.applicationEventPublisher);
+		if (this.maxMessageSize != null) {
+			codec.setMaxMessageSize(this.maxMessageSize);
+		}
 		return codec;
 	}
 
