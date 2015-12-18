@@ -70,7 +70,9 @@ public class TcpSource {
 
 	@Bean
 	public EncoderDecoderFactoryBean tcpSourceDecoder() {
-		return new EncoderDecoderFactoryBean(this.properties.getDecoder());
+		EncoderDecoderFactoryBean factoryBean = new EncoderDecoderFactoryBean(this.properties.getDecoder());
+		factoryBean.setMaxMessageSize(this.properties.getBufferSize());
+		return factoryBean;
 	}
 
 }
