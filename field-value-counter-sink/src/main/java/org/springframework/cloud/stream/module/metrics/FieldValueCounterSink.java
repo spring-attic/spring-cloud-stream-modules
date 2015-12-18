@@ -116,7 +116,6 @@ public class FieldValueCounterSink {
 			Collection<?> c = (value instanceof Collection) ? (Collection<?>) value
 					: Arrays.asList(ObjectUtils.toObjectArray(value));
 			for (Object val : c) {
-				// TODO better conversion to a string
 				fieldValueCounterRepository.increment(counterName, val.toString(), 1.0);
 			}
 		}
