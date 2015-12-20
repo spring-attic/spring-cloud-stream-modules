@@ -1,0 +1,33 @@
+= Spring Cloud Stream Splitter Processor
+
+A *Spring Cloud Stream* module that allows one to split a message payload into component parts.
+
+== Requirements
+
+* Java 7 or Above
+
+== Code Tour
+
+SplitterProcessorApplication:: the Spring Boot Main Application
+SplitterProcessor:: the bean definitions
+SplitterProcessorProperties:: defines the configuration properties that are available to the Splitter Processor
+  * expression: a SpEL expression used to split messages
+  * delimiters: delimiters to use when splitting String payloads
+  * charset: the charset used to convert to String when splitting `File` payloads with text content
+  * fileMarkers: whether or not to emit START/END marker messagees when splitting `File` payloads with text content
+  * applySequence: whether or not to add correlation/sequence information headers (default true)
+
+Mixed payload types are not supported (with the exception that the `String` and `Collection` can be split by a single
+splitter).
+
+## Building with Maven
+
+```
+$> mvn package
+```
+
+## Running the Application
+
+```
+$> java -jar target/transform-processor-${version}-exec.jar
+```
