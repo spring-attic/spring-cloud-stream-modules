@@ -29,5 +29,5 @@ $> mvn package
 ## Running the Application
 
 ```
-$> java -jar target/transform-processor-${version}-exec.jar
+$> java -jar target/splitter-processor-${version}-exec.jar
 ```

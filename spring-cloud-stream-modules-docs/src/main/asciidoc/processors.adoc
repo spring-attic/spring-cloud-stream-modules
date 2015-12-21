@@ -104,22 +104,58 @@ $$charset$$:: $$Split File payloads using this charset to convert bytes to Strin
 $$applySequence$$:: $$Add correlation and sequence information to the message headers$$ *($$String$$, default: `true`)*
 
 When no `expression`, `fileMarkers`, or `charset` is provided, a `DefaultMessageSplitter` is configured with (optional) `delimiters`.
-When `fileMarkers` or `charset` is provided, a `FileSplitter` is configured.
+When `fileMarkers` or `charset` is provided, a `FileSplitter` is configured (you must provide either a `fileMarkers`
+or `charset` to split files, which must be text-based - they are split into lines).
 Otherwise, an `ExpressionEvaluatingMessageSplitter` is configured.
 
 When splitting `File` payloads, the `sequenceSize` header is zero because the size cannot be determined at the beginning.
 
+*Ambiguous properties are not allowed.*
+
+==== JSON Example
+
 As part of the SpEL expression you can make use of the pre-registered JSON Path function. The syntax is
-``#jsonPath(payload, '<json path expression>')``.
+`#jsonPath(payload, '<json path expression>')`.
 
-Ambiguous properties are not allowed.
+For example, consider the following JSON:
 
-==== Extract the value of a specific field
+[source, json]
+----
+{ "store": {
+    "book": [
+        {
+            "category": "reference",
+            "author": "Nigel Rees",
+            "title": "Sayings of the Century",
+            "price": 8.95
+        },
+        {
+            "category": "fiction",
+            "author": "Evelyn Waugh",
+            "title": "Sword of Honour",
+            "price": 12.99
+        },
+        {
+            "category": "fiction",
+            "author": "Herman Melville",
+            "title": "Moby Dick",
+            "isbn": "0-553-21311-3",
+            "price": 8.99
+        },
+        {
+            "category": "fiction",
+            "author": "J. R. R. Tolkien",
+            "title": "The Lord of the Rings",
+            "isbn": "0-395-19395-8",
+            "price": 22.99
+        }
+    ],
+    "bicycle": {
+        "color": "red",
+        "price": 19.95
+    }
+}}
+----
 
-This splitter converts a JSON message payload to the value of a specific JSON field.
-
-    xd:> stream create --name jsontransformtest --definition "http --port=9005 | splitter --expression=#jsonPath(payload,'$.firstName') | log" --deploy
-
-Try sending this payload to the HTTP endpoint and you should see just the value "John" in the XD log:
-
-    xd:> http post --target http://localhost:9005 --data '{"firstName":"John", "lastName":"Smith"}'
+and an expression `#jsonPath(payload, '$.store.book')`; the result will be 4 messages, each with a `Map` payload
+containing the properties of a single book.
