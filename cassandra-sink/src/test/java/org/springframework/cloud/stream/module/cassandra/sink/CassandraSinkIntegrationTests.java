@@ -63,7 +63,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @SpringApplicationConfiguration(CassandraSinkApplication.class)
 @IntegrationTest({"spring.cassandra.keyspace=" + CassandraSinkIntegrationTests.CASSANDRA_KEYSPACE,
 		"spring.cassandra.createKeyspace=true"})
-@EmbeddedCassandra(configuration = EmbeddedCassandraServerHelper.CASSANDRA_RNDPORT_YML_FILE, timeout = 20000)
+@EmbeddedCassandra(configuration = EmbeddedCassandraServerHelper.CASSANDRA_RNDPORT_YML_FILE, timeout = 60000)
 @DirtiesContext
 public abstract class CassandraSinkIntegrationTests {
 
