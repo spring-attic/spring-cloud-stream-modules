@@ -21,6 +21,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.7</java.version>
 		<spring-integration.version>4.2.4.RELEASE</spring-integration.version>
+		<spring-cloud-stream.version>1.0.0.M3</spring-cloud-stream.version>
 	</properties>
 
 	<modules>
@@ -127,7 +128,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-stream-test-support</artifactId>
-				<version>${project.version}</version>
+				<version>${spring-cloud-stream.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
