@@ -37,23 +37,23 @@ badges:
 
 {% capture billboard_description %}
 
-Spring Boot based enterprise integration applications that provide integration with external systems. Spring Cloud 
-Stream Modules can be used with [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) to create, 
-build, and scale message-driven data microservices.
+Spring Cloud Stream Modules are [Spring Boot](http://projects.spring.io/spring-boot/) based [Spring Integration](http://projects.spring.io/spring-integration/) applications that provide integration with external systems. 
+Spring Cloud Stream Modules can be used with [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) to create, 
+build, and operationalize message-driven data microservices.
 
 {% endcapture %}
 
 {% capture main_content %}
 
-Spring Cloud Stream modules are standalone runnable Spring Boot applications. These applications can run independently 
-on variety of runtime platforms including: Cloud Foundry, Lattice, Apache Yarn, and Docker, or even on your laptop.
+Spring Cloud Stream modules are standalone executable applications that communicate over messaging middleware such as Apache Kafka and RabbitMQ. These applications can run independently on variety of runtime platforms including: Cloud Foundry, Apache Yarn, Apache Mesos, Kubernetes, Docker, or even on your laptop.
 
 ## Features
 
-* Run stand-alone as Spring applications
+* Run standalone as Spring applications
+* Create streaming pipelines with data microservice applications
+* Host and consume data microservice applications as maven dependencies
+* Override configuration parameters via command-line, environment variables, or YAML file
 * Provide infrastructure to test the modules in isolation
-* Override configuration parameters via command-line arguments or environment variables
-* Host data microservice modules through maven repository
 
 ## Available Modules
 
@@ -78,14 +78,14 @@ on variety of runtime platforms including: Cloud Foundry, Lattice, Apache Yarn, 
 
 Step 1 - Clone [Spring Cloud Stream Modules](https://github.com/spring-cloud/spring-cloud-stream-modules.git) repository
 
-Step 2 - Build Project
-```
-mvn clean package
-```
-
-Step 3 - Start
+Step 2 - Start
 ```
 redis-server
+```
+
+Step 3 - Build Project
+```
+mvn clean package
 ```
 
 Step 4 - Run **Time Source** and Bind to *ticktock* Queue
