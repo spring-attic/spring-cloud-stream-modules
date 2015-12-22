@@ -61,7 +61,7 @@ public abstract class TimeSourceIntegrationTests {
 		@Test
 		public void test() throws InterruptedException {
 			Assume.assumeThat("Skipping this test which is time dependent in travis", System.getenv("TRAVIS"), CoreMatchers.nullValue());
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 			assertThat(messageCollector.forChannel(timeSource.output()).size(), Matchers.greaterThanOrEqualTo(500));
 		}
 	}
