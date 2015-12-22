@@ -3,7 +3,7 @@
 <modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.cloud.stream.module</groupId>
 	<artifactId>spring-cloud-stream-modules-common</artifactId>
-	<version>1.0.0.BUILD-SNAPSHOT</version>
+	<version>1.0.0.M2</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>script-variable-generator</module>

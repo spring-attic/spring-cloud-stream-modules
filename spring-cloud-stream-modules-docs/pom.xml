@@ -5,10 +5,10 @@
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-stream-parent</artifactId>
 		<version>1.0.0.M3</version>
-		<relativePath/>  <!-- lookup parent from repository -->
+		<relativePath />  <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>spring-cloud-stream-modules-docs</artifactId>
-	<version>1.0.0.BUILD-SNAPSHOT</version>
+	<version>1.0.0.M2</version>
 	<name>spring-cloud-stream-modules-docs</name>
 	<description>Spring Cloud Stream Modules Docs</description>
 	<properties>

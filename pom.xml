@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.cloud.stream.module</groupId>
 	<artifactId>spring-cloud-stream-modules</artifactId>
-	<version>1.0.0.BUILD-SNAPSHOT</version>
+	<version>1.0.0.M2</version>
 	<packaging>pom</packaging>
 	<url>http://projects.spring.io/spring-xd/</url>
 	<organization>
@@ -86,7 +86,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud.stream.module</groupId>
 				<artifactId>spring-cloud-stream-modules-common-configuration</artifactId>
-				<version>1.0.0.BUILD-SNAPSHOT</version>
+				<version>1.0.0.M2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.integration</groupId>
@@ -134,7 +134,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud.stream.module</groupId>
 				<artifactId>spring-cloud-stream-modules-test-support</artifactId>
-				<version>1.0.0.BUILD-SNAPSHOT</version>
+				<version>1.0.0.M2</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -157,7 +157,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud.stream.module</groupId>
 				<artifactId>script-variable-generator</artifactId>
-				<version>1.0.0.BUILD-SNAPSHOT</version>
+				<version>1.0.0.M2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
