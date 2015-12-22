@@ -8,7 +8,7 @@
 		<relativePath />  <!-- lookup parent from repository -->
 	</parent>
 	<artifactId>spring-cloud-stream-modules-docs</artifactId>
-	<version>1.0.0.M2</version>
+	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<name>spring-cloud-stream-modules-docs</name>
 	<description>Spring Cloud Stream Modules Docs</description>
 	<properties>
