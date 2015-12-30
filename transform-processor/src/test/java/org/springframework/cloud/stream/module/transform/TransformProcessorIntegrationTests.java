@@ -38,6 +38,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author Eric Bottard
  * @author Marius Bogoevici
+ * @author Matt Ross
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TransformProcessorApplication.class)
@@ -65,7 +66,7 @@ public abstract class TransformProcessorIntegrationTests {
 	}
 
 	@WebIntegrationTest("expression=payload.toUpperCase()")
-	public static class UsingExpressionIntegrationTests extends TransformProcessorIntegrationTests {
+	public static class UsingUpperCaseExpressionIntegrationTests extends TransformProcessorIntegrationTests {
 
 		@Test
 		public void test() {
@@ -73,4 +74,60 @@ public abstract class TransformProcessorIntegrationTests {
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("HELLO")));
 		}
 	}
+
+	@WebIntegrationTest("expression=payload.toLowerCase()")
+	public static class UsingLowerCaseExpressionIntegrationTests extends TransformProcessorIntegrationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("GOODBYE"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("goodbye")));
+
+			channels.input().send(new GenericMessage<Object>("badBadNotGOOD"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("badbadnotgood")));
+		}
+	}
+
+	@WebIntegrationTest("expression=payload.trim()")
+	public static class UsingTrimExpressionIntegrationTests extends TransformProcessorIntegrationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("  monday tuesday friday   "));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("monday tuesday friday")));
+		}
+	}
+
+	@WebIntegrationTest("expression=payload.substring(3)")
+	public static class UsingSubStringExpressionIntegrationTests extends TransformProcessorIntegrationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("FOOBARBAZ"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("BARBAZ")));
+
+			channels.input().send(new GenericMessage<Object>("FOO"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("")));
+		}
+	}
+
+	@WebIntegrationTest("expression=payload.replaceAll('i','!')")
+	public static class UsingReplaceExpressionIntegrationTests extends TransformProcessorIntegrationTests {
+
+		@Test
+		public void test() {
+			channels.input().send(new GenericMessage<Object>("in the distant past"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("!n the d!stant past")));
+		}
+	}
+
+    @WebIntegrationTest("expression=payload.concat('.io')")
+    public static class UsingConcatExpressionIntegrationTests extends TransformProcessorIntegrationTests {
+
+        @Test
+        public void test() {
+            channels.input().send(new GenericMessage<Object>("docs.spring"));
+            assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("docs.spring.io")));
+        }
+    }
 }
