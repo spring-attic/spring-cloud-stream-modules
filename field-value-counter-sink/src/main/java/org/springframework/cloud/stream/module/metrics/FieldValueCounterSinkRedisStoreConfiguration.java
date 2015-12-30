@@ -42,7 +42,7 @@ public class FieldValueCounterSinkRedisStoreConfiguration {
 	RedisConnectionFactory redisConnectionFactory;
 
 	@Bean
-	public FieldValueCounterRepository redisMetricRepository() {
+	public FieldValueCounterWriter redisMetricRepository() {
 		return new RedisFieldValueCounterRepository(redisConnectionFactory, retryOperations());
 	}
 

@@ -47,7 +47,7 @@ public class FieldValueCounterSink {
 	private FieldValueCounterSinkProperties fvcSinkProperties;
 
 	@Autowired
-	private FieldValueCounterRepository fieldValueCounterRepository;
+	private FieldValueCounterWriter fieldValueCounterWriter;
 
 	private final JsonToTupleTransformer jsonToTupleTransformer = new JsonToTupleTransformer();
 
@@ -116,11 +116,11 @@ public class FieldValueCounterSink {
 			Collection<?> c = (value instanceof Collection) ? (Collection<?>) value
 					: Arrays.asList(ObjectUtils.toObjectArray(value));
 			for (Object val : c) {
-				fieldValueCounterRepository.increment(counterName, val.toString(), 1.0);
+				fieldValueCounterWriter.increment(counterName, val.toString(), 1.0);
 			}
 		}
 		else {
-			fieldValueCounterRepository.increment(counterName, value.toString(), 1.0);
+			fieldValueCounterWriter.increment(counterName, value.toString(), 1.0);
 		}
 	}
 

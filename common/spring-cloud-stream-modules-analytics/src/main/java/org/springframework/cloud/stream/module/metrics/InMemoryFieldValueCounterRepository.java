@@ -15,6 +15,7 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -43,12 +44,8 @@ public class InMemoryFieldValueCounterRepository implements FieldValueCounterRep
 	}
 
 	@Override
-	public void reset(String name, String fieldName) {
-		FieldValueCounter counter = getOrCreate(name);
-		Map<String, Double> data = counter.getFieldValueCounts();
-		if (data.containsKey(fieldName)) {
-			data.put(fieldName, 0D);
-		}
+	public void reset(String name) {
+		map.remove(name);
 	}
 
 	private void modifyFieldValue(String name, String fieldName, double delta) {
@@ -75,9 +72,15 @@ public class InMemoryFieldValueCounterRepository implements FieldValueCounterRep
 		return fieldValueCounter;
 	}
 
-	private FieldValueCounter findOne(String name) {
+	@Override
+	public FieldValueCounter findOne(String name) {
 		Assert.notNull(name, "The name of the metric must not be null");
 		return map.get(name);
+	}
+
+	@Override
+	public Collection<String> list() {
+		return map.keySet();
 	}
 
 	private FieldValueCounter create(String name) {

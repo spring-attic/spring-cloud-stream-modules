@@ -37,7 +37,7 @@ public final class FieldValueCounter {
 	public FieldValueCounter(String name) {
 		Assert.notNull(name);
 		this.name = name;
-		this.fieldValueCounts = new ConcurrentHashMap<String, Double>();
+		this.fieldValueCounts = new ConcurrentHashMap<>();
 	}
 
 	public FieldValueCounter(String name, Map<String, Double> fieldValueCounts) {

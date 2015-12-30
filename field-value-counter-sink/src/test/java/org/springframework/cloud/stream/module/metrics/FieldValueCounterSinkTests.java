@@ -64,23 +64,9 @@ public class FieldValueCounterSinkTests {
 	private RedisFieldValueCounterRepository fieldValueCounterRepository;
 
 	@Before
-	public void init() {
-		fieldValueCounterRepository.reset(FVC_NAME, "Hi");
-		fieldValueCounterRepository.reset(FVC_NAME, "Hello");
-		fieldValueCounterRepository.reset(FVC_NAME, "{\"test1\":\"Hi\"}");
-		fieldValueCounterRepository.reset(FVC_NAME, "{\"test2\":\"Hello\"}");
-		fieldValueCounterRepository.reset(FVC_NAME, "{test1=Hello}");
-		fieldValueCounterRepository.reset(FVC_NAME, "{test2=Hi}");
-	}
-
 	@After
 	public void clear() {
-		fieldValueCounterRepository.reset(FVC_NAME, "Hi");
-		fieldValueCounterRepository.reset(FVC_NAME, "Hello");
-		fieldValueCounterRepository.reset(FVC_NAME, "{\"test1\":\"Hi\"}");
-		fieldValueCounterRepository.reset(FVC_NAME, "{\"test2\":\"Hello\"}");
-		fieldValueCounterRepository.reset(FVC_NAME, "{test1=Hello}");
-		fieldValueCounterRepository.reset(FVC_NAME, "{test2=Hi}");
+		fieldValueCounterRepository.reset(FVC_NAME);
 	}
 
 	@Test

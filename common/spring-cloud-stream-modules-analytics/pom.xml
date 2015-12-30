@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>spring-cloud-stream-modules-analytics</artifactId>
+	<packaging>jar</packaging>
+	<description>Contains APIs for interacting with analytics</description>
+
+	<parent>
+		<groupId>org.springframework.cloud.stream.module</groupId>
+		<artifactId>spring-cloud-stream-modules</artifactId>
+		<version>1.0.0.BUILD-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
+			<!-- projects that depend on scsm-analytics should choose explicitly which store(s) they want -->
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+</project>

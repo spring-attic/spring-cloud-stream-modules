@@ -31,7 +31,7 @@ public class FieldValueCounterSinkConfiguration {
 
 	@Bean
 	@ConditionalOnProperty(name = "store", matchIfMissing = true)
-	public FieldValueCounterRepository redisMetricRepository() {
+	public FieldValueCounterWriter redisMetricRepository() {
 		return new InMemoryFieldValueCounterRepository();
 	}
 }
