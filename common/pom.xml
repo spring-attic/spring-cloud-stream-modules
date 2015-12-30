@@ -9,5 +9,6 @@
 		<module>script-variable-generator</module>
 		<module>spring-cloud-stream-modules-common-configuration</module>
 		<module>spring-cloud-stream-modules-test-support</module>
+		<module>spring-cloud-stream-modules-analytics</module>
 	</modules>
 </project>

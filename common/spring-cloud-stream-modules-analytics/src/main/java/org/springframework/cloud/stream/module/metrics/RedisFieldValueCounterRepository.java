@@ -15,7 +15,9 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +34,6 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 
 	private final StringRedisRetryTemplate redisTemplate;
 
-	private static final String MARKER = "_marker_";
-
 	public RedisFieldValueCounterRepository(RedisConnectionFactory connectionFactory, RetryOperations retryOperations) {
 		this(connectionFactory, "fieldvaluecounters.", retryOperations);
 	}
@@ -49,19 +49,7 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 		redisTemplate.afterPropertiesSet();
 	}
 
-	/*
-	 * Note: Handler implementations typically use increment() variants to save state. The save() contract
-	 * is to store the counter as a whole. Simplest approach is erase/rewrite.
-	 */
-	public <S extends FieldValueCounter> S save(S fieldValueCounter) {
-		reset(fieldValueCounter.getName(), MARKER);
-		increment(fieldValueCounter.getName(), MARKER, 0);
-		for (Map.Entry<String, Double> entry : fieldValueCounter.getFieldValueCounts().entrySet()) {
-			increment(fieldValueCounter.getName(), entry.getKey(), entry.getValue());
-		}
-		return fieldValueCounter;
-	}
-
+	@Override
 	public FieldValueCounter findOne(String name) {
 		Assert.notNull(name, "The name of the FieldValueCounter must not be null");
 		String metricKey = getMetricKey(name);
@@ -76,6 +64,16 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 	}
 
 	@Override
+	public Collection<String> list() {
+		Set<String> keys = redisTemplate.keys(getMetricKey("*"));
+		Set<String> names = new HashSet<>(keys.size());
+		for (String key : keys) {
+			names.add(getCounterName(key));
+		}
+		return names;
+	}
+
+	@Override
 	public void increment(String counterName, String fieldName, double score) {
 		redisTemplate.boundZSetOps(getMetricKey(counterName)).incrementScore(fieldName, score);
 	}
@@ -86,19 +84,26 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 	}
 
 	@Override
-	public void reset(String counterName, String fieldName) {
-		redisTemplate.boundZSetOps(getMetricKey(counterName)).remove(fieldName);
+	public void reset(String counterName) {
+		redisTemplate.delete(getMetricKey(counterName));
 	}
 
 
 	/**
-	 * Provides the key for a named metric. By default this appends the name to the metricPrefix value.
+	 * Provides the key for a named metric. By default this prepends the name to the metricPrefix value.
 	 * 
 	 * @param metricName the name of the metric
 	 * @return the redis key under which the metric is stored
 	 */
 	protected String getMetricKey(String metricName) {
 		return metricPrefix + metricName;
+	}
+
+	/**
+	 * Provides the name of a counter stored under a given key. This operation is the reverse of {@link #getMetricKey(String)}.
+	 */
+	private String getCounterName(String redisKey) {
+		return redisKey.substring(metricPrefix.length());
 	}
 
 	protected Map<String, Double> getZSetData(String counterKey) {
@@ -109,9 +114,7 @@ public class RedisFieldValueCounterRepository implements FieldValueCounterReposi
 		for (Iterator<ZSetOperations.TypedTuple<String>> iterator = rangeWithScore.iterator(); iterator
 				.hasNext();) {
 			ZSetOperations.TypedTuple<String> typedTuple = iterator.next();
-			if (!typedTuple.getValue().equals(MARKER)) {
-				values.put(typedTuple.getValue(), typedTuple.getScore());
-			}
+			values.put(typedTuple.getValue(), typedTuple.getScore());
 		}
 		return values;
 	}

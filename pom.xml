@@ -66,13 +66,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<!--skip deploy (this is just a test module) -->
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<!-- <skip>true</skip> -->
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
@@ -86,6 +79,11 @@
 			<dependency>
 				<groupId>org.springframework.cloud.stream.module</groupId>
 				<artifactId>spring-cloud-stream-modules-common-configuration</artifactId>
+				<version>1.0.0.BUILD-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud.stream.module</groupId>
+				<artifactId>spring-cloud-stream-modules-analytics</artifactId>
 				<version>1.0.0.BUILD-SNAPSHOT</version>
 			</dependency>
 			<dependency>

@@ -16,15 +16,14 @@
 package org.springframework.cloud.stream.module.metrics;
 
 /**
- * A repository to save, delete and find FieldValueCounter instances. Uses the Spring Data Repository marker interface
- * and conventions for method names and behavior.
+ * Contains operations to modify and reset FieldValueCounter instances.
  * 
  * The name is the id and should be unique.
  * 
  * @author Mark Pollack
  * @author Ilayaperumal Gopinathan
  */
-public interface FieldValueCounterRepository {
+public interface FieldValueCounterWriter {
 
 	/**
 	 * Increment the FieldValueCounter for a given field name by score, creating missing counters.
@@ -47,11 +46,9 @@ public interface FieldValueCounterRepository {
 	void decrement(String name, String fieldName, double score);
 
 	/**
-	 * Reset the FieldValueCounter to zero for the given field name, creating missing counters.
+	 * Reset the given FieldValueCounter.
 	 * 
 	 * @param name the FieldValueCounter name
-	 * @param fieldName the name of the field
-	 * @throws IllegalArgumentException in case the given name is null
 	 */
-	void reset(String name, String fieldName);
+	void reset(String name);
 }

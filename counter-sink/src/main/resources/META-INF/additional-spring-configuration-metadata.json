@@ -1,7 +1,7 @@
 {
   "hints": [
     {
-      "name": "backend",
+      "name": "store",
       "values": [
         {
           "value": "memory",
