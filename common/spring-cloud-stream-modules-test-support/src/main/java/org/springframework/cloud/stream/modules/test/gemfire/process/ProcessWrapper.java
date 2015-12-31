@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,11 +40,11 @@ import java.util.logging.Logger;
 import org.springframework.cloud.stream.modules.test.gemfire.process.support.PidUnavailableException;
 import org.springframework.cloud.stream.modules.test.gemfire.process.support.ProcessUtils;
 import org.springframework.cloud.stream.modules.test.gemfire.support.FileSystemUtils;
-import org.springframework.cloud.stream.modules.test.gemfire.support.FileUtils;
 import org.springframework.cloud.stream.modules.test.gemfire.support.IOUtils;
 import org.springframework.cloud.stream.modules.test.gemfire.support.ThreadUtils;
 import org.springframework.cloud.stream.modules.test.gemfire.support.ThrowableUtils;
 import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
 /**
@@ -192,7 +193,7 @@ public class ProcessWrapper {
 	}
 
 	public String readLogFile(final File log) throws IOException {
-		return FileUtils.read(log);
+		return FileCopyUtils.copyToString(new BufferedReader(new FileReader(log)));
 	}
 
 	public boolean register(final ProcessInputStreamListener listener) {

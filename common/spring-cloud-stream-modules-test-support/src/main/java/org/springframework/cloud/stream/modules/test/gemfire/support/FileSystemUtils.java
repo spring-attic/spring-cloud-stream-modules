@@ -30,11 +30,10 @@ import org.springframework.util.Assert;
  * @author John Blum
  * @see java.io.File
  * @see java.io.FileFilter
- * @see FileUtils
  * @see IOUtils
  * @since 1.5.0
  */
-public abstract class FileSystemUtils extends FileUtils {
+public abstract class FileSystemUtils {
 
 	public static final File JAVA_HOME = new File(System.getProperty("java.home"));
 
@@ -59,7 +58,7 @@ public abstract class FileSystemUtils extends FileUtils {
 	public static File getRootRelativeToWorkingDirectoryOrPath(final File path) {
 		File localPath = path;
 
-		if (isDirectory(localPath)) {
+		if (localPath != null && localPath.isDirectory()) {
 			while (localPath != null && !WORKING_DIRECTORY.equals(localPath.getParentFile())) {
 				localPath = localPath.getParentFile();
 			}
