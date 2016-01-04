@@ -1,0 +1,129 @@
+/*
+ * Copyright 2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.springframework.cloud.stream.module.gpfdist.sink;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.ControlFile;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.ControlFileFactoryBean;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.GreenplumDataSourceFactoryBean;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.GreenplumLoad;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.LoadConfiguration;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.LoadConfigurationFactoryBean;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.LoadFactoryBean;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.Mode;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.NetworkUtils;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.ReadableTable;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.ReadableTableFactoryBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.util.StringUtils;
+
+/**
+ * Configuration for all beans needed for gpfdist sink.
+ *
+ * @author Janne Valkealahti
+ */
+@Configuration
+@EnableConfigurationProperties(GpfdistSinkProperties.class)
+@EnableBinding(Sink.class)
+public class GpfdistConfiguration {
+
+	@Autowired
+	private GpfdistSinkProperties properties;
+
+	@Bean
+	public TaskScheduler sqlTaskScheduler() {
+		ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+		taskScheduler.setWaitForTasksToCompleteOnShutdown(true);
+		taskScheduler.setAwaitTerminationSeconds(properties.getBatchTimeout());
+		return taskScheduler;
+	}
+
+	@Bean
+	public ControlFileFactoryBean greenplumControlFile() {
+		ControlFileFactoryBean factoryBean = new ControlFileFactoryBean();
+		factoryBean.setControlFileResource(properties.getControlFile());
+		return factoryBean;
+	}
+
+	@Bean
+	public GreenplumDataSourceFactoryBean dataSource(ControlFile controlFile) {
+		GreenplumDataSourceFactoryBean factoryBean = new GreenplumDataSourceFactoryBean();
+		factoryBean.setControlFile(controlFile);
+		factoryBean.setDbHost(properties.getDbHost());
+		factoryBean.setDbName(properties.getDbName());
+		factoryBean.setDbUser(properties.getDbUser());
+		factoryBean.setDbPassword(properties.getDbPassword());
+		factoryBean.setDbPort(properties.getDbPort());
+		return factoryBean;
+	}
+
+	@Bean
+	public ReadableTableFactoryBean greenplumReadableTable(ControlFile controlFile) {
+		ReadableTableFactoryBean factoryBean = new ReadableTableFactoryBean();
+		factoryBean.setControlFile(controlFile);
+		factoryBean.setDelimiter(properties.getColumnDelimiter());
+		factoryBean.setLocations(Arrays.asList(NetworkUtils.getGPFDistUri(properties.getPort())));
+		return factoryBean;
+	}
+
+	@Bean
+	public LoadConfigurationFactoryBean greenplumLoadConfiguration(ReadableTable externalTable, ControlFile controlFile) {
+		LoadConfigurationFactoryBean factoryBean = new LoadConfigurationFactoryBean();
+		factoryBean.setExternalTable(externalTable);
+		factoryBean.setControlFile(controlFile);
+		factoryBean.setMode(StringUtils.hasText(properties.getMode()) ? Mode.valueOf(properties.getMode().toUpperCase()) : Mode.INSERT);
+		factoryBean.setUpdateColumns(StringUtils.commaDelimitedListToStringArray(properties.getUpdateColumns()));
+		factoryBean.setMatchColumns(StringUtils.commaDelimitedListToStringArray(properties.getMatchColumns()));
+		factoryBean.setTable(properties.getTable());
+		factoryBean.setSqlBefore(StringUtils.hasText(properties.getSqlBefore()) ? Arrays.asList(properties.getSqlBefore()) : new ArrayList<String>());
+		factoryBean.setSqlAfter(StringUtils.hasText(properties.getSqlAfter()) ? Arrays.asList(properties.getSqlAfter()) : new ArrayList<String>());
+		return factoryBean;
+	}
+
+	@Bean
+	public LoadFactoryBean greenplumLoad(LoadConfiguration loadConfiguration, DataSource dataSource) {
+		LoadFactoryBean factoryBean = new LoadFactoryBean();
+		factoryBean.setLoadConfiguration(loadConfiguration);
+		factoryBean.setDataSource(dataSource);
+		return factoryBean;
+	}
+
+	@Bean
+	@ServiceActivator(inputChannel= Sink.INPUT)
+	public GpfdistMessageHandler gpfdist(GreenplumLoad greenplumLoad, TaskScheduler sqlTaskScheduler) {
+		GpfdistMessageHandler handler = new GpfdistMessageHandler(properties.getPort(), properties.getFlushCount(),
+				properties.getFlushTime(), properties.getBatchTimeout(), properties.getBatchCount(), properties.getBatchPeriod(),
+				properties.getDelimiter());
+		handler.setRateInterval(properties.getRateInterval());
+		handler.setGreenplumLoad(greenplumLoad);
+		handler.setSqlTaskScheduler(sqlTaskScheduler);
+		return handler;
+	}
+
+}
