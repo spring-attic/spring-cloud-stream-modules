@@ -17,21 +17,23 @@ package org.springframework.cloud.stream.module.trigger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.cloud.stream.module.MaxMessagesProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.expression.EvaluationContext;
-import org.springframework.expression.common.LiteralExpression;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
+import org.springframework.integration.dsl.core.Pollers;
+import org.springframework.integration.scheduling.PollerMetadata;
+import org.springframework.scheduling.Trigger;
 
 /**
  * @author Ilayaperumal Gopinathan
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties(TriggerSourceProperties.class)
-@Import({PeriodicTriggerConfiguration.class, CronTriggerConfiguration.class, DateTriggerConfiguration.class,
-		SpelExpressionConverterConfiguration.class})
+@EnableConfigurationProperties({TriggerSourceProperties.class, MaxMessagesProperties.class})
+@Import({TriggerConfiguration.class})
 public class TriggerSource {
 
 	@Autowired
@@ -40,14 +42,20 @@ public class TriggerSource {
 	@Autowired
 	private TriggerSourceProperties config;
 
-	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(
-			trigger = TriggerConstants.TRIGGER_BEAN_NAME, maxMessagesPerPoll = "1"), autoStartup = "false")
+	@Autowired
+	private MaxMessagesProperties maxMessagesProperties;
+
+	@Autowired
+	private Trigger trigger;
+
+	@Bean
+	public PollerMetadata poller() {
+		return Pollers.trigger(trigger).maxMessagesPerPoll(this.maxMessagesProperties.getMaxMessages()).get();
+	}
+
+	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller("poller"), autoStartup = "false")
 	public String trigger() {
-		if (this.config.getPayload() != null && !this.config.getPayload().isEmpty()) {
-			return new LiteralExpression(this.config.getPayload()).getValue(this.evaluationContext, String.class);
-		}
-		// Return empty string as payload
-		return "";
+		return this.config.getPayload().getValue(this.evaluationContext, String.class);
 	}
 
 }

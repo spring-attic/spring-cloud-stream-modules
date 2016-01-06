@@ -15,18 +15,19 @@
 package org.springframework.cloud.stream.module.trigger;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.stream.module.MaxMessagesProperties;
+import org.springframework.expression.Expression;
+import org.springframework.expression.common.LiteralExpression;
 
 /**
  * @author Ilayaperumal Gopinathan
  */
 @ConfigurationProperties
-public class TriggerSourceProperties extends MaxMessagesProperties {
+public class TriggerSourceProperties {
 
-	private String payload;
+	private String payload = "";
 
-	public String getPayload() {
-		return this.payload;
+	public Expression getPayload() {
+		return new LiteralExpression(this.payload);
 	}
 
 	public void setPayload(String payload) {

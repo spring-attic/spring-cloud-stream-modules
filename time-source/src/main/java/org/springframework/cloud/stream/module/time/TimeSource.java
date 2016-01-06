@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.cloud.stream.module.trigger.PeriodicTriggerConfiguration;
+import org.springframework.cloud.stream.module.trigger.TriggerConfiguration;
 import org.springframework.cloud.stream.module.trigger.TriggerConstants;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.InboundChannelAdapter;
@@ -36,7 +36,7 @@ import org.springframework.integration.annotation.Poller;
  */
 @EnableBinding(Source.class)
 @EnableConfigurationProperties(TimeSourceProperties.class)
-@Import(PeriodicTriggerConfiguration.class)
+@Import(TriggerConfiguration.class)
 public class TimeSource {
 
 	@Autowired

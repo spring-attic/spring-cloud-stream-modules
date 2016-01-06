@@ -19,7 +19,7 @@ package org.springframework.cloud.stream.module.trigger;
  */
 public class TriggerConstants {
 
-	public static final String TRIGGER_BEAN_NAME = "SPRING_CLOUD_STREAM_TRIGGER";
+	public static final String TRIGGER_BEAN_NAME = "POLLER_TRIGGER";
 
 	public static final String DATE_FORMAT = "MM/dd/yy HH:mm:ss";
 

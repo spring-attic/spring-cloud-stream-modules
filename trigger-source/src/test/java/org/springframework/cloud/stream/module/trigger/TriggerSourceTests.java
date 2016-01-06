@@ -16,7 +16,9 @@
 
 package org.springframework.cloud.stream.module.trigger;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,9 +54,16 @@ public abstract class TriggerSourceTests {
 
 		@Test
 		public void fixedDelayTest() throws InterruptedException {
-			Thread.sleep(2100);
-			assertEquals(1, messageCollector.forChannel(triggerSource.output()).size());
-			messageCollector.forChannel(triggerSource.output()).take().getPayload().equals("test");
+			assertTrue(messageCollector.forChannel(triggerSource.output()).poll(2100, TimeUnit.MILLISECONDS).getPayload().equals("test"));
+		}
+	}
+
+	@WebIntegrationTest({"fixedDelay=2", "initialDelay=1"})
+	public static class FixedDelayEmptyPayloadTest extends TriggerSourceTests {
+
+		@Test
+		public void fixedDelayTest() throws InterruptedException {
+			assertTrue(messageCollector.forChannel(triggerSource.output()).poll(2100, TimeUnit.MILLISECONDS).getPayload().equals(""));
 		}
 	}
 
@@ -63,10 +72,8 @@ public abstract class TriggerSourceTests {
 
 		@Test
 		public void cronTriggerTest() throws InterruptedException {
-			Thread.sleep(4100);
-			assertEquals(2, messageCollector.forChannel(triggerSource.output()).size());
-			messageCollector.forChannel(triggerSource.output()).take().getPayload().equals("cronTest");
-			messageCollector.forChannel(triggerSource.output()).take().getPayload().equals("cronTest");
+			assertTrue(messageCollector.forChannel(triggerSource.output()).poll(2100, TimeUnit.MILLISECONDS).getPayload().equals("cronTest"));
+			assertTrue(messageCollector.forChannel(triggerSource.output()).poll(2100, TimeUnit.MILLISECONDS).getPayload().equals("cronTest"));
 		}
 	}
 }

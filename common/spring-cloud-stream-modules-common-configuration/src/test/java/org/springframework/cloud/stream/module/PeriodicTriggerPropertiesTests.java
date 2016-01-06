@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.EnvironmentTestUtils;
-import org.springframework.cloud.stream.module.trigger.PeriodicTriggerProperties;
+import org.springframework.cloud.stream.module.trigger.TriggerProperties;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,7 +40,7 @@ public class PeriodicTriggerPropertiesTests {
 		EnvironmentTestUtils.addEnvironment(context, "fixedDelay:11");
 		context.register(Conf.class);
 		context.refresh();
-		PeriodicTriggerProperties properties = context.getBean(PeriodicTriggerProperties
+		TriggerProperties properties = context.getBean(TriggerProperties
 				.class);
 		assertThat(properties.getFixedDelay(), equalTo(11));
 	}
@@ -51,7 +51,7 @@ public class PeriodicTriggerPropertiesTests {
 		EnvironmentTestUtils.addEnvironment(context, "initialDelay:12");
 		context.register(Conf.class);
 		context.refresh();
-		PeriodicTriggerProperties properties = context.getBean(PeriodicTriggerProperties
+		TriggerProperties properties = context.getBean(TriggerProperties
 				.class);
 		assertThat(properties.getInitialDelay(), equalTo(12));
 	}
@@ -62,7 +62,7 @@ public class PeriodicTriggerPropertiesTests {
 		EnvironmentTestUtils.addEnvironment(context, "timeUnit:MINUTES");
 		context.register(Conf.class);
 		context.refresh();
-		PeriodicTriggerProperties properties = context.getBean(PeriodicTriggerProperties
+		TriggerProperties properties = context.getBean(TriggerProperties
 				.class);
 		assertThat(properties.getTimeUnit(), equalTo(TimeUnit.MINUTES));
 	}
@@ -76,7 +76,7 @@ public class PeriodicTriggerPropertiesTests {
 	}
 
 	@Configuration
-	@EnableConfigurationProperties(PeriodicTriggerProperties.class)
+	@EnableConfigurationProperties(TriggerProperties.class)
 	static class Conf {
 	}
 }
