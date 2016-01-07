@@ -1,0 +1,28 @@
+= Spring Cloud Stream Loggregator Source
+
+This module converts incoming Cloud Foundry loggregator log messages into a String with corresponding headers.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+LoggregatorSourceApplication:: the Spring Boot Main Application
+LoggregatorSource:: the Loggregator source
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/loggregator-source-${version}-exec.jar
+```
+
+The "user", "password", "applicationName", and "api" properties determines the
+CloudFoundry account and corresponding application loggregator endpoint to
+connect to.
