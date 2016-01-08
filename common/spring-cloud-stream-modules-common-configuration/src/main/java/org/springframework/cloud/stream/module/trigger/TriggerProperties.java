@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-16 the original author or authors.
+ * Copyright 2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,12 +15,19 @@
 
 package org.springframework.cloud.stream.module.trigger;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import javax.validation.ValidationException;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.Min;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.util.StringUtils;
 
 /**
  * @author David Turanski
@@ -28,6 +35,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties
 public class TriggerProperties {
+
+	private static final SpelExpressionParser spelExpressionParser = new SpelExpressionParser();
 
 	/**
 	 * Fixed delay for periodic triggers. Default is 1 TimeUnit. 
@@ -52,12 +61,14 @@ public class TriggerProperties {
 	/**
 	 * Format for the date value.
 	 */
-	private String dateFormat = TriggerConstants.DATE_FORMAT;
+	private String dateFormat;
 
 	/**
 	 * Cron expression value for the Cron Trigger.
 	 */
 	private String cron;
+
+	private String payload = "''";
 
 	@Min(0)
 	public int getInitialDelay() {
@@ -92,20 +103,39 @@ public class TriggerProperties {
 		this.cron = cron;
 	}
 
-	public String getDate() {
-		return this.date;
+	public Date getDate() {
+		try {
+			return this.getDateFormat().parse(date);
+		}
+		catch (ParseException e) {
+			throw new ValidationException("Invalid date value :" + this.date);
+		}
 	}
 
 	public void setDate(String date) {
 		this.date = date;
 	}
 
-	public String getDateFormat() {
-		return this.dateFormat;
+	public SimpleDateFormat getDateFormat() {
+		String dateFormatString = StringUtils.isEmpty(this.dateFormat) ? TriggerConstants.DATE_FORMAT : dateFormat;
+		try {
+			return new SimpleDateFormat(dateFormatString);
+		}
+		catch (IllegalArgumentException e) {
+			throw new ValidationException("Invalid Date format for the string: " + this.dateFormat);
+		}
 	}
 
 	public void setDateFormat(String dateFormat) {
 		this.dateFormat = dateFormat;
+	}
+
+	public Expression getPayload() {
+		return spelExpressionParser.parseExpression(this.payload);
+	}
+
+	public void setPayload(String payload) {
+		this.payload = payload;
 	}
 
 	@AssertFalse

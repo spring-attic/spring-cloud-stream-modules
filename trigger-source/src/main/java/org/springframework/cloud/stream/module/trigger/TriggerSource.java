@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,43 +19,26 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.expression.EvaluationContext;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
-import org.springframework.integration.dsl.core.Pollers;
-import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.scheduling.Trigger;
 
 /**
+ * Trigger source module.
+ *
  * @author Ilayaperumal Gopinathan
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties({TriggerSourceProperties.class, MaxMessagesProperties.class})
+@EnableConfigurationProperties({TriggerProperties.class, MaxMessagesProperties.class})
 @Import({TriggerConfiguration.class})
 public class TriggerSource {
 
 	@Autowired
-	private EvaluationContext evaluationContext;
+	private TriggerProperties config;
 
-	@Autowired
-	private TriggerSourceProperties config;
-
-	@Autowired
-	private MaxMessagesProperties maxMessagesProperties;
-
-	@Autowired
-	private Trigger trigger;
-
-	@Bean
-	public PollerMetadata poller() {
-		return Pollers.trigger(trigger).maxMessagesPerPoll(this.maxMessagesProperties.getMaxMessages()).get();
-	}
-
-	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller("poller"), autoStartup = "false")
-	public String trigger() {
-		return this.config.getPayload().getValue(this.evaluationContext, String.class);
+	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(trigger = TriggerConstants.TRIGGER_BEAN_NAME))
+	public Object triggerSource() {
+		return this.config.getPayload().getValue();
 	}
 
 }

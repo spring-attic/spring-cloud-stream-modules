@@ -49,7 +49,7 @@ public abstract class TriggerSourceTests {
 	@Autowired
 	protected MessageCollector messageCollector;
 
-	@WebIntegrationTest({"fixedDelay=2", "initialDelay=1", "payload=test"})
+	@WebIntegrationTest({"fixedDelay=2", "initialDelay=1", "payload='test'"})
 	public static class FixedDelayTest extends TriggerSourceTests {
 
 		@Test
@@ -67,7 +67,7 @@ public abstract class TriggerSourceTests {
 		}
 	}
 
-	@WebIntegrationTest({"cron=0/2 * * * * *", "payload=cronTest"})
+	@WebIntegrationTest({"cron=0/2 * * * * *", "payload='cronTest'"})
 	public static class CronTriggerTest extends TriggerSourceTests {
 
 		@Test
