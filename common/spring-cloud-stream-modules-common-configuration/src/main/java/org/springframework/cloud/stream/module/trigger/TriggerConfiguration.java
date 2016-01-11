@@ -34,7 +34,7 @@ import org.springframework.scheduling.support.PeriodicTrigger;
  * @author Ilayaperumal Gopinathan
  */
 @Configuration
-@EnableConfigurationProperties(TriggerProperties.class)
+@EnableConfigurationProperties({TriggerProperties.class, MaxMessagesProperties.class})
 public class TriggerConfiguration {
 
 	@Autowired
