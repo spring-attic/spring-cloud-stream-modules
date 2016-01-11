@@ -23,7 +23,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.module.MaxMessagesProperties;
-import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
+import org.springframework.cloud.stream.module.trigger.TriggerConfiguration;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
 import org.springframework.cloud.stream.module.file.FileUtils;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +48,7 @@ import org.springframework.util.StringUtils;
  * @author Gary Russell
  */
 @EnableBinding(Source.class)
-@Import(PeriodicTriggerConfiguration.class)
+@Import(TriggerConfiguration.class)
 @EnableConfigurationProperties({ FileSourceProperties.class,
 	FileConsumerProperties.class, MaxMessagesProperties.class })
 public class FileSource {

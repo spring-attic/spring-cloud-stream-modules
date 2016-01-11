@@ -35,6 +35,7 @@
 		<module>sftp-source</module>
 		<module>tcp-source</module>
 		<module>time-source</module>
+		<module>trigger-source</module>
 		<module>twitterstream-source</module>
 		<!-- processors in alphabetical order -->
 		<module>filter-processor</module>

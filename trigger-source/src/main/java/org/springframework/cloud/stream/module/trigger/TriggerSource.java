@@ -1,6 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
- *
+ * Copyright 2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,39 +12,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.springframework.cloud.stream.module.time;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+package org.springframework.cloud.stream.module.trigger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.cloud.stream.module.trigger.TriggerConfiguration;
-import org.springframework.cloud.stream.module.trigger.TriggerConstants;
+import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 
 /**
- * @author Dave Syer
- * @author Glenn Renfro
- * @author Marius Bogoevici
+ * Trigger source module.
+ *
+ * @author Ilayaperumal Gopinathan
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties(TimeSourceProperties.class)
-@Import(TriggerConfiguration.class)
-public class TimeSource {
+@EnableConfigurationProperties({TriggerProperties.class, MaxMessagesProperties.class})
+@Import({TriggerConfiguration.class})
+public class TriggerSource {
 
 	@Autowired
-	private TimeSourceProperties properties;
+	private TriggerProperties config;
 
-	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(
-			trigger = TriggerConstants.TRIGGER_BEAN_NAME, maxMessagesPerPoll = "1"))
-	public String publishTime() {
-		return new SimpleDateFormat(this.properties.getFormat()).format(new Date());
+	@InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(trigger = TriggerConstants.TRIGGER_BEAN_NAME))
+	public Object triggerSource() {
+		return this.config.getPayload().getValue();
 	}
 
 }
