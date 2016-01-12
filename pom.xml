@@ -31,6 +31,7 @@
 		<module>file-source</module>
 		<module>ftp-source</module>
 		<module>http-source</module>
+		<module>jdbc-source</module>
 		<module>load-generator-source</module>
 		<module>sftp-source</module>
 		<module>tcp-source</module>
