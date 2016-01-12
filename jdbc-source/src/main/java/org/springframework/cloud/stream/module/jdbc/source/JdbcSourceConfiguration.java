@@ -72,7 +72,7 @@ public class JdbcSourceConfiguration {
 
 	@Bean
 	public PollerMetadata poller() {
-		return Pollers.fixedRate(properties.getFixedDelay(), TimeUnit.SECONDS).
+		return Pollers.fixedDelay(properties.getFixedDelay(), TimeUnit.SECONDS).
 				maxMessagesPerPoll(properties.getMaxMessages()).
 				transactional(transactionManager).get();
 	}
