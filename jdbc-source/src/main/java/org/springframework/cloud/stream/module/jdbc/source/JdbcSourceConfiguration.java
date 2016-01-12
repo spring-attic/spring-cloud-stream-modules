@@ -24,10 +24,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.cloud.stream.module.MaxMessagesProperties;
-import org.springframework.cloud.stream.module.PeriodicTriggerConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.dsl.IntegrationFlow;
@@ -50,25 +47,24 @@ import java.util.concurrent.TimeUnit;
  * @author Thomas Risberg
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties({JdbcSourceProperties.class, MaxMessagesProperties.class})
-@Import({PeriodicTriggerConfiguration.class})
+@EnableConfigurationProperties(JdbcSourceProperties.class)
 public class JdbcSourceConfiguration {
 
 	@Autowired
 	private JdbcSourceProperties properties;
 
 	@Autowired
-	DataSource dataSource;
+	private DataSource dataSource;
 
 	@Autowired
-	PlatformTransactionManager transactionManager;
+	private PlatformTransactionManager transactionManager;
 
 	@Autowired
 	@Bindings(JdbcSourceConfiguration.class)
-	Source source;
+	private Source source;
 
 	@Bean
-	TaskExecutor taskExecutor() {
+	public TaskExecutor taskExecutor() {
 		return new ThreadPoolTaskExecutor();
 	}
 

@@ -1,6 +1,6 @@
 /*
  * Copyright 2016 the original author or authors.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -108,6 +108,17 @@ public class JdbcSourcePropertiesTests {
 		context.refresh();
 		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.getFixedDelay(), equalTo(10));
+	}
+
+	@Test
+	public void fixedDelayNotLessThan1() {
+		thrown.expect(BeanCreationException.class);
+		thrown.expectMessage("Field error in object 'target' on field 'fixedDelay': rejected value [0]");
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar");
+		EnvironmentTestUtils.addEnvironment(context, "fixedDelay:0");
+		context.register(Conf.class);
+		context.refresh();
 	}
 
 	@Test

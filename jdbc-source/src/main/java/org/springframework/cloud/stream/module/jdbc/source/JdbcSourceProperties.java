@@ -18,6 +18,7 @@ package org.springframework.cloud.stream.module.jdbc.source;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -83,6 +84,7 @@ public class JdbcSourceProperties {
 		this.split = split;
 	}
 
+	@Min(1)
 	public int getFixedDelay() {
 		return fixedDelay;
 	}
