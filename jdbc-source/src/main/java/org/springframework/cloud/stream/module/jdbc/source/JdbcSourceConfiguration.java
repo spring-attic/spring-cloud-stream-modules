@@ -19,24 +19,20 @@ package org.springframework.cloud.stream.module.jdbc.source;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlowBuilder;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.SourcePollingChannelAdapterSpec;
-import org.springframework.integration.dsl.channel.MessageChannels;
 import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.support.Consumer;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.concurrent.TimeUnit;
@@ -62,21 +58,6 @@ public class JdbcSourceConfiguration {
 	@Autowired
 	@Bindings(JdbcSourceConfiguration.class)
 	private Source source;
-
-	@Bean
-	public TaskExecutor taskExecutor() {
-		return new ThreadPoolTaskExecutor();
-	}
-
-	@Bean
-	@ConditionalOnProperty(value = "split", havingValue = "true", matchIfMissing = true)
-	public IntegrationFlow splitFlow() {
-		return IntegrationFlows.from("splitter")
-				.split("payload")
-				.channel(MessageChannels.executor(this.taskExecutor()))
-				.channel(source.output())
-				.get();
-	}
 
 	@Bean
 	public MessageSource<Object> jdbcMessageSource() {
@@ -108,11 +89,9 @@ public class JdbcSourceConfiguration {
 					}
 				});
 		if (properties.isSplit()) {
-			flowBuilder.channel("splitter");
+			flowBuilder.split();
 		}
-		else {
-			flowBuilder.channel(source.output());
-		}
+		flowBuilder.channel(source.output());
 		return flowBuilder.get();
 	}
 }

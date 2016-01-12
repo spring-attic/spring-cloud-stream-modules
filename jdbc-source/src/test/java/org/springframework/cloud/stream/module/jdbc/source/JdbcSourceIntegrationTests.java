@@ -64,7 +64,7 @@ public abstract class JdbcSourceIntegrationTests {
 	protected MessageCollector messageCollector;
 
 	@IntegrationTest(value = {"query=select id, name from test order by id"})
-	public static class DefaultBehavior extends JdbcSourceIntegrationTests {
+	public static class DefaultBehaviorTests extends JdbcSourceIntegrationTests {
 
 		@Test
 		public void testExtraction() throws InterruptedException {
@@ -84,7 +84,7 @@ public abstract class JdbcSourceIntegrationTests {
 	}
 
 	@IntegrationTest(value = {"query=select id, name, tag from test where tag is NULL order by id", "split=false"})
-	public static class SelectAllNoSplit extends JdbcSourceIntegrationTests {
+	public static class SelectAllNoSplitTests extends JdbcSourceIntegrationTests {
 
 		@Test
 		public void testExtraction() throws InterruptedException {
@@ -98,7 +98,7 @@ public abstract class JdbcSourceIntegrationTests {
 	}
 
 	@IntegrationTest(value = {"query=select id, name from test order by id", "fixedDelay=600"})
-	public static class SelectAllWithDelay extends JdbcSourceIntegrationTests {
+	public static class SelectAllWithDelayTests extends JdbcSourceIntegrationTests {
 
 		@Test
 		public void testExtraction() throws InterruptedException {
@@ -124,7 +124,7 @@ public abstract class JdbcSourceIntegrationTests {
 	}
 
 	@IntegrationTest(value = {"query=select id, name from test order by id", "fixedDelay=1"})
-	public static class SelectAllWithMinDelay extends JdbcSourceIntegrationTests {
+	public static class SelectAllWithMinDelayTests extends JdbcSourceIntegrationTests {
 
 		@Test
 		public void testExtraction() throws InterruptedException {
@@ -150,7 +150,7 @@ public abstract class JdbcSourceIntegrationTests {
 
 	@IntegrationTest(value = {"query=select id, name, tag from test where tag is NULL order by id", "split=false",
 			"maxRowsPerPoll=2", "update=update test set tag='1' where id in (:id)"})
-	public static class Select2PerPollNoSplitWithUpdate extends JdbcSourceIntegrationTests {
+	public static class Select2PerPollNoSplitWithUpdateTests extends JdbcSourceIntegrationTests {
 
 		@Test
 		public void testExtraction() throws InterruptedException {
