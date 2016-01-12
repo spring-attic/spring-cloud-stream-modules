@@ -129,7 +129,7 @@ $$deleteRemoteFiles$$:: $$delete remote files after transfer$$ *($$boolean$$, de
 $$fixedDelay$$:: $$fixed delay in SECONDS to poll the remote directory$$ *($$int$$, default: `1`)*
 $$host$$:: $$the remote host to connect to$$ *($$String$$, default: `localhost`)*
 $$initialDelay$$:: $$an initial delay when using a fixed delay trigger, expressed in TimeUnits (seconds by default)$$ *($$int$$, default: `0`)*
-$$knownHostsExpression$$:: $$a SpEL expresssion location of known hosts file; required if 'allowUnknownKeys' is false; examples: systemProperties["user.home"]+"/.ssh/known_hosts", "/foo/bar/known_hosts"$$ *($$String$$, no default)*
+$$knownHostsExpression$$:: $$a SpEL expression location of known hosts file; required if 'allowUnknownKeys' is false; examples: systemProperties["user.home"]+"/.ssh/known_hosts", "/foo/bar/known_hosts"$$ *($$String$$, no default)*
 $$localDir$$:: $$set the local directory the remote files are transferred to$$ *($$String$$, default: ``)*
 $$maxMessages$$:: $$the maximum messages per poll; -1 for unlimited$$ *($$long$$, default: `-1`)*
 $$mode$$:: $$specifies how the file is being read. By default the content of a file is provided as byte array$$ *($$FileReadingMode$$, default: `contents`, possible values: `ref,lines,contents`)*
@@ -217,3 +217,27 @@ $$consumerSecret$$:: $$consumer secret corresponding to the consumer key$$ *($$S
 $$language$$:: $$language code e.g. 'en'$$ *($$String$$, default: ``)*
 
 NOTE: `twitterstream` emit JSON in the https://dev.twitter.com/docs/platform-objects/tweets[native Twitter format].
+
+[[spring-cloud-stream-modules-jdbc-source]]
+=== JDBC Source (`jdbc`)
+
+This source polls data from the RDBMS.
+This source is fully based on the `DataSourceAutoConfiguration`, so refer to the
+http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html[Spring Boot JDBC Support] for more
+information.
+
+Stream creation is then straightforward:
+
+    dataflow:> stream create --name jdbcSource --definition "jdbc --spring.datasource.url=jdbc:oracle:thin:@localhost:1521:test --query='select foo from bar' --fixedDelay=5 | log" --deploy
+
+==== Options
+
+The **$$jdbc$$** $$source$$ has the following options:
+
+$$query$$:: $$the query to use to select data$$ *($$String$$, no default, required)*
+$$update$$:: $$an SQL update statement to execute for marking polled messages as 'seen'$$ *($$String$$, no default)*
+$$split$$:: $$whether to split the SQL result as individual messages$$ *($$boolean$$, default: `true`)*
+$maxRowsPerPoll$$:: $$max numbers of rows to process for each poll$$ *($$int$$, default: `0`)*
+
+Also see the http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Spring Boot Documentation]
++for addition `DataSource` properties and `TriggerProperties` and `MaxMessagesProperties` for polling options.
