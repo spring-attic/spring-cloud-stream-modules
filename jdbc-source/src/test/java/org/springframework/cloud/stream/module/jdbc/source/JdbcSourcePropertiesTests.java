@@ -19,6 +19,8 @@ package org.springframework.cloud.stream.module.jdbc.source;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -34,113 +36,115 @@ import org.springframework.context.annotation.Configuration;
  */
 public class JdbcSourcePropertiesTests {
 
+	private AnnotationConfigApplicationContext context;
+
 	@Rule
-	public ExpectedException thrown= ExpectedException.none();
+	public ExpectedException thrown = ExpectedException.none();
+
+	@Before
+	public void setUp() {
+		this.context = new AnnotationConfigApplicationContext();
+	}
+
+	@After
+	public void tearDown() {
+		this.context.close();
+	}
 
 	@Test
 	public void queryIsRequired() {
-		thrown.expect(BeanCreationException.class);
-		thrown.expectMessage("Field error in object 'target' on field 'query': rejected value [null]");
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		context.register(Conf.class);
-		context.refresh();
+		this.thrown.expect(BeanCreationException.class);
+		this.thrown.expectMessage("Field error in object 'target' on field 'query': rejected value [null]");
+		this.context.register(Conf.class);
+		this.context.refresh();
 	}
 
 	@Test
 	public void queryCanBeCustomized() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		String query = "select foo from bar";
-		EnvironmentTestUtils.addEnvironment(context, "query:" + query);
-		context.register(Conf.class);
-		context.refresh();
-		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
+		EnvironmentTestUtils.addEnvironment(this.context, "query:" + query);
+		this.context.register(Conf.class);
+		this.context.refresh();
+		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.getQuery(), equalTo(query));
 	}
 
 	@Test
 	public void updateCanBeCustomized() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar where baz < 1");
+		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar where baz < 1");
 		String update = "update bar set baz=1 where foo in (:foo)";
-		EnvironmentTestUtils.addEnvironment(context, "update:" + update);
-		context.register(Conf.class);
-		context.refresh();
-		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
+		EnvironmentTestUtils.addEnvironment(this.context, "update:" + update);
+		this.context.register(Conf.class);
+		this.context.refresh();
+		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.getUpdate(), equalTo(update));
 	}
 
 	@Test
 	public void splitDefaultsToTrue() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar");
-		context.register(Conf.class);
-		context.refresh();
-		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
+		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
+		this.context.register(Conf.class);
+		this.context.refresh();
+		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.isSplit(), equalTo(true));
 	}
 
 	@Test
 	public void splitCanBeCustomized() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar");
-		EnvironmentTestUtils.addEnvironment(context, "split:false");
-		context.register(Conf.class);
-		context.refresh();
-		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
+		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
+		EnvironmentTestUtils.addEnvironment(this.context, "split:false");
+		this.context.register(Conf.class);
+		this.context.refresh();
+		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.isSplit(), equalTo(false));
 	}
 
 	@Test
 	public void fixedDelayDefaultsTo5() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar");
-		context.register(Conf.class);
-		context.refresh();
-		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
+		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
+		this.context.register(Conf.class);
+		this.context.refresh();
+		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.getFixedDelay(), equalTo(5));
 	}
 
 	@Test
 	public void fixedDelayCanBeCustomized() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar");
-		EnvironmentTestUtils.addEnvironment(context, "fixedDelay:10");
-		context.register(Conf.class);
-		context.refresh();
-		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
+		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
+		EnvironmentTestUtils.addEnvironment(this.context, "fixedDelay:10");
+		this.context.register(Conf.class);
+		this.context.refresh();
+		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.getFixedDelay(), equalTo(10));
 	}
 
 	@Test
 	public void fixedDelayNotLessThan1() {
-		thrown.expect(BeanCreationException.class);
-		thrown.expectMessage("Field error in object 'target' on field 'fixedDelay': rejected value [0]");
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar");
-		EnvironmentTestUtils.addEnvironment(context, "fixedDelay:0");
-		context.register(Conf.class);
-		context.refresh();
+		this.thrown.expect(BeanCreationException.class);
+		this.thrown.expectMessage("Field error in object 'target' on field 'fixedDelay': rejected value [0]");
+		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
+		EnvironmentTestUtils.addEnvironment(this.context, "fixedDelay:0");
+		this.context.register(Conf.class);
+		this.context.refresh();
 	}
 
 	@Test
 	public void maxRowsPerPollCanBeCustomized() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar");
-		EnvironmentTestUtils.addEnvironment(context, "maxRowsPerPoll:15");
-		context.register(Conf.class);
-		context.refresh();
-		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
+		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
+		EnvironmentTestUtils.addEnvironment(this.context, "maxRowsPerPoll:15");
+		this.context.register(Conf.class);
+		this.context.refresh();
+		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.getMaxRowsPerPoll(), equalTo(15));
 	}
 
 	@Test
 	public void maxMessagesCanBeCustomized() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-		EnvironmentTestUtils.addEnvironment(context, "query:select foo from bar");
-		EnvironmentTestUtils.addEnvironment(context, "maxMessages:-1");
-		context.register(Conf.class);
-		context.refresh();
-		JdbcSourceProperties properties = context.getBean(JdbcSourceProperties.class);
+		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
+		EnvironmentTestUtils.addEnvironment(this.context, "maxMessages:-1");
+		this.context.register(Conf.class);
+		this.context.refresh();
+		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.getMaxMessages(), equalTo(-1L));
 	}
 
