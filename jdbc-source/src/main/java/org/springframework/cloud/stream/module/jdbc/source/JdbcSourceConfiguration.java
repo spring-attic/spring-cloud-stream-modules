@@ -63,9 +63,7 @@ public class JdbcSourceConfiguration {
 		JdbcPollingChannelAdapter jdbcPollingChannelAdapter =
 				new JdbcPollingChannelAdapter(dataSource, properties.getQuery());
 		jdbcPollingChannelAdapter.setMaxRowsPerPoll(properties.getMaxRowsPerPoll());
-		if (properties.getUpdate() != null) {
-			jdbcPollingChannelAdapter.setUpdateSql(properties.getUpdate());
-		}
+		jdbcPollingChannelAdapter.setUpdateSql(properties.getUpdate());
 		return jdbcPollingChannelAdapter;
 	}
 
