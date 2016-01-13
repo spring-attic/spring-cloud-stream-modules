@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>integration-test-processor</artifactId>
+	<packaging>jar</packaging>
+	<description>Spring Cloud Stream module used to perform integration tests</description>
+
+	<parent>
+		<groupId>org.springframework.cloud.stream.module</groupId>
+		<artifactId>spring-cloud-stream-modules</artifactId>
+		<version>1.0.0.BUILD-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<start-class>org.springframework.cloud.stream.module.it.IntegrationTestProcessorApplication</start-class>
+	</properties>
+	
+</project>
