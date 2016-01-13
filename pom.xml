@@ -42,6 +42,7 @@
 		<module>groovy-filter-processor</module>
 		<module>groovy-transform-processor</module>
 		<module>httpclient-processor</module>
+		<module>integration-test-processor</module>
 		<module>noop-processor</module>
 		<module>pmml-processor</module>
 		<module>splitter-processor</module>
