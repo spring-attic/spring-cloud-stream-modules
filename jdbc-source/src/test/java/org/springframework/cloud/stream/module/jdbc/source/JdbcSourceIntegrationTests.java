@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
@@ -71,15 +70,15 @@ public abstract class JdbcSourceIntegrationTests {
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(1L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(1L, ((Map) received.getPayload()).get("ID"));
 			received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(2L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(2L, ((Map) received.getPayload()).get("ID"));
 			received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(3L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(3L, ((Map) received.getPayload()).get("ID"));
 		}
 	}
 
@@ -91,9 +90,9 @@ public abstract class JdbcSourceIntegrationTests {
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(List.class));
-			assertEquals(3, ((List)received.getPayload()).size());
-			assertEquals(1L, ((Map)((List)received.getPayload()).get(0)).get("ID"));
-			assertEquals("John", ((Map)((List)received.getPayload()).get(2)).get("NAME"));
+			assertEquals(3, ((List) received.getPayload()).size());
+			assertEquals(1L, ((Map) ((List) received.getPayload()).get(0)).get("ID"));
+			assertEquals("John", ((Map) ((List) received.getPayload()).get(2)).get("NAME"));
 		}
 	}
 
@@ -106,17 +105,17 @@ public abstract class JdbcSourceIntegrationTests {
 			System.out.println(received);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(1L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(1L, ((Map) received.getPayload()).get("ID"));
 			received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			System.out.println(received);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(2L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(2L, ((Map) received.getPayload()).get("ID"));
 			received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			System.out.println(received);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(3L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(3L, ((Map) received.getPayload()).get("ID"));
 			// should not wrap around to the beginning since delay is 60
 			received = messageCollector.forChannel(source.output()).poll(1, TimeUnit.SECONDS);
 			assertNull(received);
@@ -131,20 +130,20 @@ public abstract class JdbcSourceIntegrationTests {
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(1L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(1L, ((Map) received.getPayload()).get("ID"));
 			received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(2L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(2L, ((Map) received.getPayload()).get("ID"));
 			received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(3L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(3L, ((Map) received.getPayload()).get("ID"));
 			// should wrap around to the beginning
 			received = messageCollector.forChannel(source.output()).poll(2, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(Map.class));
-			assertEquals(1L, ((Map)received.getPayload()).get("ID"));
+			assertEquals(1L, ((Map) received.getPayload()).get("ID"));
 		}
 	}
 
@@ -157,14 +156,14 @@ public abstract class JdbcSourceIntegrationTests {
 			Message<?> received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(List.class));
-			assertEquals(2, ((List)received.getPayload()).size());
-			assertEquals(1L, ((Map)((List)received.getPayload()).get(0)).get("ID"));
-			assertEquals(2L, ((Map)((List)received.getPayload()).get(1)).get("ID"));
+			assertEquals(2, ((List) received.getPayload()).size());
+			assertEquals(1L, ((Map) ((List) received.getPayload()).get(0)).get("ID"));
+			assertEquals(2L, ((Map) ((List) received.getPayload()).get(1)).get("ID"));
 			received = messageCollector.forChannel(source.output()).poll(10, TimeUnit.SECONDS);
 			assertNotNull(received);
 			assertThat(received.getPayload(), Matchers.instanceOf(List.class));
-			assertEquals(1, ((List)received.getPayload()).size());
-			assertEquals(3L, ((Map)((List)received.getPayload()).get(0)).get("ID"));
+			assertEquals(1, ((List) received.getPayload()).size());
+			assertEquals(3L, ((Map) ((List) received.getPayload()).get(0)).get("ID"));
 		}
 	}
 

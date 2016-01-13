@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.stream.module.jdbc.source;
 
+import java.util.concurrent.TimeUnit;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,6 @@ import org.springframework.integration.dsl.support.Consumer;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * A module that reads data from an RDBMS using JDBC and creates a payload with the data.

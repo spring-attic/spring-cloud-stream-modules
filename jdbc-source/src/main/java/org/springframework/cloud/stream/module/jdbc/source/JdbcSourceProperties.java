@@ -16,10 +16,10 @@
 
 package org.springframework.cloud.stream.module.jdbc.source;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Holds configuration properties for the Jdbc Source module.
