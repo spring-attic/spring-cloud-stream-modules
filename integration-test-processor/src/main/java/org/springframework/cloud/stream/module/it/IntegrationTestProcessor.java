@@ -19,8 +19,9 @@ package org.springframework.cloud.stream.module.it;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.config.ChannelBindingServiceProperties;
 import org.springframework.cloud.stream.messaging.Processor;
 
 /**
@@ -29,17 +30,18 @@ import org.springframework.cloud.stream.messaging.Processor;
  * @author Eric Bottard
  */
 @EnableBinding(Processor.class)
+@EnableConfigurationProperties(IntegrationTestProcessorProperties.class)
 public class IntegrationTestProcessor {
 
 	@Autowired
 	private IntegrationTestProcessorProperties properties;
 
-	@Value("${INSTANCE_INDEX:${CF_INSTANCE_INDEX:0}}")
-	private int instanceIndex;
+	@Autowired
+	private ChannelBindingServiceProperties channelBindingServiceProperties;
 
 	@PostConstruct
 	public void init() throws InterruptedException {
-		if (properties.getMatchInstances().isEmpty() || properties.getMatchInstances().contains(instanceIndex)) {
+		if (properties.getMatchInstances().isEmpty() || properties.getMatchInstances().contains(instanceIndex())) {
 			Thread.sleep(properties.getInitDelay());
 			if (properties.getKillDelay() >= 0) {
 				new Thread() {
@@ -57,6 +59,10 @@ public class IntegrationTestProcessor {
 				}.start();
 			}
 		}
+	}
+
+	private int instanceIndex() {
+		return channelBindingServiceProperties.getInstanceIndex();
 	}
 
 }

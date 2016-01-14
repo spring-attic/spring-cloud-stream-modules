@@ -19,11 +19,14 @@ package org.springframework.cloud.stream.module.it;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 /**
  * Configuration properties for the IntegrationTestProcessor module.
  *
  * @author Eric Bottard
  */
+@ConfigurationProperties
 public class IntegrationTestProcessorProperties {
 
 	/**
