@@ -32,6 +32,7 @@
 		<module>ftp-source</module>
 		<module>http-source</module>
 		<module>load-generator-source</module>
+		<module>rabbit-source</module>
 		<module>sftp-source</module>
 		<module>tcp-source</module>
 		<module>time-source</module>
