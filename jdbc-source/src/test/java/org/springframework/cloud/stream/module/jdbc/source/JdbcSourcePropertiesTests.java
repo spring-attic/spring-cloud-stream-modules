@@ -100,35 +100,6 @@ public class JdbcSourcePropertiesTests {
 	}
 
 	@Test
-	public void fixedDelayDefaultsTo5() {
-		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
-		this.context.register(Conf.class);
-		this.context.refresh();
-		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
-		assertThat(properties.getFixedDelay(), equalTo(5));
-	}
-
-	@Test
-	public void fixedDelayCanBeCustomized() {
-		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
-		EnvironmentTestUtils.addEnvironment(this.context, "fixedDelay:10");
-		this.context.register(Conf.class);
-		this.context.refresh();
-		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
-		assertThat(properties.getFixedDelay(), equalTo(10));
-	}
-
-	@Test
-	public void fixedDelayNotLessThan1() {
-		this.thrown.expect(BeanCreationException.class);
-		this.thrown.expectMessage("Field error in object 'target' on field 'fixedDelay': rejected value [0]");
-		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
-		EnvironmentTestUtils.addEnvironment(this.context, "fixedDelay:0");
-		this.context.register(Conf.class);
-		this.context.refresh();
-	}
-
-	@Test
 	public void maxRowsPerPollCanBeCustomized() {
 		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
 		EnvironmentTestUtils.addEnvironment(this.context, "maxRowsPerPoll:15");
@@ -136,16 +107,6 @@ public class JdbcSourcePropertiesTests {
 		this.context.refresh();
 		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
 		assertThat(properties.getMaxRowsPerPoll(), equalTo(15));
-	}
-
-	@Test
-	public void maxMessagesCanBeCustomized() {
-		EnvironmentTestUtils.addEnvironment(this.context, "query:select foo from bar");
-		EnvironmentTestUtils.addEnvironment(this.context, "maxMessages:-1");
-		this.context.register(Conf.class);
-		this.context.refresh();
-		JdbcSourceProperties properties = this.context.getBean(JdbcSourceProperties.class);
-		assertThat(properties.getMaxMessages(), equalTo(-1L));
 	}
 
 	@Configuration

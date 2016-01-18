@@ -16,7 +16,6 @@
 
 package org.springframework.cloud.stream.module.jdbc.source;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -43,16 +42,6 @@ public class JdbcSourceProperties {
 	 * Whether to split the SQL result as individual messages.
 	 */
 	private boolean split = true;
-
-	/**
-	 * How often to poll for new messages (seconds).
-	 */
-	private int fixedDelay = 5;
-
-	/**
-	 * The maximum messages per poll; -1 for unlimited.
-	 */
-	private long maxMessages = 1L;
 
 	/**
 	 * Max numbers of rows to process for each poll.
@@ -84,28 +73,11 @@ public class JdbcSourceProperties {
 		this.split = split;
 	}
 
-	@Min(1)
-	public int getFixedDelay() {
-		return fixedDelay;
-	}
-
-	public void setFixedDelay(int fixedDelay) {
-		this.fixedDelay = fixedDelay;
-	}
-
 	public int getMaxRowsPerPoll() {
 		return maxRowsPerPoll;
 	}
 
 	public void setMaxRowsPerPoll(int maxRowsPerPoll) {
 		this.maxRowsPerPoll = maxRowsPerPoll;
-	}
-
-	public long getMaxMessages() {
-		return maxMessages;
-	}
-
-	public void setMaxMessages(long maxMessages) {
-		this.maxMessages = maxMessages;
 	}
 }
