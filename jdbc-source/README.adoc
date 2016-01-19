@@ -1,0 +1,20 @@
+= Spring Cloud Stream Jdbc Source
+
+A module that reads data from a JDBC connection and converts the data to messages.
+
+== Requirements
+
+* Java 7 or Above
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+To start the module execute the following:
+```
+$> java -jar target/jdbc-source-${version}-exec.jar --query='select foo from bar'
+```
