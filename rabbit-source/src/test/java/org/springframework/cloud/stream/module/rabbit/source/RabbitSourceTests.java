@@ -37,7 +37,6 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.cloud.stream.test.junit.rabbit.RabbitTestSupport;
@@ -57,7 +56,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { RabbitSourceApplication.class, RabbitSourceTests.Config.class })
 @DirtiesContext
-@WebIntegrationTest(randomPort = true)
 public abstract class RabbitSourceTests {
 
 	@Rule
@@ -124,8 +122,8 @@ public abstract class RabbitSourceTests {
 	}
 
 	@IntegrationTest({ "queues = scsm-testq,scsm-testq2", "enableRetry = false",
-		"channelTransacted = true",
-		"spring.rabbitmq.listener.acknowledgeMode = AUTO",})
+		"transacted = true",
+		"spring.rabbitmq.listener.acknowledgeMode = AUTO" })
 	public static class NoRetryAndTxTests extends RabbitSourceTests {
 
 		@Test
@@ -139,6 +137,24 @@ public abstract class RabbitSourceTests {
 		}
 
 	}
+
+//	@IntegrationTest({ "enableRetry = false" })
+//	public static class NoQueuesTests extends RabbitSourceTests {
+//
+//		@Test
+//		public void test() throws Exception {
+//		}
+//
+//	}
+//
+//	@IntegrationTest({ "enableRetry = false", "queues=" })
+//	public static class EmptyQueuesTests extends RabbitSourceTests {
+//
+//		@Test(expected = IllegalStateException.class)
+//		public void test() throws Exception {
+//		}
+//
+//	}
 
 	@Configuration
 	static class Config {

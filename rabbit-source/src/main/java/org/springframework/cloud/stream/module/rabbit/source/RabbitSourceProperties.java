@@ -16,6 +16,7 @@
 package org.springframework.cloud.stream.module.rabbit.source;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -89,7 +90,8 @@ public class RabbitSourceProperties {
 		this.transacted = transacted;
 	}
 
-	@NotNull(message = "At least one queue is required")
+	@NotNull(message = "queue(s) are required")
+	@Size(min = 1, message = "At least one queue is required")
 	public String[] getQueues() {
 		return queues;
 	}
