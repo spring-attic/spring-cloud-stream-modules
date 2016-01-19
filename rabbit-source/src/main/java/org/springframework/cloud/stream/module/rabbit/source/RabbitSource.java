@@ -56,13 +56,12 @@ public class RabbitSource {
 	@Autowired
 	private RabbitSourceProperties properties;
 
-	@Autowired(required = false)
+	@Autowired
 	private ConnectionFactory rabbitConnectionFactory;
 
 	@Bean
 	public SimpleMessageListenerContainer container() {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(this.rabbitConnectionFactory);
-		container.setAutoStartup(false);
 		Listener listenerProperties = this.rabbitProperties.getListener();
 		AcknowledgeMode acknowledgeMode = listenerProperties.getAcknowledgeMode();
 		if (acknowledgeMode != null) {
@@ -84,17 +83,12 @@ public class RabbitSource {
 		if (transactionSize != null) {
 			container.setTxSize(transactionSize);
 		}
-		Boolean defaultRequeueRejected = this.properties.getRequeue();
-		if (defaultRequeueRejected != null) {
-			container.setDefaultRequeueRejected(defaultRequeueRejected);
-		}
-		Boolean channelTransacted = this.properties.getChannelTransacted();
-		if (channelTransacted != null) {
-			container.setChannelTransacted(channelTransacted);
-		}
-		String queues = this.properties.getQueues();
-		Assert.state(StringUtils.hasText(queues), "At least one queue is required");
-		container.setQueueNames(StringUtils.commaDelimitedListToStringArray(queues));
+		container.setDefaultRequeueRejected(this.properties.getRequeue());
+		container.setChannelTransacted(this.properties.getTransacted());
+		String[] queues = this.properties.getQueues();
+		Assert.state(queues.length > 0, "At least one queue is required");
+		Assert.noNullElements(queues, "queues cannot have null elements");
+		container.setQueueNames(queues);
 		if (this.properties.isEnableRetry()) {
 			container.setAdviceChain(new Advice[] { rabbitSourceRetryInterceptor() });
 		}
@@ -104,7 +98,6 @@ public class RabbitSource {
 	@Bean
 	public AmqpInboundChannelAdapter adapter() {
 		AmqpInboundChannelAdapter adapter = new AmqpInboundChannelAdapter(container());
-		adapter.setAutoStartup(false);
 		adapter.setOutputChannel(channels.output());
 		DefaultAmqpHeaderMapper headerMapper = new DefaultAmqpHeaderMapper();
 		headerMapper.setRequestHeaderNames(

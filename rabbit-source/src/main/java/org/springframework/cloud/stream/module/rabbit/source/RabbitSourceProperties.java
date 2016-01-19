@@ -31,17 +31,17 @@ public class RabbitSourceProperties {
 	/**
 	 * Whether rejected messages should be requeued.
 	 */
-	private Boolean requeue;
+	private boolean requeue = true;
 
 	/**
 	 * Whether the channel is transacted.
 	 */
-	private Boolean channelTransacted;
+	private boolean transacted = false;
 
 	/**
 	 * The queues to which the source will listen for messages.
 	 */
-	private String queues;
+	private String[] queues;
 
 	/**
 	 * Headers that will be mapped.
@@ -73,28 +73,28 @@ public class RabbitSourceProperties {
 	 */
 	private boolean enableRetry = false;
 
-	public Boolean getRequeue() {
+	public boolean getRequeue() {
 		return requeue;
 	}
 
-	public void setRequeue(Boolean requeue) {
+	public void setRequeue(boolean requeue) {
 		this.requeue = requeue;
 	}
 
-	public Boolean getChannelTransacted() {
-		return channelTransacted;
+	public boolean getTransacted() {
+		return transacted;
 	}
 
-	public void setChannelTransacted(Boolean channelTransacted) {
-		this.channelTransacted = channelTransacted;
+	public void setTransacted(boolean transacted) {
+		this.transacted = transacted;
 	}
 
 	@NotNull(message = "At least one queue is required")
-	public String getQueues() {
+	public String[] getQueues() {
 		return queues;
 	}
 
-	public void setQueues(String queues) {
+	public void setQueues(String[] queues) {
 		this.queues = queues;
 	}
 

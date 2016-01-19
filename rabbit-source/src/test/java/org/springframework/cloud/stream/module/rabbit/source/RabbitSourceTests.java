@@ -57,7 +57,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { RabbitSourceApplication.class, RabbitSourceTests.Config.class })
 @DirtiesContext
-@WebIntegrationTest(randomPort = true, value = "port = 0")
+@WebIntegrationTest(randomPort = true)
 public abstract class RabbitSourceTests {
 
 	@Rule
@@ -123,7 +123,7 @@ public abstract class RabbitSourceTests {
 
 	}
 
-	@IntegrationTest({ "queues = scsm-testq", "enableRetry = false",
+	@IntegrationTest({ "queues = scsm-testq,scsm-testq2", "enableRetry = false",
 		"channelTransacted = true",
 		"spring.rabbitmq.listener.acknowledgeMode = AUTO",})
 	public static class NoRetryAndTxTests extends RabbitSourceTests {
@@ -134,6 +134,8 @@ public abstract class RabbitSourceTests {
 			assertEquals(0, adviceChain.length);
 			assertTrue(TestUtils.getPropertyValue(this.container, "transactional", Boolean.class));
 			assertEquals(AcknowledgeMode.AUTO, TestUtils.getPropertyValue(this.container, "acknowledgeMode"));
+			assertEquals("scsm-testq", this.container.getQueueNames()[0]);
+			assertEquals("scsm-testq2", this.container.getQueueNames()[1]);
 		}
 
 	}
@@ -146,8 +148,11 @@ public abstract class RabbitSourceTests {
 			return new Queue("scsm-testq", false, false, true);
 		}
 
+		@Bean
+		public Queue queue2() {
+			return new Queue("scsm-testq2", false, false, true);
+		}
+
 	}
 
 }
-
-

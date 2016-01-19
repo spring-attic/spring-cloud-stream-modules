@@ -120,12 +120,12 @@ $$mappedRequestHeaders$$:: $$request message header names to be propagated to/fr
 $$maxAttempts$$:: $$maximum delivery attempts$$ *($$int$$, default: `3`)*
 $$maxConcurrency$$:: $$the maximum number of consumers$$ *($$int$$, default: `1`)*
 $$maxRetryInterval$$:: $$maximum retry interval$$ *($$int$$, default: `30000`)*
-$$queues$$:: $$the queue(s) from which messages will be received$$ *($$String$$, default: `<stream name>`)*
+$$queues$$:: $$the queue(s) from which messages will be received$$ *($$String$$, default: no default)*
 $$requeue$$:: $$whether rejected messages will be requeued by default$$ *($$boolean$$, default: `true`)*
 $$retryMultiplier$$:: $$retry interval multiplier$$ *($$double$$, default: `2.0`)*
 $$transacted$$:: $$true if the channel is to be transacted$$ *($$boolean$$, default: `false`)*
 
-Also see the http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#common-application-properties[Spring Boot Documentation]
+Also see the http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Spring Boot Documentation]
 for addition properties for the broker connections and listener properties.
 
 [[rabbitSourceRetry]]
