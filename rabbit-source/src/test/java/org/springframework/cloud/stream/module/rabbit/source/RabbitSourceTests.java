@@ -138,24 +138,6 @@ public abstract class RabbitSourceTests {
 
 	}
 
-//	@IntegrationTest({ "enableRetry = false" })
-//	public static class NoQueuesTests extends RabbitSourceTests {
-//
-//		@Test
-//		public void test() throws Exception {
-//		}
-//
-//	}
-//
-//	@IntegrationTest({ "enableRetry = false", "queues=" })
-//	public static class EmptyQueuesTests extends RabbitSourceTests {
-//
-//		@Test(expected = IllegalStateException.class)
-//		public void test() throws Exception {
-//		}
-//
-//	}
-
 	@Configuration
 	static class Config {
 
