@@ -120,6 +120,7 @@ public class JdbcCommands {
 			jdbcTemplate.execute(prepareSql);
 		}
 		catch (DataAccessException e) {
+			log.error("Error during prepare sql", e);
 			lastException = e;
 			return false;
 		}
@@ -134,6 +135,7 @@ public class JdbcCommands {
 			jdbcTemplate.execute(runSql);
 		}
 		catch (DataAccessException e) {
+			log.error("Error during run sql", e);
 			lastException = e;
 			return false;
 		}
@@ -148,6 +150,7 @@ public class JdbcCommands {
 			jdbcTemplate.execute(cleanSql);
 		}
 		catch (DataAccessException e) {
+			log.error("Error during clean sql", e);
 			lastException = e;
 			return false;
 		}
