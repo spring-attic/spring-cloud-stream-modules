@@ -59,7 +59,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class RabbitSourceTests {
 
 	@Rule
-	public RabbitTestSupport rabbitAvailable;
+	public RabbitTestSupport rabbitAvailable = new RabbitTestSupport();
 
 	@Autowired
 	protected Source channels;
