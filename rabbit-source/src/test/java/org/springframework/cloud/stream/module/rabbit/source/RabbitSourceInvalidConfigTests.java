@@ -21,13 +21,11 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.fail;
 
-import org.junit.Rule;
 import org.junit.Test;
 
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.EnvironmentTestUtils;
-import org.springframework.cloud.stream.test.junit.rabbit.RabbitTestSupport;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,9 +35,6 @@ import org.springframework.context.annotation.Configuration;
  * @author Gary Russell
  */
 public class RabbitSourceInvalidConfigTests {
-
-	@Rule
-	public RabbitTestSupport rabbitAvailable;
 
 	@Test
 	public void testNoQueues() throws Exception {

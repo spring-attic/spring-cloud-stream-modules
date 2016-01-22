@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.concurrent.TimeUnit;
 
 import org.aopalliance.aop.Advice;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -58,8 +58,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @DirtiesContext
 public abstract class RabbitSourceTests {
 
-	@Rule
-	public RabbitTestSupport rabbitAvailable;
+	@ClassRule
+	public static RabbitTestSupport rabbitAvailable = new RabbitTestSupport();
 
 	@Autowired
 	protected Source channels;
