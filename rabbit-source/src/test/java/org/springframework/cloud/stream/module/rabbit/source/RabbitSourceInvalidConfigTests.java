@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.fail;
 
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import org.springframework.beans.factory.BeanCreationException;
@@ -38,8 +38,8 @@ import org.springframework.context.annotation.Configuration;
  */
 public class RabbitSourceInvalidConfigTests {
 
-	@Rule
-	public RabbitTestSupport rabbitAvailable;
+	@ClassRule
+	public static RabbitTestSupport rabbitAvailable = new RabbitTestSupport();
 
 	@Test
 	public void testNoQueues() throws Exception {
