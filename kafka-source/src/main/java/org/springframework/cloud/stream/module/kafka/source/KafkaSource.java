@@ -18,6 +18,7 @@ package org.springframework.cloud.stream.module.kafka.source;
 
 import kafka.serializer.Decoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
@@ -44,6 +45,7 @@ import java.util.Map;
  * @author Soby Chacko
  */
 @EnableBinding(Source.class)
+@EnableConfigurationProperties(KafkaConfigurationProperties.class)
 public class KafkaSource {
 
     @Autowired
