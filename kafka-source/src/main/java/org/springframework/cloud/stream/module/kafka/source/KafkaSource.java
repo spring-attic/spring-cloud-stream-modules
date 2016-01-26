@@ -17,6 +17,8 @@
 package org.springframework.cloud.stream.module.kafka.source;
 
 import kafka.serializer.Decoder;
+import kafka.serializer.DefaultDecoder;
+import kafka.utils.VerifiableProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.Bindings;
@@ -29,8 +31,8 @@ import org.springframework.integration.dsl.kafka.Kafka;
 import org.springframework.integration.kafka.core.*;
 import org.springframework.integration.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.integration.kafka.listener.KafkaNativeOffsetManager;
-import org.springframework.integration.kafka.listener.OffsetManager;
 import org.springframework.integration.kafka.support.ZookeeperConnect;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -58,7 +60,7 @@ public class KafkaSource {
     @Bean
     public KafkaMessageListenerContainer container() {
 
-        Assert.isTrue(ObjectUtils.isEmpty(properties.getTopics()) && ObjectUtils.isEmpty(properties.getPartitions()),
+        Assert.isTrue(!ObjectUtils.isEmpty(properties.getTopics()) || !ObjectUtils.isEmpty(properties.getPartitions()),
                 "Either a list of topics OR a topic=<comma separated partitions> must be provided");
 
         ZookeeperConnect zookeeperConnect = new ZookeeperConnect();
@@ -72,7 +74,8 @@ public class KafkaSource {
 
         Partition[] partitions = getPartitions();
 
-        OffsetManager kafkaNativeOffsetManager = new KafkaNativeOffsetManager(kafkaConnectionFactory, zookeeperConnect);
+        KafkaNativeOffsetManager kafkaNativeOffsetManager = new KafkaNativeOffsetManager(kafkaConnectionFactory, zookeeperConnect);
+        kafkaNativeOffsetManager.setRetryTemplate(new RetryTemplate());
 
         KafkaMessageListenerContainer container = ObjectUtils.isEmpty(partitions) ?
                 new KafkaMessageListenerContainer(kafkaConnectionFactory, properties.getTopics()) :
@@ -84,23 +87,32 @@ public class KafkaSource {
     }
 
     @Bean
-    public IntegrationFlow fromKafka() throws IllegalAccessException, InstantiationException {
-
-        Class keyDecoderClass = properties.getKeyDecoder();
-        Class payloadDecoderClass = properties.getPayloadDecoder();
-
-        //TODO: Address if decoder implementations have constructor args?
-        //TODO: For ex if the StringDecoder needs to use a different encoding etc.
-        Decoder keyDeocder = (Decoder)keyDecoderClass.newInstance();
-        Decoder payloadDeocder = (Decoder) payloadDecoderClass.newInstance();
+    public IntegrationFlow fromKafka() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
 
         return IntegrationFlows.from(Kafka.messageDriverChannelAdapter(container())
-                                    .keyDecoder(keyDeocder)
-                                    .payloadDecoder(payloadDeocder))
+                                    .keyDecoder(getKeyDecoder())
+                                    .payloadDecoder(getPayloadDecoder()))
                 .channel(source.output())
                 .get();
     }
 
+    private Decoder<?> getKeyDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String keyDecoder = properties.getKeyDecoder();
+        if (keyDecoder == null) {
+            return new DefaultDecoder(new VerifiableProperties());
+        }
+        Class keyDecoderClass = Class.forName(keyDecoder);
+        return (Decoder)keyDecoderClass.newInstance();
+    }
+
+    private Decoder<?> getPayloadDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String payloadDecoder = properties.getKeyDecoder();
+        if (payloadDecoder == null) {
+            return new DefaultDecoder(new VerifiableProperties());
+        }
+        Class payloadDecoderClass = Class.forName(payloadDecoder);
+        return (Decoder)payloadDecoderClass.newInstance();
+    }
 
     public Partition[] getPartitions() {
         Map<String, String> partitionsMap = properties.getPartitions();
@@ -117,6 +129,7 @@ public class KafkaSource {
             }
         }
 
-        return (Partition[])partitions.toArray();
+        Partition[] partitionsArr = new Partition[partitions.size()];
+        return partitions.toArray(partitionsArr);
     }
 }

@@ -18,7 +18,6 @@
 
 package org.springframework.cloud.stream.module.kafka.source;
 
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
@@ -40,9 +39,9 @@ public class KafkaConfigurationProperties {
 
     private String zkSyncTime = "2000";
 
-    private Class keyDecoder = ByteArrayDeserializer.class;
+    private String keyDecoder;
 
-    private Class payloadDecoder = ByteArrayDeserializer.class;
+    private String payloadDecoder;
 
     private Map<String, String> partitions = new HashMap<>();
 
@@ -62,22 +61,6 @@ public class KafkaConfigurationProperties {
 
     public void setPartitions(Map<String, String> partitions) {
         this.partitions = partitions;
-    }
-
-    public Class getKeyDecoder() {
-        return keyDecoder;
-    }
-
-    public void setKeyDecoder(Class keyDecoder) {
-        this.keyDecoder = keyDecoder;
-    }
-
-    public Class getPayloadDecoder() {
-        return payloadDecoder;
-    }
-
-    public void setPayloadDecoder(Class payloadDecoder) {
-        this.payloadDecoder = payloadDecoder;
     }
 
     public String getZkConnect() {
@@ -110,5 +93,21 @@ public class KafkaConfigurationProperties {
 
     public void setZkSyncTime(String zkSyncTime) {
         this.zkSyncTime = zkSyncTime;
+    }
+
+    public String getKeyDecoder() {
+        return keyDecoder;
+    }
+
+    public void setKeyDecoder(String keyDecoder) {
+        this.keyDecoder = keyDecoder;
+    }
+
+    public String getPayloadDecoder() {
+        return payloadDecoder;
+    }
+
+    public void setPayloadDecoder(String payloadDecoder) {
+        this.payloadDecoder = payloadDecoder;
     }
 }
