@@ -15,6 +15,11 @@
 
 package org.springframework.cloud.stream.module.cassandra.sink;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import org.junit.Test;
+
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.EnvironmentTestUtils;
 import org.springframework.cassandra.core.ConsistencyLevel;
@@ -27,11 +32,6 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.integration.cassandra.outbound.CassandraMessageHandler;
 import org.springframework.integration.config.EnableIntegration;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 
 /**
  * @author Thomas Risberg
@@ -46,6 +46,7 @@ public class CassandraSinkPropertiesTests {
 		context.refresh();
 		CassandraSinkProperties properties = context.getBean(CassandraSinkProperties.class);
 		assertThat(properties.getConsistencyLevel(), equalTo(ConsistencyLevel.LOCAL_QUOROM));
+		context.close();
 	}
 
 	@Test
@@ -56,6 +57,7 @@ public class CassandraSinkPropertiesTests {
 		context.refresh();
 		CassandraSinkProperties properties = context.getBean(CassandraSinkProperties.class);
 		assertThat(properties.getRetryPolicy(), equalTo(RetryPolicy.DOWNGRADING_CONSISTENCY));
+		context.close();
 	}
 
 	@Test
@@ -66,6 +68,7 @@ public class CassandraSinkPropertiesTests {
 		context.refresh();
 		CassandraSinkProperties properties = context.getBean(CassandraSinkProperties.class);
 		assertThat(properties.getTtl(), equalTo(1000));
+		context.close();
 	}
 
 	@Test
@@ -76,6 +79,7 @@ public class CassandraSinkPropertiesTests {
 		context.refresh();
 		CassandraSinkProperties properties = context.getBean(CassandraSinkProperties.class);
 		assertThat(properties.getQueryType(), equalTo(CassandraMessageHandler.Type.UPDATE));
+		context.close();
 	}
 
 	@Test
@@ -87,6 +91,7 @@ public class CassandraSinkPropertiesTests {
 		context.refresh();
 		CassandraSinkProperties properties = context.getBean(CassandraSinkProperties.class);
 		assertThat(properties.getIngestQuery(), equalTo(query));
+		context.close();
 	}
 
 	@Test
@@ -99,6 +104,7 @@ public class CassandraSinkPropertiesTests {
 		context.refresh();
 		CassandraSinkProperties properties = context.getBean(CassandraSinkProperties.class);
 		assertThat(properties.getStatementExpression().getExpressionString(), equalTo(expression.getExpressionString()));
+		context.close();
 	}
 
 	@Configuration
