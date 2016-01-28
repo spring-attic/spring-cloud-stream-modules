@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,13 +16,15 @@
 package org.springframework.cloud.stream.module.sftp;
 
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.springframework.cloud.stream.modules.test.hamcrest.HamcrestMatchers.fieldErrorWithNonEmptyArgument;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,11 +32,11 @@ import org.springframework.boot.test.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 
 /**
  * @author David Turanski
  * @author Gary Russell
+ * @author Artem Bilan
  */
 public class SftpSessionFactoryPropertiesTests {
 
@@ -110,24 +112,23 @@ public class SftpSessionFactoryPropertiesTests {
 
 	@Test
 	public void noPropertiesThrowsMeaningfulException() {
-		try {
-			AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows"));
+		try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
 			context.register(Conf.class);
 			context.refresh();
 			fail("should throw exception");
-			context.close();
 		}
 		catch (Exception e) {
 			assertThat(e.getCause(), instanceOf(BindException.class));
 			BindException bindException = (BindException) e.getCause();
-			FieldError fieldError = (FieldError) bindException.getAllErrors().get(0);
-			assertThat(fieldError.getArguments()[0].toString(), containsString("user"));
-			assertThat(fieldError.getDefaultMessage(), equalTo("may not be empty"));
+			assertThat(bindException.getAllErrors(), hasItem(fieldErrorWithNonEmptyArgument("user")));
 		}
 	}
 
 	@Configuration
 	@EnableConfigurationProperties(SftpSessionFactoryProperties.class)
 	static class Conf {
+
 	}
+
 }

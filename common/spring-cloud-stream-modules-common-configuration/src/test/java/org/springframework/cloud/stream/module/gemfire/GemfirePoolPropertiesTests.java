@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,14 @@
 
 package org.springframework.cloud.stream.module.gemfire;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.springframework.cloud.stream.modules.test.hamcrest.HamcrestMatchers.fieldErrorWithNonEmptyArgument;
+
 import java.net.InetSocketAddress;
 
 import org.junit.Test;
@@ -24,19 +32,11 @@ import org.springframework.boot.test.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * @author David Turanski
+ * @author Gary Russell
  */
 public class GemfirePoolPropertiesTests {
 
@@ -77,9 +77,7 @@ public class GemfirePoolPropertiesTests {
 		catch (Exception e) {
 			assertThat(e.getCause(), instanceOf(BindException.class));
 			BindException bindException = (BindException) e.getCause();
-			FieldError fieldError = (FieldError) bindException.getAllErrors().get(0);
-			assertThat(fieldError.getArguments()[0].toString(), containsString("hostAddresses"));
-			assertThat(fieldError.getDefaultMessage(), containsString("may not be empty"));
+			assertThat(bindException.getAllErrors(), hasItem(fieldErrorWithNonEmptyArgument("hostAddresses")));
 		}
 	}
 

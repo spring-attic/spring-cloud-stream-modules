@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.cloud.stream.module.trigger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.cloud.stream.module.MaxMessagesProperties;
+import org.springframework.cloud.stream.module.SourcePayloadProperties;
 import org.springframework.cloud.stream.module.annotation.PollableSource;
 import org.springframework.context.annotation.Import;
 
@@ -26,18 +27,19 @@ import org.springframework.context.annotation.Import;
  * Trigger source module.
  *
  * @author Ilayaperumal Gopinathan
+ * @author Artem Bilan
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties({TriggerProperties.class, MaxMessagesProperties.class})
+@EnableConfigurationProperties(SourcePayloadProperties.class)
 @Import(TriggerConfiguration.class)
 public class TriggerSource {
 
 	@Autowired
-	private TriggerProperties config;
+	private SourcePayloadProperties payloadProperties;
 
 	@PollableSource
 	public Object triggerSource() {
-		return this.config.getPayload().getValue();
+		return this.payloadProperties.getPayload().getValue();
 	}
 
 }

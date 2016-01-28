@@ -18,17 +18,24 @@ package org.springframework.cloud.stream.module.ftp;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.fail;
+import static org.springframework.cloud.stream.modules.test.hamcrest.HamcrestMatchers.fieldErrorWithNonEmptyArgument;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.BindException;
 
 /**
  * @author David Turanski
  * @author Gary Russell
+ * @author Artem Bilan
  */
 public class FtpSessionFactoryPropertiesTests {
 
@@ -80,6 +87,21 @@ public class FtpSessionFactoryPropertiesTests {
 		context.refresh();
 		FtpSessionFactoryProperties properties = context.getBean(FtpSessionFactoryProperties.class);
 		assertThat(properties.getPassword(), equalTo("pass"));
+	}
+
+	@Test
+	public void noPropertiesThrowsMeaningfulException() {
+		Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows"));
+		try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+			context.register(Conf.class);
+			context.refresh();
+			fail("exception expected");
+		}
+		catch (Exception e) {
+			assertThat(e.getCause(), instanceOf(BindException.class));
+			BindException bindException = (BindException) e.getCause();
+			assertThat(bindException.getAllErrors(), hasItem(fieldErrorWithNonEmptyArgument("username")));
+		}
 	}
 
 	@Configuration
