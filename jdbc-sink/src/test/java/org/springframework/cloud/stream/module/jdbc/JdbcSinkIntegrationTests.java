@@ -177,9 +177,9 @@ public abstract class JdbcSinkIntegrationTests {
 
 		@Test
 		public void testInsertion() {
-			Tuple tupleA = new TupleBuilder().of("a", "hello1", "b", 42);
-			Tuple tupleB = new TupleBuilder().of("a", "hello2", "b", null);
-			Tuple tupleC = new TupleBuilder().of("a", "hello3");
+			Tuple tupleA = TupleBuilder.tuple().of("a", "hello1", "b", 42);
+			Tuple tupleB = TupleBuilder.tuple().of("a", "hello2", "b", null);
+			Tuple tupleC = TupleBuilder.tuple().of("a", "hello3");
 			channels.input().send(MessageBuilder.withPayload(tupleA).build());
 			channels.input().send(MessageBuilder.withPayload(tupleB).build());
 			channels.input().send(MessageBuilder.withPayload(tupleC).build());
