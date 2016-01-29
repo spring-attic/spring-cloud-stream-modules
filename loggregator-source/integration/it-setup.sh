@@ -9,7 +9,7 @@ function deploy_sample_app(){
 }
 
 function test (){
-    mvn -s ../../.settings.xml -f ../pom.xml clean test
+    mvn -DskipITs=false -s ../../.settings.xml -f ../pom.xml clean test
 }
 
 validate_cf

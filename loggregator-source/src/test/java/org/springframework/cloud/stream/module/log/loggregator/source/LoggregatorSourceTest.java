@@ -56,9 +56,7 @@ public class LoggregatorSourceTest {
 	@Autowired
 	private LoggregatorProperties loggregatorProperties;
 
-
 	private RestTemplate restTemplate = new RestTemplate();
-
 
 	@Test
 	public void testLogReceipt() throws Exception {
@@ -80,7 +78,6 @@ public class LoggregatorSourceTest {
 		int count = 0, max = 20;
 
 		while ((message = messageBlockingQueue.poll(1, TimeUnit.MINUTES)) != null && (count++ < max)) { // this could run for for 20 minutes
-
 			log.info(String.format("received the following log from Loggregator: %s", message.getPayload()));
 			String payload = String.class.cast(message.getPayload());
 			assertNotNull(payload, "the message can't be null!");
@@ -103,4 +100,5 @@ public class LoggregatorSourceTest {
 		this.log.info("uri of the application to test is " + uri);
 		return uri;
 	}
+
 }
