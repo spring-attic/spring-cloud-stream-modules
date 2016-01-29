@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 export CF_USER=$1
 export CF_PASSWORD=$2
 export CF_ORG=$3

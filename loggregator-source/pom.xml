@@ -16,7 +16,7 @@
 
 	<properties>
 		<skipITs>true</skipITs>
-		<start-class>org.springframework.cloud.stream.module.log.loggregator.source.LoggregatorSourceApplication
+		<start-class>org.springframework.cloud.stream.module.loggregator.source.LoggregatorSourceApplication
 		</start-class>
 	</properties>
 
