@@ -28,11 +28,10 @@ function validate_cf(){
 }
 
 
-function deploy_sample_app(){
-    spring jar sample.jar sample.groovy
-    cf push -p sample.jar $CF_APP
+function teardown(){
+    cf delete $CF_APP
 }
 
-# validate_cf
 
-mvn -s ../.settings.xml -f pom.xml clean test
+validate_cf
+teardown

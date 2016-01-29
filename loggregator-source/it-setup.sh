@@ -33,6 +33,10 @@ function deploy_sample_app(){
     cf push -p sample.jar $CF_APP
 }
 
-# validate_cf
+function test (){
+    mvn -s ../.settings.xml -f pom.xml clean test
+}
 
-mvn -s ../.settings.xml -f pom.xml clean test
+validate_cf
+deploy_sample_app
+test
