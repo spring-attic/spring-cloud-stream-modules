@@ -70,7 +70,7 @@ public class LoggregatorSourceTest {
 
 		String traceMessage = "logged-message-" + System.currentTimeMillis();
 		ResponseEntity<String> entity = this.restTemplate.getForEntity(
-				"http://" + this.urlForApplication() + "/{uri}", String.class, Collections.singletonMap("uri", traceMessage));
+				this.urlForApplication() + "/{uri}", String.class, Collections.singletonMap("uri", traceMessage));
 		assertEquals(entity.getStatusCode(), HttpStatus.OK);
 		assertEquals(entity.getBody(), traceMessage);
 
@@ -96,9 +96,11 @@ public class LoggregatorSourceTest {
 	}
 
 	private String urlForApplication() {
-		return this.cloudFoundryClient.getApplication(this.loggregatorProperties.getApplicationName())
+		String uri = "http://" + this.cloudFoundryClient.getApplication(this.loggregatorProperties.getApplicationName())
 				.getUris()
 				.iterator()
 				.next();
+		this.log.info("uri of the application to test is " + uri);
+		return uri;
 	}
 }
