@@ -9,7 +9,6 @@ class LoggingRestController {
     String log(@PathVariable String msg) {
         Logger logger = Logger.getLogger("TEST")
         logger.info ("test: " + msg )
-
         return msg
     }
 }
