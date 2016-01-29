@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.cloud.stream.module</groupId>
     <artifactId>spring-cloud-stream-modules</artifactId>
@@ -15,14 +14,14 @@
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-stream-parent</artifactId>
         <version>1.0.0.M3</version>
-        <relativePath/>
+        <relativePath />
     </parent>
 
     <properties>
-        <cloudfoundry-client-lib.version>1.1.3</cloudfoundry-client-lib.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
         <spring-integration.version>4.2.4.RELEASE</spring-integration.version>
+        <cloudfoundry-client-lib.version>1.1.3</cloudfoundry-client-lib.version>
         <spring-cloud-stream.version>1.0.0.M3</spring-cloud-stream.version>
     </properties>
 
@@ -34,7 +33,6 @@
         <module>ftp-source</module>
         <module>http-source</module>
         <module>load-generator-source</module>
-        <module>loggregator-source</module>
         <module>sftp-source</module>
         <module>tcp-source</module>
         <module>time-source</module>
@@ -63,6 +61,7 @@
         <module>tcp-sink</module>
         <module>throughput-sink</module>
         <module>websocket-sink</module>
+        <module>loggregator-source</module>
         <!-- documentation -->
         <module>spring-cloud-stream-modules-docs</module>
     </modules>

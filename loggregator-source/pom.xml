@@ -18,15 +18,7 @@
         <start-class>org.springframework.cloud.stream.module.log.loggregator.source.LoggregatorSourceApplication
         </start-class>
     </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.cloudfoundry</groupId>
-                <artifactId>cloudfoundry-client-lib</artifactId>
-                <version>${cloudfoundry-client-lib.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
