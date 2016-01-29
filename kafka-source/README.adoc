@@ -1,0 +1,24 @@
+= Spring Cloud Stream Kafka Source
+
+This module receives messages from Kafka topics.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+KafkaSourceApplication:: the Spring Boot Main Application
+KafkaSource:: the Kafka source
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/kafka-source-${version}-exec.jar
+```

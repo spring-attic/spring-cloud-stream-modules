@@ -31,83 +31,94 @@ import java.util.Map;
 @ConfigurationProperties
 public class KafkaConfigurationProperties {
 
-    private String zkConnect = "localhost:2181";
+	private String zkConnect = "localhost:2181";
 
-    private String zkConnectionTimeout = "6000";
+	private String zkConnectionTimeout = "6000";
 
-    private String zkSessionTimeout = "6000";
+	private String zkSessionTimeout = "6000";
 
-    private String zkSyncTime = "2000";
+	private String zkSyncTime = "2000";
 
-    private String keyDecoder;
+	private String keyDecoder;
 
-    private String payloadDecoder;
+	private String payloadDecoder;
 
-    private Map<String, String> partitions = new HashMap<>();
+	private Map<String, String> partitions = new HashMap<>();
 
-    private String[] topics;
+	private Map<String, Map<Integer, Long>> initialOffsets = new HashMap<>();
 
-    public String[] getTopics() {
-        return topics;
-    }
+	private String[] topics;
 
-    public void setTopics(String[] topics) {
-        this.topics = topics;
-    }
+	public String[] getTopics() {
+		return topics;
+	}
 
-    public Map<String, String> getPartitions() {
-        return partitions;
-    }
+	public void setTopics(String[] topics) {
+		this.topics = topics;
+	}
 
-    public void setPartitions(Map<String, String> partitions) {
-        this.partitions = partitions;
-    }
+	public Map<String, String> getPartitions() {
+		return partitions;
+	}
 
-    public String getZkConnect() {
-        return zkConnect;
-    }
+	public void setPartitions(Map<String, String> partitions) {
+		this.partitions = partitions;
+	}
 
-    public void setZkConnect(String zkConnect) {
-        this.zkConnect = zkConnect;
-    }
+	public String getZkConnect() {
+		return zkConnect;
+	}
 
-    public String getZkConnectionTimeout() {
-        return zkConnectionTimeout;
-    }
+	public void setZkConnect(String zkConnect) {
+		this.zkConnect = zkConnect;
+	}
 
-    public void setZkConnectionTimeout(String zkConnectionTimeout) {
-        this.zkConnectionTimeout = zkConnectionTimeout;
-    }
+	public String getZkConnectionTimeout() {
+		return zkConnectionTimeout;
+	}
 
-    public String getZkSessionTimeout() {
-        return zkSessionTimeout;
-    }
+	public void setZkConnectionTimeout(String zkConnectionTimeout) {
+		this.zkConnectionTimeout = zkConnectionTimeout;
+	}
 
-    public void setZkSessionTimeout(String zkSessionTimeout) {
-        this.zkSessionTimeout = zkSessionTimeout;
-    }
+	public String getZkSessionTimeout() {
+		return zkSessionTimeout;
+	}
 
-    public String getZkSyncTime() {
-        return zkSyncTime;
-    }
+	public void setZkSessionTimeout(String zkSessionTimeout) {
+		this.zkSessionTimeout = zkSessionTimeout;
+	}
 
-    public void setZkSyncTime(String zkSyncTime) {
-        this.zkSyncTime = zkSyncTime;
-    }
+	public String getZkSyncTime() {
+		return zkSyncTime;
+	}
 
-    public String getKeyDecoder() {
-        return keyDecoder;
-    }
+	public void setZkSyncTime(String zkSyncTime) {
+		this.zkSyncTime = zkSyncTime;
+	}
 
-    public void setKeyDecoder(String keyDecoder) {
-        this.keyDecoder = keyDecoder;
-    }
+	public String getKeyDecoder() {
+		return keyDecoder;
+	}
 
-    public String getPayloadDecoder() {
-        return payloadDecoder;
-    }
+	public void setKeyDecoder(String keyDecoder) {
+		this.keyDecoder = keyDecoder;
+	}
 
-    public void setPayloadDecoder(String payloadDecoder) {
-        this.payloadDecoder = payloadDecoder;
-    }
+	public String getPayloadDecoder() {
+		return payloadDecoder;
+	}
+
+	public void setPayloadDecoder(String payloadDecoder) {
+		this.payloadDecoder = payloadDecoder;
+	}
+
+	public Map<String, Map<Integer, Long>> getInitialOffsets() {
+		return initialOffsets;
+	}
+
+	public void setInitialOffsets(Map<String, Map<Integer, Long>> initialOffsets) {
+		this.initialOffsets = initialOffsets;
+	}
+
 }
