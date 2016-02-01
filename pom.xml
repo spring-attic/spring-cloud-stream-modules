@@ -111,11 +111,6 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>org.springframework.integration</groupId>
-				<artifactId>spring-integration-kafka</artifactId>
-				<version>1.3.0.RELEASE</version>
-			</dependency>
-			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-gemfire</artifactId>
 				<version>1.6.2.RELEASE</version>
@@ -192,7 +187,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-spring-service-connector</artifactId>
 		</dependency>
-		<!--TODO: Move transport related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
+		<!--TODO: Move transporct related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-redis</artifactId>

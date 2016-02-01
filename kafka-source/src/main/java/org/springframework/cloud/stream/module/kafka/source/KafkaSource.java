@@ -102,20 +102,20 @@ public class KafkaSource {
 
 	private Decoder<?> getKeyDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 		String keyDecoder = properties.getKeyDecoder();
-		if (keyDecoder == null) {
-			return new DefaultDecoder(new VerifiableProperties());
-		}
-		Class keyDecoderClass = Class.forName(keyDecoder);
-		return (Decoder) keyDecoderClass.newInstance();
+		return getDecoder(keyDecoder);
 	}
 
 	private Decoder<?> getPayloadDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-		String payloadDecoder = properties.getKeyDecoder();
-		if (payloadDecoder == null) {
+		String payloadDecoder = properties.getPayloadDecoder();
+		return getDecoder(payloadDecoder);
+	}
+
+	private Decoder<?> getDecoder(String decoder) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+		if (decoder == null) {
 			return new DefaultDecoder(new VerifiableProperties());
 		}
-		Class payloadDecoderClass = Class.forName(payloadDecoder);
-		return (Decoder) payloadDecoderClass.newInstance();
+		Class decoderClass = Class.forName(decoder);
+		return (Decoder) decoderClass.newInstance();
 	}
 
 	public Partition[] getPartitions() {

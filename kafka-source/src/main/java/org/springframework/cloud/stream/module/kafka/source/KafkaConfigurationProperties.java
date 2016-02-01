@@ -47,6 +47,43 @@ public class KafkaConfigurationProperties {
 
 	private String[] topics;
 
+	private int concurrency;
+	private int maxFetch;
+	private int stopTimeout;
+	private int queueSize;
+
+	public int getQueueSize() {
+		return queueSize;
+	}
+
+	public void setQueueSize(int queueSize) {
+		this.queueSize = queueSize;
+	}
+
+	public int getStopTimeout() {
+		return stopTimeout;
+	}
+
+	public void setStopTimeout(int stopTimeout) {
+		this.stopTimeout = stopTimeout;
+	}
+
+	public int getMaxFetch() {
+		return maxFetch;
+	}
+
+	public void setMaxFetch(int maxFetch) {
+		this.maxFetch = maxFetch;
+	}
+
+	public int getConcurrency() {
+		return concurrency;
+	}
+
+	public void setConcurrency(int concurrency) {
+		this.concurrency = concurrency;
+	}
+
 	public String[] getTopics() {
 		return topics;
 	}
