@@ -31,6 +31,7 @@ import org.springframework.integration.dsl.kafka.Kafka;
 import org.springframework.integration.kafka.core.*;
 import org.springframework.integration.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.integration.kafka.listener.KafkaNativeOffsetManager;
+import org.springframework.integration.kafka.listener.OffsetManager;
 import org.springframework.integration.kafka.support.ZookeeperConnect;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
@@ -58,36 +59,40 @@ public class KafkaSource {
 	@Autowired
 	private KafkaConfigurationProperties properties;
 
-	private ConnectionFactory kafkaConnectionFactory;
-
 	@Bean
 	public KafkaMessageListenerContainer container() {
 
 		Assert.isTrue(!ObjectUtils.isEmpty(properties.getTopics()) || !ObjectUtils.isEmpty(properties.getPartitions()),
 				"Either a list of topics OR a topic=<comma separated partitions> must be provided");
 
-		ZookeeperConnect zookeeperConnect = new ZookeeperConnect();
-		zookeeperConnect.setZkConnect(properties.getZkConnect());
-		zookeeperConnect.setZkConnectionTimeout(properties.getZkConnectionTimeout());
-		zookeeperConnect.setZkSessionTimeout(properties.getZkSessionTimeout());
-		zookeeperConnect.setZkSyncTime(properties.getZkSyncTime());
-
-		Configuration zookeeperConfiguration = new ZookeeperConfiguration(zookeeperConnect);
-		this.kafkaConnectionFactory = new DefaultConnectionFactory(zookeeperConfiguration);
+		Configuration zookeeperConfiguration = new ZookeeperConfiguration(zookeeperConnect());
+		ConnectionFactory kafkaConnectionFactory = new DefaultConnectionFactory(zookeeperConfiguration);
 
 		Partition[] partitions = getPartitions();
-
-		KafkaNativeOffsetManager kafkaNativeOffsetManager = new KafkaNativeOffsetManager(kafkaConnectionFactory, zookeeperConnect,
-				getInitialOffsets());
-		kafkaNativeOffsetManager.setRetryTemplate(new RetryTemplate());
 
 		KafkaMessageListenerContainer container = ObjectUtils.isEmpty(partitions) ?
 				new KafkaMessageListenerContainer(kafkaConnectionFactory, properties.getTopics()) :
 				new KafkaMessageListenerContainer(kafkaConnectionFactory, partitions);
 
-		container.setOffsetManager(kafkaNativeOffsetManager);
+		container.setOffsetManager(kafkaNativeOffsetManager(kafkaConnectionFactory));
 
 		return container;
+	}
+
+	@Bean
+	public ZookeeperConnect zookeeperConnect() {
+		ZookeeperConnect zookeeperConnect = new ZookeeperConnect();
+		zookeeperConnect.setZkConnect(properties.getZkConnect());
+		zookeeperConnect.setZkConnectionTimeout(properties.getZkConnectionTimeout());
+		zookeeperConnect.setZkSessionTimeout(properties.getZkSessionTimeout());
+		zookeeperConnect.setZkSyncTime(properties.getZkSyncTime());
+		return zookeeperConnect;
+	}
+
+	@Bean
+	public OffsetManager kafkaNativeOffsetManager(ConnectionFactory kafkaConnectionFactory) {
+		return new KafkaNativeOffsetManager(kafkaConnectionFactory, zookeeperConnect(),
+				getInitialOffsets());
 	}
 
 	@Bean
@@ -118,9 +123,9 @@ public class KafkaSource {
 		return (Decoder) decoderClass.newInstance();
 	}
 
-	public Partition[] getPartitions() {
+	private Partition[] getPartitions() {
 		Map<String, String> partitionsMap = properties.getPartitions();
-		List<Partition> partitions = new ArrayList<>();
+		List<Partition> partitionList = new ArrayList<>();
 
 		if (!partitionsMap.isEmpty()) {
 			for (Map.Entry<String, String> entry : partitionsMap.entrySet()) {
@@ -128,16 +133,16 @@ public class KafkaSource {
 				String[] topicPartitions = StringUtils.commaDelimitedListToStringArray(entry.getValue());
 
 				for (String part : topicPartitions) {
-					partitions.add(new Partition(entry.getKey(), Integer.valueOf(part)));
+					partitionList.add(new Partition(entry.getKey(), Integer.valueOf(part)));
 				}
 			}
 		}
 
-		Partition[] partitionsArr = new Partition[partitions.size()];
-		return partitions.toArray(partitionsArr);
+		Partition[] partitions = new Partition[partitionList.size()];
+		return partitionList.toArray(partitions);
 	}
 
-	public Map<Partition, Long> getInitialOffsets() {
+	private Map<Partition, Long> getInitialOffsets() {
 		Map<Partition, Long> partitionInitOffsets = new HashMap<>();
 		Map<String, Map<Integer, Long>> initialOffsets = properties.getInitialOffsets();
 

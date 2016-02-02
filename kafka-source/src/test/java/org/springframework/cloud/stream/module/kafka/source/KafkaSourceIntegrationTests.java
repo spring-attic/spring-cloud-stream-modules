@@ -1,17 +1,19 @@
 /*
- * Copyright 2016 the original author or authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  * Copyright 2016 the original author or authors.
+ *  *
+ *  * Licensed under the Apache License, Version 2.0 (the "License");
+ *  * you may not use this file except in compliance with the License.
+ *  * You may obtain a copy of the License at
+ *  *
+ *  *      http://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  * Unless required by applicable law or agreed to in writing, software
+ *  * distributed under the License is distributed on an "AS IS" BASIS,
+ *  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  * See the License for the specific language governing permissions and
+ *  * limitations under the License.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 package org.springframework.cloud.stream.module.kafka.source;
@@ -53,11 +55,10 @@ import static scala.collection.JavaConversions.asScalaBuffer;
  * @author Soby Chacko
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@IntegrationTest({"topics = foo,bar"})
 @SpringApplicationConfiguration(classes = {KafkaSourceIntegrationTests.ContextConfiguration.class, KafkaSourceApplication.class},
 		initializers = PropertiesInitializer.class)
 @DirtiesContext
-public class KafkaSourceIntegrationTests {
+public abstract class KafkaSourceIntegrationTests {
 
 	private static String scs_kafka_test_embedded;
 
@@ -103,45 +104,158 @@ public class KafkaSourceIntegrationTests {
 		}
 	}
 
-	@Test
-	public void testBasicSourceWithTopicWithSinglePartition() throws Exception {
+	@IntegrationTest({"topics = foo"})
+	public static class BasicTopicTest extends KafkaSourceIntegrationTests {
 
-		for (int i = 0; i < 10; i++) {
-			producer.send(new ProducerRecord<>(TEST_TOPIC1,
-					"test-topic" + i,
-					Integer.toString(i)));
-		}
+		@Test
+		public void test() throws Exception {
 
-		for (int i = 0; i < 10; i++) {
-			Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(10, TimeUnit.SECONDS);
-			assertNotNull(out);
-			String payload = new String(((byte[]) out.getPayload()), "UTF-8");
-			assertEquals(Integer.toString(i), payload);
-			assertEquals(TEST_TOPIC1, out.getHeaders().get(KafkaHeaders.TOPIC));
+			for (int i = 0; i < 10; i++) {
+				producer.send(new ProducerRecord<>(TEST_TOPIC1,
+						"test-topic" + i,
+						Integer.toString(i)));
+			}
+
+			for (int i = 0; i < 10; i++) {
+				Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(10, TimeUnit.SECONDS);
+				assertNotNull(out);
+				String payload = new String(((byte[]) out.getPayload()), "UTF-8");
+				assertEquals(Integer.toString(i), payload);
+				assertEquals(TEST_TOPIC1, out.getHeaders().get(KafkaHeaders.TOPIC));
+			}
+
 		}
 	}
 
-	@Test
-	public void testTopicWithAllAvailablePartitions() throws Exception {
+	@IntegrationTest({"partitions.bar=0,1,2,3"})
+	public static class TopicAllPartitionTest extends KafkaSourceIntegrationTests {
 
-		for (int i = 0; i < 10; i++) {
-			producer.send(new ProducerRecord<>(TEST_TOPIC2, i % 4,
-					"test-topic" + i,
-					Integer.toString(i)));
+		@Test
+		public void testTopicWithAllAvailablePartitions() throws Exception {
+			//10 messages going in, should consume all 10
+			for (int i = 0; i < 10; i++) {
+				producer.send(new ProducerRecord<>(TEST_TOPIC2, i % 4,
+						"test-topic" + i,
+						Integer.toString(i)));
+			}
+
+			List<String> strings = new ArrayList<>();
+			for (int i = 0; i < 10; i++) {
+				Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(10, TimeUnit.SECONDS);
+				assertNotNull(out);
+				String payload = new String(((byte[]) out.getPayload()), "UTF-8");
+				strings.add(payload);
+				assertEquals(TEST_TOPIC2, out.getHeaders().get(KafkaHeaders.TOPIC));
+			}
+
+			//Verify that we read from all the partitions and all messages are accounted for
+			for (int i = 0; i < 10; i++) {
+				assertTrue(strings.contains(Integer.toString(i)));
+			}
 		}
+	}
 
-		List<String> strings = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
-			Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(10, TimeUnit.SECONDS);
-			assertNotNull(out);
-			String payload = new String(((byte[]) out.getPayload()), "UTF-8");
-			strings.add(payload);
-			assertEquals(TEST_TOPIC2, out.getHeaders().get(KafkaHeaders.TOPIC));
+	@IntegrationTest({"partitions.bar=0,1,2"})
+	public static class TopicSelectedPartitionsTest extends KafkaSourceIntegrationTests {
+
+		@Test
+		public void testTopicWithOnlyConfiguredPartitions() throws Exception {
+			//12 messages going in to 4 partitions, but only 9 should be consumed as we don't consume from partition 3.
+			for (int i = 0; i < 12; i++) {
+				producer.send(new ProducerRecord<>(TEST_TOPIC2, i % 4,
+						"test-topic" + i,
+						Integer.toString(i)));
+			}
+
+			List<String> strings = new ArrayList<>();
+			for (int i = 0; i < 9; i++) {
+				Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(10, TimeUnit.SECONDS);
+				assertNotNull(out);
+				String payload = new String(((byte[]) out.getPayload()), "UTF-8");
+				strings.add(payload);
+				assertEquals(TEST_TOPIC2, out.getHeaders().get(KafkaHeaders.TOPIC));
+			}
+
+			Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(4, TimeUnit.SECONDS);
+			assertNull(out);
+
+			//Verify that we read from all the partitions and all messages are accounted for
+			Integer[] in = new Integer[]{0, 1, 2, 4, 5, 6, 8, 9, 10};
+			for (int i : in) {
+				assertTrue(strings.contains(Integer.toString(i)));
+			}
+			Integer[] excluded = new Integer[]{3, 7, 11};
+			for (int i : excluded) {
+				assertFalse(strings.contains(Integer.toString(i)));
+			}
 		}
+	}
 
-		//Verify that we read from all the partitions and all messages are accounted for
-		for (int i = 0; i < 10; i++) {
-			assertTrue(strings.contains(Integer.toString(i)));
+	@IntegrationTest({"partitions.bar=0,1,2,3", "initialOffsets.bar.0=5"})
+	public static class InitialOffsetForOnePartitionStartsOutsideRangeTest extends KafkaSourceIntegrationTests {
+
+		@Test
+		public void testTopicWithOnlyConfiguredPartitions() throws Exception {
+
+			//12 messages produced, only 9 are consumed as partition 0's initial offsets are outside
+			//range and not committed to zookeeper.
+			for (int i = 0; i < 12; i++) {
+				producer.send(new ProducerRecord<>(TEST_TOPIC2, i % 4,
+						"test-topic" + i,
+						Integer.toString(i)));
+			}
+
+			List<String> strings = new ArrayList<>();
+			for (int i = 0; i < 9; i++) {
+				Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(10, TimeUnit.SECONDS);
+				assertNotNull(out);
+				String payload = new String(((byte[]) out.getPayload()), "UTF-8");
+				strings.add(payload);
+				assertEquals(TEST_TOPIC2, out.getHeaders().get(KafkaHeaders.TOPIC));
+			}
+
+			Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(4, TimeUnit.SECONDS);
+			assertNull(out);
+
+			//Verify that we read from all the partitions and all messages are accounted for
+			Integer[] in = new Integer[]{1, 2, 3, 5, 6, 7, 9, 10, 11};
+			for (int i : in) {
+				assertTrue(strings.contains(Integer.toString(i)));
+			}
+			Integer[] excluded = new Integer[]{0, 4, 8};
+			for (int i : excluded) {
+				assertFalse(strings.contains(Integer.toString(i)));
+			}
+		}
+	}
+
+	@IntegrationTest({"partitions.bar=0,1,2,3", "initialOffsets.bar.0=0"})
+	public static class InitialOffsetForOnePartitionSetExplicitlyToBeginningTest extends KafkaSourceIntegrationTests {
+
+		@Test
+		public void testTopicWithOnlyConfiguredPartitions() throws Exception {
+
+			//12 messages are going in, all 12 should be consumed from 4 partitions.
+			for (int i = 0; i < 12; i++) {
+				producer.send(new ProducerRecord<>(TEST_TOPIC2, i % 4,
+						"test-topic" + i,
+						Integer.toString(i)));
+			}
+
+			List<String> strings = new ArrayList<>();
+			for (int i = 0; i < 12; i++) {
+				Message<?> out = this.messageCollector.forChannel(this.source.output()).poll(10, TimeUnit.SECONDS);
+				assertNotNull(out);
+				String payload = new String(((byte[]) out.getPayload()), "UTF-8");
+				strings.add(payload);
+				assertEquals(TEST_TOPIC2, out.getHeaders().get(KafkaHeaders.TOPIC));
+			}
+
+			//Verify that we read from all the partitions and all messages are accounted for
+			Integer[] in = new Integer[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+			for (int i : in) {
+				assertTrue(strings.contains(Integer.toString(i)));
+			}
 		}
 	}
 
@@ -185,6 +299,7 @@ public class KafkaSourceIntegrationTests {
 
 					producer().close();
 				}
+
 			};
 		}
 	}
