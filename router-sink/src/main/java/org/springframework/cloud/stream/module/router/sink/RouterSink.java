@@ -16,11 +16,8 @@
 
 package org.springframework.cloud.stream.module.router.sink;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -41,11 +38,10 @@ import org.springframework.scripting.ScriptSource;
 
 /**
  * A sink module that routes to one or more named channels.
- *
  * @author Gary Russell
  */
 @EnableBinding(Sink.class)
-@Import({ SpelExpressionConverterConfiguration.class, ScriptVariableGeneratorConfiguration.class })
+@Import({SpelExpressionConverterConfiguration.class, ScriptVariableGeneratorConfiguration.class})
 @EnableConfigurationProperties(RouterSinkProperties.class)
 public class RouterSink {
 
@@ -60,36 +56,30 @@ public class RouterSink {
 	Sink channels;
 
 	@Bean
-	@ServiceActivator(inputChannel=Sink.INPUT)
-	public AbstractMappingMessageRouter router(BinderAwareChannelResolver channelResolver,
-			ConfigurableBeanFactory beanFactory) throws Exception {
+	@ServiceActivator(inputChannel = Sink.INPUT)
+	public AbstractMappingMessageRouter router(BinderAwareChannelResolver channelResolver) {
 		AbstractMappingMessageRouter router;
 		if (this.properties.getScript() != null) {
-			router = new MethodInvokingRouter(scriptProcessor(beanFactory));
+			router = new MethodInvokingRouter(scriptProcessor());
 		}
 		else {
 			router = new ExpressionEvaluatingRouter(this.properties.getExpression());
 		}
 		router.setDefaultOutputChannelName(this.properties.getDefaultOutputChannel());
 		router.setResolutionRequired(this.properties.isResolutionRequired());
-		Map<String, String> mappings = new LinkedHashMap<String, String>();
-		int n = 0;
-		for (String value : this.properties.getValues()) {
-			mappings.put(value, this.properties.getDestinations()[n++]);
+		if (this.properties.getDestinationMappings() != null) {
+			router.replaceChannelMappings(this.properties.getDestinationMappings());
 		}
-		router.setChannelMappings(mappings);
 		router.setChannelResolver(channelResolver);
 		return router;
 	}
 
-	private GroovyScriptExecutingMessageProcessor scriptProcessor(ConfigurableBeanFactory beanFactory) throws Exception {
+	@Bean
+	@ConditionalOnProperty("script")
+	public GroovyScriptExecutingMessageProcessor scriptProcessor() {
 		ScriptSource scriptSource = new RefreshableResourceScriptSource(this.properties.getScript(),
 				this.properties.getRefreshDelay());
-		GroovyScriptExecutingMessageProcessor processor = new GroovyScriptExecutingMessageProcessor(scriptSource,
-				this.scriptVariableGenerator);
-		processor.setBeanFactory(beanFactory);
-		processor.setBeanClassLoader(beanFactory.getBeanClassLoader());
-		return processor;
+		return new GroovyScriptExecutingMessageProcessor(scriptSource, this.scriptVariableGenerator);
 	}
 
 }

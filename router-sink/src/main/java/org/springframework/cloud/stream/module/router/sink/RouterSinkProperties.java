@@ -15,6 +15,7 @@
  */
 package org.springframework.cloud.stream.module.router.sink;
 
+import java.util.Properties;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
@@ -63,11 +64,6 @@ public class RouterSinkProperties {
 	private int refreshDelay = 0;
 
 	/**
-	 * Script variables.
-	 */
-	private String variables;
-
-	/**
 	 * Where to send unroutable messages.
 	 */
 	private String defaultOutputChannel = "nullChannel";
@@ -77,15 +73,11 @@ public class RouterSinkProperties {
 	 */
 	private boolean resolutionRequired = false;
 
-	/**
-	 * An array of resolved values, used to map to a destination name.
-	 */
-	private String[] values = new String[0];
 
 	/**
-	 * An array of destination names, mapped from resolved values.
+	 * Destination mappings as a new line delimited string of name-value pairs, e.g. 'foo=bar\n baz=car'.
 	 */
-	private String[] destinations = new String[0];
+	private Properties destinationMappings;
 
 	public Expression getExpression() {
 		return this.expression;
@@ -128,32 +120,17 @@ public class RouterSinkProperties {
 		this.resolutionRequired = resolutionRequired;
 	}
 
-	@NotNull
-	public String[] getValues() {
-		return this.values;
+	public Properties getDestinationMappings() {
+		return destinationMappings;
 	}
 
-	public void setValues(String[] values) {
-		this.values = values;
-	}
-
-	@NotNull
-	public String[] getDestinations() {
-		return this.destinations;
-	}
-
-	public void setDestinations(String[] destinations) {
-		this.destinations = destinations;
+	public void setDestinationMappings(Properties destinationMappings) {
+		this.destinationMappings = destinationMappings;
 	}
 
 	@AssertTrue(message = "'expression' and 'script' are mutually exclusive")
 	public boolean isExpressionOrScriptValid() {
 		return this.script == null || this.expression == DEFAULT_EXPRESSION;
-	}
-
-	@AssertTrue(message = "values and channels must have the same number of elements")
-	public boolean isValuesAndExpressionsSameLength() {
-		return this.values.length == this.destinations.length;
 	}
 
 }

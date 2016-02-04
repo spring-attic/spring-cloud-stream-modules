@@ -105,7 +105,7 @@ public abstract class RouterSinkTests {
 
 	}
 
-	@IntegrationTest({ "expression = headers['route']", "values = foo,bar", "destinations = baz,qux",
+	@IntegrationTest({ "expression = headers['route']", "destinationMappings = foo=baz \\n bar=qux",
 			"resolutionRequired = true" })
 	public static class WithChannelMappingsTests extends RouterSinkTests {
 
