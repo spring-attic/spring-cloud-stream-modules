@@ -46,6 +46,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.cloud.stream.tuple.MutableTuple;
+import org.springframework.cloud.stream.tuple.Tuple;
+import org.springframework.cloud.stream.tuple.TupleBuilder;
 import org.springframework.context.annotation.Import;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
@@ -118,7 +121,7 @@ public class PmmlProcessor {
 
 		Map<FieldName, ?> results = evaluator.evaluate(arguments);
 
-		MutableMessage<?> result = new MutableMessage<>(input.getPayload(), input.getHeaders());
+		MutableMessage<?> result = convertToMutable(input);
 
 		for (Map.Entry<FieldName, ?> entry : results.entrySet()) {
 			String fieldName = entry.getKey().getValue();
@@ -132,6 +135,14 @@ public class PmmlProcessor {
 
 		return result;
 
+	}
+
+	private MutableMessage<?> convertToMutable(Message<?> input) {
+		Object payload = input.getPayload();
+		if (payload instanceof Tuple && !(payload instanceof MutableTuple)) {
+			payload = TupleBuilder.mutableTuple().putAll((Tuple) payload).build();
+		}
+		return new MutableMessage<>(payload, input.getHeaders());
 	}
 
 	private Object resolveActiveValue(Message<?> input, String fieldName) {
