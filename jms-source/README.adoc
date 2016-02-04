@@ -1,0 +1,25 @@
+= Spring Cloud Stream JMS Source
+
+This module receives incoming JMS messages.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+JmsSourceApplication:: the Spring Boot Main Application
+JmsSource:: the JMS source
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/jms-source-${version}-exec.jar
+```
+
