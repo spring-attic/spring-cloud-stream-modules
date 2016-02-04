@@ -547,8 +547,9 @@ expression or Groovy Script.
 
 The expression evaluates against the message and returns either a channel name, or the key to a map of channel names.
 
-For more information, please consult the Spring Integration Reference manual: http://static.spring.io/spring-integration/reference/html/messaging-routing-chapter.html#router-namespace particularly
-the section "Routers and the Spring Expression Language (SpEL)".
+For more information, please see the "Routers and the Spring Expression Language (SpEL)" subsection in the Spring
+Integration Reference manual
+http://docs.spring.io/spring-integration/reference/html/messaging-routing-chapter.html#router-namespace[Configuring (Generic) Router section].
 
 ==== Groovy-based Routing
 
@@ -559,10 +560,10 @@ Instead of SpEL expressions, Groovy scripts can also be used. Let's create a Gro
 ----
 println("Groovy processing payload '" + payload +"'");
 if (payload.contains('a')) {
-	return "foo"
+    return "foo"
 }
 else {
-	return "bar"
+    return "bar"
 }
 ----
 
@@ -573,35 +574,35 @@ _propertiesLocation_, in which case any duplicate values provided as _variables_
 _propertiesLocation_.
 Note that _payload_ and _headers_ are implicitly bound to give you access to the data contained in a message.
 
-For more information, see the Spring Integration Reference manual: "Groovy support"
-http://static.spring.io/spring-integration/reference/html/messaging-endpoints-chapter.html#groovy
+For more information, see the Spring Integration Reference manual
+http://docs.spring.io/spring-integration/reference/html/messaging-endpoints-chapter.html#groovy[Groovy Support].
 
 ==== Options
 
 The **$$router$$** $$sink$$ has the following options:
 
-$$channels$$:: $$comma-delimited channels mapped from evaluation results$$ *($$String$$, no default)*
+$$destinations$$:: $$comma-delimited destinations mapped from evaluation results$$ *($$String$$, no default)*
 $$defaultOutputChannel$$:: $$Where to route messages where the channel cannot be resolved$$ *($$String$$, default: `nullChannel`)*
-$$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, default: `headers['routeTo']`)*
+$$expression$$:: $$a SpEL expression used to determine the destination$$ *($$String$$, default: `headers['routeTo']`)*
 $$propertiesLocation$$:: $$the path of a properties file containing custom script variable bindings$$ *($$String$$, no default)*
 $$refreshDelay$$:: $$How often to refresh the script, if present; 0 means don't refresh$$ *($$Integer$$, 0)*
 $$script$$:: $$reference to a script used to process messages$$ *($$String$$, no default)*
 $$values$$:: $$comma-delimited evaluation results used to map to actual `channels`$$ *($$String$$, no default)*
 $$variables$$:: $$variable bindings as a comma delimited string of name-value pairs, e.g., 'foo=bar,baz=car'$$ *($$String$$, no default)*
 
-NOTE: Since this is a dynamic router, channels are created as needed; therefore, byt default the `defaultOutputChannel`
+NOTE: Since this is a dynamic router, channels are created as needed; therefore, by default the `defaultOutputChannel`
 and `resolutionRequired` will only be used if the `Binder` has some problem binding to the destination.
 
 You can restrict the creation of dynamic bindings using the `spring.cloud.stream.dynamicDestinations` property.
 By default, all resolved destinations will be bound dynamically; if this property has a comma-delimited list of
 destination names, only those will be bound.
-Messages that resolve to a destination that's not in this list will be routed to the `defaultOutputChannel`, which
+Messages that resolve to a destination that is not in this list will be routed to the `defaultOutputChannel`, which
 must also appear in the list.
 
-`values` and `channels` are used to map the evaluation results to an actual channel name; the must have the same number
-of elements.
-For example: `values = foo,bar` and `channels = :baz,:qux` - if the expression or script returns `foo`, the message
-will be routed to channel `:baz`.
+`values` and `destinations` are used to map the evaluation results to an actual destination name; the must have the same
+number of elements.
+For example: `values = foo,bar` and `destinations = baz,qux` - if the expression or script returns `foo`, the message
+will be routed to channel `baz`.
 
 
 

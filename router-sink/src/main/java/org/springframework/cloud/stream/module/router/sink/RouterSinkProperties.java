@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.integration.dsl.support.Function;
+import org.springframework.integration.dsl.support.FunctionExpression;
+import org.springframework.messaging.Message;
 
 /**
  * Properties for the Router Sink; the router can use an expression
@@ -34,8 +36,14 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 @ConfigurationProperties
 public class RouterSinkProperties {
 
-	public static final Expression DEFAULT_EXPRESSION =
-			new SpelExpressionParser().parseExpression("headers['routeTo']");
+	public static final Expression DEFAULT_EXPRESSION = new FunctionExpression<>(new Function<Message<?>, Object>() {
+
+		@Override
+		public Object apply(Message<?> message) {
+			return message.getHeaders().get("routeTo");
+		}
+
+	});
 
 	/**
 	 * The expression to be applied to the message to determine the channel(s)
@@ -53,11 +61,6 @@ public class RouterSinkProperties {
 	 * How often to refresh the script (if present); <= 0 means don't refresh.
 	 */
 	private int refreshDelay = 0;
-
-	/**
-	 * Locations of properties file for script variables.
-	 */
-	private Resource[] propertiesLocation;
 
 	/**
 	 * Script variables.
@@ -98,22 +101,6 @@ public class RouterSinkProperties {
 
 	public void setScript(Resource script) {
 		this.script = script;
-	}
-
-	public Resource[] getPropertiesLocation() {
-		return propertiesLocation;
-	}
-
-	public void setPropertiesLocation(Resource[] propertiesLocation) {
-		this.propertiesLocation = propertiesLocation;
-	}
-
-	public String getVariables() {
-		return variables;
-	}
-
-	public void setVariables(String variables) {
-		this.variables = variables;
 	}
 
 	@NotNull
@@ -167,12 +154,6 @@ public class RouterSinkProperties {
 	@AssertTrue(message = "values and channels must have the same number of elements")
 	public boolean isValuesAndExpressionsSameLength() {
 		return this.values.length == this.destinations.length;
-	}
-
-	@AssertTrue(message = "script properties are not allowed without 'script'")
-	public boolean isScriptValid() {
-		return this.script == null ? this.refreshDelay == 0 && this.propertiesLocation == null
-				&& this.variables == null : true;
 	}
 
 }

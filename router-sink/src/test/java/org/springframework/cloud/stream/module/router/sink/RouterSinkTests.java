@@ -31,7 +31,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.binder.BinderFactory;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.cloud.stream.module.router.sink.RouterSinkApplication;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.cloud.stream.test.binder.TestSupportBinder;
 import org.springframework.integration.router.AbstractMappingMessageRouter;
@@ -64,8 +63,29 @@ public abstract class RouterSinkTests {
 	@Autowired
 	protected AbstractMappingMessageRouter router;
 
-	@IntegrationTest({ "expression = headers['route']", "resolutionRequired = true" })
+	@IntegrationTest({ "resolutionRequired = true" })
 	public static class DefaultRouterTests extends RouterSinkTests {
+
+		@Test
+		public void test() throws Exception {
+			TestSupportBinder binder = (TestSupportBinder) this.binderFactory.getBinder(null);
+			Message<?> message = MessageBuilder.withPayload("hello").setHeader("routeTo", "baz").build();
+			this.channels.input().send(message);
+			MessageChannel baz = binder.getChannelForName("baz");
+			assertNotNull(baz);
+			assertThat(collector.forChannel(baz), receivesPayloadThat(is("hello")));
+
+			message = MessageBuilder.withPayload("world").setHeader("routeTo", "qux").build();
+			this.channels.input().send(message);
+			MessageChannel qux = binder.getChannelForName("qux");
+			assertNotNull(qux);
+			assertThat(collector.forChannel(qux), receivesPayloadThat(is("world")));
+		}
+
+	}
+
+	@IntegrationTest({ "expression = headers['route']", "resolutionRequired = true" })
+	public static class DefaultRouterWithExpressionTests extends RouterSinkTests {
 
 		@Test
 		public void test() throws Exception {
@@ -136,7 +156,7 @@ public abstract class RouterSinkTests {
 	}
 
 	@IntegrationTest({ "script = classpath:/routertest.groovy", "variables = foo=baz",
-		"propertiesLocation = classpath:/routertest.properties" })
+		"variablesLocation = classpath:/routertest.properties" })
 	public static class WithGroovyTests extends RouterSinkTests {
 
 		@Test

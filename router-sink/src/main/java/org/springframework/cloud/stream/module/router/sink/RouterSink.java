@@ -16,10 +16,8 @@
 
 package org.springframework.cloud.stream.module.router.sink;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -29,7 +27,7 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.cloud.stream.script.ScriptModulePropertiesFactoryBean;
+import org.springframework.cloud.stream.module.common.ScriptVariableGeneratorConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -37,7 +35,6 @@ import org.springframework.integration.groovy.GroovyScriptExecutingMessageProces
 import org.springframework.integration.router.AbstractMappingMessageRouter;
 import org.springframework.integration.router.ExpressionEvaluatingRouter;
 import org.springframework.integration.router.MethodInvokingRouter;
-import org.springframework.integration.scripting.DefaultScriptVariableGenerator;
 import org.springframework.integration.scripting.RefreshableResourceScriptSource;
 import org.springframework.integration.scripting.ScriptVariableGenerator;
 import org.springframework.scripting.ScriptSource;
@@ -48,12 +45,15 @@ import org.springframework.scripting.ScriptSource;
  * @author Gary Russell
  */
 @EnableBinding(Sink.class)
+@Import({ SpelExpressionConverterConfiguration.class, ScriptVariableGeneratorConfiguration.class })
 @EnableConfigurationProperties(RouterSinkProperties.class)
-@Import(SpelExpressionConverterConfiguration.class)
 public class RouterSink {
 
 	@Autowired
 	private RouterSinkProperties properties;
+
+	@Autowired
+	private ScriptVariableGenerator scriptVariableGenerator;
 
 	@Autowired
 	@Bindings(RouterSink.class)
@@ -85,17 +85,8 @@ public class RouterSink {
 	private GroovyScriptExecutingMessageProcessor scriptProcessor(ConfigurableBeanFactory beanFactory) throws Exception {
 		ScriptSource scriptSource = new RefreshableResourceScriptSource(this.properties.getScript(),
 				this.properties.getRefreshDelay());
-		ScriptModulePropertiesFactoryBean variableProperties = new ScriptModulePropertiesFactoryBean();
-		variableProperties.setLocations(this.properties.getPropertiesLocation());
-		variableProperties.setVariables(this.properties.getVariables());
-		variableProperties.afterPropertiesSet();
-		Map<String, Object> variables = new HashMap<>();
-		for (Entry<Object, Object> entry : variableProperties.getObject().entrySet()) {
-			variables.put((String) entry.getKey(), entry.getValue());
-		}
-		ScriptVariableGenerator variableGenerator = new DefaultScriptVariableGenerator(variables);
 		GroovyScriptExecutingMessageProcessor processor = new GroovyScriptExecutingMessageProcessor(scriptSource,
-				variableGenerator);
+				this.scriptVariableGenerator);
 		processor.setBeanFactory(beanFactory);
 		processor.setBeanClassLoader(beanFactory.getBeanClassLoader());
 		return processor;
