@@ -71,6 +71,36 @@ $$variables$$:: $$Variable bindings as a comma delimited string of name-value pa
 $$variablesLocation$$:: $$The location of a properties file containing custom script variable bindings$$ *($$String$$, default: ``)*
 
 
+=== PMML Processor (`pmml-processor`)
+
+A Processor application that provides support for real-time evaluation of various machine learning scoring algorithms.
+It is based on the JPMML-Evaluator library that provides support for a wide range of model types and is interoperable
+with models exported from http://www.r-project.org/[R], http://rattle.togaware.com/[Rattle],
+http://www.knime.org/[KNIME], and http://rapid-i.com/content/view/181/190/[RapidMiner].
+
+The PMML evaluator leverages SpEL to bridge the gap between the incoming message and the PMML fields, as well as on the
+way out, to set results as properties on the outgoing message. As such, `Tuple` is a well suited data structure for
+working with the PMML processor.
+
+The `inputs` configuration property contains a mapping from **PMML active field name** to **read SpEL expression against
+the input message** to resolve an active field value. If no mapping is provided, it is assumed that a property of the
+message `payload` with the same name as the PMML field exists.
+
+Conversely, the `outputs` configuration property contains a mapping from **PMML output field name** to
+**write SpEL expression against the outgoing message** to set the evaluation results. If no mapping is provided, it is
+assumed that a sub-property of the message `payload` should be set, with the same name as the PMML result field.
+
+==== Options
+
+The **$$pmml$$** $$processor$$ has the following options:
+
+$$modelLocation$$:: $$The location of the PMML model file.$$ *($$Resource$$, default: `null`)*
+$$modelName$$:: $$If the model file contains multiple models, the name of the one to use.$$ *($$String$$, default: `null`)*
+$$modelNameExpression$$:: $$If the model file contains multiple models, the name of the one to use, as a SpEL expression.$$ *($$Expression$$, default: `null`)*
+$$inputs$$:: $$How to compute model active fields from input message properties as modelField->SpEL.$$ *($$Map<String, Expression>$$, default: `empty`)*
+$$outputs$$:: $$How to emit evaluation results in the output message as msgProperty->SpEL.$$ *($$Map<String, Expression>$$, default: `empty`)*
+
+
 [[spring-cloud-stream-modules-transform]]
 === Transform (`transform`)
 Use the transform module in a stream to convert a Message's content or structure.
