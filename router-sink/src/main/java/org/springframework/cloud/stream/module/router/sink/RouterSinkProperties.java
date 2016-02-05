@@ -16,6 +16,7 @@
 package org.springframework.cloud.stream.module.router.sink;
 
 import java.util.Properties;
+
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
@@ -59,9 +60,9 @@ public class RouterSinkProperties {
 	private Resource script;
 
 	/**
-	 * How often to refresh the script (if present); <= 0 means don't refresh.
+	 * How often to check for script changes in ms (if present); < 0 means don't refresh.
 	 */
-	private int refreshDelay = 0;
+	private int refreshDelay = 60000;
 
 	/**
 	 * Where to send unroutable messages.
