@@ -24,8 +24,6 @@ import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.Min;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.expression.Expression;
-import org.springframework.expression.common.LiteralExpression;
 import org.springframework.util.StringUtils;
 
 /**
@@ -64,8 +62,6 @@ public class TriggerProperties {
 	 * Cron expression value for the Cron Trigger.
 	 */
 	private String cron;
-
-	private Expression payload = new LiteralExpression("");
 
 	@Min(0)
 	public int getInitialDelay() {
@@ -131,14 +127,6 @@ public class TriggerProperties {
 	}
 	public void setDateFormat(String dateFormat) {
 		this.dateFormat = dateFormat;
-	}
-
-	public Expression getPayload() {
-		return this.payload;
-	}
-
-	public void setPayload(Expression payload) {
-		this.payload = payload;
 	}
 
 	@AssertFalse

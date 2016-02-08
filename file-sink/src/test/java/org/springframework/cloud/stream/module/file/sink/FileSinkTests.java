@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.cloud.stream.module.file.sink.FileSinkApplication;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,10 +37,10 @@ import org.springframework.util.FileCopyUtils;
 
 /**
  * @author Mark Fisher
+ * @author Artem Bilan
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FileSinkApplication.class)
-@WebIntegrationTest(randomPort = true)
 @DirtiesContext
 public abstract class FileSinkTests {
 
@@ -52,7 +51,7 @@ public abstract class FileSinkTests {
 	@Autowired
 	protected Sink sink;
 
-	@WebIntegrationTest({"name = test", "directory = ${java.io.tmpdir}${file.separator}dataflow-tests", "suffix=txt"})
+	@IntegrationTest({"name = test", "directory = ${java.io.tmpdir}${file.separator}dataflow-tests", "suffix=txt"})
 	public static class TextTests extends FileSinkTests {
 
 		@Test
@@ -61,11 +60,12 @@ public abstract class FileSinkTests {
 			File file = new File(ROOT_DIR, "test.txt");
 			file.deleteOnExit();
 			assertTrue("file does not exist", file.exists());
-			assertEquals("this is a test\n", FileCopyUtils.copyToString(new FileReader(file)));
+			assertEquals("this is a test" + System.lineSeparator(), FileCopyUtils.copyToString(new FileReader(file)));
 		}
+
 	}
 
-	@WebIntegrationTest({"binary = true", "directory = ${java.io.tmpdir}${file.separator}dataflow-tests"})
+	@IntegrationTest({"binary = true", "directory = ${java.io.tmpdir}${file.separator}dataflow-tests"})
 	public static class BinaryTests extends FileSinkTests {
 
 		@Test
@@ -78,10 +78,12 @@ public abstract class FileSinkTests {
 			assertEquals(3, results.length);
 			assertArrayEquals("foo".getBytes(), results);
 		}
+
 	}
 
-	@WebIntegrationTest({"nameExpression = payload.substring(0, 4)",
-			"directoryExpression = '${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}'+headers.dir", "suffix=out"})
+	@IntegrationTest({"nameExpression = payload.substring(0, 4)",
+			"directoryExpression = '${java.io.tmpdir}${file.separator}dataflow-tests${file.separator}'+headers.dir",
+			"suffix=out"})
 	public static class ExpressionTests extends FileSinkTests {
 
 		@Test
@@ -91,7 +93,10 @@ public abstract class FileSinkTests {
 			File file = new File(ROOT_DIR + File.separator + "expression", "this.out");
 			file.deleteOnExit();
 			assertTrue("file does not exist", file.exists());
-			assertEquals("this is another test\n", FileCopyUtils.copyToString(new FileReader(file)));
+			assertEquals("this is another test" + System.lineSeparator(),
+					FileCopyUtils.copyToString(new FileReader(file)));
 		}
+
 	}
+
 }

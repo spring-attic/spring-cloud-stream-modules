@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.cloud.stream.module.MaxMessagesProperties;
 import org.springframework.cloud.stream.module.file.FileConsumerProperties;
 import org.springframework.cloud.stream.module.file.FileUtils;
 import org.springframework.cloud.stream.module.sftp.SftpSessionFactoryConfiguration;
@@ -44,8 +43,7 @@ import org.springframework.util.StringUtils;
  * @author Gary Russell
  */
 @EnableBinding(Source.class)
-@EnableConfigurationProperties({SftpSourceProperties.class,
-		FileConsumerProperties.class, MaxMessagesProperties.class})
+@EnableConfigurationProperties({SftpSourceProperties.class, FileConsumerProperties.class})
 @Import({TriggerConfiguration.class, SftpSessionFactoryConfiguration.class})
 public class SftpSource {
 

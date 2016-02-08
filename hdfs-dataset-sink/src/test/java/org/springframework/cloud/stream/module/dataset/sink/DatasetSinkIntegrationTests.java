@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,19 @@ package org.springframework.cloud.stream.module.dataset.sink;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
+import org.junit.Assume;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -37,11 +45,6 @@ import org.springframework.messaging.support.GenericMessage;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 /**
  * @author Thomas Risberg
@@ -66,6 +69,11 @@ public abstract class DatasetSinkIntegrationTests {
 	@Autowired
 	@Bindings(DatasetSinkConfiguration.class)
 	protected Sink sink;
+
+	@BeforeClass
+	public static void setupClass() {
+		Assume.assumeFalse(System.getProperty("os.name").startsWith("Windows"));
+	}
 
 	@Before
 	public void setup() throws IOException {

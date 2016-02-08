@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import org.cassandraunit.spring.EmbeddedCassandra;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -63,7 +62,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 				CassandraUnitDependencyInjectionIntegrationTestExecutionListener.class })
 @SpringApplicationConfiguration(CassandraSinkApplication.class)
 @IntegrationTest({"spring.cassandra.keyspace=" + CassandraSinkIntegrationTests.CASSANDRA_KEYSPACE,
-		"spring.cassandra.createKeyspace=true"})
+		"spring.cassandra.createKeyspace=true",
+		"server.port=-1"})
 @EmbeddedCassandra(configuration = EmbeddedCassandraServerHelper.CASSANDRA_RNDPORT_YML_FILE, timeout = 60000)
 @DirtiesContext
 public abstract class CassandraSinkIntegrationTests {
