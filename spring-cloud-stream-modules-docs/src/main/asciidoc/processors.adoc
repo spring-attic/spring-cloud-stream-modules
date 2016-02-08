@@ -52,10 +52,10 @@ $$headersExpression$$:: A SpEL expression used to derive the http headers map to
 $$expectedResponseType$$:: The type used to interpret the response.
 $$replyExpression$$:: A SpEL expression used to compute the final result, applied against the whole http response.
 
-[[spring-cloud-stream-modules-noop]]
-=== Noop (`noop`)
+[[spring-cloud-stream-modules-bridge]]
+=== Bridge (`bridge`)
 
-A Processor module that returns messages that is passed in for performance testing.
+A Processor module that returns messages that is passed by connecting just the input and output channels.
 
 [[spring-cloud-stream-modules-groovy-transform]]
 === Groovy Transform (`groovy-transform`)

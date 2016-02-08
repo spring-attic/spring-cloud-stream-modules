@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.noop;
+package org.springframework.cloud.stream.module.bridge;
 
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
@@ -22,12 +22,12 @@ import org.springframework.integration.annotation.Transformer;
 import org.springframework.messaging.Message;
 
 /**
- * A Processor module that returns messages that is passed in for performance testing.
+ * A Processor application that connects input and output channels.
  *
  * @author Glenn Renfro
  */
 @EnableBinding(Processor.class)
-public class NoOpProcessor {
+public class BridgeProcessor {
 
 	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
 	public Object transform(Message<?> message) {

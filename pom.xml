@@ -42,12 +42,12 @@
 		<module>trigger-source</module>
 		<module>twitterstream-source</module>
 		<!-- processors in alphabetical order -->
+		<module>bridge-processor</module>
 		<module>filter-processor</module>
 		<module>groovy-filter-processor</module>
 		<module>groovy-transform-processor</module>
 		<module>httpclient-processor</module>
 		<module>integration-test-processor</module>
-		<module>noop-processor</module>
 		<module>pmml-processor</module>
 		<module>splitter-processor</module>
 		<module>transform-processor</module>
@@ -189,7 +189,7 @@
 		<!--TODO: Move transport related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-stream-binder-redis</artifactId>
+			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
