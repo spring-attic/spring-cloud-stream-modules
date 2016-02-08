@@ -1,0 +1,25 @@
+= Spring Cloud Stream Router Sink
+
+This module routes messages to named channels.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+RouterSinkApplication:: the Spring Boot Main Application
+RouterSink:: the Router sink
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/router-sink-${version}-exec.jar
+```
+
