@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.transform;
+package org.springframework.cloud.stream.module.bridge;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -27,23 +27,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.cloud.stream.module.noop.NoOpProcessor;
-import org.springframework.cloud.stream.module.noop.NoOpProcessorApplication;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Integration Tests for the NoOp Processor.
+ * Integration Tests for the Bridge Processor.
  *
  * @author Glenn Renfro
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = NoOpProcessorApplication.class)
-public class NoOpProcessorIntegrationTests {
+@SpringApplicationConfiguration(classes = BridgeProcessorApplication.class)
+public class BridgeProcessorIntegrationTests {
 
 	@Autowired
-	@Bindings(NoOpProcessor.class)
+	@Bindings(BridgeProcessor.class)
 	protected Processor channels;
 
 	@Autowired

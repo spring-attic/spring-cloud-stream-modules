@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package org.springframework.cloud.stream.module.noop;
+package org.springframework.cloud.stream.module.bridge;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * A main application that runs the NoOp Processor as a standalone app.
+ * A main application that runs the Bridge Processor as a standalone app.
  *
  * @author Glenn Renfro
  */
 @SpringBootApplication
-public class NoOpProcessorApplication {
+public class BridgeProcessorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NoOpProcessorApplication.class, args);
+		SpringApplication.run(BridgeProcessorApplication.class, args);
 	}
 
 }

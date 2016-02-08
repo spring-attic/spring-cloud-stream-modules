@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>noop-processor</artifactId>
+	<artifactId>bridge-processor</artifactId>
 	<packaging>jar</packaging>
-	<name>NoOp Processor</name>
-	<description>No Operation Processor for performance testing</description>
+	<name>Bridge Processor</name>
+	<description>Bridge Processor that connects input/output channel</description>
 
 	<parent>
 		<groupId>org.springframework.cloud.stream.module</groupId>
@@ -14,7 +14,7 @@
 	</parent>
 
 	<properties>
-		<start-class>org.springframework.cloud.stream.module.noop.NoOpProcessorApplication</start-class>
+		<start-class>org.springframework.cloud.stream.module.bridge.BridgeProcessorApplication</start-class>
 	</properties>
 
 </project>

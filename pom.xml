@@ -42,12 +42,12 @@
 		<module>trigger-source</module>
 		<module>twitterstream-source</module>
 		<!-- processors in alphabetical order -->
+		<module>bridge-processor</module>
 		<module>filter-processor</module>
 		<module>groovy-filter-processor</module>
 		<module>groovy-transform-processor</module>
 		<module>httpclient-processor</module>
 		<module>integration-test-processor</module>
-		<module>noop-processor</module>
 		<module>pmml-processor</module>
 		<module>splitter-processor</module>
 		<module>transform-processor</module>
