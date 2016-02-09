@@ -88,7 +88,7 @@ public class KafkaConfigurationPropertiesTest {
     }
 
     @Test
-    public void testValidTopicSceanrio() throws Exception {
+    public void testValidTopicScenario() throws Exception {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         EnvironmentTestUtils.addEnvironment(context, "topics:foo");
         context.register(Config.class);
@@ -99,7 +99,7 @@ public class KafkaConfigurationPropertiesTest {
     }
 
     @Test
-    public void testValidPartitionsSceanrio() throws Exception {
+    public void testValidPartitionsScenario() throws Exception {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         EnvironmentTestUtils.addEnvironment(context, "partitions.bar:0,1");
         context.register(Config.class);

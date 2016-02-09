@@ -28,37 +28,77 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
- * Properties related to connecting to Kafka broker.
+ * Properties for the Kafka Source.
  *
  * @author Soby Chacko
  */
 @ConfigurationProperties
 public class KafkaConfigurationProperties {
 
+    /**
+     * Zookeeper connect string.
+     */
     private String zkConnect = "localhost:2181";
 
+    /**
+     * Zookeeper connection timeout value.
+     */
     private String zkConnectionTimeout = "6000";
 
+    /**
+     * Zookeeper session timeout value.
+     */
     private String zkSessionTimeout = "6000";
 
+    /**
+     * Zookeeper sync time
+     */
     private String zkSyncTime = "2000";
 
+    /**
+     * Concurrency attribute indicating the number of listeners over topic partitions.
+     */
     private Integer concurrency = 1;
 
+    /**
+     * Max bytes that can be fetched by the consumer.
+     */
     private Integer maxFetch = 1024 * 1024;
 
+    /**
+     * Timeout for waiting each concurrent consumer to finish before it is stopped.
+     */
     private Integer stopTimeout = 1000;
 
+    /**
+     * The maximum number of messages that are buffered by each concurrent comsumer.
+     */
     private Integer queueSize = 1024;
 
-    private Class keyDecoder;
+    /**
+     * {@link kafka.serializer.Decoder} for Kafka topic Key.
+     */
+    private Class<?> keyDecoder;
 
-    private Class payloadDecoder;
+    /**
+     * {@link kafka.serializer.Decoder} for Kafka topic payload.
+     */
+    private Class<?> payloadDecoder;
 
+    /**
+     * Partitions to fetch from. For ex, partitions.foo=1,2,3 partitions.bar=0,1 etc.
+     */
     private Map<String, String> partitions = new HashMap<>();
 
+    /**
+     * Initial offsets to read from the topic partitions.
+     * For ex, initialOffsets.foo.0=0, initialOffsets.foo.1=10 etc.
+     */
     private Map<String, Map<Integer, Long>> initialOffsets = new HashMap<>();
 
+    /**
+     * Comma separated list of Kafka topics.
+     */
     private String[] topics;
 
     @AssertTrue(message = "Either a list of topics (--topics) OR partitions.<topic>=<comma separated partitions> (--partitions.<topic>) must be provided")
@@ -154,19 +194,19 @@ public class KafkaConfigurationProperties {
         this.zkSyncTime = zkSyncTime;
     }
 
-    public Class getKeyDecoder() {
+    public Class<?> getKeyDecoder() {
         return keyDecoder;
     }
 
-    public void setKeyDecoder(Class keyDecoder) {
+    public void setKeyDecoder(Class<?> keyDecoder) {
         this.keyDecoder = keyDecoder;
     }
 
-    public Class getPayloadDecoder() {
+    public Class<?> getPayloadDecoder() {
         return payloadDecoder;
     }
 
-    public void setPayloadDecoder(Class payloadDecoder) {
+    public void setPayloadDecoder(Class<?> payloadDecoder) {
         this.payloadDecoder = payloadDecoder;
     }
 

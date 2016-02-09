@@ -89,6 +89,9 @@ public class KafkaSource {
                 new KafkaMessageListenerContainer(kafkaConnectionFactory(), partitions);
 
         // if we have less target partitions than target concurrency, adjust accordingly
+        if(properties.getConcurrency() > partitions.length) {
+            logger.warn(String.format("%s : %d", "Max concurrency is reduced to", partitions.length));
+        }
         container.setConcurrency(Math.min(properties.getConcurrency(), partitions.length));
 
         container.setMaxFetch(properties.getMaxFetch());
@@ -100,7 +103,7 @@ public class KafkaSource {
     }
 
     @Bean
-    public KafkaMessageDrivenChannelAdapter kafkaMessageDrivenChannelAdapter() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public KafkaMessageDrivenChannelAdapter kafkaMessageDrivenChannelAdapter() throws IllegalAccessException, InstantiationException {
         final KafkaMessageDrivenChannelAdapter kafkaMessageDrivenChannelAdapter =
                 new KafkaMessageDrivenChannelAdapter(container());
         kafkaMessageDrivenChannelAdapter.setKeyDecoder(getKeyDecoder());
@@ -148,17 +151,17 @@ public class KafkaSource {
         return retryTemplate;
     }
 
-    private Decoder<?> getKeyDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    private Decoder<?> getKeyDecoder() throws IllegalAccessException, InstantiationException {
         Class keyDecoder = properties.getKeyDecoder();
         return getDecoder(keyDecoder);
     }
 
-    private Decoder<?> getPayloadDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    private Decoder<?> getPayloadDecoder() throws IllegalAccessException, InstantiationException {
         Class payloadDecoder = properties.getPayloadDecoder();
         return getDecoder(payloadDecoder);
     }
 
-    private Decoder<?> getDecoder(Class decoder) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    private Decoder<?> getDecoder(Class decoder) throws IllegalAccessException, InstantiationException {
         if (decoder == null) {
             return new DefaultDecoder(new VerifiableProperties());
         }
