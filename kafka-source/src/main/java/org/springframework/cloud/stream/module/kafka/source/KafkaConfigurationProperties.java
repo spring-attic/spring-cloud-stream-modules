@@ -16,10 +16,16 @@
 
 package org.springframework.cloud.stream.module.kafka.source;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.util.HashMap;
 import java.util.Map;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Properties related to connecting to Kafka broker.
@@ -29,131 +35,147 @@ import java.util.Map;
 @ConfigurationProperties
 public class KafkaConfigurationProperties {
 
-	private String zkConnect = "localhost:2181";
+    private String zkConnect = "localhost:2181";
 
-	private String zkConnectionTimeout = "6000";
+    private String zkConnectionTimeout = "6000";
 
-	private String zkSessionTimeout = "6000";
+    private String zkSessionTimeout = "6000";
 
-	private String zkSyncTime = "2000";
+    private String zkSyncTime = "2000";
 
-	private String keyDecoder;
+    private Integer concurrency = 1;
 
-	private String payloadDecoder;
+    private Integer maxFetch = 1024 * 1024;
 
-	private Map<String, String> partitions = new HashMap<>();
+    private Integer stopTimeout = 1000;
 
-	private Map<String, Map<Integer, Long>> initialOffsets = new HashMap<>();
+    private Integer queueSize = 1024;
 
-	private String[] topics;
+    private Class keyDecoder;
 
-	private int concurrency;
-	private int maxFetch;
-	private int stopTimeout;
-	private int queueSize;
+    private Class payloadDecoder;
 
-	public int getQueueSize() {
-		return queueSize;
-	}
+    private Map<String, String> partitions = new HashMap<>();
 
-	public void setQueueSize(int queueSize) {
-		this.queueSize = queueSize;
-	}
+    private Map<String, Map<Integer, Long>> initialOffsets = new HashMap<>();
 
-	public int getStopTimeout() {
-		return stopTimeout;
-	}
+    private String[] topics;
 
-	public void setStopTimeout(int stopTimeout) {
-		this.stopTimeout = stopTimeout;
-	}
+    @AssertTrue(message = "Either a list of topics (--topics) OR partitions.<topic>=<comma separated partitions> (--partitions.<topic>) must be provided")
+    public boolean isTopicsOrPartitions() {
+        return !ObjectUtils.isEmpty(getTopics()) ^ !CollectionUtils.isEmpty(getPartitions());
+    }
 
-	public int getMaxFetch() {
-		return maxFetch;
-	}
+    @NotNull
+    public int getQueueSize() {
+        return queueSize;
+    }
 
-	public void setMaxFetch(int maxFetch) {
-		this.maxFetch = maxFetch;
-	}
+    public void setQueueSize(int queueSize) {
+        this.queueSize = queueSize;
+    }
 
-	public int getConcurrency() {
-		return concurrency;
-	}
+    @NotNull
+    public int getStopTimeout() {
+        return stopTimeout;
+    }
 
-	public void setConcurrency(int concurrency) {
-		this.concurrency = concurrency;
-	}
+    public void setStopTimeout(int stopTimeout) {
+        this.stopTimeout = stopTimeout;
+    }
 
-	public String[] getTopics() {
-		return topics;
-	}
+    @NotNull
+    public int getMaxFetch() {
+        return maxFetch;
+    }
 
-	public void setTopics(String[] topics) {
-		this.topics = topics;
-	}
+    public void setMaxFetch(int maxFetch) {
+        this.maxFetch = maxFetch;
+    }
 
-	public Map<String, String> getPartitions() {
-		return partitions;
-	}
+    @NotNull
+    public int getConcurrency() {
+        return concurrency;
+    }
 
-	public void setPartitions(Map<String, String> partitions) {
-		this.partitions = partitions;
-	}
+    public void setConcurrency(int concurrency) {
+        this.concurrency = concurrency;
+    }
 
-	public String getZkConnect() {
-		return zkConnect;
-	}
+    public String[] getTopics() {
+        return topics;
+    }
 
-	public void setZkConnect(String zkConnect) {
-		this.zkConnect = zkConnect;
-	}
+    public void setTopics(String[] topics) {
+        this.topics = topics;
+    }
 
-	public String getZkConnectionTimeout() {
-		return zkConnectionTimeout;
-	}
+    public Map<String, String> getPartitions() {
+        return partitions;
+    }
 
-	public void setZkConnectionTimeout(String zkConnectionTimeout) {
-		this.zkConnectionTimeout = zkConnectionTimeout;
-	}
+    public void setPartitions(Map<String, String> partitions) {
+        this.partitions = partitions;
+    }
 
-	public String getZkSessionTimeout() {
-		return zkSessionTimeout;
-	}
+    @NotBlank
+    public String getZkConnect() {
+        return zkConnect;
+    }
 
-	public void setZkSessionTimeout(String zkSessionTimeout) {
-		this.zkSessionTimeout = zkSessionTimeout;
-	}
+    public void setZkConnect(String zkConnect) {
+        this.zkConnect = zkConnect;
+    }
 
-	public String getZkSyncTime() {
-		return zkSyncTime;
-	}
+    @NotBlank
+    public String getZkConnectionTimeout() {
+        return zkConnectionTimeout;
+    }
 
-	public void setZkSyncTime(String zkSyncTime) {
-		this.zkSyncTime = zkSyncTime;
-	}
+    public void setZkConnectionTimeout(String zkConnectionTimeout) {
+        this.zkConnectionTimeout = zkConnectionTimeout;
+    }
 
-	public String getKeyDecoder() {
-		return keyDecoder;
-	}
+    @NotBlank
+    public String getZkSessionTimeout() {
+        return zkSessionTimeout;
+    }
 
-	public void setKeyDecoder(String keyDecoder) {
-		this.keyDecoder = keyDecoder;
-	}
+    public void setZkSessionTimeout(String zkSessionTimeout) {
+        this.zkSessionTimeout = zkSessionTimeout;
+    }
 
-	public String getPayloadDecoder() {
-		return payloadDecoder;
-	}
+    @NotBlank
+    public String getZkSyncTime() {
+        return zkSyncTime;
+    }
 
-	public void setPayloadDecoder(String payloadDecoder) {
-		this.payloadDecoder = payloadDecoder;
-	}
+    public void setZkSyncTime(String zkSyncTime) {
+        this.zkSyncTime = zkSyncTime;
+    }
 
-	public Map<String, Map<Integer, Long>> getInitialOffsets() {
-		return initialOffsets;
-	}
+    public Class getKeyDecoder() {
+        return keyDecoder;
+    }
 
-	public void setInitialOffsets(Map<String, Map<Integer, Long>> initialOffsets) {
-		this.initialOffsets = initialOffsets;
-	}
+    public void setKeyDecoder(Class keyDecoder) {
+        this.keyDecoder = keyDecoder;
+    }
+
+    public Class getPayloadDecoder() {
+        return payloadDecoder;
+    }
+
+    public void setPayloadDecoder(Class payloadDecoder) {
+        this.payloadDecoder = payloadDecoder;
+    }
+
+    public Map<String, Map<Integer, Long>> getInitialOffsets() {
+        return initialOffsets;
+    }
+
+    public void setInitialOffsets(Map<String, Map<Integer, Long>> initialOffsets) {
+        this.initialOffsets = initialOffsets;
+    }
 
 }

@@ -16,32 +16,43 @@
 
 package org.springframework.cloud.stream.module.kafka.source;
 
-import kafka.serializer.Decoder;
-import kafka.serializer.DefaultDecoder;
-import kafka.utils.VerifiableProperties;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
-import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.kafka.Kafka;
-import org.springframework.integration.kafka.core.*;
+import org.springframework.integration.kafka.core.Configuration;
+import org.springframework.integration.kafka.core.ConnectionFactory;
+import org.springframework.integration.kafka.core.DefaultConnectionFactory;
+import org.springframework.integration.kafka.core.Partition;
+import org.springframework.integration.kafka.core.ZookeeperConfiguration;
+import org.springframework.integration.kafka.inbound.KafkaMessageDrivenChannelAdapter;
 import org.springframework.integration.kafka.listener.KafkaMessageListenerContainer;
 import org.springframework.integration.kafka.listener.KafkaNativeOffsetManager;
 import org.springframework.integration.kafka.listener.OffsetManager;
 import org.springframework.integration.kafka.support.ZookeeperConnect;
+import org.springframework.retry.RetryCallback;
+import org.springframework.retry.RetryContext;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import kafka.serializer.Decoder;
+import kafka.serializer.DefaultDecoder;
+import kafka.utils.VerifiableProperties;
 
 /**
  * Source module that receives data from Kafka.
@@ -52,107 +63,163 @@ import java.util.Map;
 @EnableConfigurationProperties(KafkaConfigurationProperties.class)
 public class KafkaSource {
 
-	@Autowired
-	@Bindings(KafkaSource.class)
-	private Source source;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-	@Autowired
-	private KafkaConfigurationProperties properties;
+    private static final int METADATA_VERIFICATION_RETRY_ATTEMPTS = 10;
 
-	@Bean
-	public KafkaMessageListenerContainer container() {
+    private static final double METADATA_VERIFICATION_RETRY_BACKOFF_MULTIPLIER = 2;
 
-		Assert.isTrue(!ObjectUtils.isEmpty(properties.getTopics()) || !ObjectUtils.isEmpty(properties.getPartitions()),
-				"Either a list of topics OR a topic=<comma separated partitions> must be provided");
+    private static final int METADATA_VERIFICATION_RETRY_INITIAL_INTERVAL = 100;
 
-		Configuration zookeeperConfiguration = new ZookeeperConfiguration(zookeeperConnect());
-		ConnectionFactory kafkaConnectionFactory = new DefaultConnectionFactory(zookeeperConfiguration);
+    private static final int METADATA_VERIFICATION_MAX_INTERVAL = 1000;
 
-		Partition[] partitions = getPartitions();
+    @Autowired
+    @Bindings(KafkaSource.class)
+    private Source source;
 
-		KafkaMessageListenerContainer container = ObjectUtils.isEmpty(partitions) ?
-				new KafkaMessageListenerContainer(kafkaConnectionFactory, properties.getTopics()) :
-				new KafkaMessageListenerContainer(kafkaConnectionFactory, partitions);
+    @Autowired
+    private KafkaConfigurationProperties properties;
 
-		container.setOffsetManager(kafkaNativeOffsetManager(kafkaConnectionFactory));
+    @Bean
+    public KafkaMessageListenerContainer container() {
+        Partition[] partitions = getPartitions();
 
-		return container;
-	}
+        KafkaMessageListenerContainer container = ObjectUtils.isEmpty(partitions) ?
+                new KafkaMessageListenerContainer(kafkaConnectionFactory(), properties.getTopics()) :
+                new KafkaMessageListenerContainer(kafkaConnectionFactory(), partitions);
 
-	@Bean
-	public ZookeeperConnect zookeeperConnect() {
-		ZookeeperConnect zookeeperConnect = new ZookeeperConnect();
-		zookeeperConnect.setZkConnect(properties.getZkConnect());
-		zookeeperConnect.setZkConnectionTimeout(properties.getZkConnectionTimeout());
-		zookeeperConnect.setZkSessionTimeout(properties.getZkSessionTimeout());
-		zookeeperConnect.setZkSyncTime(properties.getZkSyncTime());
-		return zookeeperConnect;
-	}
+        // if we have less target partitions than target concurrency, adjust accordingly
+        container.setConcurrency(Math.min(properties.getConcurrency(), partitions.length));
 
-	@Bean
-	public OffsetManager kafkaNativeOffsetManager(ConnectionFactory kafkaConnectionFactory) {
-		return new KafkaNativeOffsetManager(kafkaConnectionFactory, zookeeperConnect(),
-				getInitialOffsets());
-	}
+        container.setMaxFetch(properties.getMaxFetch());
+        container.setStopTimeout(properties.getStopTimeout());
+        container.setQueueSize(properties.getQueueSize());
+        container.setOffsetManager(kafkaNativeOffsetManager(kafkaConnectionFactory()));
 
-	@Bean
-	public IntegrationFlow fromKafka() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        return container;
+    }
 
-		return IntegrationFlows.from(Kafka.messageDriverChannelAdapter(container())
-				.keyDecoder(getKeyDecoder())
-				.payloadDecoder(getPayloadDecoder()))
-				.channel(source.output())
-				.get();
-	}
+    @Bean
+    public KafkaMessageDrivenChannelAdapter kafkaMessageDrivenChannelAdapter() throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        final KafkaMessageDrivenChannelAdapter kafkaMessageDrivenChannelAdapter =
+                new KafkaMessageDrivenChannelAdapter(container());
+        kafkaMessageDrivenChannelAdapter.setKeyDecoder(getKeyDecoder());
+        kafkaMessageDrivenChannelAdapter.setPayloadDecoder(getPayloadDecoder());
+        kafkaMessageDrivenChannelAdapter.setOutputChannel(source.output());
+        return kafkaMessageDrivenChannelAdapter;
+    }
 
-	private Decoder<?> getKeyDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-		String keyDecoder = properties.getKeyDecoder();
-		return getDecoder(keyDecoder);
-	}
+    @Bean
+    public ConnectionFactory kafkaConnectionFactory() {
+        Configuration zookeeperConfiguration = new ZookeeperConfiguration(zookeeperConnect());
+        return new DefaultConnectionFactory(zookeeperConfiguration);
+    }
 
-	private Decoder<?> getPayloadDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-		String payloadDecoder = properties.getPayloadDecoder();
-		return getDecoder(payloadDecoder);
-	}
+    @Bean
+    public ZookeeperConnect zookeeperConnect() {
+        ZookeeperConnect zookeeperConnect = new ZookeeperConnect();
+        zookeeperConnect.setZkConnect(properties.getZkConnect());
+        zookeeperConnect.setZkConnectionTimeout(properties.getZkConnectionTimeout());
+        zookeeperConnect.setZkSessionTimeout(properties.getZkSessionTimeout());
+        zookeeperConnect.setZkSyncTime(properties.getZkSyncTime());
+        return zookeeperConnect;
+    }
 
-	private Decoder<?> getDecoder(String decoder) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-		if (decoder == null) {
-			return new DefaultDecoder(new VerifiableProperties());
-		}
-		Class decoderClass = Class.forName(decoder);
-		return (Decoder) decoderClass.newInstance();
-	}
+    @Bean
+    public OffsetManager kafkaNativeOffsetManager(ConnectionFactory kafkaConnectionFactory) {
+        return new KafkaNativeOffsetManager(kafkaConnectionFactory, zookeeperConnect(),
+                getInitialOffsets());
+    }
 
-	private Partition[] getPartitions() {
-		Map<String, String> partitionsMap = properties.getPartitions();
-		List<Partition> partitionList = new ArrayList<>();
+    @Bean
+    public RetryTemplate retryTemplate() {
+        RetryTemplate retryTemplate = new RetryTemplate();
 
-		if (!partitionsMap.isEmpty()) {
-			for (Map.Entry<String, String> entry : partitionsMap.entrySet()) {
+        SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
+        simpleRetryPolicy.setMaxAttempts(METADATA_VERIFICATION_RETRY_ATTEMPTS);
+        retryTemplate.setRetryPolicy(simpleRetryPolicy);
 
-				String[] topicPartitions = StringUtils.commaDelimitedListToStringArray(entry.getValue());
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(METADATA_VERIFICATION_RETRY_INITIAL_INTERVAL);
+        backOffPolicy.setMultiplier(METADATA_VERIFICATION_RETRY_BACKOFF_MULTIPLIER);
+        backOffPolicy.setMaxInterval(METADATA_VERIFICATION_MAX_INTERVAL);
+        retryTemplate.setBackOffPolicy(backOffPolicy);
 
-				for (String part : topicPartitions) {
-					partitionList.add(new Partition(entry.getKey(), Integer.valueOf(part)));
-				}
-			}
-		}
+        return retryTemplate;
+    }
 
-		Partition[] partitions = new Partition[partitionList.size()];
-		return partitionList.toArray(partitions);
-	}
+    private Decoder<?> getKeyDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Class keyDecoder = properties.getKeyDecoder();
+        return getDecoder(keyDecoder);
+    }
 
-	private Map<Partition, Long> getInitialOffsets() {
-		Map<Partition, Long> partitionInitOffsets = new HashMap<>();
-		Map<String, Map<Integer, Long>> initialOffsets = properties.getInitialOffsets();
+    private Decoder<?> getPayloadDecoder() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        Class payloadDecoder = properties.getPayloadDecoder();
+        return getDecoder(payloadDecoder);
+    }
 
-		for (Map.Entry<String, Map<Integer, Long>> topicEntry : initialOffsets.entrySet()) {
-			for (Map.Entry<Integer, Long> partitionEntry : topicEntry.getValue().entrySet()) {
-				Partition partition = new Partition(topicEntry.getKey(), partitionEntry.getKey());
-				partitionInitOffsets.put(partition, partitionEntry.getValue());
-			}
-		}
-		return partitionInitOffsets;
-	}
+    private Decoder<?> getDecoder(Class decoder) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        if (decoder == null) {
+            return new DefaultDecoder(new VerifiableProperties());
+        }
+        return (Decoder) decoder.newInstance();
+    }
+
+    private Partition[] getPartitions() {
+        Collection<Partition> listenedPartitions = new ArrayList<>();
+        if (CollectionUtils.isEmpty(properties.getPartitions())) {
+            for (String topic : properties.getTopics()) {
+                listenedPartitions.addAll(getPartitionsForTopic(topic));
+            }
+        }
+        else {
+            Map<String, String> partitionsMap = properties.getPartitions();
+
+            if (!partitionsMap.isEmpty()) {
+                for (Map.Entry<String, String> entry : partitionsMap.entrySet()) {
+
+                    String[] topicPartitions = StringUtils.commaDelimitedListToStringArray(entry.getValue());
+                    for (String part : topicPartitions) {
+                        listenedPartitions.add(new Partition(entry.getKey(), Integer.valueOf(part)));
+                    }
+                }
+            }
+        }
+        Partition[] partitions = new Partition[listenedPartitions.size()];
+        return listenedPartitions.toArray(partitions);
+    }
+
+    private Collection<Partition> getPartitionsForTopic(final String topicName) {
+        try {
+            return retryTemplate().execute(new RetryCallback<Collection<Partition>, Exception>() {
+
+                @Override
+                public Collection<Partition> doWithRetry(RetryContext context) throws Exception {
+                    kafkaConnectionFactory().refreshMetadata(Collections.singleton(topicName));
+                    Collection<Partition> partitions = kafkaConnectionFactory().getPartitions(topicName);
+                    logger.info(String.format("%s - %s : %d", "Number of partitions listening for topic", topicName, partitions.size()));
+                    return partitions;
+                }
+            });
+        }
+        catch (Exception e) {
+            String message = String.format("%s - %s", "Cannot get partition information for topic", topicName);
+            logger.error(message, e);
+            throw new IllegalStateException(message, e);
+        }
+    }
+
+    private Map<Partition, Long> getInitialOffsets() {
+        Map<Partition, Long> partitionInitOffsets = new HashMap<>();
+        Map<String, Map<Integer, Long>> initialOffsets = properties.getInitialOffsets();
+
+        for (Map.Entry<String, Map<Integer, Long>> topicEntry : initialOffsets.entrySet()) {
+            for (Map.Entry<Integer, Long> partitionEntry : topicEntry.getValue().entrySet()) {
+                Partition partition = new Partition(topicEntry.getKey(), partitionEntry.getKey());
+                partitionInitOffsets.put(partition, partitionEntry.getValue());
+            }
+        }
+        return partitionInitOffsets;
+    }
 
 }
