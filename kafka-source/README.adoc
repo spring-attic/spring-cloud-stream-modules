@@ -1,0 +1,44 @@
+= Spring Cloud Stream Kafka Source
+
+This module receives messages from Kafka topics.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+KafkaSourceApplication:: the Spring Boot Main Application
+KafkaSource:: the Kafka source
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/kafka-source-${version}-exec.jar
+
+- Various examples of using the configuration:
+
+-- Custom zookeeper connection
+
+$> java -jar target/kafka-source-${version}-exec.jar --zkConnect=localhost:2192
+
+-- Provide topics
+
+$> java -jar target/kafka-source-${version}-exec.jar --topics=foo,bar
+
+-- Providing partitions for topics [Note - either explicit topics or partitions can be provided. If both are provided,
+-- partitions.* option takes precedence.]
+
+$> java -jar target/kafka-source-${version}-exec.jar --partitions.foo=1,2,3,4 --partitions.bar=1,2
+
+-- Providing initial offsets for partitions
+
+$> java -jar target/kafka-source-${version}-exec.jar --partitions.foo=1,2 --initialOffsets.foo.1=100 --initialOffsets.foo.2=101
+
+```
