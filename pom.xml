@@ -187,7 +187,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-spring-service-connector</artifactId>
 		</dependency>
-		<!--TODO: Move transporct related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
+		<!--TODO: Move transport related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-redis</artifactId>

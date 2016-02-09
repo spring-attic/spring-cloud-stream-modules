@@ -61,7 +61,6 @@
         <dependency>
             <groupId>org.springframework.cloud.stream.module</groupId>
             <artifactId>spring-cloud-stream-modules-test-support</artifactId>
-            <version>1.0.0.BUILD-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
