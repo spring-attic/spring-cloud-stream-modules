@@ -33,6 +33,7 @@
 		<module>ftp-source</module>
 		<module>http-source</module>
 		<module>jdbc-source</module>
+		<module>jms-source</module>
 		<module>load-generator-source</module>
 		<module>loggregator-source</module>
 		<module>rabbit-source</module>
