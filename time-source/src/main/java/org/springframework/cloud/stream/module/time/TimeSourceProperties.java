@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.time;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.stream.module.DateFormat;
 
 /**
  * Describes properties of the {@code time} source module.

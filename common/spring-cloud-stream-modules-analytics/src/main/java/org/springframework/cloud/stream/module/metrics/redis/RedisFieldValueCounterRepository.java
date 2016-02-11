@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.cloud.stream.module.metrics;
+package org.springframework.cloud.stream.module.metrics.redis;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.cloud.stream.module.metrics.FieldValueCounter;
+import org.springframework.cloud.stream.module.metrics.FieldValueCounterRepository;
 import org.springframework.cloud.stream.module.retry.StringRedisRetryTemplate;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.ZSetOperations;

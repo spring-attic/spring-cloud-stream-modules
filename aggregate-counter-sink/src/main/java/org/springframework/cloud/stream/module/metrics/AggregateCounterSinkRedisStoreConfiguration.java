@@ -20,7 +20,7 @@ import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.cloud.stream.module.metrics.redis.RedisFieldValueCounterRepository;
+import org.springframework.cloud.stream.module.metrics.redis.RedisAggregateCounterRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -31,20 +31,20 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 /**
- * Configuration class for Redis based field value counter.
+ * Configuration class for Redis based aggregate counter.
  *
  * @author Ilayaperumal Gopinathan
  */
 @Configuration
 @ConditionalOnProperty(value="store", havingValue = "redis")
-public class FieldValueCounterSinkRedisStoreConfiguration {
+public class AggregateCounterSinkRedisStoreConfiguration {
 
 	@Autowired
 	RedisConnectionFactory redisConnectionFactory;
 
 	@Bean
-	public FieldValueCounterWriter redisMetricRepository() {
-		return new RedisFieldValueCounterRepository(redisConnectionFactory, retryOperations());
+	public AggregateCounterRepository aggregateCounterRepository() {
+		return new RedisAggregateCounterRepository(redisConnectionFactory, retryOperations());
 	}
 
 	@Bean
