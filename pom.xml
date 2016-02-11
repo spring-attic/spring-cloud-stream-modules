@@ -58,6 +58,7 @@
 		<module>splitter-processor</module>
 		<module>transform-processor</module>
 		<!-- sinks in alphabetical order -->
+		<module>aggregate-counter-sink</module>
 		<module>cassandra-sink</module>
 		<module>counter-sink</module>
 		<module>field-value-counter-sink</module>

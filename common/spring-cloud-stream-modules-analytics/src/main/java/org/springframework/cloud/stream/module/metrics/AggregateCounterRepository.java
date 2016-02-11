@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,30 +15,11 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 /**
- * Common configuration properties for the Spring Cloud Stream metric modules.
+ * A repository to interact with Aggregate Counters.
  *
- * @author Eric Bottard
  * @author Ilayaperumal Gopinathan
  */
-@ConfigurationProperties
-public class MetricProperties {
-
-	public static final String REDIS_STORE_VALUE = "redis";
-	/**
-	 * The name of a store used to store the counter.
-	 */
-	// Stored as a String to allow forward extension of the module
-	private String store = REDIS_STORE_VALUE;
-
-	public String getStore() {
-		return store;
-	}
-
-	public void setStore(String store) {
-		this.store = store;
-	}
+public interface AggregateCounterRepository extends AggregateCounterReader, AggregateCounterWriter {
 
 }

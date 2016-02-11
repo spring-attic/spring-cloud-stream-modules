@@ -19,7 +19,9 @@ package org.springframework.cloud.stream.module.metrics;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.module.metrics.memory.InMemoryAggregateCounterRepository;
+import org.springframework.cloud.stream.module.metrics.redis.RedisAggregateCounterRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.RedisConnectionFailureException;
@@ -30,26 +32,35 @@ import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
 /**
- * Configuration class for Redis based field value counter.
+ * Configuration class for Redis based aggregate counter.
  *
  * @author Ilayaperumal Gopinathan
  */
 @Configuration
-@ConditionalOnProperty(value="store", havingValue = "redis")
-public class FieldValueCounterSinkRedisStoreConfiguration {
+@EnableConfigurationProperties(AggregateCounterSinkProperties.class)
+public class AggregateCounterSinkStoreConfiguration {
 
 	@Autowired
-	RedisConnectionFactory redisConnectionFactory;
+	private RedisConnectionFactory redisConnectionFactory;
+
+	@Autowired
+	private AggregateCounterSinkProperties config;
 
 	@Bean
-	public FieldValueCounterWriter redisMetricRepository() {
-		return new RedisFieldValueCounterRepository(redisConnectionFactory, retryOperations());
+	public AggregateCounterRepository aggregateCounterRepository() {
+		if (config.getStore().equals(MetricProperties.REDIS_STORE_VALUE)) {
+			return new RedisAggregateCounterRepository(redisConnectionFactory, retryOperations());
+		}
+		else {
+			return new InMemoryAggregateCounterRepository();
+		}
 	}
 
 	@Bean
 	public RetryOperations retryOperations() {
 		RetryTemplate retryTemplate = new RetryTemplate();
-		retryTemplate.setRetryPolicy(new SimpleRetryPolicy(3, Collections.<Class<? extends Throwable>, Boolean>singletonMap(RedisConnectionFailureException.class, true)));
+		retryTemplate.setRetryPolicy(new SimpleRetryPolicy(3,
+				Collections.<Class<? extends Throwable>, Boolean>singletonMap(RedisConnectionFailureException.class, true)));
 		ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
 		backOffPolicy.setInitialInterval(1000L);
 		backOffPolicy.setMaxInterval(1000L);

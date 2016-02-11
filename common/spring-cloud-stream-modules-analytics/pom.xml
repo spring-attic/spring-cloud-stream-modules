@@ -32,5 +32,9 @@
 			<!-- projects that depend on scsm-analytics should choose explicitly which store(s) they want -->
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
 	</dependencies>
 </project>

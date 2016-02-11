@@ -18,23 +18,17 @@ package org.springframework.cloud.stream.module.metrics;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.repository.MetricRepository;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.test.junit.redis.RedisTestSupport;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Mark Pollack

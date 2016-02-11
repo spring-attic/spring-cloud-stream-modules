@@ -55,7 +55,7 @@ public class FieldValueCounterSinkWithDefaultsTests {
 	private Sink sink;
 
 	@Autowired
-	private RedisFieldValueCounterRepository fieldValueCounterRepository;
+	private FieldValueCounterRepository fieldValueCounterRepository;
 
 	@Before
 	@After

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,32 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.cloud.stream.module.metrics;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Common configuration properties for the Spring Cloud Stream metric modules.
- *
- * @author Eric Bottard
  * @author Ilayaperumal Gopinathan
  */
-@ConfigurationProperties
-public class MetricProperties {
+@SpringBootApplication
+public class AggregateCounterSinkApplication {
 
-	public static final String REDIS_STORE_VALUE = "redis";
-	/**
-	 * The name of a store used to store the counter.
-	 */
-	// Stored as a String to allow forward extension of the module
-	private String store = REDIS_STORE_VALUE;
-
-	public String getStore() {
-		return store;
-	}
-
-	public void setStore(String store) {
-		this.store = store;
+	public static void main(String[] args) {
+		SpringApplication.run(AggregateCounterSinkApplication.class, args);
 	}
 
 }

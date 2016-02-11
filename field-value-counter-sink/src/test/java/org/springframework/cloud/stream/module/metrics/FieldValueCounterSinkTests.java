@@ -35,12 +35,12 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.test.junit.redis.RedisTestSupport;
-import org.springframework.tuple.Tuple;
-import org.springframework.tuple.TupleBuilder;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.tuple.Tuple;
+import org.springframework.tuple.TupleBuilder;
 
 /**
  * @author Ilayaperumal Gopinathan
@@ -61,7 +61,7 @@ public class FieldValueCounterSinkTests {
 	private Sink sink;
 
 	@Autowired
-	private RedisFieldValueCounterRepository fieldValueCounterRepository;
+	private FieldValueCounterRepository fieldValueCounterRepository;
 
 	@Before
 	@After

@@ -1,0 +1,22 @@
+{
+  "hints": [
+    {
+      "name": "store",
+      "values": [
+        {
+          "value": "memory",
+          "description": "store the aggregate-counter in memory only"
+        },
+        {
+          "value": "redis",
+          "description": "flush the aggregate-counter value to redis"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}
