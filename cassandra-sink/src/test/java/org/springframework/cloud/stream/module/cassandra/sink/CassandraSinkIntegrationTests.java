@@ -42,6 +42,7 @@ import org.springframework.cloud.stream.module.cassandra.test.domain.Book;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
 import org.springframework.messaging.support.GenericMessage;
+import org.springframework.util.StringUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -133,6 +134,40 @@ public abstract class CassandraSinkIntegrationTests {
 			Jackson2JsonObjectMapper mapper = new Jackson2JsonObjectMapper(objectMapper);
 
 			this.sink.input().send(new GenericMessage<>(mapper.toJson(books)));
+
+			final Select select = QueryBuilder.select().all().from("book");
+
+			assertEqualsEventually(5, new Supplier<Integer>() {
+
+				@Override
+				public Integer get() {
+					return cassandraTemplate.select(select, Book.class).size();
+				}
+
+			});
+
+			this.cassandraTemplate.truncate("book");
+		}
+
+	}
+
+	@WebIntegrationTest({"spring.cassandra.init-script=init-db.cql",
+			"ingest-query=insert into book (isbn, title, author, pages, saleDate, inStock) values (:myIsbn, :myTitle, :myAuthor, ?, ?, ?)"})
+	public static class CassandraSinkIngestNamedParamsTests extends CassandraSinkIntegrationTests {
+
+		@Test
+		public void testIngestQuery() throws Exception {
+			List<Book> books = getBookList(5);
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+			Jackson2JsonObjectMapper mapper = new Jackson2JsonObjectMapper(objectMapper);
+
+			String booksJsonWithNamedParams = mapper.toJson(books);
+			booksJsonWithNamedParams = StringUtils.replace(booksJsonWithNamedParams, "isbn","myIsbn");
+			booksJsonWithNamedParams = StringUtils.replace(booksJsonWithNamedParams, "title","myTitle");
+			booksJsonWithNamedParams = StringUtils.replace(booksJsonWithNamedParams, "author","myAuthor");
+			this.sink.input().send(new GenericMessage<>(booksJsonWithNamedParams));
 
 			final Select select = QueryBuilder.select().all().from("book");
 
