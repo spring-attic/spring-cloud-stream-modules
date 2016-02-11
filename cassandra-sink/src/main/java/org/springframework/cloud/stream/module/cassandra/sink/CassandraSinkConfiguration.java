@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,6 +58,7 @@ import com.fasterxml.jackson.databind.util.StdDateFormat;
 /**
  * @author Artem Bilan
  * @author Thomas Risberg
+ * @author Ashu Gairola
  */
 @Configuration
 @Import({SpelExpressionConverterConfiguration.class, CassandraConfiguration.class})
@@ -78,7 +79,7 @@ public class CassandraSinkConfiguration {
 
 	@Bean
 	@Primary
-	@ServiceActivator(inputChannel= Sink.INPUT)
+	@ServiceActivator(inputChannel = Sink.INPUT)
 	public MessageHandler bridgeMessageHandler() {
 		AbstractMessageProducingHandler messageHandler;
 		if (StringUtils.hasText(this.cassandraSinkProperties.getIngestQuery())) {
@@ -147,10 +148,14 @@ public class CassandraSinkConfiguration {
 			Matcher matcher = PATTERN.matcher(query);
 			if (matcher.matches()) {
 				String[] columns = StringUtils.delimitedListToStringArray(matcher.group(1), ",", " ");
-				String[] values = StringUtils.delimitedListToStringArray(matcher.group(2), ",", " ");
+				String[] params = StringUtils.delimitedListToStringArray(matcher.group(2), ",", " ");
 				for (int i = 0; i < columns.length; i++) {
-					if (values[i].equals("?")) {
+					String param = params[i];
+					if (param.equals("?")) {
 						this.columns.add(columns[i]);
+					}
+					else if (param.startsWith(":")) {
+						this.columns.add(param.substring(1));
 					}
 				}
 			}
