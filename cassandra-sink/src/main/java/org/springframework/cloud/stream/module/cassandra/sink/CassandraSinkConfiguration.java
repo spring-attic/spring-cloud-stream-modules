@@ -151,7 +151,7 @@ public class CassandraSinkConfiguration {
 				for (int i = 0; i < columns.length; i++) {
 					if (values[i].equals("?")) {
 						this.columns.add(columns[i]);
-					} else if (values[i].startsWith(":")) { //code update starts
+					} else if (values[i].startsWith(":")) {
 						this.columns.add(values[i].substring(1));
 					}
 				}
