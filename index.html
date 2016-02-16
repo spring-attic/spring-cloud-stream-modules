@@ -59,12 +59,13 @@ Spring Cloud Stream modules are standalone executable applications that communic
 
 | __Source__ | __Processor__ | __Sink__ | __Task__ |
 | ------- | --------- | ---- | ---- |
-| file | filter | cassandra | timestamp | 
-| ftp | groovy-filter | counter |
-| http | groovy-transform | field-value-counter | | | 
-| jdbc | httpclient | file | | 
-| load-generator | noop | ftp | | 
-| rabbit | pmml | gemfire | | 
+| file | bridge | cassandra | timestamp | 
+| ftp | filter | counter |
+| http | groovy-filter | field-value-counter | | | 
+| jdbc | groovy-transform | file | | 
+| jms | httpclient | ftp | | 
+| load-generator | noop | gemfire | | 
+| rabbit | pmml | gpfdist | | 
 | sftp | splitter | hdfs | | 
 | tcp | transform | jdbc | | 
 | time | | log | | 
