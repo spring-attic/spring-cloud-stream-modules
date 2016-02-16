@@ -28,6 +28,7 @@
 
 	<modules>
 		<!-- common -->
+		<module>spring-cloud-stream-modules-dependencies</module>
 		<module>common</module>
 		<!-- sources in alphabetical order-->
 		<module>file-source</module>
@@ -87,14 +88,16 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.springframework.cloud.stream.module</groupId>
+				<artifactId>spring-cloud-stream-modules-dependencies</artifactId>
+				<version>1.0.0.BUILD-SNAPSHOT</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+			<dependency>
 				<groupId>org.cloudfoundry</groupId>
 				<artifactId>cloudfoundry-client-lib</artifactId>
 				<version>${cloudfoundry-client-lib.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud.stream.module</groupId>
-				<artifactId>spring-cloud-stream-modules-common-configuration</artifactId>
-				<version>1.0.0.BUILD-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud.stream.module</groupId>
