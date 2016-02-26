@@ -19,6 +19,7 @@
 		<codahale.version>3.0.2</codahale.version>
 		<netty.version>4.0.27.Final</netty.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
+		<commonsnet.version>3.1</commonsnet.version>
 		<skipITs>true</skipITs>
 	</properties>
 
@@ -45,6 +46,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>${commonsnet.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>

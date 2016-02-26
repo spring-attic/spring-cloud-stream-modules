@@ -25,6 +25,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.module.gpfdist.sink.net.DefaultHostInfoDiscovery;
+import org.springframework.cloud.stream.module.gpfdist.sink.net.HostInfoDiscovery;
+import org.springframework.cloud.stream.module.gpfdist.sink.net.HostInfoDiscovery.HostInfo;
+import org.springframework.cloud.stream.module.gpfdist.sink.net.HostInfoDiscoveryProperties;
 import org.springframework.cloud.stream.module.gpfdist.sink.support.ControlFile;
 import org.springframework.cloud.stream.module.gpfdist.sink.support.ControlFileFactoryBean;
 import org.springframework.cloud.stream.module.gpfdist.sink.support.GreenplumDataSourceFactoryBean;
@@ -49,12 +53,32 @@ import org.springframework.util.StringUtils;
  * @author Janne Valkealahti
  */
 @Configuration
-@EnableConfigurationProperties(GpfdistSinkProperties.class)
+@EnableConfigurationProperties({ GpfdistSinkProperties.class, HostInfoDiscoveryProperties.class })
 @EnableBinding(Sink.class)
 public class GpfdistConfiguration {
 
 	@Autowired
 	private GpfdistSinkProperties properties;
+
+	@Autowired
+	private HostInfoDiscoveryProperties discoveryProperties;
+
+	@Bean
+	public HostInfoDiscovery hostInfoDiscovery() {
+		DefaultHostInfoDiscovery discovery = new DefaultHostInfoDiscovery();
+		if (StringUtils.hasText(discoveryProperties.getMatchIpv4())) {
+			discovery.setMatchIpv4(discoveryProperties.getMatchIpv4());
+		}
+		if (StringUtils.hasText(discoveryProperties.getMatchInterface())) {
+			discovery.setMatchInterface(discoveryProperties.getMatchInterface());
+		}
+		if (discoveryProperties.getPreferInterface() != null) {
+			discovery.setPreferInterface(discoveryProperties.getPreferInterface());
+		}
+		discovery.setLoopback(discoveryProperties.isLoopback());
+		discovery.setPointToPoint(discoveryProperties.isPointToPoint());
+		return discovery;
+	}
 
 	@Bean
 	public TaskScheduler sqlTaskScheduler() {
@@ -84,11 +108,12 @@ public class GpfdistConfiguration {
 	}
 
 	@Bean
-	public ReadableTableFactoryBean greenplumReadableTable(ControlFile controlFile) {
+	public ReadableTableFactoryBean greenplumReadableTable(ControlFile controlFile, HostInfoDiscovery hostInfoDiscovery) {
 		ReadableTableFactoryBean factoryBean = new ReadableTableFactoryBean();
 		factoryBean.setControlFile(controlFile);
 		factoryBean.setDelimiter(properties.getColumnDelimiter());
-		factoryBean.setLocations(Arrays.asList(NetworkUtils.getGPFDistUri(properties.getPort())));
+		HostInfo hostInfo = hostInfoDiscovery.getHostInfo();
+		factoryBean.setLocations(Arrays.asList(NetworkUtils.getGPFDistUri(hostInfo.getAddress(), properties.getPort())));
 		return factoryBean;
 	}
 
@@ -116,10 +141,10 @@ public class GpfdistConfiguration {
 
 	@Bean
 	@ServiceActivator(inputChannel= Sink.INPUT)
-	public GpfdistMessageHandler gpfdist(GreenplumLoad greenplumLoad, TaskScheduler sqlTaskScheduler) {
+	public GpfdistMessageHandler gpfdist(GreenplumLoad greenplumLoad, TaskScheduler sqlTaskScheduler, HostInfoDiscovery hostInfoDiscovery) {
 		GpfdistMessageHandler handler = new GpfdistMessageHandler(properties.getPort(), properties.getFlushCount(),
 				properties.getFlushTime(), properties.getBatchTimeout(), properties.getBatchCount(), properties.getBatchPeriod(),
-				properties.getDelimiter());
+				properties.getDelimiter(), hostInfoDiscovery);
 		handler.setRateInterval(properties.getRateInterval());
 		handler.setGreenplumLoad(greenplumLoad);
 		handler.setSqlTaskScheduler(sqlTaskScheduler);
