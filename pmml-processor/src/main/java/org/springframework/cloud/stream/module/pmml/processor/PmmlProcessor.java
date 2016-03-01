@@ -46,9 +46,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.cloud.stream.tuple.MutableTuple;
-import org.springframework.cloud.stream.tuple.Tuple;
-import org.springframework.cloud.stream.tuple.TupleBuilder;
+import org.springframework.tuple.MutableTuple;
+import org.springframework.tuple.Tuple;
+import org.springframework.tuple.TupleBuilder;
 import org.springframework.context.annotation.Import;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
