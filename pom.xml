@@ -22,8 +22,10 @@
 		<java.version>1.7</java.version>
 		<spring-integration.version>4.2.4.RELEASE</spring-integration.version>
 		<spring-cloud-stream.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-stream.version>
+		<spring-data-gemfire.version>1.7.0.RELEASE</spring-data-gemfire.version>
 		<spring-tuple.version>1.0.0.RC1</spring-tuple.version>
 		<cloudfoundry-client-lib.version>1.1.3</cloudfoundry-client-lib.version>
+		<gemfire.version>8.2.0</gemfire.version>
 	</properties>
 
 	<modules>
@@ -115,7 +117,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-gemfire</artifactId>
-				<version>1.6.2.RELEASE</version>
+				<version>${spring-data-gemfire.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>com.gemstone.gemfire</groupId>
@@ -126,7 +128,7 @@
 			<dependency>
 				<groupId>com.gemstone.gemfire</groupId>
 				<artifactId>gemfire</artifactId>
-				<version>8.0.0</version>
+				<version>${gemfire.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>net.sourceforge.jline</groupId>
