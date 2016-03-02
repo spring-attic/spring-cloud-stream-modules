@@ -1,0 +1,24 @@
+= Spring Cloud Stream RabbitMQ Sink
+
+This module sends messages to RabbitMQ.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+RabbitSinkApplication:: the Spring Boot Main Application
+RabbitSink:: the RabbitMQ sink
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/rabbit-sink-${version}-exec.jar
+```

@@ -514,11 +514,36 @@ and you should see the following output in the Spring Cloud Data Flow console.
 
   13/06/07 16:12:18 INFO Received: hello
 
+[[spring-cloud-stream-modules-sink-rabbitmq]]
+=== RabbitMQ
+
+The "rabbit" sink enables outbound messaging over RabbitMQ.
+
+==== Options
+
+The **$$rabbit$$** $$sink$$ has the following options:
+
+(See the Spring Boot documentation for RabbitMQ connection properties)
+
+$$converterBeanName$$:: $$the bean name of the message converter$$ *($$String$$, default: none)*
+$$persistentDeliveryMode$$:: $$the default delivery mode, true for persistent$$ *($$boolean$$, default: `false`)*
+$$exchange$$:: $$the Exchange on the RabbitMQ broker to which messages should be sent$$ *($$String$$, default: `""`)*
+$$exchangeExpression$$:: $$a SpEL expression that evaluates to the Exchange on the RabbitMQ broker to which messages
+should be sent; overrides `exchange`$$ *($$String$$, default: ``)*
+$$mappedRequestHeaders$$:: $$request message header names to be propagated to RabbitMQ, to limit to the set of standard headers plus `bar`, use `STANDARD_REQUEST_HEADERS,bar`$$ *($$String$$, default: `*`)*
+$$routingKey$$:: $$the routing key to be passed with the message, as a SpEL expression$$ *($$String$$, default: none)*
+$$routingKeyExpression$$:: $$an expression that evaluates to the routing key to be passed with the message, as a SpEL expression; overrides `routingKey`$$ *($$String$$, default: none)*
+
+NOTE: By default, the message converter is a `SimpleMessageConverter` which handles `byte[]`, `String` and
+`java.io.Serializable`.
+A well-known bean name `jsonConverter` will configure a `Jackson2JsonMessageConverter` instead.
+In addition, a custom converter bean can be added to the context and referenced by the $$converterBeanName$$ property.
 
 [[spring-cloud-stream-modules-redis]]
 === Redis (`redis`)
 
-Redis sink can be used to ingest data into redis store. You can choose `queue`, `topic` or `key` with selcted collection type to point to a specific data store.
+The Redis sink can be used to ingest data into redis store. You can choose `queue`, `topic` or `key` with selcted
+collection type to point to a specific data store.
 
 For example,
 ----

@@ -35,7 +35,6 @@ import org.springframework.integration.amqp.inbound.AmqpInboundChannelAdapter;
 import org.springframework.integration.amqp.support.DefaultAmqpHeaderMapper;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * A source module that receives data from RabbitMQ.
@@ -100,8 +99,7 @@ public class RabbitSource {
 		AmqpInboundChannelAdapter adapter = new AmqpInboundChannelAdapter(container());
 		adapter.setOutputChannel(channels.output());
 		DefaultAmqpHeaderMapper headerMapper = new DefaultAmqpHeaderMapper();
-		headerMapper.setRequestHeaderNames(
-				StringUtils.commaDelimitedListToStringArray(this.properties.getMappedRequestHeaders()));
+		headerMapper.setRequestHeaderNames(this.properties.getMappedRequestHeaders());
 		adapter.setHeaderMapper(headerMapper);
 		return adapter;
 	}
