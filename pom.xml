@@ -43,6 +43,7 @@
 		<module>loggregator-source</module>
 		<module>rabbit-source</module>
 		<module>sftp-source</module>
+		<module>syslog-source</module>
 		<module>tcp-source</module>
 		<module>time-source</module>
 		<module>trigger-source</module>
