@@ -34,6 +34,7 @@ import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
@@ -43,6 +44,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PmmlProcessorApplication.class)
+@DirtiesContext
 @IntegrationTest({"server.port=-1", "modelLocation=classpath:iris-flower-classification-naive-bayes-1.pmml.xml"})
 public abstract class PmmlProcessorIntegrationTests {
 
