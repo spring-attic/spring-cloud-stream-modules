@@ -16,25 +16,24 @@
 
 package org.springframework.cloud.stream.module.rabbit.sink;
 
+import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.amqp.outbound.AmqpOutboundEndpoint;
 import org.springframework.integration.amqp.support.DefaultAmqpHeaderMapper;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.MessageHandler;
-import org.springframework.util.StringUtils;
 
 /**
  * A sink module that sends data to RabbitMQ.
@@ -47,14 +46,10 @@ import org.springframework.util.StringUtils;
 public class RabbitSink {
 
 	@Autowired
-	@Bindings(RabbitSink.class)
-	private Sink channels;
-
-	@Autowired
 	private RabbitSinkProperties properties;
 
-	@Autowired
-	private ApplicationContext context;
+	@Value("#{${converterBeanName:null}}")
+	private MessageConverter messageConverter;
 
 	@ServiceActivator(inputChannel = Sink.INPUT)
 	@Bean
@@ -63,7 +58,8 @@ public class RabbitSink {
 		DefaultAmqpHeaderMapper mapper = new DefaultAmqpHeaderMapper();
 		mapper.setRequestHeaderNames(this.properties.getMappedRequestHeaders());
 		handler.setHeaderMapper(mapper);
-		handler.setDefaultDeliveryMode(this.properties.getDeliveryMode());
+		handler.setDefaultDeliveryMode(this.properties.getPersistentDeliveryMode() ? MessageDeliveryMode.PERSISTENT
+				:MessageDeliveryMode.NON_PERSISTENT);
 		if (this.properties.getExchangeExpression() == null) {
 			handler.setExchangeName(this.properties.getExchange());
 		}
@@ -82,14 +78,8 @@ public class RabbitSink {
 	@Bean
 	public RabbitTemplate rabbitTemplate(ConnectionFactory rabbitConnectionFactory) {
 		RabbitTemplate rabbitTemplate = new RabbitTemplate(rabbitConnectionFactory);
-		String converterBeanName = this.properties.getConverterBeanName();
-		if (StringUtils.hasText(converterBeanName)) {
-			if (RabbitSinkProperties.JSON_CONVERTER.equals(converterBeanName)) {
-				rabbitTemplate.setMessageConverter(jsonConverter());
-			}
-			else {
-				rabbitTemplate.setMessageConverter(this.context.getBean(converterBeanName, MessageConverter.class));
-			}
+		if (this.messageConverter != null) {
+			rabbitTemplate.setMessageConverter(this.messageConverter);
 		}
 		return rabbitTemplate;
 	}

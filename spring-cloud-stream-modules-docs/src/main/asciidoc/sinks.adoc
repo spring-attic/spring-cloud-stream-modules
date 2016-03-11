@@ -526,7 +526,7 @@ The **$$rabbit$$** $$sink$$ has the following options:
 (See the Spring Boot documentation for RabbitMQ connection properties)
 
 $$converterBeanName$$:: $$the bean name of the message converter$$ *($$String$$, default: none)*
-$$deliveryMode$$:: $$the default delivery mode (PERSISTENT, NON_PERSISTENT)$$ *($$String$$, default: `NON_PERSISTENT`)*
+$$persistentDeliveryMode$$:: $$the default delivery mode, true for persistent$$ *($$boolean$$, default: `false`)*
 $$exchange$$:: $$the Exchange on the RabbitMQ broker to which messages should be sent$$ *($$String$$, default: `""`)*
 $$exchangeExpression$$:: $$a SpEL expression that evaluates to the Exchange on the RabbitMQ broker to which messages
 should be sent; overrides `exchange`$$ *($$String$$, default: ``)*
@@ -537,13 +537,13 @@ $$routingKeyExpression$$:: $$an expression that evaluates to the routing key to 
 NOTE: By default, the message converter is a `SimpleMessageConverter` which handles `byte[]`, `String` and
 `java.io.Serializable`.
 A well-known bean name `jsonConverter` will configure a `Jackson2JsonMessageConverter` instead.
-In addition, a custom converter bean can be added to the context and referenced by this property.
+In addition, a custom converter bean can be added to the context and referenced by the $$converterBeanName$$ property.
 
 [[spring-cloud-stream-modules-redis]]
 === Redis (`redis`)
 
 The Redis sink can be used to ingest data into redis store. You can choose `queue`, `topic` or `key` with selcted
-git ccollection type to point to a specific data store.
+collection type to point to a specific data store.
 
 For example,
 ----

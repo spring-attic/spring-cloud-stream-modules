@@ -16,8 +16,11 @@
 
 package org.springframework.cloud.stream.module.rabbit.sink;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
 
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -33,6 +36,8 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -69,8 +74,11 @@ public abstract class RabbitSinkTests {
 	@Autowired
 	protected RabbitAdmin rabbitAdmin;
 
+	@Autowired(required = false)
+	protected MessageConverter myConverter;
+
 	@IntegrationTest({ "routingKey=scsm-testq",
-		"deliveryMode=PERSISTENT",
+		"persistentDeliveryMode=true",
 		"mappedRequestHeaders=STANDARD_REQUEST_HEADERS,bar" })
 	public static class SimpleRoutingKeyAndCustomHeaderTests extends RabbitSinkTests {
 
@@ -86,6 +94,7 @@ public abstract class RabbitSinkTests {
 			assertEquals("baz", received.getMessageProperties().getHeaders().get("bar"));
 			assertNull(received.getMessageProperties().getHeaders().get("qux"));
 			assertEquals(MessageDeliveryMode.PERSISTENT, received.getMessageProperties().getDeliveryMode());
+			assertThat(this.rabbitTemplate.getMessageConverter(), instanceOf(SimpleMessageConverter.class));
 		}
 
 	}
@@ -107,6 +116,7 @@ public abstract class RabbitSinkTests {
 			assertEquals("\"foo\"", new String(received.getBody()));
 			assertEquals("baz", received.getMessageProperties().getHeaders().get("bar"));
 			assertEquals(MessageDeliveryMode.PERSISTENT, received.getMessageProperties().getDeliveryMode());
+			assertSame(this.myConverter, this.rabbitTemplate.getMessageConverter());
 		}
 
 	}

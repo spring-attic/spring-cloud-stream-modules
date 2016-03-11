@@ -17,7 +17,6 @@ package org.springframework.cloud.stream.module.rabbit.sink;
 
 import javax.validation.constraints.AssertTrue;
 
-import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.expression.Expression;
 
@@ -53,9 +52,10 @@ public class RabbitSinkProperties {
 	private Expression routingKeyExpression;
 
 	/**
-	 * Default delivery mode when 'amqp_deliveryMode' header is not present.
+	 * Default delivery mode when 'amqp_deliveryMode' header is not present,
+	 * true for PERSISTENT.
 	 */
-	private MessageDeliveryMode deliveryMode = MessageDeliveryMode.NON_PERSISTENT;
+	private boolean persistentDeliveryMode;
 
 	/**
 	 * Headers that will be mapped.
@@ -64,8 +64,7 @@ public class RabbitSinkProperties {
 
 	/**
 	 * The bean name for a custom message converter; if omitted, a SimpleMessageConverter is used.
-	 * If 'jsonConverter', a Jackson2JsonMessageConverter bean will be created; for other bean
-	 * names, you must provide the bean in the context.
+	 * If 'jsonConverter', a Jackson2JsonMessageConverter bean will be created for you.
 	 */
 	private String converterBeanName;
 
@@ -101,12 +100,12 @@ public class RabbitSinkProperties {
 		this.routingKeyExpression = routingKeyExpression;
 	}
 
-	public MessageDeliveryMode getDeliveryMode() {
-		return this.deliveryMode;
+	public boolean getPersistentDeliveryMode() {
+		return this.persistentDeliveryMode;
 	}
 
-	public void setDeliveryMode(MessageDeliveryMode deliveryMode) {
-		this.deliveryMode = deliveryMode;
+	public void setPersistentDeliveryMode(boolean persistentDeliveryMode) {
+		this.persistentDeliveryMode = persistentDeliveryMode;
 	}
 
 	public String[] getMappedRequestHeaders() {
