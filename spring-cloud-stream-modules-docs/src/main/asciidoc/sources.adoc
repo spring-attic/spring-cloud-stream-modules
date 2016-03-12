@@ -145,7 +145,7 @@ The **$$rabbit$$** $$source$$ has the following options:
 
 $$enableRetry$$:: $$enable retry; when retries are exhausted the message will be rejected; message disposition will depend on dead letter configuration$$ *($$boolean$$, default: `false`)*
 $$initialRetryInterval$$:: $$initial interval between retries$$ *($$int$$, default: `1000`)*
-$$mappedRequestHeaders$$:: $$request message header names to be mapped from the incoming message; to limit to the set of standard headers plus `bar`, use `STANDARD_REQUEST_HEADERS,bar`$$ *($$String$$, default: `*`)*
+$$mappedRequestHeaders$$:: $$request message header names to be mapped from the incoming message$$ *($$String$$, default: `STANDARD_REQUEST_HEADERS`)*
 $$maxAttempts$$:: $$maximum delivery attempts$$ *($$int$$, default: `3`)*
 $$maxConcurrency$$:: $$the maximum number of consumers$$ *($$int$$, default: `1`)*
 $$maxRetryInterval$$:: $$maximum retry interval$$ *($$int$$, default: `30000`)*

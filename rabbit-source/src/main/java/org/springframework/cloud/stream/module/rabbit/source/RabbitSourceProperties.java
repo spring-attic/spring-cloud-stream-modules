@@ -47,7 +47,7 @@ public class RabbitSourceProperties {
 	/**
 	 * Headers that will be mapped.
 	 */
-	private String[] mappedRequestHeaders = { "*" };
+	private String[] mappedRequestHeaders = { "STANDARD_REQUEST_HEADERS" };
 
 	/**
 	 * Initial retry interval when retry is enabled.

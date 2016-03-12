@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.rabbit.source;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
@@ -34,6 +35,7 @@ import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -117,6 +119,7 @@ public abstract class RabbitSourceTests {
 			assertNotNull(out);
 			assertEquals("foo", out.getPayload());
 			assertEquals("baz", out.getHeaders().get("bar"));
+			assertNull(out.getHeaders().get(AmqpHeaders.DELIVERY_MODE));
 		}
 
 	}

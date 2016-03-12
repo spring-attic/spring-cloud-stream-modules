@@ -19,10 +19,13 @@ package org.springframework.cloud.stream.module.rabbit.source;
 import org.aopalliance.aop.Advice;
 
 import org.springframework.amqp.core.AcknowledgeMode;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.retry.RejectAndDontRequeueRecoverer;
+import org.springframework.amqp.rabbit.support.DefaultMessagePropertiesConverter;
+import org.springframework.amqp.rabbit.support.MessagePropertiesConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties.Listener;
@@ -36,6 +39,9 @@ import org.springframework.integration.amqp.support.DefaultAmqpHeaderMapper;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 import org.springframework.util.Assert;
 
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Envelope;
+
 /**
  * A source module that receives data from RabbitMQ.
  *
@@ -44,6 +50,19 @@ import org.springframework.util.Assert;
 @EnableBinding(Source.class)
 @EnableConfigurationProperties(RabbitSourceProperties.class)
 public class RabbitSource {
+
+	private static final MessagePropertiesConverter inboundMessagePropertiesConverter =
+			new DefaultMessagePropertiesConverter() {
+
+				@Override
+				public MessageProperties toMessageProperties(AMQP.BasicProperties source, Envelope envelope,
+						String charset) {
+					MessageProperties properties = super.toMessageProperties(source, envelope, charset);
+					properties.setDeliveryMode(null);
+					return properties;
+				}
+
+			};
 
 	@Autowired
 	@Bindings(RabbitSource.class)
@@ -91,6 +110,7 @@ public class RabbitSource {
 		if (this.properties.isEnableRetry()) {
 			container.setAdviceChain(new Advice[] { rabbitSourceRetryInterceptor() });
 		}
+		container.setMessagePropertiesConverter(inboundMessagePropertiesConverter);
 		return container;
 	}
 
