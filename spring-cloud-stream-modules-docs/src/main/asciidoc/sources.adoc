@@ -1,6 +1,34 @@
 [[sources]]
 == Sources
 
+:leveloffset: +2
+
+include::{github-raw}/file-source/README.adoc[]
+
+//include::{github-raw}/ftp-source/README.adoc[]
+
+include::{github-raw}/http-source/README.adoc[]
+
+include::{github-raw}/jdbc-source/README.adoc[]
+
+include::{github-raw}/jms-source/README.adoc[]
+
+include::{github-raw}/load-generator-source/README.adoc[]
+
+include::{github-raw}/rabbit-source/README.adoc[]
+
+//include::{github-raw}/sftp-source/README.adoc[]
+
+include::{github-raw}/tcp-source/README.adoc[]
+
+//include::{github-raw}/time-source/README.adoc[]
+
+include::{github-raw}/trigger-source/README.adoc[]
+
+//include::{github-raw}/twitterstream-source/README.adoc[]
+
+:leveloffset: -2
+
 [[spring-cloud-stream-modules-file-source]]
 === File
 
