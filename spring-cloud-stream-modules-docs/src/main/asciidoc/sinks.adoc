@@ -530,7 +530,7 @@ $$persistentDeliveryMode$$:: $$the default delivery mode, true for persistent$$ 
 $$exchange$$:: $$the Exchange on the RabbitMQ broker to which messages should be sent$$ *($$String$$, default: `""`)*
 $$exchangeExpression$$:: $$a SpEL expression that evaluates to the Exchange on the RabbitMQ broker to which messages
 should be sent; overrides `exchange`$$ *($$String$$, default: ``)*
-$$mappedRequestHeaders$$:: $$request message header names to be propagated to RabbitMQ, to limit to the set of standard headers plus `bar`, use `STANDARD_REQUEST_HEADERS,bar`$$ *($$String$$, default: `*`)*
+$$mappedRequestHeaders$$:: $$request message header names to be propagated to RabbitMQ, to limit to the set of standard headers plus `bar`, use `STANDARD_REQUEST_HEADERS,bar`$$ *($$String$$, default: `+*+`)*
 $$routingKey$$:: $$the routing key to be passed with the message, as a SpEL expression$$ *($$String$$, default: none)*
 $$routingKeyExpression$$:: $$an expression that evaluates to the routing key to be passed with the message, as a SpEL expression; overrides `routingKey`$$ *($$String$$, default: none)*
 
