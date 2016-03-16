@@ -19,12 +19,14 @@ package org.springframework.cloud.stream.module.jdbc.source;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Holds configuration properties for the Jdbc Source module.
  *
  * @author Thomas Risberg
  */
+@RefreshScope
 @ConfigurationProperties
 public class JdbcSourceProperties {
 

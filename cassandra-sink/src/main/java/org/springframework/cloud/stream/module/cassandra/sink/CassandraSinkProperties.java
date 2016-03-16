@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.cassandra.sink;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cassandra.core.ConsistencyLevel;
 import org.springframework.cassandra.core.RetryPolicy;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.expression.Expression;
 import org.springframework.integration.cassandra.outbound.CassandraMessageHandler;
 
@@ -26,6 +27,7 @@ import org.springframework.integration.cassandra.outbound.CassandraMessageHandle
  * @author Artem Bilan
  * @author Thomas Risberg
  */
+@RefreshScope
 @ConfigurationProperties
 public class CassandraSinkProperties {
 

@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.splitter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that runs the Splitter Processor as a standalone app.
  *
  * @author Gary Russell
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class SplitterProcessorApplication {
 

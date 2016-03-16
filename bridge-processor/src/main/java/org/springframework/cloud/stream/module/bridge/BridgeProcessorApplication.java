@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.bridge;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that runs the Bridge Processor as a standalone app.
  *
  * @author Glenn Renfro
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class BridgeProcessorApplication {
 

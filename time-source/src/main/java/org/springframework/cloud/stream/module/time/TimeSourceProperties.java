@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.time;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Describes properties of the {@code time} source module.
@@ -28,6 +29,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @deprecated in favor of {@link org.springframework.cloud.stream.module.trigger.TriggerProperties#dateFormat}
  */
 @Deprecated
+@RefreshScope
 @ConfigurationProperties
 public class TimeSourceProperties {
 

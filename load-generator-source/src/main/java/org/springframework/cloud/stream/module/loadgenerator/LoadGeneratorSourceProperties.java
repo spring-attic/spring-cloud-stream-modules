@@ -17,12 +17,14 @@
 package org.springframework.cloud.stream.module.loadgenerator;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Holds configuration options for the LoadGenerator source.
  *
  * @author Glenn Renfro
  */
+@RefreshScope
 @ConfigurationProperties
 public class LoadGeneratorSourceProperties {
 

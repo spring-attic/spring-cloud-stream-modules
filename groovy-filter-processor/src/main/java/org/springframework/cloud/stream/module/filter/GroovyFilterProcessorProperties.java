@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.filter;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.io.Resource;
 
 /**
@@ -26,6 +27,7 @@ import org.springframework.core.io.Resource;
  *
  * @author Eric Bottard
  */
+@RefreshScope
 @ConfigurationProperties
 public class GroovyFilterProcessorProperties {
 

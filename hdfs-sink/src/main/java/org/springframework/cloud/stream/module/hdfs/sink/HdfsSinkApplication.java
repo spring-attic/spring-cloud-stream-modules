@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.hdfs.sink;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Spring Boot App for starting the {@link HdfsSink} module
  * @author Thomas Risberg
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class HdfsSinkApplication {
 

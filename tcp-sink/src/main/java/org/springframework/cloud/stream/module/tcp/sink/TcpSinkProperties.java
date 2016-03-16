@@ -18,6 +18,7 @@ package org.springframework.cloud.stream.module.tcp.sink;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.stream.module.tcp.AbstractTcpConnectionFactoryProperties;
 
 /**
@@ -26,6 +27,7 @@ import org.springframework.cloud.stream.module.tcp.AbstractTcpConnectionFactoryP
  * @author Gary Russell
  *
  */
+@RefreshScope
 @ConfigurationProperties
 public class TcpSinkProperties extends AbstractTcpConnectionFactoryProperties {
 

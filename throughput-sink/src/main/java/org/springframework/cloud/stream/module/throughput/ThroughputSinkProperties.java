@@ -17,12 +17,14 @@
 package org.springframework.cloud.stream.module.throughput;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Holds configuration options for the throughput Sink.
  *
  * @author Glenn Renfro
  */
+@RefreshScope
 @ConfigurationProperties
 public class ThroughputSinkProperties {
 

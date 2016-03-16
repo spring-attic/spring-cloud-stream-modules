@@ -20,12 +20,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Configuration properties for the IntegrationTestProcessor module.
  *
  * @author Eric Bottard
  */
+@RefreshScope
 @ConfigurationProperties
 public class IntegrationTestProcessorProperties {
 

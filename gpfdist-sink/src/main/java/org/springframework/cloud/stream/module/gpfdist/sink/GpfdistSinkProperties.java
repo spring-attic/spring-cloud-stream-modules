@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.gpfdist.sink;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.io.Resource;
 
 /**
@@ -24,6 +25,7 @@ import org.springframework.core.io.Resource;
  *
  * @author Janne Valkealahti
  */
+@RefreshScope
 @ConfigurationProperties
 public class GpfdistSinkProperties {
 

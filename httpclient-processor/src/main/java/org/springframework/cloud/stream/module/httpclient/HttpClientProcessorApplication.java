@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.httpclient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that can be used to run the HTTP Client Processor as a standalone app.
  *
  * @author Waldemar Hummer
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class HttpClientProcessorApplication {
 

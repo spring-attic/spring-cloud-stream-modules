@@ -19,6 +19,7 @@ import javax.validation.constraints.AssertTrue;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 
@@ -28,6 +29,7 @@ import org.springframework.expression.common.LiteralExpression;
  * @author Eric Bottard
  * @author Ilayaperumal Gopinathan
  */
+@RefreshScope
 @ConfigurationProperties
 public class CounterProperties extends MetricProperties {
 

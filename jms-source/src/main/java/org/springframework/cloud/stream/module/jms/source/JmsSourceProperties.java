@@ -18,6 +18,7 @@ package org.springframework.cloud.stream.module.jms.source;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Properties for the JMS Source.
@@ -25,6 +26,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Gary Russell
  *
  */
+@RefreshScope
 @ConfigurationProperties
 public class JmsSourceProperties {
 

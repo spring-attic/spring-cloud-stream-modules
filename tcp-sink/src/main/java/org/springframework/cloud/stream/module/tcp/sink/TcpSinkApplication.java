@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.tcp.sink;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that can be used to run the TCP Sink as a standalone app.
  *
  * @author Gary Russell
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class TcpSinkApplication {
 

@@ -18,6 +18,7 @@ package org.springframework.cloud.stream.module.dataset.sink;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Used to configure the HDFS Dataset Sink module options that are related to writing using Kite SDK.
@@ -25,6 +26,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Thomas Risberg
  */
 @SuppressWarnings("unused")
+@RefreshScope
 @ConfigurationProperties
 public class DatasetSinkProperties {
 

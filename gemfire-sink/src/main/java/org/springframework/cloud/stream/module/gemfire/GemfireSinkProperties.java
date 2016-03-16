@@ -18,10 +18,12 @@ package org.springframework.cloud.stream.module.gemfire;
 import org.hibernate.validator.constraints.NotBlank;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * @author David Turanski
  */
+@RefreshScope
 @ConfigurationProperties
 public class GemfireSinkProperties {
 

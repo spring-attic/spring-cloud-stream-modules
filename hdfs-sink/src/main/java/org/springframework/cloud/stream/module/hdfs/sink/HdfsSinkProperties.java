@@ -18,6 +18,7 @@ package org.springframework.cloud.stream.module.hdfs.sink;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import javax.validation.constraints.Pattern;
 
@@ -27,6 +28,7 @@ import javax.validation.constraints.Pattern;
  * @author Thomas Risberg
  */
 @SuppressWarnings("unused")
+@RefreshScope
 @ConfigurationProperties
 public class HdfsSinkProperties {
 

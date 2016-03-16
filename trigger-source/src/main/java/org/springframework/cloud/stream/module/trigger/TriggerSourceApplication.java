@@ -16,10 +16,12 @@ package org.springframework.cloud.stream.module.trigger;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * @author Ilayaperumal Gopinathan
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class TriggerSourceApplication {
 

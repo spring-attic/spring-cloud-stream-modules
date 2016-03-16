@@ -21,6 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import io.netty.handler.logging.LogLevel;
 import lombok.Data;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Command line arguments available for {@link WebsocketSink}.
@@ -28,6 +29,7 @@ import lombok.Data;
  * @author Oliver Moser
  */
 @Data
+@RefreshScope
 @ConfigurationProperties
 public class WebsocketSinkProperties {
 

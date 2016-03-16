@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.loadgenerator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that is to be used to run the LoadGenerator Source as a standalone app.
  *
  * @author Glenn Renfro
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class LoadGeneratorSourceApplication {
 

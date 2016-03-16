@@ -19,12 +19,14 @@ package org.springframework.cloud.stream.module.websocket.sink;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * Entrypoint for the {@link WebsocketSink}.
  *
  * @author Oliver Moser
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class WebsocketSinkApplication {
 

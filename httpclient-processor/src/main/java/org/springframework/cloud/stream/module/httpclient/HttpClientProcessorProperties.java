@@ -20,6 +20,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -31,6 +32,7 @@ import org.springframework.http.HttpMethod;
  * @author Waldemar Hummer
  * @author Mark Fisher
  */
+@RefreshScope
 @ConfigurationProperties
 public class HttpClientProcessorProperties {
 

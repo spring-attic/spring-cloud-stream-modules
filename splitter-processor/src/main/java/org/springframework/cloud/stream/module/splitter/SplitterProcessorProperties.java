@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.splitter;
 import javax.validation.constraints.AssertTrue;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.expression.Expression;
 
 /**
@@ -26,6 +27,7 @@ import org.springframework.expression.Expression;
  *
  * @author Gary Russell
  */
+@RefreshScope
 @ConfigurationProperties
 public class SplitterProcessorProperties {
 

@@ -19,12 +19,15 @@ package org.springframework.cloud.stream.module.gpfdist.sink;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * Spring Boot app running gpfdist sink application.
  *
  * @author Janne Valkealahti
  */
+
+@EnableEurekaClient
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class GpfdistSinkApplication {
 	// explicitly exclude DataSourceAutoConfiguration as it is

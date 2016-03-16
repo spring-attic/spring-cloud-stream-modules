@@ -21,6 +21,7 @@ import java.io.File;
 import javax.validation.constraints.AssertTrue;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.expression.Expression;
 import org.springframework.integration.file.support.FileExistsMode;
 import org.springframework.util.StringUtils;
@@ -30,6 +31,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Mark Fisher
  */
+@RefreshScope
 @ConfigurationProperties
 public class FileSinkProperties {
 

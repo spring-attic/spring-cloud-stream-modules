@@ -16,12 +16,14 @@
 package org.springframework.cloud.stream.module.ftp.source;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.stream.module.file.remote.AbstractRemoteFileSourceProperties;
 
 /**
  * @author David Turanski
  * @author Gary Russell
  */
+@RefreshScope
 @ConfigurationProperties
 public class FtpSourceProperties extends AbstractRemoteFileSourceProperties {
 

@@ -16,12 +16,14 @@
 package org.springframework.cloud.stream.module.twitter;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Configuration properties for Twitterstream source.
  *
  * @author Ilayaperumal Gopinathan
  */
+@RefreshScope
 @ConfigurationProperties
 //todo: support more stream properties such as locations, track etc.,
 public class TwitterStreamProperties {

@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.transform;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that runs the Transform Processor as a standalone app.
  *
  * @author Eric Bottard
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class TransformProcessorApplication {
 

@@ -23,7 +23,10 @@
 		<spring-integration.version>4.2.4.RELEASE</spring-integration.version>
 		<spring-cloud-stream.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-stream.version>
 		<spring-tuple.version>1.0.0.RC1</spring-tuple.version>
-		<cloudfoundry-client-lib.version>1.1.3</cloudfoundry-client-lib.version>
+        <spring-cloud-context.version>1.0.5.RELEASE</spring-cloud-context.version>
+        <spring-cloud-starter.version>1.0.6.RELEASE</spring-cloud-starter.version>
+        <cloudfoundry-client-lib.version>1.1.3</cloudfoundry-client-lib.version>
+
 	</properties>
 
 	<modules>
@@ -192,6 +195,24 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-spring-service-connector</artifactId>
 		</dependency>
+		<!-- Support Configuration Server -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+            <version>${spring-cloud-starter.version}</version>
+		</dependency>
+        <!-- Support Bootstrap YML configurations -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+            <version>${spring-cloud-context.version}</version>
+        </dependency>
+        <!-- Support Discovery Server -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <version>${spring-cloud-starter.version}</version>
+        </dependency>
 		<!--TODO: Move transport related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

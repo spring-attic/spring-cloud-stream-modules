@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.jdbc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that can be used to run the Jdbc Sink as a standalone app.
  *
  * @author Eric Bottard
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class JdbcSinkApplication {
 

@@ -21,12 +21,14 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 
 /**
  * @author Ilayaperumal Gopinathan
  */
+@RefreshScope
 @ConfigurationProperties
 public class FieldValueCounterSinkProperties extends MetricProperties {
 

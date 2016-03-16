@@ -18,10 +18,12 @@ package org.springframework.cloud.stream.module.throughput;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that is to be used to run the throughput sink as a standalone app.
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class ThroughputSinkApplication {
 

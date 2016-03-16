@@ -23,6 +23,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.io.Resource;
 import org.springframework.expression.Expression;
 
@@ -31,6 +32,7 @@ import org.springframework.expression.Expression;
  *
  * @author Eric Bottard
  */
+@RefreshScope
 @ConfigurationProperties
 public class PmmlProcessorProperties {
 

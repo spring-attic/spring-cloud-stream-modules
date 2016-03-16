@@ -1,6 +1,7 @@
 package org.springframework.cloud.stream.module.redis.sink;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -16,6 +17,7 @@ import java.util.Collections;
  * @author Eric Bottard
  * @author Mark Pollack
  */
+@RefreshScope
 @ConfigurationProperties
 public class RedisSinkProperties {
 

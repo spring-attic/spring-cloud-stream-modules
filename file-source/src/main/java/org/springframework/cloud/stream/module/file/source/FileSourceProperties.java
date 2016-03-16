@@ -22,12 +22,14 @@ import java.util.regex.Pattern;
 import javax.validation.constraints.AssertTrue;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Properties for the file source.
  *
  * @author Gary Russell
  */
+@RefreshScope
 @ConfigurationProperties
 public class FileSourceProperties {
 

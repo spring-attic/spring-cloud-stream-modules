@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.filter;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
@@ -27,6 +28,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
  *
  * @author Eric Bottard
  */
+@RefreshScope
 @ConfigurationProperties
 public class FilterProcessorProperties {
 

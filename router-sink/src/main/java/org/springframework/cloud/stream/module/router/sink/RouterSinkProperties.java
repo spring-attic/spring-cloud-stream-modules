@@ -21,6 +21,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.io.Resource;
 import org.springframework.expression.Expression;
 import org.springframework.integration.dsl.support.Function;
@@ -35,6 +36,7 @@ import org.springframework.messaging.Message;
  * @author Gary Russell
  *
  */
+@RefreshScope
 @ConfigurationProperties
 public class RouterSinkProperties {
 

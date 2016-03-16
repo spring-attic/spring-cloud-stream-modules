@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * Properties for the Rabbit Source.
@@ -26,6 +27,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author Gary Russell
  *
  */
+@RefreshScope
 @ConfigurationProperties
 public class RabbitSourceProperties {
 

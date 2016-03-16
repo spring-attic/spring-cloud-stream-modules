@@ -18,12 +18,14 @@ package org.springframework.cloud.stream.module.jdbc.source;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * A main application that can be used to run the Jdbc Source as a standalone app.
  *
  * @author Thomas Risberg
  */
+@EnableEurekaClient
 @SpringBootApplication
 public class JdbcSourceApplication {
 
