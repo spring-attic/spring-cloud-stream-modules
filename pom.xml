@@ -199,20 +199,20 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
-            <version>${spring-cloud-starter.version}</version>
+            		<version>${spring-cloud-starter.version}</version>
 		</dependency>
-        <!-- Support Bootstrap YML configurations -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-context</artifactId>
-            <version>${spring-cloud-context.version}</version>
-        </dependency>
-        <!-- Support Discovery Server -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
-            <version>${spring-cloud-starter.version}</version>
-        </dependency>
+	        <!-- Support Bootstrap YML configurations -->
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-context</artifactId>
+	            <version>${spring-cloud-context.version}</version>
+	        </dependency>
+	        <!-- Support Discovery Server -->
+	        <dependency>
+	            <groupId>org.springframework.cloud</groupId>
+	            <artifactId>spring-cloud-starter-eureka</artifactId>
+	            <version>${spring-cloud-starter.version}</version>
+	        </dependency>
 		<!--TODO: Move transport related dependencies here pending https://jira.spring.io/browse/XD-3337  -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
