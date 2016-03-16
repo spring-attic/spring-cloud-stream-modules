@@ -1,17 +1,17 @@
-= Spring Cloud Stream Http Source
+//tag::ref-doc[]
+= Http Source
 
-This module converts incoming HTTP requests into messages.
+A source module that listens for HTTP requests and emits the body as a message payload.
+If the Content-Type matches `text/*` or `application/json`, the payload will be a String,
+otherwise the payload will be a byte array.
 
-== Requirements
+== Options
 
-* Java 7 or Above
+The **$$http$$** $$source$$ supports the following configuration properties:
 
-== Classes
-
-HttpSourceApplication:: the Spring Boot Main Application
-HttpSource:: the HTTP request mapping endpoint
-
-== Build
+$$pathPattern$$:: $$An Ant-Style pattern to determine which http requests will be captured$$ *($$String$$, default: `/`)*
+//end::ref-doc[]
+= Build
 
 ```
 $> mvn package
@@ -22,5 +22,3 @@ $> mvn package
 ```
 $> java -jar target/http-source-${version}-exec.jar
 ```
-
-The "pathPattern" property determines the request mapping path (default is /messages).
