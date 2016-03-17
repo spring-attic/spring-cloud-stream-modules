@@ -24,6 +24,7 @@
 		<spring-cloud-stream.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-stream.version>
 		<spring-data-gemfire.version>1.7.0.RELEASE</spring-data-gemfire.version>
 		<spring-tuple.version>1.0.0.RC1</spring-tuple.version>
+		<spring-cloud-stream-binder-redis.version>1.0.0.BUILD-SNAPSHOT</spring-cloud-stream-binder-redis.version>
 		<cloudfoundry-client-lib.version>1.1.3</cloudfoundry-client-lib.version>
 		<gemfire.version>8.2.0</gemfire.version>
 	</properties>
@@ -143,6 +144,11 @@
 						<artifactId>jansi</artifactId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-stream-binder-redis</artifactId>
+				<version>${spring-cloud-stream-binder-redis.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
