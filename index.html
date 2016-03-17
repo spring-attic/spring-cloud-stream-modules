@@ -91,12 +91,12 @@ mvn clean package
 
 Step 4 - Run **Time Source** and Bind to *ticktock* Queue
 ```
-java -jar time-source/target/time-source***-exec.jar --spring.cloud.stream.bindings.output=ticktock
+java -jar time-source/target/time-source***-exec.jar --spring.cloud.stream.bindings.output.destination=ticktock
 ```
 
 Step 5 - Run **Log Sink** and Bind to *ticktock* Queue
 ```
-java -jar log-sink/target/log-sink***-exec.jar --spring.cloud.stream.bindings.input=ticktock
+java -jar log-sink/target/log-sink***-exec.jar --spring.cloud.stream.bindings.input.destination=ticktock
 ```
 
 Step 6 - Verify *ticktock* Logs in Console
