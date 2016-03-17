@@ -78,12 +78,12 @@ public class ScriptableTransformProcessor {
 	}
 
 	private static String decodeScript(String script) {
-		String possiblyDequotified = script;
+		String toProcess = script;
 		// If it has both a leading and trailing double quote, remove them
-		if (possiblyDequotified.startsWith("\"") && possiblyDequotified.endsWith("\"")) {
-			possiblyDequotified = script.substring(1, script.length() - 1);
+		if (toProcess.startsWith("\"") && toProcess.endsWith("\"")) {
+			toProcess = script.substring(1, script.length() - 1);
 		}
-		return possiblyDequotified.replaceAll(NEWLINE_ESCAPE, "\n").replaceAll(DOUBLE_DOUBLE_QUOTE, "\"");
+		return toProcess.replaceAll(NEWLINE_ESCAPE, "\n").replaceAll(DOUBLE_DOUBLE_QUOTE, "\"");
 	}
 
 }
