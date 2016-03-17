@@ -54,7 +54,9 @@
 		<module>httpclient-processor</module>
 		<module>integration-test-processor</module>
 		<module>pmml-processor</module>
+		<module>httpclient-processor</module>
 		<module>splitter-processor</module>
+		<module>scriptable-transform-processor</module>
 		<module>transform-processor</module>
 		<!-- sinks in alphabetical order -->
 		<module>cassandra-sink</module>
