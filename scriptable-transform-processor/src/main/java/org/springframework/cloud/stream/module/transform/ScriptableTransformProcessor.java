@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,6 @@ import org.springframework.scripting.support.StaticScriptSource;
  * "https://spring.io/blog/2011/12/08/spring-integration-scripting-support-part-1">
  * this blog article</a>.
  *
- * @author Eric Bottard
- * @author Mark Fisher
- * @author Marius Bogoevici
  * @author Andy Clement
  */
 @EnableBinding(Processor.class)
