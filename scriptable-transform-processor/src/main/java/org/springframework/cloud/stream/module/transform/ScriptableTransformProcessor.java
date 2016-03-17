@@ -68,8 +68,7 @@ public class ScriptableTransformProcessor {
 		String language = properties.getLanguage();
 		String script = properties.getScript();
 		logger.info("Input script is '{}'", script);
-		ScriptSource scriptSource = new StaticScriptSource(decodedScript(script));
-		// logger.info("Decoded input script is '{}'", decodedScript(script));
+		ScriptSource scriptSource = new StaticScriptSource(decodeScript(script));
 		ScriptExecutor scriptExecutor = ScriptExecutorFactory.getScriptExecutor(language);
 		if (scriptExecutor == null) {
 			logger.error("Unable to obtain script executor for language: " + language);
@@ -78,7 +77,7 @@ public class ScriptableTransformProcessor {
 		return new ScriptExecutingMessageProcessor(scriptSource, scriptVariableGenerator, scriptExecutor);
 	}
 
-	private static String decodedScript(String script) {
+	private static String decodeScript(String script) {
 		String possiblyDequotified = script;
 		// If it has both a leading and trailing double quote, remove them
 		if (possiblyDequotified.startsWith("\"") && possiblyDequotified.endsWith("\"")) {
