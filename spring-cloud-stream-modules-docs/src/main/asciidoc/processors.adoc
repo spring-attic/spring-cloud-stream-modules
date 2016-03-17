@@ -71,6 +71,27 @@ $$variables$$:: $$Variable bindings as a comma delimited string of name-value pa
 $$variablesLocation$$:: $$The location of a properties file containing custom script variable bindings$$ *($$String$$, default: ``)*
 
 
+[[spring-cloud-stream-modules-scriptable-transform]]
+=== Script Transform (`scriptable-transform`)
+
+A Processor module module that transforms messages using a script.
+The script body is supplied directly as a `script` property value.
+The language of the script must be specified (groovy/javascript/ruby/python) with the `language` property.
+
+==== Options
+
+The **$$scriptable-transform$$** $$processor$$ has the following options:
+
+$$script$$:: $$The script text$$ *($$String$$, default: ``)*
+lang:: $$The script language$$ *($$String$$, default: ``)*
+$$variables$$:: $$Variable bindings as a comma delimited string of name-value pairs, e.g. 'foo=bar,baz=car'$$ *($$String$$, default: ``)*
+$$variablesLocation$$:: $$The location of a properties file containing custom script variable bindings$$ *($$String$$, default: ``)*
+
+==== Using in a Spring Cloud Dataflow stream definition
+```
+dataflow> stream create --deploy true --name demog --definition "time | scriptable-transform --script=\"return payload+'::'+payload\" --lang=groovy | log"
+```
+
 [[spring-cloud-stream-modules-transform]]
 === Transform (`transform`)
 Use the transform module in a stream to convert a Message's content or structure.
