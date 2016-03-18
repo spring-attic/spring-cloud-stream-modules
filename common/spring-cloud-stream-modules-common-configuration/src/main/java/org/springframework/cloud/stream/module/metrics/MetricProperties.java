@@ -29,7 +29,7 @@ public class MetricProperties {
 	 * The name of a store used to store the counter.
 	 */
 	// Stored as a String to allow forward extension of the module
-	private String store = "memory";
+	private String store = "redis";
 
 	public String getStore() {
 		return store;
