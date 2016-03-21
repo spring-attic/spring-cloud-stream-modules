@@ -72,8 +72,8 @@ public class AggregateCounter {
 	@Override
 	public String toString() {
 		return "AggregateCount{" +
-				"name='" + name + '\'' +
-				", interval=" + interval +
+				"name='" + name +
+				"', interval=" + interval +
 				", counts=" + Arrays.toString(counts) +
 				", resolution=" + resolution +
 				'}';

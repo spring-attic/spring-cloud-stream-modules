@@ -16,7 +16,7 @@
 
 package org.springframework.cloud.stream.module.metrics;
 
-import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.DateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -46,23 +46,18 @@ public class AggregateCounterSink {
 	@Autowired
 	private AggregateCounterRepository aggregateCounterRepository;
 
-	private DateTimeFormatter dateTimeFormatter;
-
 	@ServiceActivator(inputChannel = Sink.INPUT)
 	public void process(Message<?> message) {
-		Double increment = this.config.getIncrementExpression().getValue(message, Double.class);
-		String counterName = this.config.getComputedNameExpression().getValue(message, CharSequence.class).toString();
+		Long increment = this.config.getIncrementExpression().getValue(message, Long.class);
+		String counterName = this.config.getComputedNameExpression().getValue(message, String.class);
 
 		if (this.config.getTimeField() == null) {
-			this.aggregateCounterRepository.increment(counterName, increment.longValue());
+			this.aggregateCounterRepository.increment(counterName, increment, DateTime.now());
 		}
 		else {
 			String timeStampValue = this.config.getTimeField().getValue(message, String.class);
-			if (dateTimeFormatter == null) {
-				dateTimeFormatter = this.config.getDateFormatter();
-			}
-			this.aggregateCounterRepository.increment(counterName, increment.longValue(),
-					this.dateTimeFormatter.parseDateTime(timeStampValue));
+			this.aggregateCounterRepository.increment(counterName, increment,
+					this.config.getDateFormatter().parseDateTime(timeStampValue));
 		}
 	}
 

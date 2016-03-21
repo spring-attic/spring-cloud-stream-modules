@@ -25,7 +25,7 @@ import org.joda.time.Interval;
  * @author Ilayaperumal Gopinathan
  */
 public interface AggregateCounterReader {
-	
+
 	/**
 	 * Query function which returns the last 'n' points for a particular resolution.
 	 *
@@ -46,7 +46,6 @@ public interface AggregateCounterReader {
 	 * @return an object containing an indexed array of the aggregate counts for the given query.
 	 */
 	AggregateCounter getCounts(String name, Interval interval, AggregateCounterResolution resolution);
-
 
 	/**
 	 * Queries by requesting a number of points, ending on the given date (inclusive).

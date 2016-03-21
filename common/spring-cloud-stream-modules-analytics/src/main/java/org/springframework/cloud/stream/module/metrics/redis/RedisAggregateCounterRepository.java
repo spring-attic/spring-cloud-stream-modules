@@ -79,11 +79,6 @@ public class RedisAggregateCounterRepository implements AggregateCounterReposito
 	}
 
 	@Override
-	public long increment(String name, long amount) {
-		return increment(name, amount, new DateTime());
-	}
-
-	@Override
 	public long increment(String name, long amount, DateTime dateTime) {
 		final AggregateKeyGenerator akg = new AggregateKeyGenerator(REPO_PREFIX, name, dateTime);
 

@@ -41,12 +41,7 @@ public class InMemoryAggregateCounterRepository implements AggregateCounterRepos
 
 
 	public long increment(String name) {
-		return increment(name, 1L);
-	}
-
-	@Override
-	public long increment(String name, long amount) {
-		return increment(name, amount, DateTime.now());
+		return increment(name, 1L, DateTime.now());
 	}
 
 	public long decrement(String name) {

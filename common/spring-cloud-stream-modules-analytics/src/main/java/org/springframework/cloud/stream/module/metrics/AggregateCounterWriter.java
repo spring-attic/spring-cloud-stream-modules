@@ -25,11 +25,6 @@ import org.joda.time.DateTime;
 public interface AggregateCounterWriter {
 
 	/**
-	 * Increments the named counter by a specific amount for the current time.
-	 */
-	long increment(String name, long amount);
-
-	/**
 	 * Increments the named counter by a specific amount for the given instant.
 	 */
 	long increment(String name, long amount, DateTime dateTime);

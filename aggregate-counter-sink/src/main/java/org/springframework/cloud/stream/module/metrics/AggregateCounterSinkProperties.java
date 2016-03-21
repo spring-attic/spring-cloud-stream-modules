@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.metrics;
 
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.format.DateTimeFormat;
@@ -27,7 +28,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.stream.module.DateFormat;
 import org.springframework.expression.Expression;
 import org.springframework.expression.common.LiteralExpression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.integration.expression.ValueExpression;
 
 /**
  * @author Ilayaperumal Gopinathan
@@ -57,9 +58,9 @@ public class AggregateCounterSinkProperties extends MetricProperties {
 	private Expression timeField;
 
 	/**
-	 *  Increment value for each bucket as a SpEL against the message
+	 * Increment value for each bucket as a SpEL against the message
 	 */
-	private Expression incrementExpression = new SpelExpressionParser().parseExpression("1");
+	private Expression incrementExpression = new ValueExpression<>(1L);
 
 	private String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
@@ -115,6 +116,7 @@ public class AggregateCounterSinkProperties extends MetricProperties {
 		return dateFormat;
 	}
 
+	@NotNull
 	public DateTimeFormatter getDateFormatter() {
 		return DateTimeFormat.forPattern(this.getDateFormat());
 	}

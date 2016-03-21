@@ -41,7 +41,6 @@ import org.springframework.cloud.stream.module.metrics.AggregateCounterSink;
 import org.springframework.cloud.stream.module.metrics.AggregateCounterSinkApplication;
 import org.springframework.cloud.stream.test.junit.redis.RedisTestSupport;
 import org.springframework.messaging.support.GenericMessage;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
@@ -53,7 +52,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AggregateCounterSinkApplication.class)
-@DirtiesContext
 @IntegrationTest({"store=redis", "server.port=-1"})
 public abstract class AggregateCounterTests {
 
@@ -61,8 +59,6 @@ public abstract class AggregateCounterTests {
 	public RedisTestSupport redisTestSupport = new RedisTestSupport();
 
 	private static final String AGGREGATE_COUNTER_NAME = "aggregate-counter-test.foo";
-
-	private static final String TEST_AGGREGATE_COUNTER_NAME = "aggregate-counter-test.test";
 
 	@Autowired
 	@Bindings(AggregateCounterSink.class)
@@ -75,7 +71,6 @@ public abstract class AggregateCounterTests {
 	@After
 	public void clear() {
 		aggregateCounterRepository.reset(AGGREGATE_COUNTER_NAME);
-		aggregateCounterRepository.reset(TEST_AGGREGATE_COUNTER_NAME);
 	}
 
 
@@ -123,8 +118,8 @@ public abstract class AggregateCounterTests {
 		@Test
 		public void testCountWithNameExpression() {
 			this.sink.input().send(new GenericMessage<Object>(
-					Collections.singletonMap("counterName", TEST_AGGREGATE_COUNTER_NAME)));
-			AggregateCounter counts = this.aggregateCounterRepository.getCounts(TEST_AGGREGATE_COUNTER_NAME, 5,
+					Collections.singletonMap("counterName", AGGREGATE_COUNTER_NAME)));
+			AggregateCounter counts = this.aggregateCounterRepository.getCounts(AGGREGATE_COUNTER_NAME, 5,
 					AggregateCounterResolution.hour);
 			assertThat(counts.getCounts(), equalTo(new long[] {0, 0, 0, 0, 1}));
 		}
