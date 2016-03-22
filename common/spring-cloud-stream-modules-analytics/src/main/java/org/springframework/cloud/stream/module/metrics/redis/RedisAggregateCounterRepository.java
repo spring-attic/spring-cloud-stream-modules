@@ -53,7 +53,7 @@ import org.springframework.util.Assert;
  */
 public class RedisAggregateCounterRepository implements AggregateCounterRepository {
 
-	private static final String REPO_PREFIX = "aggregate-counters.";
+	private static final String REPO_PREFIX = "aggregate-counters";
 
 	private final RedisRetryTemplate redisTemplate;
 
@@ -100,7 +100,7 @@ public class RedisAggregateCounterRepository implements AggregateCounterReposito
 	 * @return the redis key under which the metric is stored
 	 */
 	protected String getMetricKey(String metricName) {
-		return REPO_PREFIX + metricName;
+		return REPO_PREFIX + AggregateKeyGenerator.SEPARATOR + metricName;
 	}
 
 	/**

@@ -29,7 +29,6 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.cloud.stream.module.metrics.redis.RedisFieldValueCounterRepository;
 import org.springframework.cloud.stream.test.junit.redis.RedisTestSupport;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -56,7 +55,7 @@ public class FieldValueCounterSinkWithDefaultsTests {
 	private Sink sink;
 
 	@Autowired
-	private RedisFieldValueCounterRepository fieldValueCounterRepository;
+	private FieldValueCounterRepository fieldValueCounterRepository;
 
 	@Before
 	@After

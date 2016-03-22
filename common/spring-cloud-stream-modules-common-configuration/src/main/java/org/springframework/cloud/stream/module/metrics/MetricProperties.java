@@ -25,11 +25,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties
 public class MetricProperties {
+
+	public static final String REDIS_STORE_VALUE = "redis";
 	/**
 	 * The name of a store used to store the counter.
 	 */
 	// Stored as a String to allow forward extension of the module
-	private String store = "redis";
+	private String store = REDIS_STORE_VALUE;
 
 	public String getStore() {
 		return store;

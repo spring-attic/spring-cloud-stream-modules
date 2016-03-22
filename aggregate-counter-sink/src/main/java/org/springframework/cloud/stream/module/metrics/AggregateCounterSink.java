@@ -19,13 +19,10 @@ package org.springframework.cloud.stream.module.metrics;
 import org.joda.time.DateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.config.SpelExpressionConverterConfiguration;
 import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.cloud.stream.module.metrics.memory.InMemoryAggregateCounterRepository;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
@@ -50,7 +47,6 @@ public class AggregateCounterSink {
 	public void process(Message<?> message) {
 		Long increment = this.config.getIncrementExpression().getValue(message, Long.class);
 		String counterName = this.config.getComputedNameExpression().getValue(message, String.class);
-
 		if (this.config.getTimeField() == null) {
 			this.aggregateCounterRepository.increment(counterName, increment, DateTime.now());
 		}
@@ -60,11 +56,4 @@ public class AggregateCounterSink {
 					this.config.getDateFormatter().parseDateTime(timeStampValue));
 		}
 	}
-
-	@Bean
-	@ConditionalOnMissingBean(AggregateCounterRepository.class)
-	public AggregateCounterRepository aggregateCounterRepository() {
-		return new InMemoryAggregateCounterRepository();
-	}
-
 }

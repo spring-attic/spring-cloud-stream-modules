@@ -64,8 +64,6 @@ public class AggregateCounterSinkProperties extends MetricProperties {
 
 	private String dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
-	private DateTimeFormatter dateFormatter;
-
 	public String getName() {
 		if (name == null && nameExpression == null) {
 			return defaultName;
