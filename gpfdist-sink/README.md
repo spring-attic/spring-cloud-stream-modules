@@ -18,6 +18,6 @@ $ mvn clean package -s ../.settings.xml
 ## Run:
 
 ```
-$ java -jar target/hdfs-sink-1.0.0.BUILD-SNAPSHOT-exec.jar --server.port=8081 --spring.cloud.stream.bindings.input=<name-to-bind-to>
+$ java -jar target/gpfdist-sink-1.0.0.BUILD-SNAPSHOT-exec.jar --server.port=8081 --spring.cloud.stream.bindings.input=<name-to-bind-to>
 ```
 
