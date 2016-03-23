@@ -18,8 +18,11 @@
 
 package org.springframework.cloud.stream.module.websocket.sink;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.security.cert.CertificateException;
+
+import javax.annotation.PostConstruct;
+import javax.net.ssl.SSLException;
+
 import org.springframework.boot.actuate.trace.InMemoryTraceRepository;
 import org.springframework.boot.actuate.trace.TraceRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,14 +31,9 @@ import org.springframework.cloud.stream.module.websocket.sink.actuator.Websocket
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
-import javax.net.ssl.SSLException;
-import java.security.cert.CertificateException;
-
 /**
  * @author Oliver Moser
  */
-@Slf4j
 @Configuration
 @EnableConfigurationProperties(WebsocketSinkProperties.class)
 public class WebsocketSinkConfiguration {
