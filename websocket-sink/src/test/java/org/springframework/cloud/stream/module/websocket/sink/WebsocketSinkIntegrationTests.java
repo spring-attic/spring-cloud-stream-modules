@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-15 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,21 @@
 
 package org.springframework.cloud.stream.module.websocket.sink;
 
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -31,26 +44,15 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
 /**
  * @author Oliver Moser
+ * @author Gary Russell
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {WebsocketSinkApplication.class})
 @WebIntegrationTest({
 	"server.port:0",
-	"websocketPort=9393",
+	"websocketPort=0",
 	"websocketPath=/some_websocket_path",
 	"websocketLoglevel=DEBUG",
 	"threads=2"
@@ -70,6 +72,9 @@ public class WebsocketSinkIntegrationTests {
 	@Autowired
 	private WebsocketSinkProperties properties;
 
+	@Autowired
+	private WebsocketSinkServer sinkServer;
+
 	@Test
 	public void contextLoads() {
 		assertNotNull(sink.input());
@@ -78,7 +83,7 @@ public class WebsocketSinkIntegrationTests {
 	@Test
 	public void checkCmdlineArgs() {
 		assertThat(properties.getWebsocketPath(), is("/some_websocket_path"));
-		assertThat(properties.getWebsocketPort(), is(9393));
+		assertThat(properties.getWebsocketPort(), is(0));
 		assertThat(properties.getWebsocketLoglevel(), is("DEBUG"));
 		assertThat(properties.getThreads(), is(2));
 	}
@@ -136,8 +141,9 @@ public class WebsocketSinkIntegrationTests {
 	//
 	//
 
-	private WebSocketSession doHandshake(WebsocketSinkClientHandler handler) throws InterruptedException, ExecutionException {
-		String wsEndpoint = "ws://localhost:" + properties.getWebsocketPort() + properties.getWebsocketPath();
+	private WebSocketSession doHandshake(WebsocketSinkClientHandler handler)
+			throws InterruptedException, ExecutionException {
+		String wsEndpoint = "ws://localhost:" + this.sinkServer.getPort() + this.properties.getWebsocketPath();
 		return new StandardWebSocketClient().doHandshake(handler, wsEndpoint).get();
 	}
 
