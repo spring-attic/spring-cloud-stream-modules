@@ -18,13 +18,12 @@ package org.springframework.cloud.stream.module.filter;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
@@ -41,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author Eric Bottard
  * @author Marius Bogoevici
+ * @author Matt Ross
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = FilterProcessorApplication.class)
@@ -81,6 +81,56 @@ public abstract class FilterProcessorIntegrationTests {
 			channels.input().send(new GenericMessage<Object>("hi!"));
 			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello world")));
 			assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
+
+			channels.input().send(new GenericMessage<Object>("hi!"));
+			channels.input().send(new GenericMessage<Object>("hello world"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(not("hi!")));
+			assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
+
+		}
+	}
+
+	@WebIntegrationTest("expression=payload.contains('foo')")
+	public static class UsingContainsExpressionIntegrationTests extends FilterProcessorIntegrationTests {
+
+		@Test
+		public void test() throws InterruptedException {
+
+			channels.input().send(new GenericMessage<Object>("bazbar"));
+			channels.input().send(new GenericMessage<Object>("barbaz"));
+			channels.input().send(new GenericMessage<Object>("foobar"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("foobar")));
+			assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
+
+			channels.input().send(new GenericMessage<Object>("''babfoo''"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("''babfoo''")));
+			assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
+
+			channels.input().send(new GenericMessage<Object>("bazbar"));
+			channels.input().send(new GenericMessage<Object>("foobar"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(not("bazbar")));
+			assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
+		}
+	}
+
+	@WebIntegrationTest("expression=payload=='baz'")
+	public static class UsingEqualsExpressionIntegrationTests extends FilterProcessorIntegrationTests {
+
+		@Test
+		public void test() throws InterruptedException {
+
+			channels.input().send(new GenericMessage<Object>("baz"));
+			channels.input().send(new GenericMessage<Object>("barbaz"));
+			channels.input().send(new GenericMessage<Object>("foobar"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(not("foobar")));
+            assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
+
+
+            channels.input().send(new GenericMessage<Object>("baz"));
+			channels.input().send(new GenericMessage<Object>("foobar"));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(not("foobar")));
+			assertThat(collector.forChannel(channels.output()).poll(10, MILLISECONDS), is(nullValue(Message.class)));
+
 		}
 	}
 }
