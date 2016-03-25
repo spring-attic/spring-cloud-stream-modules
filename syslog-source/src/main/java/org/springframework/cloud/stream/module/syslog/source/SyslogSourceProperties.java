@@ -57,7 +57,7 @@ public class SyslogSourceProperties {
 	/**
 	 * the socket timeout.
 	 */
-	private Integer socketTimeout;
+	private int socketTimeout;
 
 	/**
 	 * '5424' or '3164' - the syslog format according the the RFC; 3164 is aka 'BSD' format.
@@ -104,11 +104,11 @@ public class SyslogSourceProperties {
 		this.reverseLookup = reverseLookup;
 	}
 
-	public Integer getSocketTimeout() {
+	public int getSocketTimeout() {
 		return socketTimeout;
 	}
 
-	public void setSocketTimeout(Integer socketTimeout) {
+	public void setSocketTimeout(int socketTimeout) {
 		this.socketTimeout = socketTimeout;
 	}
 

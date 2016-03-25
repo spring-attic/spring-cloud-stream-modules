@@ -26,8 +26,9 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.serializer.Deserializer;
-import org.springframework.integration.ip.config.TcpConnectionFactoryFactoryBean;
 import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
+import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
+import org.springframework.integration.ip.tcp.connection.TcpNioServerConnectionFactory;
 import org.springframework.integration.ip.tcp.serializer.ByteArrayLfSerializer;
 import org.springframework.integration.syslog.DefaultMessageConverter;
 import org.springframework.integration.syslog.MessageConverter;
@@ -106,18 +107,19 @@ public class SyslogSource {
 		private SyslogSourceProperties properties;
 
 		@Bean
-		public TcpConnectionFactoryFactoryBean syslogSourceConnectionFactory(
+		public AbstractServerConnectionFactory syslogSourceConnectionFactory(
 				@Qualifier("syslogSourceDecoder") Deserializer<?> decoder) throws Exception {
-			TcpConnectionFactoryFactoryBean factoryBean = new TcpConnectionFactoryFactoryBean();
-			factoryBean.setType("server");
-			factoryBean.setPort(this.properties.getPort());
-			factoryBean.setUsingNio(this.properties.isNio());
-			factoryBean.setLookupHost(this.properties.isReverseLookup());
-			factoryBean.setDeserializer(decoder);
-			if (this.properties.getSocketTimeout() != null) {
-				factoryBean.setSoTimeout(this.properties.getSocketTimeout());
+			AbstractServerConnectionFactory factory;
+			if (this.properties.isNio()) {
+				factory = new TcpNioServerConnectionFactory(this.properties.getPort());
 			}
-			return factoryBean;
+			else {
+				factory = new TcpNetServerConnectionFactory(this.properties.getPort());
+			}
+			factory.setLookupHost(this.properties.isReverseLookup());
+			factory.setDeserializer(decoder);
+			factory.setSoTimeout(this.properties.getSocketTimeout());
+			return factory;
 		}
 
 		@Bean
