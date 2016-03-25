@@ -17,28 +17,38 @@
 
 package org.springframework.cloud.stream.module.websocket.sink;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.*;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.websocketx.*;
-import io.netty.util.CharsetUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.trace.TraceRepository;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import static io.netty.handler.codec.http.HttpHeaders.Names.HOST;
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static io.netty.handler.codec.http.HttpResponseStatus.FORBIDDEN;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.boot.actuate.trace.TraceRepository;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
+import io.netty.util.CharsetUtil;
 
 /**
  * Handles handshakes and messages. Based on the Netty <a href="http://bit.ly/1jVBj5T">websocket examples</a>.
@@ -46,8 +56,9 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
  * @author Netty
  * @author Oliver Moser
  */
-@Slf4j
 class WebsocketSinkServerHandler extends SimpleChannelInboundHandler<Object> {
+
+	private static final Log logger = LogFactory.getLog(WebsocketSinkServerHandler.class);
 
 	private final boolean traceEnabled;
 
@@ -83,14 +94,14 @@ class WebsocketSinkServerHandler extends SimpleChannelInboundHandler<Object> {
 	private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest req) {
 		// Handle a bad request.
 		if (!req.getDecoderResult().isSuccess()) {
-			log.warn("Bad request: {}", req.getUri());
+			logger.warn(String.format("Bad request: %s", req.getUri()));
 			sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1, BAD_REQUEST));
 			return;
 		}
 
 		// Allow only GET methods.
 		if (req.getMethod() != GET) {
-			log.warn("Unsupported HTTP method: {}", req.getMethod());
+			logger.warn(String.format("Unsupported HTTP method: %s", req.getMethod()));
 			sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1, FORBIDDEN));
 			return;
 		}
@@ -143,8 +154,8 @@ class WebsocketSinkServerHandler extends SimpleChannelInboundHandler<Object> {
 
 	// simple echo implementation
 	private void handleTextWebSocketFrameInternal(TextWebSocketFrame frame, ChannelHandlerContext ctx) {
-		if (log.isTraceEnabled()) {
-			log.trace("{} received {}", ctx.channel(), frame.text());
+		if (logger.isTraceEnabled()) {
+			logger.trace(String.format("%s received %s", ctx.channel(), frame.text()));
 		}
 
 		addTraceForFrame(frame, "text");
@@ -183,7 +194,7 @@ class WebsocketSinkServerHandler extends SimpleChannelInboundHandler<Object> {
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-		log.error("Websocket error", cause);
+		logger.error("Websocket error", cause);
 		cause.printStackTrace();
 		ctx.close();
 	}
@@ -192,7 +203,8 @@ class WebsocketSinkServerHandler extends SimpleChannelInboundHandler<Object> {
 		String location = req.headers().get(HOST) + properties.getWebsocketPath();
 		if (properties.isSsl()) {
 			return "wss://" + location;
-		} else {
+		}
+		else {
 			return "ws://" + location;
 		}
 	}

@@ -17,6 +17,18 @@
 
 package org.springframework.cloud.stream.module.websocket.sink;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -24,14 +36,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Bootstraps a Netty server using the {@link WebsocketSinkServerInitializer}. Also adds
@@ -40,8 +44,9 @@ import java.util.List;
  *
  * @author Oliver Moser
  */
-@Slf4j
 public class WebsocketSinkServer {
+
+	private static final Log logger = LogFactory.getLog(WebsocketSinkServer.class);
 
 	static final List<Channel> channels = Collections.synchronizedList(new ArrayList<Channel>());
 
@@ -80,16 +85,16 @@ public class WebsocketSinkServer {
 	}
 
 	private void dumpProperties() {
-		log.info("███████████████████████████████████████████████████████████");
-		log.info("                >> websocket-sink config <<                ");
-		log.info("");
-		log.info("websocketPort:     {}", properties.getWebsocketPort());
-		log.info("ssl:               {}", properties.isSsl());
-		log.info("websocketPath:     {}", properties.getWebsocketPath());
-		log.info("websocketLoglevel: {}", properties.getWebsocketLoglevel());
-		log.info("threads:           {}", properties.getThreads());
-		log.info("");
-		log.info("████████████████████████████████████████████████████████████");
+		logger.info("███████████████████████████████████████████████████████████");
+		logger.info("                >> websocket-sink config <<                ");
+		logger.info("");
+		logger.info(String.format("websocketPort:     %s", properties.getWebsocketPort()));
+		logger.info(String.format("ssl:               %s", properties.isSsl()));
+		logger.info(String.format("websocketPath:     %s", properties.getWebsocketPath()));
+		logger.info(String.format("websocketLoglevel: %s", properties.getWebsocketLoglevel()));
+		logger.info(String.format("threads:           %s", properties.getThreads()));
+		logger.info("");
+		logger.info("████████████████████████████████████████████████████████████");
 	}
 
 	//

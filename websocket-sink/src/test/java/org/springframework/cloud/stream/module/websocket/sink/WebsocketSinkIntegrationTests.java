@@ -50,7 +50,7 @@ import static org.junit.Assert.assertThat;
 @SpringApplicationConfiguration(classes = {WebsocketSinkApplication.class})
 @WebIntegrationTest({
 	"server.port:0",
-	"websocketPort=9393",
+	"websocketPort=19393",
 	"websocketPath=/some_websocket_path",
 	"websocketLoglevel=DEBUG",
 	"threads=2"
@@ -78,7 +78,7 @@ public class WebsocketSinkIntegrationTests {
 	@Test
 	public void checkCmdlineArgs() {
 		assertThat(properties.getWebsocketPath(), is("/some_websocket_path"));
-		assertThat(properties.getWebsocketPort(), is(9393));
+		assertThat(properties.getWebsocketPort(), is(19393));
 		assertThat(properties.getWebsocketLoglevel(), is("DEBUG"));
 		assertThat(properties.getThreads(), is(2));
 	}

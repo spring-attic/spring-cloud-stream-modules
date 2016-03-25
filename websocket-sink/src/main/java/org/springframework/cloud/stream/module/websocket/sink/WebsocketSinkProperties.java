@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-15 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,12 @@ package org.springframework.cloud.stream.module.websocket.sink;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import io.netty.handler.logging.LogLevel;
-import lombok.Data;
 
 /**
  * Command line arguments available for {@link WebsocketSink}.
  *
  * @author Oliver Moser
  */
-@Data
 @ConfigurationProperties
 public class WebsocketSinkProperties {
 
@@ -63,4 +61,45 @@ public class WebsocketSinkProperties {
 	 * the websocketPath on which a WebsocketSink consumer needs to connect. Default is <tt>/websocket</tt>
 	 */
 	String websocketPath = DEFAULT_PATH;
+
+	public boolean isSsl() {
+		return ssl;
+	}
+
+	public void setSsl(boolean ssl) {
+		this.ssl = ssl;
+	}
+
+	public int getWebsocketPort() {
+		return websocketPort;
+	}
+
+	public void setWebsocketPort(int websocketPort) {
+		this.websocketPort = websocketPort;
+	}
+
+	public int getThreads() {
+		return threads;
+	}
+
+	public void setThreads(int threads) {
+		this.threads = threads;
+	}
+
+	public String getWebsocketLoglevel() {
+		return websocketLoglevel;
+	}
+
+	public void setWebsocketLoglevel(String websocketLoglevel) {
+		this.websocketLoglevel = websocketLoglevel;
+	}
+
+	public String getWebsocketPath() {
+		return websocketPath;
+	}
+
+	public void setWebsocketPath(String websocketPath) {
+		this.websocketPath = websocketPath;
+	}
+
 }

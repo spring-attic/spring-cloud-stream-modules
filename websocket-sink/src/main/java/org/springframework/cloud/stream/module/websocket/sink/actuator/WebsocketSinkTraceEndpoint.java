@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-15 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,14 +17,17 @@
 
 package org.springframework.cloud.stream.module.websocket.sink.actuator;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.springframework.boot.actuate.endpoint.AbstractEndpoint;
 import org.springframework.boot.actuate.trace.Trace;
 import org.springframework.boot.actuate.trace.TraceRepository;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
 
 /**
  * simple {@link org.springframework.boot.actuate.endpoint.Endpoint} implementation that
@@ -32,9 +35,10 @@ import java.util.List;
  *
  * @author Oliver Moser
  */
-@Slf4j
 @ConfigurationProperties(prefix = "endpoints.websocketsinktrace", ignoreUnknownFields = true)
 public class WebsocketSinkTraceEndpoint extends AbstractEndpoint<List<Trace>> {
+
+	private static final Log logger = LogFactory.getLog(WebsocketSinkTraceEndpoint.class);
 
 	private boolean enabled;
 
@@ -47,7 +51,7 @@ public class WebsocketSinkTraceEndpoint extends AbstractEndpoint<List<Trace>> {
 
 	@PostConstruct
 	public void init() {
-		log.info("/websocketsinktrace enabled: {}", enabled);
+		logger.info(String.format("/websocketsinktrace enabled: %b", enabled));
 	}
 
 	@Override
