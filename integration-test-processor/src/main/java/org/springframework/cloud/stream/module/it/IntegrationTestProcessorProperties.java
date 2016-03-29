@@ -29,6 +29,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties
 public class IntegrationTestProcessorProperties {
 
+	public static final String FUNNY_CHARACTERS = "&'\"|< é\\(";
+
 	/**
 	 * The delay in milliseconds to stall the initialization of this module.
 	 * Useful for testing the 'deploying' state of a module.
@@ -46,6 +48,13 @@ public class IntegrationTestProcessorProperties {
 	 * will behave according to the other configuration parameters.
 	 */
 	private Set<Integer> matchInstances = new HashSet<>();
+
+	/**
+	 * If not null, this property will be tested against {@link #FUNNY_CHARACTERS}.
+	 * This makes sure that a deployer knows how to properly propagate deployment properties, including
+	 * those that contain chars that often require some form of escaping.
+	 */
+	private String parameterThatMayNeedEscaping;
 
 	public int getInitDelay() {
 		return initDelay;
@@ -69,5 +78,13 @@ public class IntegrationTestProcessorProperties {
 
 	public void setMatchInstances(Set<Integer> matchInstances) {
 		this.matchInstances = matchInstances;
+	}
+
+	public String getParameterThatMayNeedEscaping() {
+		return parameterThatMayNeedEscaping;
+	}
+
+	public void setParameterThatMayNeedEscaping(String parameterThatMayNeedEscaping) {
+		this.parameterThatMayNeedEscaping = parameterThatMayNeedEscaping;
 	}
 }

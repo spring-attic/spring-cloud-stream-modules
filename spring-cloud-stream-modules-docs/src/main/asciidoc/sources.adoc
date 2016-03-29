@@ -216,7 +216,25 @@ $$tmpFileSuffix$$:: $$extension to use when downloading files$$ *($$String$$, de
 $$user$$:: $$the username to use$$ *($$String$$, no default)*
 $$withMarkers$$:: $$if true emits start of file/end of file marker messages before/after the data. Only valid with FileReadingMode 'lines'$$ *($$Boolean$$, no default)*
 
-[[spring-cloud-stream-modules-source-tcp]]
+[[spring-clound-stream-modules-source-syslog]]
+=== SYSLOG
+
+The syslog source receives SYSLOG packets over UDP, TCP, or both.
+RFC3164 (BSD) and RFC5424 formats are supported.
+
+==== Options
+
+The **$$syslog$$** $$source$$ has the following options:
+
+$$protocol$$:: $$`udp`, `tcp`, or `both`$$ *($$String$$, default `tcp`)*
+$$rfc$$:: $$`3164` or `5424`$$ *($$String$$, default `3164`)*
+$$port$$:: $$the port on which to listen$$  *($$String$$, default `1514`)*
+$$bufferSize$$:: $$the maximum size allowed (TCP)$$ *($$int$$, default `2048`)*
+$$nio$$:: $$`true` to use NIO - only recommended when supporting many connections$$ *($$Boolean$$, default `false`)*
+$$reverseLookup$$:: $$`true` to perform a reverse lookup on the remote IP address$$ *($$Boolean$$, default `false`)*
+$$socketTimeout$$:: $$the socket timeout$$ *($$long$$, default `none`)*
+
+
 === TCP
 The `tcp` source acts as a server and allows a remote party to connect to Spring Cloud Data Flow and submit data over a raw tcp socket.
 

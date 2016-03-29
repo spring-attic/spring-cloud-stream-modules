@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.cloud.stream.module.metrics;
+package org.springframework.cloud.stream.module.metrics.memory;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.springframework.cloud.stream.module.metrics.FieldValueCounter;
+import org.springframework.cloud.stream.module.metrics.FieldValueCounterRepository;
 import org.springframework.util.Assert;
 
 /**

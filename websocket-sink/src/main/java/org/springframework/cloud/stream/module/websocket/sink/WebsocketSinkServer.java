@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-15 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,18 @@
 
 package org.springframework.cloud.stream.module.websocket.sink;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -24,14 +36,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Bootstraps a Netty server using the {@link WebsocketSinkServerInitializer}. Also adds
@@ -39,9 +43,11 @@ import java.util.List;
  * from {@link WebsocketSinkProperties#websocketLoglevel}.
  *
  * @author Oliver Moser
+ * @author Gary Russell
  */
-@Slf4j
 public class WebsocketSinkServer {
+
+	private static final Log logger = LogFactory.getLog(WebsocketSinkServer.class);
 
 	static final List<Channel> channels = Collections.synchronizedList(new ArrayList<Channel>());
 
@@ -54,6 +60,12 @@ public class WebsocketSinkServer {
 	private EventLoopGroup bossGroup;
 
 	private EventLoopGroup workerGroup;
+
+	private int port;
+
+	public int getPort() {
+		return this.port;
+	}
 
 	@PostConstruct
 	public void init() {
@@ -68,28 +80,28 @@ public class WebsocketSinkServer {
 	}
 
 	public void run() throws InterruptedException {
-		new ServerBootstrap().group(bossGroup, workerGroup)
+		NioServerSocketChannel channel = (NioServerSocketChannel) new ServerBootstrap().group(bossGroup, workerGroup)
 			.channel(NioServerSocketChannel.class)
 			.handler(new LoggingHandler(nettyLogLevel()))
 			.childHandler(initializer)
 			.bind(properties.getWebsocketPort())
 			.sync()
 			.channel();
-
+		this.port = channel.localAddress().getPort();
 		dumpProperties();
 	}
 
 	private void dumpProperties() {
-		log.info("███████████████████████████████████████████████████████████");
-		log.info("                >> websocket-sink config <<                ");
-		log.info("");
-		log.info("websocketPort:     {}", properties.getWebsocketPort());
-		log.info("ssl:               {}", properties.isSsl());
-		log.info("websocketPath:     {}", properties.getWebsocketPath());
-		log.info("websocketLoglevel: {}", properties.getWebsocketLoglevel());
-		log.info("threads:           {}", properties.getThreads());
-		log.info("");
-		log.info("████████████████████████████████████████████████████████████");
+		logger.info("███████████████████████████████████████████████████████████");
+		logger.info("                >> websocket-sink config <<                ");
+		logger.info("");
+		logger.info(String.format("websocketPort:     %s", this.port));
+		logger.info(String.format("ssl:               %s", this.properties.isSsl()));
+		logger.info(String.format("websocketPath:     %s", this.properties.getWebsocketPath()));
+		logger.info(String.format("websocketLoglevel: %s", this.properties.getWebsocketLoglevel()));
+		logger.info(String.format("threads:           %s", this.properties.getThreads()));
+		logger.info("");
+		logger.info("████████████████████████████████████████████████████████████");
 	}
 
 	//

@@ -24,7 +24,10 @@ import static org.junit.Assert.fail;
 import static org.springframework.cloud.stream.modules.test.hamcrest.HamcrestMatchers.fieldErrorWithNonEmptyArgument;
 
 import java.net.InetSocketAddress;
+import java.util.Locale;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -39,6 +42,20 @@ import org.springframework.validation.BindException;
  * @author Gary Russell
  */
 public class GemfirePoolPropertiesTests {
+
+	private static Locale vmLocale;
+
+	// This class asserts stuff about localized messages. Force en_US for the duration of the tests
+	@BeforeClass
+	public static void setupLocale() {
+		vmLocale = Locale.getDefault();
+		Locale.setDefault(Locale.US);
+	}
+
+	@AfterClass
+	public static void restoreLocale() {
+		Locale.setDefault(vmLocale);
+	}
 
 	@Test
 	public void connectionAddressesCanBeCustomized() {

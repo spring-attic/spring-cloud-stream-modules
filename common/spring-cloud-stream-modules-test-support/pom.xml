@@ -62,5 +62,16 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	<profiles>
+		<profile>
+			<id>spring</id>
+			<repositories>
+				<repository>
+					<id>spring-libs-release</id>
+					<name>Spring Libs Release</name>
+					<url>http://repo.spring.io/libs-release</url>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
 </project>

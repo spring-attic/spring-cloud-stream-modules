@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,10 @@ package org.springframework.cloud.stream.module.metrics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.ExportMetricWriter;
+import org.springframework.boot.actuate.metrics.repository.InMemoryMetricRepository;
+import org.springframework.boot.actuate.metrics.repository.MetricRepository;
 import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -29,18 +31,25 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  * a store.
  *
  * @author Eric Bottard
+ * @author Ilayaperumal Gopinathan
  * @see MetricProperties#getStore()
  */
 @Configuration
-@ConditionalOnProperty(value = "store", havingValue = "redis")
-public class CounterSinkRedisStoreConfiguration {
+@EnableConfigurationProperties(CounterProperties.class)
+public class CounterSinkStoreConfiguration {
 
 	@Autowired
-	RedisConnectionFactory redisConnectionFactory;
+	private RedisConnectionFactory redisConnectionFactory;
+
+	@Autowired
+	private CounterProperties metricProperties;
 
 	@Bean
 	@ExportMetricWriter
-	public RedisMetricRepository redisMetricRepository() {
-		return new RedisMetricRepository(redisConnectionFactory);
+	public MetricRepository metricRepository() {
+		if (this.metricProperties.equals(MetricProperties.REDIS_STORE_VALUE)) {
+			return new RedisMetricRepository(redisConnectionFactory);
+		}
+		return new InMemoryMetricRepository();
 	}
 }

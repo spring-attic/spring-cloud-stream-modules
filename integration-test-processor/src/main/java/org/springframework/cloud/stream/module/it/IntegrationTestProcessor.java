@@ -16,6 +16,8 @@
 
 package org.springframework.cloud.stream.module.it;
 
+import static org.springframework.cloud.stream.module.it.IntegrationTestProcessorProperties.FUNNY_CHARACTERS;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,12 @@ public class IntegrationTestProcessor {
 
 	@PostConstruct
 	public void init() throws InterruptedException {
+		String parameterThatMayNeedEscaping = properties.getParameterThatMayNeedEscaping();
+		if (parameterThatMayNeedEscaping != null && !FUNNY_CHARACTERS.equals(parameterThatMayNeedEscaping)) {
+			throw new IllegalArgumentException(String.format("Expected value to be equal to '%s', but was '%s'", FUNNY_CHARACTERS, parameterThatMayNeedEscaping));
+		}
+
+
 		if (properties.getMatchInstances().isEmpty() || properties.getMatchInstances().contains(instanceIndex())) {
 			Thread.sleep(properties.getInitDelay());
 			if (properties.getKillDelay() >= 0) {

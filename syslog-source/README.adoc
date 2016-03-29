@@ -1,0 +1,27 @@
+= Spring Cloud Stream Syslog Source
+
+This module converts incoming Syslog packets into messages.
+It supports both RFC3164 (BSD) and RFC5464 formatted syslog packets
+over either UDP or TCP, or both.
+
+== Requirements
+
+* Java 7 or Above
+
+== Classes
+
+SyslogSourceApplication:: the Spring Boot Main Application
+SyslogSource:: the Syslog source
+
+== Build
+
+```
+$> mvn package
+```
+
+== Run
+
+```
+$> java -jar target/syslog-source-${version}-exec.jar
+```
+
