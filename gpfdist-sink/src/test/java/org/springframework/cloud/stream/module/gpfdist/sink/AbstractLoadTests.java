@@ -30,6 +30,7 @@ import org.springframework.cloud.stream.module.gpfdist.sink.support.NetworkUtils
 import org.springframework.cloud.stream.module.gpfdist.sink.support.ReadableTableFactoryBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.hadoop.util.net.DefaultHostInfoDiscovery;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import reactor.Environment;
@@ -63,7 +64,8 @@ public abstract class AbstractLoadTests {
 		@Bean
 		public ReadableTableFactoryBean greenplumReadableTable() {
 			ReadableTableFactoryBean factory = new ReadableTableFactoryBean();
-			factory.setLocations(Arrays.asList(NetworkUtils.getGPFDistUri(8080)));
+			DefaultHostInfoDiscovery discovery = new DefaultHostInfoDiscovery();
+			factory.setLocations(Arrays.asList(NetworkUtils.getGPFDistUri(discovery.getHostInfo().getAddress(), 8080)));
 			factory.setFormat(Format.TEXT);
 			return factory;
 		}
