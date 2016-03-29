@@ -26,14 +26,12 @@ import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.module.common.ScriptVariableGeneratorConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.integration.annotation.Transformer;
+import org.springframework.integration.dsl.scripting.Scripts;
 import org.springframework.integration.handler.MessageProcessor;
-import org.springframework.integration.scripting.ScriptExecutor;
 import org.springframework.integration.scripting.ScriptVariableGenerator;
-import org.springframework.integration.scripting.jsr223.ScriptExecutingMessageProcessor;
-import org.springframework.integration.scripting.jsr223.ScriptExecutorFactory;
-import org.springframework.scripting.ScriptSource;
-import org.springframework.scripting.support.StaticScriptSource;
 
 /**
  * A Processor module that transforms messages using a supplied script. The script
@@ -67,14 +65,15 @@ public class ScriptableTransformProcessor {
 	public MessageProcessor<?> transformer() {
 		String language = properties.getLanguage();
 		String script = properties.getScript();
-		logger.info("Input script is '{}'", script);
-		ScriptSource scriptSource = new StaticScriptSource(decodeScript(script));
-		ScriptExecutor scriptExecutor = ScriptExecutorFactory.getScriptExecutor(language);
-		if (scriptExecutor == null) {
-			logger.error("Unable to obtain script executor for language: " + language);
-			return null; // do not go on to return something that can't work
-		}
-		return new ScriptExecutingMessageProcessor(scriptSource, scriptVariableGenerator, scriptExecutor);
+		logger.info("Input script is '{}', language is '{}'", script, language);
+		Resource scriptResource = new ByteArrayResource(decodeScript(script).getBytes()) {
+			@Override
+			public String getFilename() {
+				// Only the groovy script processor enforces this requirement for a name
+				return "StaticScript";
+			}
+		};
+		return Scripts.script(scriptResource).lang(language).variableGenerator(scriptVariableGenerator).get();
 	}
 
 	private static String decodeScript(String script) {

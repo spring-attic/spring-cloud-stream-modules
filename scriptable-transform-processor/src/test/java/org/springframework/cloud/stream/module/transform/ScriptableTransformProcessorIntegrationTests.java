@@ -70,6 +70,17 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 		}
 
 	}
+	
+	@WebIntegrationTest({ "script=payload*limit", "language=js", "variables=limit=5\\n foo=\\\\\40WORLD" })
+	public static class JavascriptScriptProperty3Tests extends ScriptableTransformProcessorIntegrationTests {
+
+		@Test
+		public void testJavascriptSimple() {
+			channels.input().send(new GenericMessage<Object>(9));
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is(45.0)));
+		}
+
+	}
 
 	@WebIntegrationTest({ "script=payload+foo", "language=groovy", "variables=limit=5\\n foo=\\\\\40WORLD" })
 	public static class GroovyScriptProperty1Tests extends ScriptableTransformProcessorIntegrationTests {
