@@ -26,6 +26,7 @@ import org.reactivestreams.Processor;
 import org.springframework.cloud.stream.module.gpfdist.sink.support.GreenplumLoad;
 import org.springframework.cloud.stream.module.gpfdist.sink.support.NetworkUtils;
 import org.springframework.cloud.stream.module.gpfdist.sink.support.RuntimeContext;
+import org.springframework.data.hadoop.util.net.HostInfoDiscovery;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandlingException;
 import org.springframework.scheduling.TaskScheduler;
@@ -62,6 +63,7 @@ public class GpfdistMessageHandler extends AbstractGpfdistMessageHandler {
 	private int rateInterval = 0;
 	private Meter meter =  null;
 	private int meterCount = 0;
+	private final HostInfoDiscovery hostInfoDiscovery;
 
 	/**
 	 * Instantiates a new gpfdist message handler.
@@ -73,9 +75,10 @@ public class GpfdistMessageHandler extends AbstractGpfdistMessageHandler {
 	 * @param batchCount the batch count
 	 * @param batchPeriod the batch period
 	 * @param delimiter the delimiter
+	 * @param hostInfoDiscovery the host info discovery
 	 */
 	public GpfdistMessageHandler(int port, int flushCount, int flushTime, int batchTimeout, int batchCount,
-			int batchPeriod, String delimiter) {
+			int batchPeriod, String delimiter, HostInfoDiscovery hostInfoDiscovery) {
 		super();
 		this.port = port;
 		this.flushCount = flushCount;
@@ -84,6 +87,7 @@ public class GpfdistMessageHandler extends AbstractGpfdistMessageHandler {
 		this.batchCount = batchCount;
 		this.batchPeriod = batchPeriod;
 		this.delimiter = StringUtils.hasLength(delimiter) ? delimiter : null;
+		this.hostInfoDiscovery = hostInfoDiscovery;
 	}
 
 	@Override
@@ -129,7 +133,7 @@ public class GpfdistMessageHandler extends AbstractGpfdistMessageHandler {
 			log.info("Scheduling gpload task with batchPeriod=" + batchPeriod);
 
 			final RuntimeContext context = new RuntimeContext();
-			context.addLocation(NetworkUtils.getGPFDistUri(gpfdistServer.getLocalPort()));
+			context.addLocation(NetworkUtils.getGPFDistUri(hostInfoDiscovery.getHostInfo().getAddress(), gpfdistServer.getLocalPort()));
 
 			sqlTaskScheduler.schedule((new FutureTask<Void>(new Runnable() {
 				@Override
