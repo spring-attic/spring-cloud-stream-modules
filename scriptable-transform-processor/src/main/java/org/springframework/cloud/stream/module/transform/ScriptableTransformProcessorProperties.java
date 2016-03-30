@@ -31,7 +31,7 @@ public class ScriptableTransformProcessorProperties {
 	 * Language of the text in the script property. Supported: groovy, javascript, ruby, python.
 	 */
 	@NotNull
-	private String lang;
+	private String language;
 
 	/*
 	 * Extra notes on the script parameter. The UI will typically look after encoding
@@ -53,16 +53,16 @@ public class ScriptableTransformProcessorProperties {
 	@NotNull
 	private String script;
 
-	public String getLang() {
-		return lang;
+	public String getLanguage() {
+		return this.language;
 	}
 
-	public void setLang(String lang) {
-		this.lang = lang;
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public String getScript() {
-		return script;
+		return this.script;
 	}
 
 	public void setScript(String script) {

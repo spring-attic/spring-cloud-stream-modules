@@ -51,7 +51,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 	@Autowired
 	protected MessageCollector collector;
 
-	@WebIntegrationTest({"script=function add(a,b) { return a+b;};add(1,3)", "lang=js"})
+	@WebIntegrationTest({"script=function add(a,b) { return a+b;};add(1,3)", "language=js"})
 	public static class JavascriptScriptProperty1Tests extends ScriptableTransformProcessorIntegrationTests {
 
 		@Test
@@ -61,7 +61,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 		}
 	}
 
-	@WebIntegrationTest({"script=payload+foo", "lang=js", "variables=foo=\\\\\40WORLD"})
+	@WebIntegrationTest({"script=payload+foo", "language=js", "variables=foo=\\\\\40WORLD"})
 	public static class JavascriptScriptProperty2Tests extends ScriptableTransformProcessorIntegrationTests {
 
 		@Test
@@ -72,7 +72,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 
 	}
 
-	@WebIntegrationTest({"script=payload*limit", "lang=js", "variables=limit=5"})
+	@WebIntegrationTest({"script=payload*limit", "language=js", "variables=limit=5"})
 	public static class JavascriptScriptProperty3Tests extends ScriptableTransformProcessorIntegrationTests {
 
 		@Test
@@ -83,7 +83,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 
 	}
 
-	@WebIntegrationTest({"script=payload+foo", "lang=groovy", "variables=foo=\\\\\40WORLD"})
+	@WebIntegrationTest({"script=payload+foo", "language=groovy", "variables=foo=\\\\\40WORLD"})
 	public static class GroovyScriptProperty1Tests extends ScriptableTransformProcessorIntegrationTests {
 
 		@Test
@@ -94,7 +94,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 
 	}
 
-	@WebIntegrationTest({"script=payload.substring(0, limit as int) + foo", "lang=groovy",
+	@WebIntegrationTest({"script=payload.substring(0, limit as int) + foo", "language=groovy",
 			"variables=limit=5\\n foo=\\\\\40WORLD"})
 	public static class GroovyScriptProperty2Tests extends ScriptableTransformProcessorIntegrationTests {
 
@@ -106,7 +106,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 
 	}
 
-	@WebIntegrationTest({"script=return \"\"#{payload.upcase}\"\"", "lang=ruby"})
+	@WebIntegrationTest({"script=return \"\"#{payload.upcase}\"\"", "language=ruby"})
 	public static class RubyScriptProperty1Tests extends ScriptableTransformProcessorIntegrationTests {
 
 		@Test
@@ -117,7 +117,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 
 	}
 
-	@WebIntegrationTest({"script=\"def foo(x)\\n  return x+5\\nend\\nfoo(payload)\\n\"", "lang=ruby"})
+	@WebIntegrationTest({"script=\"def foo(x)\\n  return x+5\\nend\\nfoo(payload)\\n\"", "language=ruby"})
 	public static class RubyScriptProperty2Tests extends ScriptableTransformProcessorIntegrationTests {
 
 		@Test
@@ -131,7 +131,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 	// Python not currently supported, problems running it in SCDF
 
 	@WebIntegrationTest({"script=\"def multiply(x,y):\\n  return x*y\\nanswer = multiply(payload,5)\\n\"",
-			"lang=python"})
+			"language=python"})
 	public static class PythonScriptProperty1Tests extends ScriptableTransformProcessorIntegrationTests {
 
 		@Test
@@ -143,7 +143,7 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 	}
 
 	@WebIntegrationTest({"script=\"def concat(x,y):\\n  return x+y\\nanswer = concat(\"\"hello \"\",payload)\\n\"",
-			"lang=python"})
+			"language=python"})
 	public static class PythonScriptProperty2Tests extends ScriptableTransformProcessorIntegrationTests {
 
 		@Test

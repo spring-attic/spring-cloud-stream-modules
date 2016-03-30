@@ -64,7 +64,7 @@ public class ScriptableTransformProcessor {
 	@Bean
 	@Transformer(inputChannel = Processor.INPUT, outputChannel = Processor.OUTPUT)
 	public MessageProcessor<?> transformer() {
-		String language = this.properties.getLang();
+		String language = this.properties.getLanguage();
 		String script = this.properties.getScript();
 		logger.info("Input script is '{}', language is '{}'", script, language);
 		Resource scriptResource = new ByteArrayResource(decodeScript(script).getBytes()) {
