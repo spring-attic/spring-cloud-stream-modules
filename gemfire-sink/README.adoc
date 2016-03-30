@@ -1,37 +1,28 @@
-= Spring Cloud Stream Gemfire Sink
+//tag::ref-doc[]
+= Gemfire Sink
 
-A *Spring Cloud Stream* module that allows one to write message payloads to a Gemfire server.
+The Gemfire sink allows one to write message payloads to a Gemfire server.
 
-## Requirements
+== Options
 
-* Java 7 or above
-* Gemfire 8.0 or above 
+The **$$gemfire$$** $$sink$$ has the following options:
 
-Note: This module uses Gemfire v8.0.0. To use with earlier versions of Gemfire, you must change the Gemfire versions in 
-the root pom file and rebuild.
+$$hostAddresses$$:: $$a comma separated list of [host]:[port] specifying either locator or server addresses for the client connection pool$$ *($$String$$, `localhost:10334`)*
+$$keyExpression$$:: $$a SpEL expression which is evaluated to create a cache key$$ *($$String$$, default: `the value is currently the message payload'`)*
+$$port$$:: $$port of the cache server or locator (if useLocator=true). May be a comma delimited list$$ *($$String$$, no default)*
+$$regionName$$:: $$name of the region to use when storing data$$ *($$String$$, default: `${spring.application.name}`)*
+$$connectType$$:: $$'server' or 'locator'$$ *($$String$$, default: `locator`)*
 
-## Classes
+//end::ref-doc[]
 
-GemfireSinkApplication:: the Spring Boot Main Application
-GemfireSink:: the actual module code that interacts with the input channel.
-GemfireSinkProperties:: defines the configuration properties that are available to the Gemfire Sink.
-
-  * keyExpression: a SpEL expression used for the cache key (the value is currently the message payload).
-  
-This also uses common Gemfire configuration Properties to configure a Gemfire Client Region:
-  
-  * regionName: the name of the region (must be created in the cache server) (default is ${spring.application.name})
-  * hostAddresses: a comma separated list of [host]:[port] specifying either locator or server addresses for the client connection pool(default: localhost:10334)
-  * connectType: 'server' or 'locator' (default 'locator')
-
-## Build
+== Build
 
 ```
-$> mvn package
+$ mvn clean package
 ```
 
-## Run
+== Run
 
 ```
-$> java -DregionName=${regionName} -DkeyExpression=${keyExpression} -jar target/gemfire-sink-${version}-exec.jar
+$ java -DregionName=${regionName} -DkeyExpression=${keyExpression} -jar target/gemfire-sink-${version}-exec.jar
 ```
