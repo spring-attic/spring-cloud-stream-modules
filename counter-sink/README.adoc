@@ -1,10 +1,10 @@
 //tag::ref-doc[]
-= Counter Sink (`counter`)
+= Counter Sink 
 
 The counter sink simply counts the number of messages it receives,
 optionally storing counts in a separate store such as redis.
 
-=== Options
+== Options
 
 The **$$counter$$** $$sink$$ has the following options:
 
@@ -14,25 +14,14 @@ $$store$$:: $$The name of a store used to store the counter.$$ *($$String$$, def
 
 //end::ref-doc[]
 
-== Requirements
-
-To run this module, you will need to have installed:
-
-* Java 7 or Above
-* One of the supported Spring Cloud Stream binders (_e.g._ redis, rabbit, _etc._)
-* Redis to store counters 
-
-## Building with Maven
-
-Build the module by executing:
+== Build
 
 ```
-$> mvn package
+$ mvn clean package
 ```
 
-## Running the Application
+== Run
 
-To start the module execute the following:
 ```
-$> java -jar target/counter-sink-${version}-exec.jar
+$ java -jar target/counter-sink-${version}-exec.jar
 ```

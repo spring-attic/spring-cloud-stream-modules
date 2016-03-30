@@ -1,34 +1,30 @@
-= Spring Cloud Stream Jdbc Sink
+//tag::ref-doc[]
+= Jdbc Sink
 
 A module that writes its incoming payload to an RDBMS using JDBC.
 
-== Requirements
+== Options 
 
-* Java 7 or Above
+The **$$jdbc$$** $$sink$$ has the following options:
 
-== Classes
+$$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, default: ``)*
+$$tableName$$:: $$String$$ *($$String$$, default: `<stream name`)*
+$$columns$$:: $$the names of the columns that shall receive data, as a set of column[:SpEL] mappings, also used at initialization time to issue the DDL$$ *($$String$$, default: `payload`)*
+$$initialize$$:: $$String$$ *($$Boolean$$, default: `false`)*
+$$batchSize$$:: $$String$$ *($$long$$, default: `10000`)*
 
-JdbcSinkApplication:: the Spring Boot Main Application
-JdbcSink:: the actual module that interacts with message channels
-JdbcSinkProperties:: configuration properties for the module
-  * expression: a SpEL expression used to transform messages
-  * tableName: the name of the table to write into
-  * columns: the names of the columns that shall receive data, as a set of column[:SpEL] mappings, also used at initialization time to issue the DDL
-  * initialize: `true`, `false` or the location of an initialization script to run before the module starts
-  * batchSize: if set, then the received payload must be a collection and this tells how frequently to emit batches of inserts
+NOTE: The module also uses Spring Boot's http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html#boot-features-configure-datasource[DataSource support] for configuring the database connection, so properties like `spring.datasource.url` _etc._ apply.
 
-The module also uses Spring Boot's http://docs.spring.io/spring-boot/docs/1.3.0.BUILD-SNAPSHOT/reference/htmlsingle/#boot-features-configure-datasource[DataSource support]
-for configuring the database connection, so properties like `spring.datasource.url` _etc._ apply.
+//end::ref-doc[]
 
 == Build
 
 ```
-$> mvn package
+$ mvn clean package
 ```
 
 == Run
 
-To start the module execute the following:
 ```
-$> java -jar target/jdbc-sink-${version}-exec.jar
+$ java -jar target/jdbc-sink-${version}-exec.jar
 ```

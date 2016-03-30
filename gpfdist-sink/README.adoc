@@ -1,0 +1,62 @@
+//tag::ref-doc[]
+= Gpfdist Sink
+
+The gpfdist sink allows you to stream data in parallel to either Pivotal Greenplum DB
+ or Pivotal HAWQ.  Internally, this sink creates a custom http listener that supports
+the `gpfdist` protcol and schedules a task that orchestrates a `gploadd` session in the
+same way it is done natively in Greenplum.
+
+No data is written into temporary files and all data is kept in stream buffers waiting
+to get inserted into Greenplum DB or HAWQ.  If there are no existing load sessions from Greenplum,
+the sink will block until such sessions are established.
+
+== Options
+
+The **$$gpfdist$$** $$sink$$ has the following options:
+
+$$batchCount$$:: $$batch count$$ *($$int$$, default: `100`)*
+$$batchPeriod$$:: $$batch period$$ *($$int$$, default: `10`)*
+$$batchTimeout$$:: $$batch timeout$$ *($$int$$, default: `4`)*
+$$columnDelimiter$$:: $$column delimiter$$ *($$Character$$, no default)*
+$$controlFile$$:: $$path to yaml control file$$ *($$String$$, no default)*
+$$dbHost$$:: $$database host$$ *($$String$$, default: `localhost`)*
+$$dbName$$:: $$database name$$ *($$String$$, default: `gpadmin`)*
+$$dbPassword$$:: $$database password$$ *($$String$$, default: `gpadmin`)*
+$$dbPort$$:: $$database port$$ *($$int$$, default: `5432`)*
+$$dbUser$$:: $$database user$$ *($$String$$, default: `gpadmin`)*
+$$delimiter$$:: $$data line delimiter$$ *($$String$$, default: `
+`)*
+$$flushCount$$:: $$flush item count$$ *($$int$$, default: `100`)*
+$$flushTime$$:: $$flush item time$$ *($$int$$, default: `2`)*
+$$matchColumns$$:: $$match columns with update$$ *($$String$$, no default)*
+$$mode$$:: $$mode, either insert or update$$ *($$String$$, no default)*
+$$port$$:: $$gpfdist listen port$$ *($$int$$, default: `0`)*
+$$rateInterval$$:: $$enable transfer rate interval$$ *($$int$$, default: `0`)*
+$$sqlAfter$$:: $$sql to run after load$$ *($$String$$, no default)*
+$$sqlBefore$$:: $$sql to run before load$$ *($$String$$, no default)*
+$$table$$:: $$target database table$$ *($$String$$, no default)*
+$$updateColumns$$:: $$update columns with update$$ *($$String$$, no default)*
+
+== Implementation Notes
+
+Within a `gpfdist` sink we have a Reactor based stream where data is published from the incoming SI channel.
+This channel receives data from the Message Bus.  The Reactor stream is then connected to `Netty` based
+http channel adapters so that when a new http connection is established, the Reactor stream is flushed and balanced among
+existing http clients.  When `Greenplum` does a load from an external table, each segment will initiate
+a http connection and start loading data.  The net effect is that incoming data is automatically spread
+among the Greenplum segments.
+
+//end::ref-doc[]
+
+== Build
+
+```
+$ mvn clean package
+```
+
+== Run
+
+```
+$ java -jar target/gpfdist-sink-${version}-exec.jar --server.port=8081 --spring.cloud.stream.bindings.input=<name-to-bind-to>
+```
+

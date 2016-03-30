@@ -1,37 +1,9 @@
 //tag::ref-doc[]
-= Cassandra Sink (`cassandra`)
-
-The Cassandra sink writes into a Cassandra table. Here is a simple example
-
-  dataflow:>stream create cassandrastream --definition "http --server.port=8888 --spring.cloud.stream.bindings.output.contentType='application/json' | cassandra --ingestQuery='insert into book (id, isbn, title, author) values (uuid(), ?, ?, ?)' --spring.cassandra.keyspace=clouddata" --deploy
-
-Create a keyspace and a `book` table in Cassandra using:
-
-[source,text]
-----
-CREATE KEYSPACE clouddata WITH REPLICATION = { 'class' : 'org.apache.cassandra.locator.SimpleStrategy', 'replication_factor': '1' } AND DURABLE_WRITES = true;
-USE clouddata;
-CREATE TABLE book  (
-    id          uuid PRIMARY KEY,
-    isbn        text,
-    author      text,
-    title       text
-);
-----
-
-You can then send data to this stream via
-
-  dataflow:>http post --contentType 'application/json' --data '{"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}' --target http://localhost:8888/
-  > POST (application/json;charset=UTF-8) http://localhost:8888/ {"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}
-  > 202 ACCEPTED
-
-and see the table contents using the CQL
-
-  SELECT * FROM clouddata.book;
+= Cassandra Sink 
 
 This module writes the content of each message it receives to Cassandra.
 
-=== Options
+== Options
 
 The **$$cassandra$$** $$sink$$ has the following options:
 
@@ -53,10 +25,6 @@ $$ttl$$:: $$the time-to-live option of WriteOptions$$ *($$int$$, default: `0`)*
 $$spring.cassandra.username$$:: $$the username for connection$$ *($$String$$, no default)*
 
 //end::ref-doc[]
-
-== Requirements
-
-* Java 7 or Above
 
 == Build
 
