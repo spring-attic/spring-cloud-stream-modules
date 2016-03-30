@@ -1,26 +1,35 @@
-= Spring Cloud Stream File Source
+//tag::ref-doc[]
+= File Source
 
-This module polls a directory and sends new files or their contents to the output channel.
+This application polls a directory and sends new files or their contents to the output channel.
+The file source provides the contents of a File as a byte array by default.
+However, this can be customized using the `--mode` option:
 
-== Requirements
+- *ref* Provides a `java.io.File` reference
+- *lines* Will split files line-by-line and emit a new message for each line
+- *contents* The default. Provides the contents of a file as a byte array
 
-* Java 7 or Above
+When using `--mode=lines`, you can also provide the additional option `--withMarkers=true`.
+If set to `true`, the underlying `FileSplitter` will emit additional _start-of-file_ and _end-of-file_ marker messages before and after the actual data.
+The payload of these 2 additional marker messages is of type `FileSplitter.FileMarker`. The option `withMarkers` defaults to `false` if not explicitly set.
 
-== Code Tour
+== Options
 
-FileSourceApplication:: the Spring Boot Main Application
-FileSourceConfiguration:: configures the inbound channel adapter beans
-FileSourceroperties:: properties for the file sink
-  * fixedDelay (default = 1)
-  * timeUnit (default = SECONDS)
-  * initialDelay (default = 0)
-  * maxMessages (default = -1)
-  * directory (default = "${java.io.tmpdir}/dataflow/input");
-  * preventDuplicates (default = true)
-  * mode (the FileReadingMode; default = content)
-  * filenamePattern
-  * filenameRegex
+The **$$file$$** $$source$$ has the following options:
 
+$$dir$$:: $$the absolute path to the directory to monitor for files$$ *($$String$$, default: ``)*
+$$fixedDelay$$:: $$the fixed delay polling interval specified in seconds$$ *($$int$$, default: `5`)*
+$$initialDelay$$:: $$an initial delay when using a fixed delay trigger, expressed in TimeUnits (seconds by default)$$ *($$int$$, default: `0`)*
+$$maxMessages$$:: $$the maximum messages per poll; -1 for unlimited$$ *($$long$$, default: `-1`)*
+$$mode$$:: $$specifies how the file is being read. By default the content of a file is provided as byte array$$ *($$FileReadingMode$$, default: `contents`, possible values: `ref,lines,contents`)*
+$$pattern$$:: $$a filter expression (Ant style) to accept only files that match the pattern$$ *($$String$$, default: +*+ )*
+$$preventDuplicates$$:: $$whether to prevent the same file from being processed twice$$ *($$boolean$$, default: `true`)*
+$$timeUnit$$:: $$the time unit for the fixed and initial delays$$ *($$String$$, default: `SECONDS`)*
+$$withMarkers$$:: $$if true emits start of file/end of file marker messages before/after the data. Only valid with FileReadingMode 'lines'$$ *($$Boolean$$, no default)*
+
+The `ref` option is useful in some cases in which the file contents are large and it would be more efficient to send the file path.
+
+//end::ref-doc[]
 == Build
 
 ```
@@ -30,5 +39,5 @@ $ mvn clean package
 == Run
 
 ```
-$ java -jar target/file-sink-${version}-exec.jar
+$ java -jar target/file-source-${version}-exec.jar
 ```

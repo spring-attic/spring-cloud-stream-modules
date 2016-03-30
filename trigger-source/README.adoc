@@ -1,27 +1,21 @@
-= Spring Cloud Stream Trigger Source
+//tag::ref-doc[]
+= Trigger Source
 
-This module sends trigger based on a fixed delay, date or cron expression. A payload which is evaluated using SpEL can
-also be sent each time the trigger is triggered.
+This app sends trigger based on a fixed delay, date or cron expression. A payload which is evaluated using SpEL can
+also be sent each time the trigger fires.
 
-== Requirements
+== Options
+The **$$trigger$$** $$source$$ has the following options:
 
-* Java 7 or Above
+$$payload$$:: $$a SpEL expression.$$ *($$int$$, default: ``)*
+$$fixedDelay$$:: $$fixed delay for the Periodic trigger$$ *($$String$$, default: `yyyy-MM-dd HH:mm:ss`)*
+$$initialDelay$$:: $$initial delay for the Periodic trigger$$ *($$int$$, default: `0`)*
+$$timeUnit$$:: $$time unit to apply for delay$$ *($$String$$, default: `SECONDS`)*
+$$date$$:: $$the date value for the trigger$$ *($$String$$)*
+$$dateFormat$$:: $$format for the date value$$ *($$String$$)*
+$$cron$$:: $$the Cron expression for the Cron Trigger$$ *($$String$$, default: `SECONDS`)*
 
-== Code Tour
-
-TriggerSourceApplication:: the Spring Boot Main Application
-TriggerSource:: configures the Inbound Channel Adapter bean
-Trigger source re-uses the common trigger package `org.springframework.cloud.stream.module.trigger` for trigger
-configuration, properties etc.,
-Trigger source supports properties derived from TriggerProperties:
-  * payload - a SpEL expression (default = '')
-  * fixedDelay - fixed delay for the Periodic trigger
-  * initialDelay - initial delay for the Periodic trigger
-  * timeUnit - time unit to apply for delay (default = seconds)
-  * date - the date value for the trigger
-  * dateFormat - format for the date value
-  * cron - the Cron expression for the Cron Trigger
-
+//end::ref-doc[]
 == Build
 
 ```
