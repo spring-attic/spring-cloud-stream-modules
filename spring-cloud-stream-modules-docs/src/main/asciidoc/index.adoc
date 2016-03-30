@@ -10,6 +10,7 @@ Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayape
 :github-tag: master
 :github-repo: spring-cloud/spring-cloud-stream-modules
 :github-raw: https://raw.github.com/{github-repo}/{github-tag}
+:repo-root: ../../../../
 // ======================================================================================
 
 = Reference Guide

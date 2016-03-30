@@ -1,17 +1,18 @@
-= Spring Cloud Stream Load Generator Source
+//tag::ref-doc[]
+= Load Generator Source
 
-This module generates messages with a payload of a set size to test performance of the infrastructure.
+A source that sends generated data and dispatches it to the stream. This is to provide a method for users to identify the performance of Spring Cloud Data Flow in different environments and deployment types.
 
-== Requirements
+== Options
 
-* Java 7 or Above
+The **$$load-generator$$** $$source$$ has the following options:
 
-== Classes
+$$messageCount$$:: $$the number of messages to send$$ *($$Integer$$, default: `100`)*
+$$messageSize$$:: $$the size of message to send$$ *($$Integer$$, `1000`)*
+$$producers$$:: $$the number of producers$$ *($$Integer$$, `1`)*
+$$outputType$$:: $$how this module should emit messages it produces$$ *($$MimeType$$, default: no default)*
 
-LoadGeneratorSourceApplication:: the Spring Boot Main Application
-LoadGeneratorSource:: generates a set number messages with a payload of a specific size
-and sends them to channel
-
+//end::ref-doc[]
 == Build
 
 ```

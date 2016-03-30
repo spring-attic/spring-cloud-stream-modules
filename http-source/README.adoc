@@ -10,8 +10,9 @@ otherwise the payload will be a byte array.
 The **$$http$$** $$source$$ supports the following configuration properties:
 
 $$pathPattern$$:: $$An Ant-Style pattern to determine which http requests will be captured$$ *($$String$$, default: `/`)*
+
 //end::ref-doc[]
-= Build
+== Build
 
 ```
 $> mvn package
