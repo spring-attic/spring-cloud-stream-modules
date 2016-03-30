@@ -1,134 +1,19 @@
 [[spring-cloud-stream-modules-sinks]]
 == Sinks
 
-[[spring-cloud-stream-modules-cassandra]]
-=== Cassandra (`cassandra`)
+:leveloffset: +2
 
-The Cassandra sink writes into a Cassandra table.  Here is a simple example
+[[spring-cloud-stream-modules-cassandra-sink]]
+include::{repo-root}/cassandra-sink/README.adoc[tags=ref-doc]
 
-  dataflow:>stream create cassandrastream --definition "http --server.port=8888 --spring.cloud.stream.bindings.output.contentType='application/json' | cassandra --ingestQuery='insert into book (id, isbn, title, author) values (uuid(), ?, ?, ?)' --spring.cassandra.keyspace=clouddata" --deploy
+[[spring-cloud-stream-modules-counter-sink]]
+include::{repo-root}/counter-sink/README.adoc[tags=ref-doc]
 
-Create a keyspace and a `book` table in Cassandra using:
+[[spring-cloud-stream-modules-field-value-counter-sink]]
+include::{repo-root}/field-value-counter-sink/README.adoc[tags=ref-doc]
 
-[source,text]
-----
-CREATE KEYSPACE clouddata WITH REPLICATION = { 'class' : 'org.apache.cassandra.locator.SimpleStrategy', 'replication_factor': '1' } AND DURABLE_WRITES = true;
-USE clouddata;
-CREATE TABLE book  (
-    id          uuid PRIMARY KEY,
-    isbn        text,
-    author      text,
-    title       text
-);
-----
+:leveloffset: -2
 
-You can then send data to this stream via
-
-  dataflow:>http post --contentType 'application/json' --data '{"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}' --target http://localhost:8888/
-  > POST (application/json;charset=UTF-8) http://localhost:8888/ {"isbn": "1599869772", "title": "The Art of War", "author": "Sun Tzu"}
-  > 202 ACCEPTED
-
-and see the table contents using the CQL
-
-  SELECT * FROM clouddata.book;
-
-==== Options
-
-The **$$cassandra$$** $$sink$$ has the following options:
-
-$$compressionType$$:: $$the compression to use for the transport$$ *($$CompressionType$$, default: `NONE`, possible values: `NONE,SNAPPY`)*
-$$consistencyLevel$$:: $$the consistencyLevel option of WriteOptions$$ *($$ConsistencyLevel$$, no default, possible values: `ANY,ONE,TWO,THREE,QUOROM,LOCAL_QUOROM,EACH_QUOROM,ALL,LOCAL_ONE,SERIAL,LOCAL_SERIAL`)*
-$$spring.cassandra.contactPoints$$:: $$the comma-delimited string of the hosts to connect to Cassandra$$ *($$String$$, default: `localhost`)*
-$$entityBasePackages$$:: $$the base packages to scan for entities annotated with Table annotations$$ *($$String[]$$, default: `[]`)*
-$$ingestQuery$$:: $$the ingest Cassandra query$$ *($$String$$, no default)*
-$$spring.cassandra.initScript$$:: $$the path to file with CQL scripts (delimited by ';') to initialize keyspace schema$$ *($$String$$, no default)*
-$$spring.cassandra.keyspace$$:: $$the keyspace name to connect to$$ *($$String$$, default: `<stream name>`)*
-$$metricsEnabled$$:: $$enable/disable metrics collection for the created cluster$$ *($$boolean$$, default: `true`)*
-$$spring.cassandra.password$$:: $$the password for connection$$ *($$String$$, no default)*
-$$spring.cassandra.port$$:: $$the port to use to connect to the Cassandra host$$ *($$int$$, default: `9042`)*
-$$queryType$$:: $$the queryType for Cassandra Sink$$ *($$Type$$, default: `INSERT`, possible values: `INSERT,UPDATE,DELETE,STATEMENT`)*
-$$retryPolicy$$:: $$the retryPolicy  option of WriteOptions$$ *($$RetryPolicy$$, no default, possible values: `DEFAULT,DOWNGRADING_CONSISTENCY,FALLTHROUGH,LOGGING`)*
-$$statementExpression$$:: $$the expression in Cassandra query DSL style$$ *($$String$$, no default)*
-$$spring.cassandra.schemaAction$$:: $$schema action to perform$$ *($$SchemaAction$$, default: `NONE`, possible values: `CREATE,NONE,RECREATE,RECREATE_DROP_UNUSED`)*
-$$ttl$$:: $$the time-to-live option of WriteOptions$$ *($$int$$, default: `0`)*
-$$spring.cassandra.username$$:: $$the username for connection$$ *($$String$$, no default)*
-
-[[spring-cloud-stream-modules-counter]]
-=== Counter (`counter`)
-
-A simple module that counts messages received, using Spring Boot metrics abstraction.
-
-The **$$counter$$** $$sink$$ has the following options:
-
-$$name$$:: $$The name of the counter to increment.$$ *($$String$$, default: `counts`)*
-$$nameExpression$$:: $$A SpEL expression (against the incoming Message) to derive the name of the counter to increment.$$ *($$String$$, default: ``)*
-$$store$$:: $$The name of a store used to store the counter.$$ *($$String$$, default: `memory`, possible values: `memory`, `redis`)*
-
-[[spring-cloud-stream-modules-field-value-counter]]
-=== Field Value Counter (`field-value-counter`)
-
-A field value counter is a Metric used for counting occurrences of unique values for a named field in a message payload. Spring Cloud Data Flow supports the following payload types out of the box:
-
-* POJO (Java bean)
-* Tuple
-* JSON String
-
-For example suppose a message source produces a payload with a field named _user_ :
-
-[source,java]
-class Foo {
-   String user;
-   public Foo(String user) {
-       this.user = user;
-   }
-}
-
-If the stream source produces messages with the following objects:
-
-[source, java]
-   new Foo("fred")
-   new Foo("sue")
-   new Foo("dave")
-   new Foo("sue")
-
-The field value counter on the field _user_ will contain:
-
-    fred:1, sue:2, dave:1
-
-Multi-value fields are also supported. For example, if a field contains a list, each value will be counted once:
-
-     users:["dave","fred","sue"]
-     users:["sue","jon"]
-
-The field value counter on the field _users_ will contain:
-
-    dave:1, fred:1, sue:2, jon:1
-
-==== Options
-
-The **$$field-value-counter$$** $$sink$$ has the following options:
-
-$$fieldName$$:: $$the name of the field for which values are counted$$ *($$String$$, no default)*
-$$name$$:: $$the name of the metric to contribute to (will be created if necessary)$$ *($$String$$, default: `<stream name>`)*
-$$nameExpression$$:: $$a SpEL expression to compute the name of the metric to contribute to$$ *($$String$$, no default)*
-
-[[spring-cloud-stream-modules-file-sink]]
-=== File (`file`)
-
-This module writes each message it receives to a file.
-
-==== Options
-
-The **$$file$$** $$sink$$ has the following options:
-
-$$binary$$:: $$if false, will append a newline character at the end of each line$$ *($$boolean$$, default: `false`)*
-$$charset$$:: $$the charset to use when writing a String payload$$ *($$String$$, default: `UTF-8`)*
-$$dir$$:: $$the directory in which files will be created$$ *($$String$$, default: ``)*
-$$dirExpression$$:: $$spring expression used to define directory name$$ *($$String$$, no default)*
-$$mode$$:: $$what to do if the file already exists$$ *($$Mode$$, default: `APPEND`, possible values: `APPEND,REPLACE,FAIL,IGNORE`)*
-$$name$$:: $$filename pattern to use$$ *($$String$$, default: `<stream name>`)*
-$$nameExpression$$:: $$spring expression used to define filename$$ *($$String$$, no default)*
-$$suffix$$:: $$filename extension to use$$ *($$String$$, no default)*
 
 [[ftp-sink]]
 === FTP Sink (`ftp`)
