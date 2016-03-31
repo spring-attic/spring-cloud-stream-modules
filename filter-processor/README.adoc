@@ -1,26 +1,21 @@
-= Spring Cloud Stream Filter Processor
+//tag::ref-doc[]
+= Filter Processor
+Use the filter module in a stream to determine whether a Message should be passed to the output channel.
 
-A *Spring Cloud Stream* module that retains or discards messages according to a predicate.
+== Options
 
-== Requirements
+The **$$filter$$** $$processor$$ has the following options:
 
-* Java 7 or Above
+$$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, default: `payload.toString()`)*
 
-== Code Tour
-
-FilterProcessorApplication:: the Spring Boot Main Application
-FilterProcessor:: the actual module code that interacts with message channels
-FilterProcessorProperties:: defines the configuration properties that are available to the Filter Processor
-  * expression: a SpEL expression used to filter messages
-
-
-## Building with Maven
+//end::ref-doc[]
+== Building with Maven
 
 ```
 $> mvn package
 ```
 
-## Running the Application
+== Running the Application
 
 ```
 $> java -jar target/filter-processor-${version}-exec.jar

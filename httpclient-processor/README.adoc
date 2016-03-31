@@ -1,13 +1,22 @@
-= Spring Cloud Stream Http Client Processor
+//tag::ref-doc[]
+= Http Client Processor
 
-A processor module that makes requests to an HTTP resource and emits the 
-response body as a message payload. This processor can be combined, e.g., 
-with a time source module to periodically poll results from a HTTP resource.
+A processor app that makes requests to an HTTP resource and emits the response body as a message payload. This processor can be combined, e.g., with a time source app to periodically poll results from a HTTP resource.
 
-== Requirements
+== Options
 
-* Java 7 or above
+The **$$httpclient$$** $$processor$$ has the following options:
 
+$$url$$:: The URL to issue an http request to, as a static value.
+$$urlExpression$$:: A SpEL expression against incoming message to determine the URL to use.
+$$httpMethod$$:: The kind of http method to use.
+$$body$$:: The (static) body of the request to use.
+$$bodyExpression$$:: A SpEL expression against incoming message to derive the request body to use.
+$$headersExpression$$:: A SpEL expression used to derive the http headers map to use.
+$$expectedResponseType$$:: The type used to interpret the response.
+$$replyExpression$$:: A SpEL expression used to compute the final result, applied against the whole http response.
+
+//end::ref-doc[]
 == Build
 
 ```
@@ -19,16 +28,3 @@ $> mvn package
 ```
 $> java -jar target/httpclient-processor-${version}-exec.jar
 ```
-
-== Module Arguments
-
-The following arguments are supported:
-
-url:: The URL to issue an http request to, as a static value.
-urlExpression:: A SpEL expression against incoming message to determine the URL to use.
-httpMethod:: The kind of http method to use.
-body:: The (static) body of the request to use.
-bodyExpression:: A SpEL expression against incoming message to derive the request body to use.
-headersExpression:: A SpEL expression used to derive the http headers map to use.
-expectedResponseType:: The type used to interpret the response.
-replyExpression:: A SpEL expression used to compute the final result, applied against the whole http response.
