@@ -24,6 +24,11 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.cloud.stream.module.gpfdist.sink.support.ControlFile.OutputMode;
 import org.springframework.util.StringUtils;
 
+/**
+ * {@link FactoryBean} creating instances of a {@link LoadConfiguration}.
+ *
+ * @author Janne Valkealahti
+ */
 public class LoadConfigurationFactoryBean implements FactoryBean<LoadConfiguration>, InitializingBean {
 
 	private ControlFile controlFile;

@@ -19,7 +19,6 @@ package org.springframework.cloud.stream.module.gpfdist.sink.support;
  * Settings for readable external table.
  *
  * @author Janne Valkealahti
- *
  */
 public class ReadableTable extends AbstractExternalTable {
 
@@ -66,5 +65,4 @@ public class ReadableTable extends AbstractExternalTable {
 	public void setSegmentRejectType(SegmentRejectType segmentRejectType) {
 		this.segmentRejectType = segmentRejectType;
 	}
-
 }

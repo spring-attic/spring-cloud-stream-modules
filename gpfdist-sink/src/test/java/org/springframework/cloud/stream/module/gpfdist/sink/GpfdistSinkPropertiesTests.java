@@ -17,70 +17,66 @@ package org.springframework.cloud.stream.module.gpfdist.sink;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.SegmentRejectType;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
-public class HostInfoDiscoveryPropertiesTests {
+public class GpfdistSinkPropertiesTests {
 
 	@Test
-	public void testAllSet() {
+	public void testErrorTable1() {
 		SpringApplication app = new SpringApplication(TestConfiguration.class);
 		app.setWebEnvironment(false);
 		ConfigurableApplicationContext context = app
-				.run(new String[] { "--spring.net.hostdiscovery.pointToPoint=true",
-						"--spring.net.hostdiscovery.loopback=true",
-						"--spring.net.hostdiscovery.preferInterface=lxcbr",
-						"--spring.net.hostdiscovery.matchIpv4=192.168.0.0/24",
-						"--spring.net.hostdiscovery.matchInterface=eth0" });
+				.run(new String[] { "--errorTable=myerror",
+						"--segmentRejectLimit=1",
+						"--segmentRejectType=ROWS" });
 
-		HostInfoDiscoveryProperties properties = context.getBean(HostInfoDiscoveryProperties.class);
+		GpfdistSinkProperties properties = context.getBean(GpfdistSinkProperties.class);
 		assertThat(properties, notNullValue());
-		assertThat(properties.isPointToPoint(), is(true));
-		assertThat(properties.isLoopback(), is(true));
-		assertThat(properties.getPreferInterface(), notNullValue());
-		assertThat(properties.getPreferInterface().size(), is(1));
-		assertThat(properties.getMatchIpv4(), is("192.168.0.0/24"));
-		assertThat(properties.getMatchInterface(), is("eth0"));
+		assertThat(properties.getErrorTable(), is("myerror"));
+		assertThat(properties.getSegmentRejectLimit(), is("1"));
+		assertThat(properties.getSegmentRejectType(), is(SegmentRejectType.ROWS));
 		context.close();
 	}
 
 	@Test
-	public void testPreferOne() {
+	public void testErrorTable2() {
 		SpringApplication app = new SpringApplication(TestConfiguration.class);
 		app.setWebEnvironment(false);
 		ConfigurableApplicationContext context = app
-				.run(new String[] { "--spring.net.hostdiscovery.preferInterface=lxcbr" });
+				.run(new String[] { "--errorTable=myerror",
+						"--segmentRejectLimit=1",
+						"--segmentRejectType=percent" });
 
-		HostInfoDiscoveryProperties properties = context.getBean(HostInfoDiscoveryProperties.class);
+		GpfdistSinkProperties properties = context.getBean(GpfdistSinkProperties.class);
 		assertThat(properties, notNullValue());
-		assertThat(properties.getPreferInterface(), notNullValue());
-		assertThat(properties.getPreferInterface().size(), is(1));
+		assertThat(properties.getErrorTable(), is("myerror"));
+		assertThat(properties.getSegmentRejectLimit(), is("1"));
+		assertThat(properties.getSegmentRejectType(), is(SegmentRejectType.PERCENT));
 		context.close();
 	}
 
 	@Test
-	public void testPreferTwo() {
+	public void testNullString() {
 		SpringApplication app = new SpringApplication(TestConfiguration.class);
 		app.setWebEnvironment(false);
 		ConfigurableApplicationContext context = app
-				.run(new String[] { "--spring.net.hostdiscovery.preferInterface=lxcbr,foo" });
+				.run(new String[] { "--nullString=mynullstring" });
 
-		HostInfoDiscoveryProperties properties = context.getBean(HostInfoDiscoveryProperties.class);
+		GpfdistSinkProperties properties = context.getBean(GpfdistSinkProperties.class);
 		assertThat(properties, notNullValue());
-		assertThat(properties.getPreferInterface(), notNullValue());
-		assertThat(properties.getPreferInterface().size(), is(2));
-		assertThat(properties.getPreferInterface(), containsInAnyOrder("lxcbr", "foo"));
+		assertThat(properties.getNullString(), is("mynullstring"));
 		context.close();
 	}
 
 	@Configuration
-	@EnableConfigurationProperties({ HostInfoDiscoveryProperties.class })
+	@EnableConfigurationProperties({ GpfdistSinkProperties.class })
 	protected static class TestConfiguration {
 	}
 }

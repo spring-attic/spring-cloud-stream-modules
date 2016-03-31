@@ -132,8 +132,8 @@ public class GpfdistMessageHandler extends AbstractGpfdistMessageHandler {
 		if (greenplumLoad != null) {
 			log.info("Scheduling gpload task with batchPeriod=" + batchPeriod);
 
-			final RuntimeContext context = new RuntimeContext();
-			context.addLocation(NetworkUtils.getGPFDistUri(hostInfoDiscovery.getHostInfo().getAddress(), gpfdistServer.getLocalPort()));
+			final RuntimeContext context = new RuntimeContext(
+					NetworkUtils.getGPFDistUri(hostInfoDiscovery.getHostInfo().getAddress(), gpfdistServer.getLocalPort()));
 
 			sqlTaskScheduler.schedule((new FutureTask<Void>(new Runnable() {
 				@Override
