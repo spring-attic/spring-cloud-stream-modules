@@ -21,40 +21,29 @@ import java.util.List;
 
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.StringUtils;
 
 /**
- * @since 1.2
+ * {@link FactoryBean} creating instances of a {@link ReadableTable}.
+ *
  * @author Janne Valkealahti
  * @author Gary Russell
  */
 public class ReadableTableFactoryBean implements FactoryBean<ReadableTable>, InitializingBean {
 
 	private ControlFile controlFile;
-
 	private List<String> locations;
-
 	private String columns;
-
 	private String like;
-
 	private boolean keeptable;
-
 	private Format format = Format.TEXT;
-
 	private Character delimiter;
-
 	private String nullString;
-
 	private Character escape;
-
 	private Character quote;
-
 	private String[] forceQuote;
-
 	private String logErrorsInto;
-
 	private Integer segmentRejectLimit;
-
 	private SegmentRejectType segmentRejectType;
 
 	@Override
@@ -72,8 +61,12 @@ public class ReadableTableFactoryBean implements FactoryBean<ReadableTable>, Ini
 		w.setLocations(locations);
 		w.setColumns(columns);
 		w.setLike(like);
-		w.setLogErrorsInto(logErrorsInto);
-		w.setSegmentRejectLimit(segmentRejectLimit);
+		if (StringUtils.hasText(logErrorsInto)) {
+			w.setLogErrorsInto(logErrorsInto);
+		}
+		if (segmentRejectLimit != null && segmentRejectLimit > 0) {
+			w.setSegmentRejectLimit(segmentRejectLimit);
+		}
 		w.setSegmentRejectType(segmentRejectType);
 
 		if (format == Format.TEXT) {
@@ -102,26 +95,86 @@ public class ReadableTableFactoryBean implements FactoryBean<ReadableTable>, Ini
 		this.controlFile = controlFile;
 	}
 
+	/**
+	 * Gets the segment reject limit.
+	 *
+	 * @return the segment reject limit
+	 */
 	public Integer getSegmentRejectLimit() {
 		return segmentRejectLimit;
 	}
 
+	/**
+	 * Sets the segment reject limit.
+	 *
+	 * @param segmentRejectLimit the new segment reject limit
+	 */
 	public void setSegmentRejectLimit(Integer segmentRejectLimit) {
 		this.segmentRejectLimit = segmentRejectLimit;
 	}
 
+	/**
+	 * Gets the segment reject type.
+	 *
+	 * @return the segment reject type
+	 */
 	public SegmentRejectType getSegmentRejectType() {
 		return segmentRejectType;
 	}
 
-	public void setSegmentRejectType(SegmentRejectType segmentRejectType) {
-		this.segmentRejectType = segmentRejectType;
+	/**
+	 * Sets the segment reject as a string. This method is for convenience
+	 * to be able to set percent reject type just by calling with '3%' and
+	 * otherwise it uses rows. All this assuming that parsing finds '%' characher
+	 * and is able to parse a raw reject number.
+	 *
+	 * @param reject the new segment reject
+	 */
+	public void setSegmentReject(String reject) {
+		if (!StringUtils.hasText(reject)) {
+			return;
+		}
+		Integer parsedLimit = null;
+		try {
+			parsedLimit = Integer.parseInt(reject);
+			segmentRejectType = SegmentRejectType.ROWS;
+		} catch (NumberFormatException e) {
+		}
+		if (parsedLimit == null && reject.contains("%")) {
+			try {
+				parsedLimit = Integer.parseInt(reject.replace("%", "").trim());
+				segmentRejectType = SegmentRejectType.PERCENT;
+			} catch (NumberFormatException e) {
+			}
+		}
+		segmentRejectLimit = parsedLimit;
 	}
 
+	/**
+	 * Sets the segment reject type.
+	 *
+	 * @param segmentRejectType the new segment reject type
+	 */
+	public void setSegmentRejectType(SegmentRejectType segmentRejectType) {
+		if (segmentRejectType != null) {
+			this.segmentRejectType = segmentRejectType;
+		}
+	}
+
+	/**
+	 * Gets the log errors table.
+	 *
+	 * @return the log errors table
+	 */
 	public String getLogErrorsInto() {
 		return logErrorsInto;
 	}
 
+	/**
+	 * Sets the log errors table.
+	 *
+	 * @param logErrorsInto the new log errors table
+	 */
 	public void setLogErrorsInto(String logErrorsInto) {
 		this.logErrorsInto = logErrorsInto;
 	}
@@ -205,5 +258,4 @@ public class ReadableTableFactoryBean implements FactoryBean<ReadableTable>, Ini
 	public void setFormat(Format format) {
 		this.format = format;
 	}
-
 }

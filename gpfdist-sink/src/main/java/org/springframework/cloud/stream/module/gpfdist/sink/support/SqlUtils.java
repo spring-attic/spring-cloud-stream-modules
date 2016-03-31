@@ -20,6 +20,12 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
+/**
+ * Utilities creating various types of sql clauses
+ * needed with gpfdist.
+ *
+ * @author Janne Valkealahti
+ */
 public abstract class SqlUtils {
 
 	public static String createExternalReadableTable(LoadConfiguration config, String prefix,
@@ -145,12 +151,9 @@ public abstract class SqlUtils {
 	/**
 	 * Builds sql clause to load data into a database.
 	 *
-	 * @param config
-	 *            Load configuration.
-	 * @param prefix
-	 *            Prefix for temporary resources.
-	 * @return
-	 *            the load DDL
+	 * @param config Load configuration.
+	 * @param prefix Prefix for temporary resources.
+	 * @return the load DDL
 	 */
 	public static String load(LoadConfiguration config, String prefix) {
 		if (config.getMode() == Mode.INSERT) {

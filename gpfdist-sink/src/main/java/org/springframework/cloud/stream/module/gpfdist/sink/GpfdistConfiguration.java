@@ -111,8 +111,12 @@ public class GpfdistConfiguration {
 		ReadableTableFactoryBean factoryBean = new ReadableTableFactoryBean();
 		factoryBean.setControlFile(controlFile);
 		factoryBean.setDelimiter(properties.getColumnDelimiter());
+		factoryBean.setLogErrorsInto(properties.getErrorTable());
+		factoryBean.setSegmentReject(properties.getSegmentRejectLimit());
+		factoryBean.setSegmentRejectType(properties.getSegmentRejectType());
+		factoryBean.setNullString(properties.getNullString());
 		HostInfo hostInfo = hostInfoDiscovery.getHostInfo();
-		factoryBean.setLocations(Arrays.asList(NetworkUtils.getGPFDistUri(hostInfo.getAddress(), properties.getPort())));
+		factoryBean.setLocations(Arrays.asList(NetworkUtils.getGPFDistUri(hostInfo.getAddress(), properties.getGpfdistPort())));
 		return factoryBean;
 	}
 
@@ -141,7 +145,7 @@ public class GpfdistConfiguration {
 	@Bean
 	@ServiceActivator(inputChannel= Sink.INPUT)
 	public GpfdistMessageHandler gpfdist(GreenplumLoad greenplumLoad, TaskScheduler sqlTaskScheduler, HostInfoDiscovery hostInfoDiscovery) {
-		GpfdistMessageHandler handler = new GpfdistMessageHandler(properties.getPort(), properties.getFlushCount(),
+		GpfdistMessageHandler handler = new GpfdistMessageHandler(properties.getGpfdistPort(), properties.getFlushCount(),
 				properties.getFlushTime(), properties.getBatchTimeout(), properties.getBatchCount(), properties.getBatchPeriod(),
 				properties.getDelimiter(), hostInfoDiscovery);
 		handler.setRateInterval(properties.getRateInterval());
@@ -149,5 +153,4 @@ public class GpfdistConfiguration {
 		handler.setSqlTaskScheduler(sqlTaskScheduler);
 		return handler;
 	}
-
 }

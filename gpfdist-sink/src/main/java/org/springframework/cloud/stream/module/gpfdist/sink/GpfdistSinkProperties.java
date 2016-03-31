@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.gpfdist.sink;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.stream.module.gpfdist.sink.support.SegmentRejectType;
 import org.springframework.core.io.Resource;
 
 /**
@@ -27,7 +28,7 @@ import org.springframework.core.io.Resource;
 @ConfigurationProperties
 public class GpfdistSinkProperties {
 
-	private int port = 0;
+	private int gpfdistPort = 0;
 	private int flushCount = 100;
 	private int flushTime = 2;
 	private int batchTimeout = 4;
@@ -48,13 +49,17 @@ public class GpfdistSinkProperties {
 	private int rateInterval = 0;
 	private String sqlBefore;
 	private String sqlAfter;
+	private String errorTable;
+	private String segmentRejectLimit;
+	private SegmentRejectType segmentRejectType;
+	private String nullString;
 
-	public int getPort() {
-		return port;
+	public int getGpfdistPort() {
+		return gpfdistPort;
 	}
 
-	public void setPort(int port) {
-		this.port = port;
+	public void setGpfdistPort(int gpfdistPort) {
+		this.gpfdistPort = gpfdistPort;
 	}
 
 	public int getFlushCount() {
@@ -217,4 +222,35 @@ public class GpfdistSinkProperties {
 		this.sqlAfter = sqlAfter;
 	}
 
+	public String getErrorTable() {
+		return errorTable;
+	}
+
+	public void setErrorTable(String errorTable) {
+		this.errorTable = errorTable;
+	}
+
+	public String getSegmentRejectLimit() {
+		return segmentRejectLimit;
+	}
+
+	public void setSegmentRejectLimit(String segmentRejectLimit) {
+		this.segmentRejectLimit = segmentRejectLimit;
+	}
+
+	public SegmentRejectType getSegmentRejectType() {
+		return segmentRejectType;
+	}
+
+	public void setSegmentRejectType(SegmentRejectType segmentRejectType) {
+		this.segmentRejectType = segmentRejectType;
+	}
+
+	public String getNullString() {
+		return nullString;
+	}
+
+	public void setNullString(String nullString) {
+		this.nullString = nullString;
+	}
 }
