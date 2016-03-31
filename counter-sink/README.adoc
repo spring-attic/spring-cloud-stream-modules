@@ -1,36 +1,27 @@
-= Spring Cloud Stream Counter Sink
+//tag::ref-doc[]
+= Counter Sink 
 
-A *Spring Cloud Stream* module that simply counts the number of messages it receives,
+The counter sink simply counts the number of messages it receives,
 optionally storing counts in a separate store such as redis.
-== Requirements
 
-To run this module, you will need to have installed:
+== Options
 
-* Java 7 or Above
-* One of the supported Spring Cloud Stream binders (_e.g._ redis, rabbit, _etc._)
-* Redis to store counters (optional)
+The **$$counter$$** $$sink$$ has the following options:
 
-== Code Tour
+$$name$$:: $$The name of the counter to increment.$$ *($$String$$, default: `counts`)*
+$$nameExpression$$:: $$A SpEL expression (against the incoming Message) to derive the name of the counter to increment.$$ *($$String$$, default: ``)*
+$$store$$:: $$The name of a store used to store the counter.$$ *($$String$$, default: `redis`, possible values: `memory`, `redis`)*
 
-CounterSinkApplication:: the Spring Boot Main Application
-CounterSink:: the actual module code that interacts with message channels
-CounterSinkProperties:: defines the configuration properties that are available to the Counter Sink
-  * name: the name of the counter to increment
-  * nameExpression: a SpEL expression used to derive the name of the counter to increment
-  * store: where to store counters. This project's code supports `memory` and `redis`
+//end::ref-doc[]
 
-
-## Building with Maven
-
-Build the module by executing:
+== Build
 
 ```
-$> mvn package
+$ mvn clean package
 ```
 
-## Running the Application
+== Run
 
-To start the module execute the following:
 ```
-$> java -jar target/counter-sink-${version}-exec.jar
+$ java -jar target/counter-sink-${version}-exec.jar
 ```

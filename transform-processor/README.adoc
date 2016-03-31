@@ -1,26 +1,27 @@
-= Spring Cloud Stream Transform Processor
+//tag::ref-doc[]
+= Transform Processor
+Use the transform app in a stream to convert a Message's content or structure.
 
-A *Spring Cloud Stream* module that allows one to transform messages using a SpEL expression.
+The transform processor is used by passing a SpEL expression. The expression should return the modified message or payload. For example, `--expression=payload.toUpperCase()`.
 
-== Requirements
+This transform will convert all message payloads to upper case.
 
-* Java 7 or Above
+As part of the SpEL expression you can make use of the pre-registered JSON Path function. The syntax is #jsonPath(payload,'<json path expression>')
 
-== Code Tour
+== Options
 
-TransformProcessorApplication:: the Spring Boot Main Application
-TransformProcessor:: the actual module code that interacts with message channels
-TransformProcessorProperties:: defines the configuration properties that are available to the Transform Processor
-  * expression: a SpEL expression used to transform messages
+The **$$transform$$** $$processor$$ has the following options:
 
+$$expression$$:: $$a SpEL expression used to transform messages$$ *($$String$$, default: `payload.toString()`)*
 
-## Building with Maven
+//end::ref-doc[]
+== Building with Maven
 
 ```
 $> mvn package
 ```
 
-## Running the Application
+== Running the Application
 
 ```
 $> java -jar target/transform-processor-${version}-exec.jar

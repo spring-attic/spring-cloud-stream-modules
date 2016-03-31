@@ -1,24 +1,22 @@
-= Spring Cloud Stream File Sink
+//tag::ref-doc[]
+= File Sink
 
 This module writes each message it receives to a file.
 
-== Requirements
+== Options
 
-* Java 7 or Above
+The **$$file$$** $$sink$$ has the following options:
 
-== Code Tour
+$$binary$$:: $$if false, will append a newline character at the end of each line$$ *($$boolean$$, default: `false`)*
+$$charset$$:: $$the charset to use when writing a String payload$$ *($$String$$, default: `UTF-8`)*
+$$dir$$:: $$the directory in which files will be created$$ *($$String$$, default: `/tmp/xd/output/`)*
+$$dirExpression$$:: $$spring expression used to define directory name$$ *($$String$$, no default)*
+$$mode$$:: $$what to do if the file already exists$$ *($$Mode$$, default: `APPEND`, possible values: `APPEND,REPLACE,FAIL,IGNORE`)*
+$$name$$:: $$filename pattern to use$$ *($$String$$, default: `<stream name>`)*
+$$nameExpression$$:: $$spring expression used to define filename$$ *($$String$$, no default)*
+$$suffix$$:: $$filename extension to use$$ *($$String$$, no default)*
 
-FileSinkApplication:: the Spring Boot Main Application
-FileSinkConfiguration:: configures the FileWritingMessageHandler bean
-FileSinkProperties:: properties for the file sink
-  * binary (default = false)
-  * charset (default = "UTF-8")
-  * directory (default = "${java.io.tmpdir}/dataflow/output");
-  * directoryExpression (no default; mutually exclusive with an explicit 'directory')
-  * mode (the FileExistsMode; default = APPEND)
-  * name (default = "file-sink")
-  * nameExpression (no default; mutually exclusive with an explicit 'name')
-  * suffix (no default)
+//end::ref-doc[]
 
 == Build
 
