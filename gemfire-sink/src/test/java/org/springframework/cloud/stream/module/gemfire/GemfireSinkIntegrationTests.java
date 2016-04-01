@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 
 import com.gemstone.gemfire.cache.Region;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -69,7 +70,6 @@ public class GemfireSinkIntegrationTests {
 
 	@BeforeClass
 	public static void setup() throws IOException {
-		System.out.println(System.getProperty("java.home"));
 		String serverName = "GemFireTestServer";
 
 		File serverWorkingDirectory = new File(FileSystemUtils.WORKING_DIRECTORY, serverName.toLowerCase());
@@ -89,6 +89,7 @@ public class GemfireSinkIntegrationTests {
 
 	private static void waitForServerStart(final long milliseconds) {
 		ThreadUtils.timedWait(milliseconds, TimeUnit.MILLISECONDS.toMillis(500), new ThreadUtils.WaitCondition() {
+
 			private File serverPidControlFile = new File(serverProcess.getWorkingDirectory(),
 					ServerProcess.getServerProcessControlFilename());
 
@@ -100,10 +101,8 @@ public class GemfireSinkIntegrationTests {
 	}
 
 	@Test
-	@Ignore("Need to spawn an embedded gemfire cacahe server.  " +
-			"See https://github.com/spring-cloud/spring-cloud-stream-modules/issues/49")
 	public void test() {
-		gemfireSink.input().send(new GenericMessage("hello"));
+		gemfireSink.input().send(new GenericMessage<>("hello"));
 		assertThat(region.get("key"), equalTo("hello"));
 	}
 

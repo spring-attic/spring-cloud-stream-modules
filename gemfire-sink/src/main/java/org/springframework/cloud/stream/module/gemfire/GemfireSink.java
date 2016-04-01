@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,19 +17,19 @@ package org.springframework.cloud.stream.module.gemfire;
 
 import java.util.Collections;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-
-import com.gemstone.gemfire.cache.Region;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.gemfire.outbound.CacheWritingMessageHandler;
+
+import com.gemstone.gemfire.cache.Region;
 
 /**
  * @author David Turanski
@@ -38,23 +38,24 @@ import org.springframework.integration.gemfire.outbound.CacheWritingMessageHandl
 @Import({GemfirePoolConfiguration.class, GemfireClientRegionConfiguration.class})
 @EnableConfigurationProperties(GemfireSinkProperties.class)
 public class GemfireSink {
+
 	@Autowired
 	GemfireSinkProperties config;
 
 	@Autowired
 	ApplicationContext context;
-	
+
+	//NOTE: https://jira.spring.io/browse/SPR-7915 supposedly fixed in SF 4.3. So
+	//should be able to change to @Autowired at that point
 	@Resource(name = "clientRegion")
-	Region<String,?> region;
+	Region<String, ?> region;
 
-	@Autowired
-	@Bindings(GemfireSink.class)
-	private Sink gemfireSink;
-
-	@PostConstruct
-	public void init() {
-		CacheWritingMessageHandler messageHandler = new CacheWritingMessageHandler(region);
-		messageHandler.setCacheEntries(Collections.singletonMap(config.getKeyExpression(), "payload"));
-		gemfireSink.input().subscribe(messageHandler);
+	@Bean
+	@ServiceActivator(inputChannel = Sink.INPUT)
+	public CacheWritingMessageHandler messageHandler() {
+		CacheWritingMessageHandler messageHandler = new CacheWritingMessageHandler(this.region);
+		messageHandler.setCacheEntries(Collections.singletonMap(this.config.getKeyExpression(), "payload"));
+		return messageHandler;
 	}
+
 }
