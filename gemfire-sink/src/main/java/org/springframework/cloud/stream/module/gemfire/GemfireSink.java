@@ -21,6 +21,7 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.ApplicationContext;
@@ -48,13 +49,17 @@ public class GemfireSink {
 	//NOTE: https://jira.spring.io/browse/SPR-7915 supposedly fixed in SF 4.3. So
 	//should be able to change to @Autowired at that point
 	@Resource(name = "clientRegion")
-	Region<String, ?> region;
+	Region<String,?> region;
+
+	@Autowired
+	@Bindings(GemfireSink.class)
+	private Sink gemfireSink;
 
 	@Bean
 	@ServiceActivator(inputChannel = Sink.INPUT)
-	public CacheWritingMessageHandler messageHandler() {
-		CacheWritingMessageHandler messageHandler = new CacheWritingMessageHandler(this.region);
-		messageHandler.setCacheEntries(Collections.singletonMap(this.config.getKeyExpression(), "payload"));
+	public CacheWritingMessageHandler messageHandler(){
+		CacheWritingMessageHandler messageHandler = new CacheWritingMessageHandler(region);
+		messageHandler.setCacheEntries(Collections.singletonMap(config.getKeyExpression(), "payload"));
 		return messageHandler;
 	}
 
