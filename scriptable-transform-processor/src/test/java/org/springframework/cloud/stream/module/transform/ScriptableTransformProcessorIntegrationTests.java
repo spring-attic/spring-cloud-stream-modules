@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.transform;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.Assert.assertThat;
 import static org.springframework.cloud.stream.test.matcher.MessageQueueMatcher.receivesPayloadThat;
 
@@ -37,6 +38,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Integration Tests for the Script Transform Processor.
  *
  * @author Andy Clement
+ * @author Artem Bilan
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ScriptableTransformProcessorApplication.class)
@@ -57,7 +59,8 @@ public abstract class ScriptableTransformProcessorIntegrationTests {
 		@Test
 		public void testJavascriptFunctions() {
 			channels.input().send(new GenericMessage<Object>("hello world"));
-			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is(4L)));
+			// Different Java versions return different types for JavaScript results
+			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(isOneOf(4, 4L)));
 		}
 	}
 
