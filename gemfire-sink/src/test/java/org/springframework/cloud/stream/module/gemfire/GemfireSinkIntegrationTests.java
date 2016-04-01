@@ -101,6 +101,7 @@ public class GemfireSinkIntegrationTests {
 	}
 
 	@Test
+	@Ignore("See https://github.com/spring-cloud/spring-cloud-stream-modules/issues/49")
 	public void test() {
 		gemfireSink.input().send(new GenericMessage<>("hello"));
 		assertThat(region.get("key"), equalTo("hello"));
