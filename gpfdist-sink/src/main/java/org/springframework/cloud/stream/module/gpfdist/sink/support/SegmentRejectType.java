@@ -15,8 +15,17 @@
  */
 package org.springframework.cloud.stream.module.gpfdist.sink.support;
 
+/**
+ * Enumeration of a possible values in a clause section
+ * `SEGMENT REJECT LIMIT count [ROWS | PERCENT]`
+ *
+ * @author Janne Valkealahti
+ */
 public enum SegmentRejectType {
 
-	ROWS, PERCENT
+	/** Rows reject type */
+	ROWS,
 
+	/** Percent reject type */
+	PERCENT
 }

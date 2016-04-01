@@ -148,7 +148,7 @@ public class GpfdistServer {
 				request.responseHeaders().removeTransferEncodingChunked();
 				request.addResponseHeader("Content-type", "text/plain");
 				request.addResponseHeader("Expires", "0");
-				request.addResponseHeader("X-GPFDIST-VERSION", "Spring XD");
+				request.addResponseHeader("X-GPFDIST-VERSION", "Spring Dataflow");
 				request.addResponseHeader("X-GP-PROTO", "1");
 				request.addResponseHeader("Cache-Control", "no-cache");
 				request.addResponseHeader("Connection", "close");
@@ -166,5 +166,4 @@ public class GpfdistServer {
 		localPort = httpServer.getListenAddress().getPort();
 		return httpServer;
 	}
-
 }

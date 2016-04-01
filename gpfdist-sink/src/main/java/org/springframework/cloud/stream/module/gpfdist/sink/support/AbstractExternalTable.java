@@ -23,10 +23,8 @@ import java.util.List;
 /**
  * Base settings for all external tables;
  *
- * @since 1.2
  * @author Janne Valkealahti
  * @author Gary Russell
- *
  */
 public abstract class AbstractExternalTable {
 
@@ -158,5 +156,4 @@ public abstract class AbstractExternalTable {
 	public void setColumns(String columns) {
 		this.columns = columns;
 	}
-
 }
