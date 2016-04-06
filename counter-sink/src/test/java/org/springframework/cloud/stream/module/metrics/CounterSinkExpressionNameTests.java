@@ -15,13 +15,14 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
+
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @WebIntegrationTest({"nameExpression:payload"})
 public class CounterSinkExpressionNameTests extends AbstractCounterSinkTests {
@@ -34,6 +35,6 @@ public class CounterSinkExpressionNameTests extends AbstractCounterSinkTests {
         Thread.sleep(sleepTime);
         //Note:  If the name of the counter does not start with 'counter' or 'metric' the 'counter.' prefix is added
         //       by the DefaultCounterService
-        assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
+        assertEquals(1, this.metricRepository.findOne("counter.simpleCounter").getValue().longValue());
     }
 }

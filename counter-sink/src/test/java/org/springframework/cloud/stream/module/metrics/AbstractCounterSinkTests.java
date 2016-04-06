@@ -15,13 +15,17 @@
  */
 package org.springframework.cloud.stream.module.metrics;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.repository.MetricRepository;
+import org.springframework.boot.actuate.metrics.repository.redis.RedisMetricRepository;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cloud.stream.annotation.Bindings;
@@ -45,21 +49,26 @@ public abstract class AbstractCounterSinkTests {
 
     protected int sleepTime = 100;
 
+    @Test
+    public void testRepository() {
+        assertTrue("MetricRepository should be Redis based.", metricRepository instanceof RedisMetricRepository);
+    }
+
     @Autowired
     @Bindings(CounterSink.class)
     protected Sink sink;
 
     @Autowired
-    protected MetricRepository redisMetricRepository;
+    protected MetricRepository metricRepository;
 
     @Before
     public void init() {
-        redisMetricRepository.reset("counter.simpleCounter");
+        metricRepository.reset("counter.simpleCounter");
     }
 
     @After
     public void clear() {
-        redisMetricRepository.reset("counter.simpleCounter");
+        metricRepository.reset("counter.simpleCounter");
     }
 
 }
