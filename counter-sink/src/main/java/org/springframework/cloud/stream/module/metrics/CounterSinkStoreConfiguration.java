@@ -47,7 +47,7 @@ public class CounterSinkStoreConfiguration {
 	@Bean
 	@ExportMetricWriter
 	public MetricRepository metricRepository() {
-		if (this.metricProperties.equals(MetricProperties.REDIS_STORE_VALUE)) {
+		if (this.metricProperties.getStore().equals(MetricProperties.REDIS_STORE_VALUE)) {
 			return new RedisMetricRepository(redisConnectionFactory);
 		}
 		return new InMemoryMetricRepository();
