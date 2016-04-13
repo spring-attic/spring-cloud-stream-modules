@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.cloud.stream.annotation.Bindings;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
+import org.springframework.integration.config.SpelFunctionFactoryBean;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author Eric Bottard
  * @author Marius Bogoevici
+ * @author Artem Bilan
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TransformProcessorApplication.class)
@@ -59,18 +62,31 @@ public abstract class TransformProcessorIntegrationTests {
 
 		@Test
 		public void test() {
-			channels.input().send(new GenericMessage<Object>("hello"));
-			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("hello")));
+			this.channels.input().send(new GenericMessage<Object>("hello"));
+			assertThat(this.collector.forChannel(this.channels.output()), receivesPayloadThat(is("hello")));
 		}
+
 	}
 
 	@WebIntegrationTest("expression=payload.toUpperCase()")
 	public static class UsingExpressionIntegrationTests extends TransformProcessorIntegrationTests {
 
+		@Autowired
+		@Qualifier("&jsonPath")
+		private SpelFunctionFactoryBean jsonPathSpelFunctionFactoryBean;
+
+		@Autowired
+		@Qualifier("&xpath")
+		private SpelFunctionFactoryBean xpathSpelFunctionFactoryBean;
+
 		@Test
 		public void test() {
-			channels.input().send(new GenericMessage<Object>("hello"));
-			assertThat(collector.forChannel(channels.output()), receivesPayloadThat(is("HELLO")));
+			assertNotNull(this.jsonPathSpelFunctionFactoryBean);
+			assertNotNull(this.xpathSpelFunctionFactoryBean);
+			this.channels.input().send(new GenericMessage<Object>("hello"));
+			assertThat(this.collector.forChannel(this.channels.output()), receivesPayloadThat(is("HELLO")));
 		}
+
 	}
+
 }

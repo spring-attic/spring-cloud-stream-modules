@@ -183,6 +183,11 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
+				<groupId>com.jayway.jsonpath</groupId>
+				<artifactId>json-path</artifactId>
+				<version>2.2.0</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework.cloud.stream.module</groupId>
 				<artifactId>script-variable-generator</artifactId>
 				<version>1.0.0.BUILD-SNAPSHOT</version>
@@ -212,6 +217,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-redis</artifactId>
+		</dependency>
+		<!--Enable #jsonPath() SpEL function-->
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+		</dependency>
+		<!--Enable #xpath() SpEL function-->
+		<dependency>
+			<groupId>org.springframework.integration</groupId>
+			<artifactId>spring-integration-xml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
