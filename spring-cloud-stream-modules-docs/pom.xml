@@ -242,7 +242,7 @@
 								<configuration>
 									<artifacts>
 										<artifact>
-											<file>${project.build.directory}/spring-cloud-stream-modules-${project.version}.zip</file>
+											<file>${project.build.directory}/spring-cloud-stream-modules-docs-${project.version}.zip</file>
 											<type>zip;zip.type=docs;zip.deployed=false</type>
 										</artifact>
 									</artifacts>
