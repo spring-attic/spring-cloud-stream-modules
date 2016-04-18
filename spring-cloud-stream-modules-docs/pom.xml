@@ -198,8 +198,9 @@
 								</goals>
 								<configuration>
 									<target>
-										<zip destfile="${project.build.directory}/spring-cloud-stream-modules-${project.version}.zip">
-											<fileset dir="${project.build.directory}/contents" />
+										<zip destfile="${project.build.directory}/${project.artifactId}-${project.version}.zip">
+											<fileset dir="${project.build.directory}/generated-docs"
+													 excludes="*.sh"/>
 										</zip>
 									</target>
 								</configuration>
@@ -242,7 +243,7 @@
 								<configuration>
 									<artifacts>
 										<artifact>
-											<file>${project.build.directory}/spring-cloud-stream-modules-docs-${project.version}.zip</file>
+											<file>${project.build.directory}/${project.artifactId}-${project.version}.zip</file>
 											<type>zip;zip.type=docs;zip.deployed=false</type>
 										</artifact>
 									</artifacts>
