@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.stream.module.metrics.memory;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,6 +88,11 @@ public class InMemoryAggregateCounterRepository implements AggregateCounterRepos
 		aggregates.remove(counter.getName());
 		increment(counter.getName(), counter.getTotal(), DateTime.now());
 		return counter;
+	}
+
+	@Override
+	public Collection<String> list() {
+		return aggregates.keySet();
 	}
 
 }

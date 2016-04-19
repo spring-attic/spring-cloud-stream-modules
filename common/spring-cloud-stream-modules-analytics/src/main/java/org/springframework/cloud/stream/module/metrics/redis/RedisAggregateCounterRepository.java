@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module.metrics.redis;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +54,7 @@ import org.springframework.util.Assert;
  */
 public class RedisAggregateCounterRepository implements AggregateCounterRepository {
 
-	private static final String REPO_PREFIX = "aggregate-counters";
+	private static final String AGGREGATE_COUNTER_KEY_PREFIX = "aggregate-counters";
 
 	private final RedisRetryTemplate redisTemplate;
 
@@ -80,7 +81,7 @@ public class RedisAggregateCounterRepository implements AggregateCounterReposito
 
 	@Override
 	public long increment(String name, long amount, DateTime dateTime) {
-		final AggregateKeyGenerator akg = new AggregateKeyGenerator(REPO_PREFIX, name, dateTime);
+		final AggregateKeyGenerator akg = new AggregateKeyGenerator(AGGREGATE_COUNTER_KEY_PREFIX, name, dateTime);
 
 		String bookkeepingKey = bookkeepingKeyFor(name);
 
@@ -90,6 +91,7 @@ public class RedisAggregateCounterRepository implements AggregateCounterReposito
 		doIncrementHash(akg.getDayKey(), akg.getHour(), amount, bookkeepingKey);
 		doIncrementHash(akg.getHourKey(), akg.getMinute(), amount, bookkeepingKey);
 
+		this.setOperations.add(AGGREGATE_COUNTER_KEY_PREFIX, name);
 		return redisTemplate.boundValueOps(getMetricKey(name)).increment(amount);
 	}
 
@@ -100,7 +102,7 @@ public class RedisAggregateCounterRepository implements AggregateCounterReposito
 	 * @return the redis key under which the metric is stored
 	 */
 	protected String getMetricKey(String metricName) {
-		return REPO_PREFIX + AggregateKeyGenerator.SEPARATOR + metricName;
+		return AGGREGATE_COUNTER_KEY_PREFIX + AggregateKeyGenerator.SEPARATOR + metricName;
 	}
 
 	/**
@@ -231,22 +233,22 @@ public class RedisAggregateCounterRepository implements AggregateCounterReposito
 	}
 
 	private Map<String, Long> getYearCounts(String name) {
-		AggregateKeyGenerator akg = new AggregateKeyGenerator(REPO_PREFIX, name, new DateTime());
+		AggregateKeyGenerator akg = new AggregateKeyGenerator(AGGREGATE_COUNTER_KEY_PREFIX, name, new DateTime());
 		return getEntries(akg.getYearsKey());
 	}
 
 	private long[] getMonthCountsForYear(String name, DateTime year) {
-		AggregateKeyGenerator akg = new AggregateKeyGenerator(REPO_PREFIX, name, year);
+		AggregateKeyGenerator akg = new AggregateKeyGenerator(AGGREGATE_COUNTER_KEY_PREFIX, name, year);
 		return convertToArray(getEntries(akg.getYearKey()), year.monthOfYear().getMaximumValue(), true); // Months in this year
 	}
 
 	private long[] getDayCountsForMonth(String name, DateTime month) {
-		AggregateKeyGenerator akg = new AggregateKeyGenerator(REPO_PREFIX, name, month.withTimeAtStartOfDay());
+		AggregateKeyGenerator akg = new AggregateKeyGenerator(AGGREGATE_COUNTER_KEY_PREFIX, name, month.withTimeAtStartOfDay());
 		return convertToArray(getEntries(akg.getMonthKey()), month.dayOfMonth().getMaximumValue(), true); // Days in this month
 	}
 
 	private long[] getHourCountsForDay(String name, DateTime day) {
-		AggregateKeyGenerator akg = new AggregateKeyGenerator(REPO_PREFIX, name, day.withTimeAtStartOfDay());
+		AggregateKeyGenerator akg = new AggregateKeyGenerator(AGGREGATE_COUNTER_KEY_PREFIX, name, day.withTimeAtStartOfDay());
 		return convertToArray(getEntries(akg.getDayKey()), 24, false);
 	}
 
@@ -257,7 +259,7 @@ public class RedisAggregateCounterRepository implements AggregateCounterReposito
 
 	private long[] getMinCountsForHour(String name, int year, int month, int day, int hour) {
 		DateTime dt = new DateTime().withYear(year).withMonthOfYear(month).withDayOfMonth(day).withHourOfDay(hour);
-		AggregateKeyGenerator akg = new AggregateKeyGenerator(REPO_PREFIX, name, dt);
+		AggregateKeyGenerator akg = new AggregateKeyGenerator(AGGREGATE_COUNTER_KEY_PREFIX, name, dt);
 		return convertToArray(getEntries(akg.getHourKey()), 60, false);
 	}
 
@@ -284,8 +286,14 @@ public class RedisAggregateCounterRepository implements AggregateCounterReposito
 		redisTemplate.delete(getMetricKey(id));
 		String metricMetaKey = bookkeepingKeyFor(id);
 		Set<String> otherKeys = setOperations.members(metricMetaKey);
+		otherKeys.add(id);
 		// Add metric-meta SET's key
 		otherKeys.add(metricMetaKey);
 		redisTemplate.delete(otherKeys);
+	}
+
+	@Override
+	public Collection<String> list() {
+		return this.setOperations.members(AGGREGATE_COUNTER_KEY_PREFIX);
 	}
 }
