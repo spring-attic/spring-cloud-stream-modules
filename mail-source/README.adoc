@@ -1,15 +1,22 @@
 //tag::ref-doc[]
-= Http Source
+= Mail Source
 
-A source module that listens for HTTP requests and emits the body as a message payload.
-If the Content-Type matches `text/*` or `application/json`, the payload will be a String,
-otherwise the payload will be a byte array.
+A source module that listens for Emails  and emits the message body as a message payload.
+
 
 == Options
 
-The **$$http$$** $$source$$ supports the following configuration properties:
+The **$$mail$$** $$source$$ supports the following configuration properties:
 
-$$pathPattern$$:: $$An Ant-Style pattern to determine which http requests will be captured$$ *($$String$$, default: `/`)*
+$$protocol$$:: $$Protocol to be used for recieving mail.$$
+$$username$$:: $$Username for email account. Usually is email id$$
+$$password$$:: $$Password for email account$$
+$$host$$:: $$Host URL for email access$$
+$$port$$:: $$Port to be used for email e.g. 993 for imaps$$
+$$folder$$:: $$Email folder to be scanned for email$$
+$$markAsRead$$:: $$Set to true to mark email as read$$
+$$delete$$:: $$Set to true to delete email after download$$
+
 
 //end::ref-doc[]
 == Build
@@ -21,5 +28,5 @@ $> mvn package
 == Run
 
 ```
-$> java -jar target/http-source-${version}-exec.jar
+$> java -jar target/mail-source-${version}-exec.jar
 ```
