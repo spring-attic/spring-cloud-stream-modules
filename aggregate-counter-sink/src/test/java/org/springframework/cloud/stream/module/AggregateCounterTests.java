@@ -59,7 +59,9 @@ public abstract class AggregateCounterTests {
 	@Rule
 	public RedisTestSupport redisTestSupport = new RedisTestSupport();
 
-	private static final String AGGREGATE_COUNTER_NAME = "aggregate-counter-test.foo";
+	private static final String AGGREGATE_COUNTER_NAME = "foo";
+
+	private static final String AGGREGATE_COUNTER_NAME_2 = "bar";
 
 	@Autowired
 	@Bindings(AggregateCounterSink.class)
@@ -72,6 +74,7 @@ public abstract class AggregateCounterTests {
 	@After
 	public void clear() {
 		aggregateCounterRepository.reset(AGGREGATE_COUNTER_NAME);
+		aggregateCounterRepository.reset(AGGREGATE_COUNTER_NAME_2);
 	}
 
 
@@ -133,7 +136,9 @@ public abstract class AggregateCounterTests {
 		public void testCountWithNameExpression() {
 			this.sink.input().send(new GenericMessage<Object>(
 					Collections.singletonMap("counterName", AGGREGATE_COUNTER_NAME)));
-			assertThat(this.aggregateCounterRepository.list(), hasItems(AGGREGATE_COUNTER_NAME));
+			this.sink.input().send(new GenericMessage<Object>(
+					Collections.singletonMap("counterName", AGGREGATE_COUNTER_NAME_2)));
+			assertThat(this.aggregateCounterRepository.list(), hasItems(AGGREGATE_COUNTER_NAME, AGGREGATE_COUNTER_NAME_2));
 		}
 	}
 }
