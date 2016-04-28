@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<package xmlns="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" version="3.0" xml:lang="en" unique-identifier="pub-identifier">
+   <metadata>
+      <dc:identifier id="pub-identifier">_d0e3</dc:identifier>
+      <meta id="meta-identifier" property="dcterms:identifier">_d0e3</meta>
+      <dc:title id="pub-title">Spring Cloud Stream Reference Guide</dc:title>
+      <meta property="dcterms:title" id="meta-title">Spring Cloud Stream Reference Guide</meta>
+      <dc:language id="pub-language">en</dc:language>
+      <meta property="dcterms:language" id="meta-language">en</meta>
+      <meta property="dcterms:modified">2016-03-30T07:05:21Z</meta><!--The preceding date value is actually local time (not UTC) in UTC format because there is no function in XSLT 1.0 to generate a correct UTC time-->
+      <meta property="dcterms:date">2016-03-30</meta>
+      <dc:date>2016-03-30</dc:date>
+      <meta id="meta-creator3" property="dcterms:creator">Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayaperumal Gopinathan, Gunnar Hillert, Mark Pollack, Patrick Peralta, Glenn Renfro, Gary Russell, Thomas Risberg, David Turanski, Janne Valkealahti</meta>
+      <dc:creator id="pub-creator3">Sabby Anandan, Artem Bilan, Marius Bogoevici, Eric Bottard, Mark Fisher, Ilayaperumal Gopinathan, Gunnar Hillert, Mark Pollack, Patrick Peralta, Glenn Renfro, Gary Russell, Thomas Risberg, David Turanski, Janne Valkealahti</dc:creator>
+      <meta property="dcterms:rights">Copyright © 2013-2016 Pivotal Software, Inc.</meta>
+      <dc:rights>Copyright © 2013-2016 Pivotal Software, Inc.</dc:rights>
+      <meta property="dcterms:rightsHolder">Pivotal Software, Inc.</meta>
+   </metadata>
+   <manifest>
+      <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+      <item id="htmltoc" properties="nav" media-type="application/xhtml+xml" href="bk01-toc.xhtml"/>
+      <item media-type="text/css" id="docbook-css" href="docbook-epub.css"/>
+      <item id="id-d0e3" href="index.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e29" href="pt01.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e32" href="ch01.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e42" href="pt02.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e45" href="ch02.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e211" href="ch02s02.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e479" href="ch02s03.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e510" href="ch02s04.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e582" href="ch02s05.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e701" href="ch02s06.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e759" href="ch02s07.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e935" href="ch02s08.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1215" href="ch02s09.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1306" href="ch02s10.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1468" href="ch02s11.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1529" href="ch02s12.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1606" href="ch03.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1647" href="ch03s02.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1688" href="ch03s03.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1753" href="ch03s04.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1761" href="ch03s05.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1802" href="ch03s06.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1843" href="ch03s07.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e1970" href="ch04.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e2177" href="ch04s02.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e2227" href="ch04s03.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e2310" href="ch04s04.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e2406" href="ch04s05.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e2451" href="ch04s06.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e2520" href="ch04s07.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3310" href="ch04s08.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3390" href="ch04s09.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3420" href="ch04s10.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3522" href="ch04s11.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3600" href="ch04s12.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3757" href="ch04s13.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3944" href="pt03.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3947" href="apa.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e3998" href="apas02.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e4005" href="apas03.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e4060" href="ch05.xhtml" media-type="application/xhtml+xml"/>
+      <item id="id-d0e4073" href="ch05s02.xhtml" media-type="application/xhtml+xml"/>
+   </manifest>
+   <spine toc="ncx">
+      <itemref idref="htmltoc" linear="yes"/>
+      <itemref idref="id-d0e3"/>
+      <itemref idref="id-d0e29"/>
+      <itemref idref="id-d0e32"/>
+      <itemref idref="id-d0e42"/>
+      <itemref idref="id-d0e45"/>
+      <itemref idref="id-d0e211"/>
+      <itemref idref="id-d0e479"/>
+      <itemref idref="id-d0e510"/>
+      <itemref idref="id-d0e582"/>
+      <itemref idref="id-d0e701"/>
+      <itemref idref="id-d0e759"/>
+      <itemref idref="id-d0e935"/>
+      <itemref idref="id-d0e1215"/>
+      <itemref idref="id-d0e1306"/>
+      <itemref idref="id-d0e1468"/>
+      <itemref idref="id-d0e1529"/>
+      <itemref idref="id-d0e1606"/>
+      <itemref idref="id-d0e1647"/>
+      <itemref idref="id-d0e1688"/>
+      <itemref idref="id-d0e1753"/>
+      <itemref idref="id-d0e1761"/>
+      <itemref idref="id-d0e1802"/>
+      <itemref idref="id-d0e1843"/>
+      <itemref idref="id-d0e1970"/>
+      <itemref idref="id-d0e2177"/>
+      <itemref idref="id-d0e2227"/>
+      <itemref idref="id-d0e2310"/>
+      <itemref idref="id-d0e2406"/>
+      <itemref idref="id-d0e2451"/>
+      <itemref idref="id-d0e2520"/>
+      <itemref idref="id-d0e3310"/>
+      <itemref idref="id-d0e3390"/>
+      <itemref idref="id-d0e3420"/>
+      <itemref idref="id-d0e3522"/>
+      <itemref idref="id-d0e3600"/>
+      <itemref idref="id-d0e3757"/>
+      <itemref idref="id-d0e3944"/>
+      <itemref idref="id-d0e3947"/>
+      <itemref idref="id-d0e3998"/>
+      <itemref idref="id-d0e4005"/>
+      <itemref idref="id-d0e4060"/>
+      <itemref idref="id-d0e4073"/>
+   </spine>
+   <guide>
+      <reference href="bk01-toc.xhtml" type="toc" title="Table of Contents"/>
+   </guide>
+</package>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:pls="http://www.w3.org/2005/01/pronunciation-lexicon" xmlns:ssml="http://www.w3.org/2001/10/synthesis" xmlns:svg="http://www.w3.org/2000/svg"><head><title>Code Conventions and Housekeeping</title><link rel="stylesheet" type="text/css" href="docbook-epub.css"/><meta name="generator" content="DocBook XSL Stylesheets V1.78.1"/><link rel="prev" href="ch05.xhtml" title="Chapter 5. Contributing"/></head><body><header/><section class="section" title="Code Conventions and Housekeeping" epub:type="subchapter" id="_code_conventions_and_housekeeping"><div class="titlepage"><div><div><h2 class="title" style="clear: both">Code Conventions and Housekeeping</h2></div></div></div><p>None of these is essential for a pull request, but they will all help.  They can also be
+added after the original pull request but before a merge.</p><div class="itemizedlist" epub:type="list"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem" epub:type="list-item">Use the Spring Framework code format conventions. If you use Eclipse
+you can import formatter settings using the
+<code class="literal">eclipse-code-formatter.xml</code> file from the
+<a class="link" href="https://github.com/spring-cloud/build/tree/master/eclipse-coding-conventions.xml" target="_top">Spring
+Cloud Build</a> project. If using IntelliJ, you can use the
+<a class="link" href="http://plugins.jetbrains.com/plugin/6546" target="_top">Eclipse Code Formatter
+Plugin</a> to import the same file.</li><li class="listitem" epub:type="list-item">Make sure all new <code class="literal">.java</code> files to have a simple Javadoc class comment with at least an
+<code class="literal">@author</code> tag identifying you, and preferably at least a paragraph on what the class is
+for.</li><li class="listitem" epub:type="list-item">Add the ASF license header comment to all new <code class="literal">.java</code> files (copy from existing files
+in the project)</li><li class="listitem" epub:type="list-item">Add yourself as an <code class="literal">@author</code> to the .java files that you modify substantially (more
+than cosmetic changes).</li><li class="listitem" epub:type="list-item">Add some Javadocs and, if you change the namespace, some XSD doc elements.</li><li class="listitem" epub:type="list-item">A few unit tests would help a lot as well — someone has to do it.</li><li class="listitem" epub:type="list-item">If no-one else is using your branch, please rebase it against the current master (or
+other target branch in the main project).</li><li class="listitem" epub:type="list-item">When writing a commit message please follow <a class="link" href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html" target="_top">these conventions</a>,
+if you are fixing an existing issue please add <code class="literal">Fixes gh-XXXX</code> at the end of the commit
+message (where XXXX is the issue number).</li></ul></div></section><footer/></body></html>
