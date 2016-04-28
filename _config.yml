@@ -19,14 +19,14 @@ gems:
 baseurl: /spring-cloud-stream-modules
 
 # Name of the project for display in places like page titles
-name: Spring Cloud Stream Modules
+name: Spring Cloud Stream Applications
 
 # ID of the project in the metadata API at spring.io (if this is not a
 # valid project ID the javascript widgets in the home page will not work)
 project: spring-cloud-stream-modules
 
 # Project github URL
-github_repo_url: https://github.com/spring-cloud/spring-cloud-stream-modules
+github_repo_url: https://github.com/spring-cloud/spring-cloud-stream-app-starters
 
 # If you want to include a custom pom.xml or gradle template set these value to true and add _include files
 custom_pom_template: false
