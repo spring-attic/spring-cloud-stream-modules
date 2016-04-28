@@ -1,6 +1,6 @@
 ---
 # The name of your project
-title: Spring Cloud Stream Applications
+title: Spring Cloud Stream Modules
 
 badges:
 
@@ -10,11 +10,11 @@ badges:
   # Customize your project's badges. Delete any entries that do not apply.
   custom:
     - name: Source (GitHub)
-      url:  https://github.com/spring-cloud/spring-cloud-stream-app-starters
+      url:  https://github.com/spring-cloud/spring-cloud-stream-modules
       icon: github
 
     - name: Issues (GitHub)
-      url:  https://github.com/spring-cloud/spring-cloud-stream-app-starters/issues
+      url:  https://github.com/spring-cloud/spring-cloud-stream-modules/issues
       icon: tracking
 
     - name: CI (Bamboo)
@@ -22,7 +22,7 @@ badges:
       icon: ci
 
     - name: StackOverflow
-      url:  http://stackoverflow.com/questions/tagged/spring-cloud-stream
+      url:  http://stackoverflow.com/questions/tagged/spring-cloud
       icon: stackoverflow
 
 ---
@@ -37,15 +37,15 @@ badges:
 
 {% capture billboard_description %}
 
-Spring Cloud Stream Applications are [Spring Boot](http://projects.spring.io/spring-boot/) based [Spring Integration](http://projects.spring.io/spring-integration/) applications that provide integration with external systems. 
-Spring Cloud Stream Applications can be used with [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) to create, 
+Spring Cloud Stream Modules are [Spring Boot](http://projects.spring.io/spring-boot/) based [Spring Integration](http://projects.spring.io/spring-integration/) applications that provide integration with external systems. 
+Spring Cloud Stream Modules can be used with [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) to create, 
 build, and operationalize message-driven data microservices.
 
 {% endcapture %}
 
 {% capture main_content %}
 
-Spring Cloud Stream Applications are standalone executable applications that communicate over messaging middleware such as Apache Kafka and RabbitMQ. These applications can run independently on variety of runtime platforms including: Cloud Foundry, Apache Yarn, Apache Mesos, Kubernetes, Docker, or even on your laptop.
+Spring Cloud Stream modules are standalone executable applications that communicate over messaging middleware such as Apache Kafka and RabbitMQ. These applications can run independently on variety of runtime platforms including: Cloud Foundry, Apache Yarn, Apache Mesos, Kubernetes, Docker, or even on your laptop.
 
 ## Features
 
@@ -53,25 +53,24 @@ Spring Cloud Stream Applications are standalone executable applications that com
 * Create streaming pipelines with data microservice applications
 * Host and consume data microservice applications as maven dependencies
 * Override configuration parameters via command-line, environment variables, or YAML file
-* Provide infrastructure to test the applications in isolation
+* Provide infrastructure to test the modules in isolation
 
-## Available Applications
+## Available Modules
 
 | __Source__ | __Processor__ | __Sink__ | __Task__ |
 | ------- | --------- | ---- | ---- |
-| file | bridge | aggregate-counter | timestamp | 
-| ftp | filter | cassandra |
-| http | groovy-filter | counter | | | 
-| jdbc | groovy-transform | field-value-counter | | 
-| jms | httpclient | file | | 
-| load-generator | pmml | ftp | | 
-| rabbit | scriptable-transform | gemfire | | 
-| sftp | splitter | gpfdist | | 
-| tcp | transform | hdfs | | 
-| time | | jdbc | | 
-| trigger | | log | | 
-| twitterstream | | rabbit | | 
-| | | redis | | 
+| file | bridge | cassandra | timestamp | 
+| ftp | filter | counter |
+| http | groovy-filter | field-value-counter | | | 
+| jdbc | groovy-transform | file | | 
+| jms | httpclient | ftp | | 
+| load-generator | noop | gemfire | | 
+| rabbit | pmml | gpfdist | | 
+| sftp | splitter | hdfs | | 
+| tcp | transform | jdbc | | 
+| time | | log | | 
+| trigger | | rabbit | | 
+| twitterstream | | redis | | 
 | | | router | | 
 | | | tcp | | 
 | | | throughput | | 
@@ -80,20 +79,26 @@ Spring Cloud Stream Applications are standalone executable applications that com
 <span id="quick-start"></span>
 ## Quick Start
 
-Step 1 - Clone [Spring Cloud Stream Applications](https://github.com/spring-cloud/spring-cloud-stream-app-starters.git) repository
+Step 1 - Clone [Spring Cloud Stream Modules](https://github.com/spring-cloud/spring-cloud-stream-modules.git) repository
 
-Step 2 - [Build and Install Apps](https://github.com/spring-cloud/spring-cloud-stream-app-starters#spring-cloud-stream-app-starters)
+Step 2 - Start
+```
+redis-server
+```
 
-Step 3 - Start Kafka 
+Step 3 - Build Project
+```
+mvn clean package
+```
 
 Step 4 - Run **Time Source** and Bind to *ticktock* Queue
 ```
-java -jar apps/time-source-kafka/target/time-source-kafka-***.jar --spring.cloud.stream.bindings.output.destination=ticktock
+java -jar time-source/target/time-source***-exec.jar --spring.cloud.stream.bindings.output.destination=ticktock
 ```
 
 Step 5 - Run **Log Sink** and Bind to *ticktock* Queue
 ```
-java -jar apps/log-sink-kafka/target/log-sink-kafka-***.jar --spring.cloud.stream.bindings.input.destination=ticktock
+java -jar log-sink/target/log-sink***-exec.jar --spring.cloud.stream.bindings.input.destination=ticktock
 ```
 
 Step 6 - Verify *ticktock* Logs in Console
