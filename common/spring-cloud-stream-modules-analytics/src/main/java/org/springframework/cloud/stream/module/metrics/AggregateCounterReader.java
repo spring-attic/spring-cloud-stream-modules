@@ -59,4 +59,9 @@ public interface AggregateCounterReader {
 	 * @return an object containing an indexed array of the counts .
 	 */
 	AggregateCounter getCounts(String name, int nCounts, DateTime end, AggregateCounterResolution resolution);
+
+	/**
+	 * List the names of all available aggregate counters.
+	 */
+	Iterable<String> list();
 }

@@ -17,6 +17,7 @@
 package org.springframework.cloud.stream.module;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 import java.util.Collections;
@@ -58,7 +59,9 @@ public abstract class AggregateCounterTests {
 	@Rule
 	public RedisTestSupport redisTestSupport = new RedisTestSupport();
 
-	private static final String AGGREGATE_COUNTER_NAME = "aggregate-counter-test.foo";
+	private static final String AGGREGATE_COUNTER_NAME = "foo";
+
+	private static final String AGGREGATE_COUNTER_NAME_2 = "bar";
 
 	@Autowired
 	@Bindings(AggregateCounterSink.class)
@@ -71,6 +74,7 @@ public abstract class AggregateCounterTests {
 	@After
 	public void clear() {
 		aggregateCounterRepository.reset(AGGREGATE_COUNTER_NAME);
+		aggregateCounterRepository.reset(AGGREGATE_COUNTER_NAME_2);
 	}
 
 
@@ -122,6 +126,19 @@ public abstract class AggregateCounterTests {
 			AggregateCounter counts = this.aggregateCounterRepository.getCounts(AGGREGATE_COUNTER_NAME, 5,
 					AggregateCounterResolution.hour);
 			assertThat(counts.getCounts(), equalTo(new long[] {0, 0, 0, 0, 1}));
+		}
+	}
+
+	@WebIntegrationTest({"nameExpression=payload.counterName"})
+	public static class CounterListTest extends AggregateCounterTests {
+
+		@Test
+		public void testCountWithNameExpression() {
+			this.sink.input().send(new GenericMessage<Object>(
+					Collections.singletonMap("counterName", AGGREGATE_COUNTER_NAME)));
+			this.sink.input().send(new GenericMessage<Object>(
+					Collections.singletonMap("counterName", AGGREGATE_COUNTER_NAME_2)));
+			assertThat(this.aggregateCounterRepository.list(), hasItems(AGGREGATE_COUNTER_NAME, AGGREGATE_COUNTER_NAME_2));
 		}
 	}
 }
