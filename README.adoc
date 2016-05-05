@@ -1,15 +1,13 @@
-== Spring Cloud Stream Modules image:https://build.spring.io/plugins/servlet/buildStatusImage/SCS-MODULESBMASTER[Build Status, link=https://build.spring.io/browse/SCS-MODULESBMASTER] image:https://badge.waffle.io/spring-cloud/spring-cloud-stream-modules.svg?label=ready&title=Ready[Stories Ready, link=http://waffle.io/spring-cloud/spring-cloud-stream-modules] image:https://badge.waffle.io/spring-cloud/spring-cloud-stream-modules.svg?label=In%20Progress&title=In%20Progress[Stores In Progress, link=http://waffle.io/spring-cloud/spring-cloud-stream-modules]
+= PLEASE NOTE: This project is no longer actively developed.
 
-This project provides a collection of modules for common cases.  They can be run on their own or orchestrated via https://github.com/spring-cloud/spring-cloud-dataflow[Spring Cloud Data Flow]. The http://docs.spring.io/spring-cloud-stream-modules/docs/current-SNAPSHOT/reference/html/[documentation] describes each application and available configuration properties.
+The contents of this repository have been moved over to https://github.com/spring-cloud/spring-cloud-stream-app-starters.  
 
-=== Building
+This repository produced maven artifacts using Redis as the transport.  The app-starters repository produces Maven and Docker artifacts that use RabbitMQ and Kafka as the transport.  
 
-Some modules may require an external server to execute, e.g. redis.  If the external server is not found, the tests will be skipped.
+The use of Redis as a transport is not recommended in production.  If you still want to use Redis, you may modify the transport dependency used in the app-starters build files.  The easiest way to do this is to create a new application using the Spring Initialzr web application for Spring Cloud Stream located at http://start-scs.cfapps.io/ and edit the pom.xml or build.gradle file.
 
-Clone the repo and type
+Please refer to the app-starters repository for more information.
 
-----
-$ ./mvnw clean install 
-----
+
 
 
