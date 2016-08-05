@@ -34,6 +34,6 @@ public class CounterSinkDefaultNameTests extends AbstractCounterSinkTests {
         Thread.sleep(sleepTime);
         //Note:  If the name of the counter does not start with 'counter' or 'metric' the 'counter.' prefix is added
         //       by the DefaultCounterService
-        assertEquals(1, this.redisMetricRepository.findOne("counter.simpleCounter").getValue().longValue());
+        assertEquals(1, this.metricRepository.findOne("counter.simpleCounter").getValue().longValue());
     }
 }
