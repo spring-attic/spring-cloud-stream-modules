@@ -22,24 +22,17 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.config.ChannelBindingServiceProperties;
-import org.springframework.cloud.stream.messaging.Processor;
 
 /**
  * A module that can misbehave, useful for integration testing of module deployers.
  *
  * @author Eric Bottard
  */
-@EnableBinding(Processor.class)
 @EnableConfigurationProperties(IntegrationTestProcessorProperties.class)
 public class IntegrationTestProcessor {
 
 	@Autowired
 	private IntegrationTestProcessorProperties properties;
-
-	@Autowired
-	private ChannelBindingServiceProperties channelBindingServiceProperties;
 
 	@PostConstruct
 	public void init() throws InterruptedException {
@@ -49,7 +42,7 @@ public class IntegrationTestProcessor {
 		}
 
 
-		if (properties.getMatchInstances().isEmpty() || properties.getMatchInstances().contains(instanceIndex())) {
+		if (properties.getMatchInstances().isEmpty() || properties.getMatchInstances().contains(properties.getInstanceIndex())) {
 			Thread.sleep(properties.getInitDelay());
 			if (properties.getKillDelay() >= 0) {
 				new Thread() {
@@ -67,10 +60,6 @@ public class IntegrationTestProcessor {
 				}.start();
 			}
 		}
-	}
-
-	private int instanceIndex() {
-		return channelBindingServiceProperties.getInstanceIndex();
 	}
 
 }

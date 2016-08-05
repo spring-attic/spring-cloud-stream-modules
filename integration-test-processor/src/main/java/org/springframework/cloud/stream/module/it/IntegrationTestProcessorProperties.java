@@ -19,6 +19,7 @@ package org.springframework.cloud.stream.module.it;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -56,6 +57,12 @@ public class IntegrationTestProcessorProperties {
 	 */
 	private String parameterThatMayNeedEscaping;
 
+	/*
+	 * Same as ChannelBindingServiceProperties.instanceIndex.
+	 */
+	@Value("${INSTANCE_INDEX:${CF_INSTANCE_INDEX:0}}")
+	private int instanceIndex = 0;
+
 	public int getInitDelay() {
 		return initDelay;
 	}
@@ -86,5 +93,13 @@ public class IntegrationTestProcessorProperties {
 
 	public void setParameterThatMayNeedEscaping(String parameterThatMayNeedEscaping) {
 		this.parameterThatMayNeedEscaping = parameterThatMayNeedEscaping;
+	}
+
+	public int getInstanceIndex() {
+		return instanceIndex;
+	}
+
+	public void setInstanceIndex(int instanceIndex) {
+		this.instanceIndex = instanceIndex;
 	}
 }
