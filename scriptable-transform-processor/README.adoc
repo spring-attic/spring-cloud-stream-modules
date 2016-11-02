@@ -1,5 +1,5 @@
 //tag::ref-doc[]
-= Scripable Transform Processor
+= Scriptable Transform Processor
 
 A *Spring Cloud Stream* module that transforms messages using a script. The script body is supplied directly
 as a property value. The language of the script can be specified (groovy/javascript/ruby/python).
