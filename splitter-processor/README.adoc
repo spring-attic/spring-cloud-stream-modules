@@ -1,4 +1,3 @@
-tag::ref-doc[]
 = Splitter Processor
 The splitter app builds upon the concept of the same name in Spring Integration and allows the splitting of a single
 message into several distinct messages.
