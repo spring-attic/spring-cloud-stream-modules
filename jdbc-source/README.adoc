@@ -3,7 +3,7 @@
 
 This source polls data from an RDBMS.
 This source is fully based on the `DataSourceAutoConfiguration`, so refer to the
-http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html[Spring Boot JDBC Support] for more
+https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html[Spring Boot JDBC Support] for more
 information.
 
 == Options
@@ -15,7 +15,7 @@ $$update$$:: $$an SQL update statement to execute for marking polled messages as
 $$split$$:: $$whether to split the SQL result as individual messages$$ *($$boolean$$, default: `true`)*
 $maxRowsPerPoll$$:: $$max numbers of rows to process for each poll$$ *($$int$$, default: `0`)*
 
-Also see the http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Spring Boot Documentation]
+Also see the https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Spring Boot Documentation]
 for addition `DataSource` properties and `TriggerProperties` and `MaxMessagesProperties` for polling options.
 
 //end::ref-doc[]

@@ -4,7 +4,7 @@ The contents of this repository have been moved over to https://github.com/sprin
 
 This repository produced maven artifacts using Redis as the transport.  The app-starters repository produces Maven and Docker artifacts that use RabbitMQ and Kafka as the transport.  
 
-The use of Redis as a transport is not recommended in production.  If you still want to use Redis, you may modify the transport dependency used in the app-starters build files.  The easiest way to do this is to create a new application using the Spring Initialzr web application for Spring Cloud Stream located at http://start-scs.cfapps.io/ and edit the pom.xml or build.gradle file.
+The use of Redis as a transport is not recommended in production.  If you still want to use Redis, you may modify the transport dependency used in the app-starters build files.  The easiest way to do this is to create a new application using the Spring Initialzr web application for Spring Cloud Stream located at https://start-scs.cfapps.io/ and edit the pom.xml or build.gradle file.
 
 Please refer to the app-starters repository for more information.
 
