@@ -21,7 +21,7 @@ $$requeue$$:: $$whether rejected messages will be requeued by default$$ *($$bool
 $$retryMultiplier$$:: $$retry interval multiplier$$ *($$double$$, default: `2.0`)*
 $$transacted$$:: $$true if the channel is to be transacted$$ *($$boolean$$, default: `false`)*
 
-Also see the http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Spring Boot Documentation]
+Also see the https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Spring Boot Documentation]
 for addition properties for the broker connections and listener properties.
 
 [[rabbitSourceRetry]]
